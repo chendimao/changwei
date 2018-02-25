@@ -1,0 +1,95 @@
+<p-dialog modal="modal"
+          responsive="true"
+          [(visible)]="display" height="100%" breakpoint="100%">
+    <p-header>
+        <div>分工程字典项配置详情</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close()">
+        </div>
+    </p-header>
+    <div class="moduleAlert">
+        <div class="title">数据类别基本信息</div>
+        <div class="clearfix">
+            <ul>
+                <li class="fl group group-2 rl">
+                    <span class="importent">绑定的数据类别</span>
+                    <input type="text" [(ngModel)]="dataTypeIdName" >
+                    <input type="text" [(ngModel)]="fgczdx.dataTypeId" style="display: none">
+                    <i class="xiala" (click)="showList()"></i>
+                    <div *ngIf="showTable==1" class="showBdd">
+                        <app-bddsjlb (ChilEventOut)="getSelectValue($event)"></app-bddsjlb>
+                    </div>
+                <li class="fl group group-2 rl" *ngIf="zdflBtn">
+                    <span class="importent">字典分类</span>
+
+                    <app-select-list [isEdit]="false" [width]="110" [values]="selectList2"
+                                     (SelectModel)="getChildEvent2($event)"></app-select-list>
+
+                </li>
+            </ul>
+
+        </div>
+        <div class="title clearfix">
+            数据项信息列表
+        </div>
+
+        <div class="bottonBox clearfix">
+            <div class="w-25 fl">
+                <div class="title">区域选择</div>
+                <app-treeList [value]="localTreelist" (childEvent)="getAreaCode($event)"></app-treeList>
+            </div>
+
+            <div class="w-75 fl">
+                <header class="clearfix">
+                    <div class="btnGrop fr">
+                        <ul>
+                            <li class="fl" (click)="saveAll()"><span class="img"><img alt="" src="assets/img/icon/jiahao.png"></span>保  存
+                            </li>
+                            <li class="fl" (click)="selectAll(1)" *ngIf="isShow2">
+                                <span class="img icon fa fa-plus-square"></span>
+                                全选
+                            </li>
+                            <li class="fl" (click)="selectAll(2)" *ngIf="!isShow2">
+                                <span class="img icon fa fa-minus-square"></span>
+                                取消全选
+                            </li>
+                        </ul>
+                    </div>
+                </header>
+                <p-treeTable [value]="TreeTable" [(selection)]="selectedFiles2" (onNodeSelect)="nodeSelect($event)"
+                             selectionMode="single"   [style]="{'border':'1px solid #cccccc'}">
+                    <p-column field="mc" header="名称" >
+                        <ng-template let-col let-node="rowData" pTemplate="body">
+                            <p-checkbox [label]="node.data.mc" name="groupname" binary="true" [(ngModel)]="node.data.isCheck" (onChange)="checkbox(node,node.data.isCheck)"></p-checkbox>
+
+
+                        </ng-template>
+                    </p-column>
+                    <p-column field="dm" header="代码">
+                        <!--<ng-template let-col let-car="rowData" pTemplate="body" >-->
+                        <!--<span title="标题">{{car[col.field]}}</span>-->
+                        <!--</ng-template>-->
+                    </p-column>
+
+                    <p-column field="bz" header="备注">
+                        <ng-template let-col let-node="rowData" pTemplate="body">
+                            <input [(ngModel)]="node.data.bz" type="text" style="width:100%">
+                        </ng-template>
+                    </p-column>
+                </p-treeTable>
+            </div>
+
+        </div>
+
+
+    </div>
+    <p-footer>
+
+        <div class="btn-group icon">
+             <a (click)="close()">退出</a>
+        </div>
+
+    </p-footer>
+</p-dialog>
+<p-growl [(value)]="msgs"></p-growl>

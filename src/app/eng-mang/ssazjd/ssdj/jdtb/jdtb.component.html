@@ -1,0 +1,1194 @@
+<app-treeList (childEvent)="getEvent($event)"></app-treeList>
+<div class="containerEng">
+<div *ngIf="isShowRight">
+    <header>
+        <div class="title">
+            进度填报
+        </div>
+    </header>
+    <div class="engBody">
+        <div class="tableEng">
+            移民安置实施进度
+        </div>
+        <div class="body">
+            <div class="searchAll clearfix">
+
+                <div class="fl year" (click)="searchHigh()">
+                    年度：
+                </div>
+                <div class="fl">
+                    <select name="" id="" class="select">
+                        <option value="1" selected="selected">2017</option>
+                        <option value="1">2016</option>
+                        <option value="1">2015</option>
+                        <option value="1">2014</option>
+                    </select>
+                </div>
+                <div class="fl rl input1">
+                    <input type="text" class="searchInput" placeholder="报表类型、填报单位">
+                </div>
+
+                <!--<div class="fl rl input1">-->
+                <!--<input type="text" class="searchInput" placeholder="户主名称，家庭成员名称，家庭编号">-->
+                <!--</div>-->
+                <div class="fl moreSearch" (click)="searchHigh()">
+                    更多筛选
+                </div>
+                <ul class="fr  btnGrop">
+                    <li class="fl" (click)="veiw()"><span class="img"><img src="assets/img/icon/brush_fill.png" alt=""></span>填报
+                    </li>
+                    <li class="fl"><span class="img"><img src="assets/img/icon/save2.png" alt=""></span>提交监理审核
+                    </li>
+
+                    <li class="fl"><span class="img"><img src="assets/img/icon/clear.png" alt=""></span>清空</li>
+                    <li class="fl"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</li>
+                </ul>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>年度</td>
+                    <td>报表类型</td>
+                    <td>期数</td>
+                    <td>统计时限</td>
+                    <td>统计数据行政区域范围</td>
+
+                    <td>填报单位</td>
+                    <td>填报人</td>
+                    <td>填报日期</td>
+                    <td>填报状态</td>
+                    <td>备注</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2017</td>
+                    <td>月报</td>
+                    <td>1</td>
+                    <td>20170101-20170131</td>
+                    <td>福建省泉州市安溪县</td>
+                    <td>安溪县移民局</td>
+                    <td>张三</td>
+                    <td>2017-2-3</td>
+                    <td>起草</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2017</td>
+                    <td>月报</td>
+                    <td>2</td>
+                    <td>20170201-20170228</td>
+                    <td>福建省泉州市安溪县</td>
+                    <td>安溪县移民局</td>
+                    <td>张三</td>
+                    <td>2017-3-5</td>
+                    <td>提交审核</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <p-dialog modal="modal" [(visible)]="display1" [style]="{'width':'100%','height':'100%','padding':'0','margin':'0','padding-bottom':'100px'}"
+                      [contentStyle]="{'width':'100%','height':'100%','margin':'0',left:'0px','overflow':'auto'}"
+                      height="100%" width="100%" [breakpoint]="1000">
+                <p-header>
+                    <div>填报</div>
+                    <div class="showClose">
+                        <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+                        <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(1)">
+                    </div>
+                </p-header>
+                <div class="moduleAlert">
+                    <div class="modul_header">
+                        <div class="t">基本信息</div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="all_box">
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">年度：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="2017">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">统计数据行政区域范围：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="福建省泉州市安溪县">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">报表类型：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="月报">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">期数：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="2">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">统计起止日期：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="20170202" class="inputS">
+                                    <span>------</span>
+                                    <input type="text" value="20171003" class="inputS">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">填报单位：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="安溪县移民局">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">填报人：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <input type="text" value="张三">
+                                </div>
+                            </div>
+                            <div class="inputArea fl">
+                                <div class="inputLeft fl ">
+                                    <span class="importent">填报日期：</span>
+                                </div>
+                                <div class="inputRight fl">
+                                    <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
+                                                dateFormat="yy-mm-dd"  yearRange="1900:2030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modul_header clearfix">
+                        <div class="t fl">基本信息</div>
+                        <div class="modul_btn">
+                            <div class="fl" (click)="tabNav(1)" [ngClass]="{'active':active==1}">移民搬迁安置</div>
+                            <div class="fl" (click)="tabNav(2)" [ngClass]="{'active':active==2}">城集镇迁建</div>
+                            <div class="fl" (click)="tabNav(3)" [ngClass]="{'active':active==3}">专项复建</div>
+                            <div class="fl" (click)="tabNav(4)" [ngClass]="{'active':active==4}">投资完成情况</div>
+                        </div>
+                    </div>
+
+                    <div class="search_top clearfix rl">
+                         <div class="fl searchDiv">
+                           <div class="fl">
+                               <div class="fl" >项目名称：</div>
+                               <select name="" id="" class="fl select" >
+                                   <option value="" selected="selected">安溪县移民搬迁安置</option>
+                               </select>
+                               <div class="addpro fl " style="margin-top: 12px;" >
+                                    新建项目
+                               </div>
+                               <div class="fl">
+                                   <input type="text" class="searchInput" placeholder="项目名称">
+                               </div>
+
+                           </div>
+                        </div>
+                        <div class="btnGrop fr">
+                            <div class="fl">
+                                <p-checkbox class="fl" name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                                仅显示非空项
+                            </div>
+                        <div class="fl"><span class="img"><img src="assets/img/icon/clear.png" alt=""></span>清空指标</div>
+                    </div>
+                    </div>
+                    <div>
+                        <table *ngIf="active==1" class="table">
+                            <thead>
+                            <tr>
+                                <td>序号</td>
+                                <td>指标项</td>
+                                <td>单位</td>
+                                <td>任务数</td>
+                                <td>往期积累完成数</td>
+                                <td>本期完成数</td>
+                                <td>本期完成形象进度(%)</td>
+                                <td>累计完成数</td>
+                                <td>累计完成形象进度(%)</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>签订搬迁协议</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.1</td>
+                                <td style="padding-left: 20px">户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.2</td>
+                                <td style="padding-left: 20px">人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>过度安置</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.1</td>
+                                <td style="padding-left: 20px">户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.2</td>
+                                <td style="padding-left: 20px">人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>集中安置</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.1</td>
+                                <td style="padding-left: 20px">规划用地</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.2</td>
+                                <td style="padding-left: 20px">已平整安置点</td>
+                                <td>个</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.3</td>
+                                <td style="padding-left: 20px">平整面积</td>
+                                <td>m³</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.4</td>
+                                <td style="padding-left: 20px">已分宅基地</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.4.1</td>
+                                <td style="padding-left: 50px">户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.4.2</td>
+                                <td style="padding-left: 50px">户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.5</td>
+                                <td style="padding-left: 20px">已安置</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.5.1</td>
+                                <td style="padding-left: 20px">户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.5.1</td>
+                                <td> 人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>分散安置</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.1</td>
+                                <td>户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.2</td>
+                                <td>人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.3</td>
+                                <td> 自行泽地</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.3.1</td>
+                                <td>户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.3.2</td>
+                                <td>人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.4</td>
+                                <td>城镇购房</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.4.1</td>
+                                <td>户数</td>
+                                <td>户</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4.4.2</td>
+                                <td>人数</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>建（购）房屋建筑面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>已拆除房屋面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" placeholder="请填写数据"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table *ngIf="active==2" class="table">
+                            <thead>
+                            <tr>
+                                <td>序号</td>
+                                <td>指标项</td>
+                                <td>单位</td>
+                                <td>任务数</td>
+                                <td>往期积累完成数</td>
+                                <td>本期完成数</td>
+                                <td>本期完成形象进度(%)</td>
+                                <td>累计完成数</td>
+                                <td>累计完成形象进度(%)</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> 土地平整及基础设施建设</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.1</td>
+                                <td style="padding-left: 20px"> 场地平整</td>
+                                <td>m³</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.2</td>
+                                <td style="padding-left: 20px"> 挡护工程</td>
+                                <td>m³</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.3</td>
+                                <td style="padding-left: 20px">道路</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.4</td>
+                                <td style="padding-left: 20px"> 给水</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>1.4.1</td>
+                                <td style="padding-left: 40px">水源取水输水干管</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.4.2</td>
+                                <td style="padding-left: 40px">配水管总长度</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.4.3</td>
+                                <td style="padding-left: 40px">排水</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.5</td>
+                                <td style="padding-left: 20px">电力</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.5.1</td>
+                                <td style="padding-left: 40px"> 高压输电线长度</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.5.2</td>
+                                <td style="padding-left: 40px">低压配电线长度</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.6</td>
+                                <td style="padding-left: 20px">电信</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.7</td>
+                                <td style="padding-left: 20px">广播电视</td>
+                                <td>m</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1.8</td>
+                                <td style="padding-left: 20px">其他</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td >行政企事业单位</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.1</td>
+                                <td style="padding-left: 20px">行政单位</td>
+                                <td>个</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.2</td>
+                                <td style="padding-left: 20px">事业单位</td>
+                                <td>个</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2.3</td>
+                                <td style="padding-left: 20px">企业单位</td>
+                                <td>个</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td >房屋复建</td>
+                                <td>人</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.1</td>
+                                <td style="padding-left: 20px">私有房屋</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.1.1</td>
+                                <td style="padding-left: 40px"> 补偿建设面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3.1.2</td>
+                                <td style="padding-left: 40px">实施建筑面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+
+                            <tr>
+                                <td>3.2</td>
+                                <td style="padding-left: 20px">公有房屋</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>3.2.1</td>
+                                <td style="padding-left: 40px">补偿建设面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>3.2.2</td>
+                                <td style="padding-left: 40px">实施建筑面积</td>
+                                <td>㎡</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <div *ngIf="active==3" class="clearfix">
+                              <div class="jdtb_left">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <td>序号</td>
+                                        <td>项目名称</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>公路</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1.1</td>
+                                        <td style="padding-left: 20px">省道307</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>桥梁</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.1</td>
+                                        <td style="padding-left: 20px">安溪县桥梁</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>库周交通</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.1</td>
+                                        <td style="padding-left: 20px">安溪县</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>输变电工程</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.1</td>
+                                        <td style="padding-left: 20px">安溪县输变电工程</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>电信工程</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.1</td>
+                                        <td style="padding-left: 20px">安溪县电信工程</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>防护工程</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.1</td>
+                                        <td style="padding-left: 20px">安溪县防护工程</td>
+                                    </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                              </div>
+                              <div class="jdtb_right fl">
+                                  <table class="table">
+                                      <thead>
+                                      <tr>
+                                          <td>序号</td>
+                                          <td>指标项</td>
+                                          <td>单位</td>
+                                          <td>任务数</td>
+                                          <td>往期累计完成数</td>
+                                          <td>本期完成数</td>
+                                          <td>本期完成形象
+                                              进度（%）</td>
+                                          <td>累计完成数</td>
+                                          <td>累计完成形象进度（%）</td>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr>
+                                          <td>1</td>
+                                          <td>复建里程</td>
+                                          <td>km</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td>&nbsp;</td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                        </div>
+                        <div *ngIf="active==4">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>序号</td>
+                                    <td>指标项</td>
+                                    <td>单位</td>
+                                    <td>任务数</td>
+                                    <td>往期累计完成数</td>
+                                    <td>本期完成数</td>
+                                    <td>本期完成形象进度（%）</td>
+                                    <td>累计完成数</td>
+                                    <td>累计完成形象进度（%）</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>农村部分补偿费用</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>2</td>
+                                    <td>城集镇迁建补偿费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>工业企业处理补偿费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>
+                                        防护工程费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>库底清理费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>其他费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>有关税费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>预备费</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>静态总投资</td>
+                                    <td>万元</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal_4 clearfix">
+                        <div class="module_foot ">
+                            <div class="fl"><span class="img"><img src="assets/img/icon/save.png" alt="" class="img"></span>保存</div>
+                            <div class="fl"><span class="img"><img src="assets/img/icon/go.png" alt="" class="img"></span>保存并提交审核</div>
+                            <div class="fl"><span class="img"><img src="assets/img/icon/save2.png" alt="" class="img"></span>提交审核</div>
+                            <div class="fl"><span class="img"><img src="assets/img/icon/exit.png" alt="" class="img"></span>退出</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </p-dialog>
+        </div>
+        <div class="foot">
+            <p-paginator [style]="{'height':'50px'}" rows="10" totalRecords="100" pageLinkSize="1"
+                         templateRight></p-paginator>
+        </div>
+    </div>
+</div>
+<div *ngIf="defaultShow">
+    <app-waring></app-waring>
+</div>
+</div>

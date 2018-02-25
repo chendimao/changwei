@@ -1,0 +1,131 @@
+<div class="project_content" [@flyIn]>
+
+    <header>
+        <!--<div class="title">项目建议书</div>-->
+        <div class="title">移民安置前期工作进度</div>
+    </header>
+    <div class="showBox clearfix">
+        <div>
+            <ul class="pro_list">
+                <li (click)="tab(1)" class="fl pro_li bl " [ngClass]="{'active':index==1}"><span>1</span>
+                    <div class="step"><p>预可研批复</p></div>
+
+
+                </li>
+                <li (click)="tab(2)" class="fl pro_li bl " [ngClass]="{'active':index==2}"><span>2</span>
+                    <div class="step">实物指标调查大细则批复</div>
+                    <div class="rl timeBox">
+                        <div class="time">时间：2017/08/23</div>
+                        <i class="xiala"></i>
+                    </div>
+                </li>
+                <li (click)="tab(3)" class="fl pro_li bl" [ngClass]="{'active':index==3}"><span>3</span>
+                    <div class="step">建设征地通告发布</div>
+                </li>
+                <li (click)="tab(4)" class="fl pro_li bl " [ngClass]="{'active':index==4}"><span>4</span>
+                    <div class="step">实物调查指标启动</div>
+                </li>
+                <li (click)="tab(5)" class="fl pro_li bl" [ngClass]="{'active':index==5}"><span>5</span>
+                    <div class="step">移民安置规划大纲批准</div>
+                </li>
+                <li (click)="tab(6)" class="fl pro_li bl" [ngClass]="{'active':index==6}"><span>6</span>
+                    <div class="step">移民安置规划批复</div>
+                </li>
+                <li (click)="tab(7)" class="fl pro_li bl" [ngClass]="{'active':index==7}"><span>7</span>
+                    <div class="step">项目可研批复（核准）</div>
+                </li>
+            </ul>
+        </div>
+        <div class="info clearfix">
+            <div class="secd_title">
+                基本信息
+            </div>
+            <div>
+
+
+                <ul class="ul_list clearfix">
+                    <li class="fl"><span>批准(或发布)单位：</span><input  type="text"
+                                                                 class="searchInput"
+                                                                 placeholder="请填入单位"></li>
+                    <li class="fl rl"><span>批准(或发布)时间：</span>
+                        <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
+                                    monthNavigator="true"
+                                    dateFormat="yy-mm-dd" yearRange="1900:2030" [inline]="false" [locale]="ch"
+                                    name="qrrq"></p-calendar>
+
+                    </li>
+                    <li class="fl"><span>批准(或发布)文号：</span><input  type="text"
+                                                                 class="searchInput"
+                                                                 placeholder="请填入单位"></li>
+                    <li class="clearfix">
+                        <div class="clearfix beizhu ">
+                            <span class="textareaBeizhu">
+                                备注 ：
+                            </span>
+                            <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+                        </div>
+
+                    </li>
+
+                </ul>
+            </div>
+            <div class="secd_title">
+                相关文件
+            </div>
+            <div class="clearfix">
+                <div>
+                    <header  class="clearfix">
+
+                        <div  class="btnGrop fr">
+                            <ul  >
+                                <li  class="fl"><span  class="img  fa fa-check-square-o"></span>多选
+                                </li>
+                                <li  class="fl"><span  class="img fa fa-minus-square-o"></span>批量删除
+                                </li>
+                            </ul>
+                        </div>
+                    </header>
+                    <div class="rl fl wj_box ">
+                        <div class="wj_b_h clearfix">
+                            <div class="fl wj_b_Im">
+                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
+                                <span>pdf</span>
+                            </div>
+                            <div class="fl text">
+                                泉州白濑水利枢纽工程建设征地
+                                移民安置监理月报2017年度第1期
+                            </div>
+                        </div>
+
+
+                        <div class="hover">
+                            <ul>
+                                <li class="enter fl">下载</li>
+                                <li class="care fl">删除</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="rl fl wj_box ">
+                        <div class="wj_b_h clearfix">
+                            <div class="fl wj_b_Im">
+                                <span class="img"><img src="assets/img/icon/img06.png" alt=""></span>
+                                <span>pdf</span>
+                            </div>
+                            <div class="fl text">
+                                上传附件
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <div class="btn-group icon">
+                    <a>保存</a>
+                    <a>清空所有</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

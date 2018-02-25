@@ -1,0 +1,110 @@
+
+header{
+    border-bottom: 1px solid #cccccc;
+}
+.title{
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+.t .btnGrop{
+    position: absolute;
+    padding: 0;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+.body{
+    /*border: 1px solid #cccccc;*/
+    margin-top: 15px;
+    padding: 20px;
+}
+.searchDiv{
+    padding: 15px;
+    width: 250px;
+}
+.btnGrop div{
+    padding: 8px 15px;
+     margin-left: 15px;
+}
+.btnGrop div:last-child{
+    border: 1px solid #cccccc;
+}
+.body_botton{
+    border-top: 1px solid #ccc;
+}
+.t{
+    font-size: 18px;
+    margin: 25px;
+}
+
+
+
+.wj_b_Im{
+    width: 50px;
+    padding: 10px;
+    color: #0099cb;
+    text-align: center;
+}
+.wj_b_b{
+    border-top: 1px solid #0099cb;
+    padding: 15px;
+    max-height: 70px;
+    overflow: hidden;
+}
+.text{
+    width: calc(100% - 70px);
+    border-left: 1px solid #0099cb;
+    padding: 8px;
+    box-sizing: border-box;
+    max-height: 90px;
+    overflow:hidden;
+}
+
+.btnGrop{
+    padding: 15px;
+}
+.upImg{
+
+ border-right: 1px solid ;
+}
+.uptext{
+    border-left:0;
+    vertical-align: middle;
+    width: calc(100% - 71px);
+    font-size: 16px;
+    text-align: center;
+}
+.wj_box:hover .model{
+    display: block;
+}
+.model{
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right,rgba(255,255,255,0.6),rgba(0,136,204,0.8));
+}
+.btn_write{
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.btn_write li{
+    margin: 100% 0px;
+    font-weight: bold;
+    color: white;
+}
+li.check{
+    border: 2px solid #ffffff;
+    text-align: center;
+    border-radius: 100%;
+    height: 30px;
+    line-height: 30px;
+    background: #0088cc;
+}
+

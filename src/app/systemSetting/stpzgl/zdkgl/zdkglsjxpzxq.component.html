@@ -1,0 +1,70 @@
+<p-dialog modal="modal"
+          [(visible)]="display">
+    <p-header>
+        <div>字典库详情维护</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(1)">
+        </div>
+    </p-header>
+    <div class="moduleAlert">
+        <form #project="ngForm">
+            <div>
+                <ul>
+                    <li class="fl group group-2"><span class="importent">类别名称</span>
+                        <input type="text"  [(ngModel)]="zidian.mc" name="mc">
+                    </li>
+                    <li class="fl group group-2 rl"><span class="importent">全称</span>
+                        <input type="text" [(ngModel)]="zidian.qc" name="qc" disabled>
+                        <span class="bianhao" (click)="zdBtn('qc')">自动生成</span>
+                    </li>
+                    <li class="fl group group-2 rl"><span class="importent">代码</span>
+                        <input type="text" [(ngModel)]="zidian.dm" name="dm">
+                        <span class="bianhao" (click)="zdBtn('dm')">自动生成</span>
+                    </li>
+                    <li class="fl group group-2">
+                        <ul>
+                            <li class="fl group group-2"><span class="importent">数据项类型</span>
+                                <app-select-list [width]="100" [values]="selectList1" (SelectModel)="getChildEvent1($event)"></app-select-list>
+                            </li>
+                            <li class="fl group group-2"><span class="importent">字典分类</span>
+                                <app-select-list [width]="100" [values]="selectList2" (SelectModel)="getChildEvent2($event)"></app-select-list>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fl group group-2 rl"><span class="importent">序     号</span>
+                        <input type="text"  [(ngModel)]="zidian.xh" name="xh">
+
+                    </li>
+                    <li class="fl group group-2 rl"><span class="pxh">排序号</span>
+                        <input type="text"  [(ngModel)]="zidian.pxh"   name="pxh">
+                        <span class="bianhao" (click)="zdBtn('pxh')">自动生成</span>
+                    </li>
+
+                </ul>
+                <div>
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea name="" id="" cols="30" rows="10" [(ngModel)]="zidian.bz" name="bz" class="textarea"></textarea>
+                    </div>
+                    <div class="fl group group-2"><span >创建时间</span><input type="text" value="{{zidian.cjsj | date:'yyyy-MM-dd'}}" disabled>
+                    </div>
+                    <div class="fl group group-2"><span >最后修改时间</span><input type="text" value="{{zidian.cjsj | date:'yyyy-MM-dd'}}" disabled>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <p-growl  [(value)]="msgs"></p-growl>
+    <p-footer>
+        <div class="btn-group icon">
+            <a (click)="save('save')">保存</a>
+            <a (click)="save('add')">保存并新增</a>
+            <a (click)="close()">退出</a>
+        </div>
+    </p-footer>
+</p-dialog>

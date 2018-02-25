@@ -1,0 +1,180 @@
+<div class="containerEng">
+  <header >
+    <div class="title">
+      拟建工程移民安置前期工作进度
+    </div>
+  </header>
+  <div class="engBody">
+    <div class="tableEng">
+      全省拟建大中型水库工程移民安置前期工作进度表
+    </div>
+    <div class="body">
+
+      <div class="areaSelect clearfix">
+        <div class="fl t">选择类型</div>
+        <div class="fl">
+          <ul>
+            <li class="fl" (click)="table('1')" [ngClass]="{'active':active=='1'}">大中型水库</li>
+            <li class="fl" (click)="table('2')" [ngClass]="{'active':active=='2'}">防洪引调水工程</li>
+          </ul>
+        </div>
+      </div>
+      <div class="searchAll clearfix">
+        <div class="fl rl input1">
+          <input type="text" class="comSearch" placeholder="项目名称">
+          <span class="search"><img src="/assets/img/icon/search.png" alt=""></span>
+        </div>
+        <ul class="fr  btnGrop">
+          <li class="fl" (click)="jump(1)"><span class="img"><img src="assets/img/icon/browse_fill.png"></span>报表导出</li>
+
+        </ul>
+      </div>
+      <div class="response">
+        <table class="table" *ngIf="active=='1'">
+        <thead>
+        <tr>
+          <td>序号</td>
+          <td>建设地点</td>
+          <td>项目名称</td>
+          <td>属性</td>
+          <td>水库总库容（万m³）</td>
+          <td>装机容量（万kw)</td>
+          <td>装机容量（万kw)</td>
+          <td>项目法人或项目业主主管部门</td>
+          <td>移民安置规划设计单位</td>
+          <td>项目建议或预可研批复时间</td>
+          <td>实物调查大纲或细则批复时</td>
+          <td>建设征地通告发布时间</td>
+          <td>实物指标调查启动时间</td>
+          <td>移民安置规划大纲批准时间</td>
+          <td>移民安置规划批复时间</td>
+          <td>项目可研批复（核准）</td>
+        </tr>
+     
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let list of stepList">
+          <td>{{list.id}}</td>
+          <td>{{list.area}}</td>
+          <td>{{list.name}}</td>
+          <td>{{list.zhufang}}</td>
+          <td>{{list.zhufang1}}</td>
+          <td>{{list.zhufang2}}</td>
+          <td>{{list.zhufang3}}</td>
+          <td>{{list.zhufang4}}</td>
+          <td>{{list.zhufang5}}</td>
+          <td>{{list.zhafang}}</td>
+          <td>{{list.zhafang1}}</td>
+          <td>{{list.zhafang2}}</td>
+          <td>{{list.scyf}}</td>
+          <td>{{list.scyf1}}</td>
+          <td>{{list.scyf2}}</td>
+          <td>{{list.scyf3}}</td>
+        </tr>
+        <tr>
+          <td> </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+
+
+
+        </tbody>
+
+      </table>
+      </div>
+      <div class="response">
+        <table class="table" *ngIf="active=='2'">
+        <thead>
+        <tr>
+          <td rowspan="2">序号</td>
+          <td rowspan="2">建设地点</td>
+          <td rowspan="2">项目名称</td>
+          <td rowspan="2">属性</td>
+          <td colspan="3">防洪防潮工程</td>
+          <td colspan="3">引调水工程</td>
+          <td rowspan="2">项目法人或项目主管部门</td>
+          <td rowspan="2">移民安置规划设计单位</td>
+          <td rowspan="2">项目建议或预可研批复时间</td>
+          <td rowspan="2">建设征地通告发布时间</td>
+          <td rowspan="2">实物指标调查启动时间</td>
+          <td rowspan="2">移民安置规划批复时间</td>
+          <td rowspan="2">项目可研批复时间</td>
+        </tr>
+        <tr>
+          <td >设计防洪标准</td>
+          <td>工程级别</td>
+          <td>提防长度（km)</td>
+          <td >工程级别</td>
+          <td>建设水源性水库</td>
+          <td>建设引调水管渠</td>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let list of water">
+          <td>{{list.id}}</td>
+          <td>{{list.area}}</td>
+          <td>{{list.name}}</td>
+          <td>{{list.zhufang}}</td>
+          <td>{{list.zhufang1}}</td>
+          <td>{{list.zhufang2}}</td>
+          <td>{{list.zhufang3}}</td>
+          <td>{{list.zhufang4}}</td>
+          <td>{{list.zhufang5}}</td>
+
+          <td>{{list.zhafang1}}</td>
+          <td>{{list.zhafang2}}</td>
+          <td>{{list.scyf}}</td>
+          <td>{{list.scyf1}}</td>
+          <td>{{list.scyf2}}</td>
+          <td>{{list.scyf3}}</td>
+          <td>{{list.scyf4}}</td>
+          <td>{{list.scyf5}}</td>
+        </tr>
+        <tr>
+          <td> </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+
+
+
+        </tbody>
+
+      </table>
+      </div>
+    </div>
+  </div>
+</div>

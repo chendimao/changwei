@@ -1,0 +1,120 @@
+<app-header-nav></app-header-nav>
+<header class="fl clearfix">
+    <ul class="fl">
+        <li class="fl" (click)="tab('all')" [ngClass]="{'active':show.all=='true'}">所有（{{Reservoir.count}}座）</li>
+        <li class="fl" (click)="tab('langer')" [ngClass]="{'active':show.langer==true}">大中型水库（{{Reservoir.langer}}座）
+        </li>
+        <li class="fl" (click)="tab('small')" [ngClass]="{'active':show.small==true}">小型水库（{{Reservoir.small}}座）</li>
+        <li class="fl" (click)="tab('prevent')" [ngClass]="{'active':show.prevent==true}">
+            防洪和引调工程（{{Reservoir.prevent}}座）
+        </li>
+        <li class="fl" (click)="tab('care')" [ngClass]="{'active':show.care==true}">重点关注（{{Reservoir.care}}座）</li>
+    </ul>
+    <input type="text" class="fr searchInput" placeholder="输入水利水电工程名称">
+</header>
+<div class="contaner clearfix">
+    <div class="clearfix class" *ngIf="show.langer">
+        <div class="nav_list">大中型水库（<span class="num">{{Reservoir.langer}}座</span>）</div>
+        <div class="list  fl rl boxShadow" *ngFor="let list of ReservoirLList">
+            <div class="imgShow">
+                <img src="/assets/img/O8)E(YIA$}9()XOEGU95S3D.png" alt="">
+            </div>
+            <div class="info">
+                <div class="reservioirName">
+                    {{list.name}}
+                </div>
+                <ul class="res">
+                    <li class="fl">库容：{{list.kurong}}</li>
+                    <li class="fl">水库水位：{{list.sksw}}</li>
+                    <li class="fl">装机容量：{{list.zjrl}}</li>
+                    <li class="fl">型式：{{list.xs}}</li>
+                </ul>
+            </div>
+            <div class="hover">
+                <ul>
+                    <li class="enter fl" (click)="jump(list.id,list.name)">进入</li>
+                    <li class="care fl">关注</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix class" *ngIf="show.small">
+        <div class="nav_list">小型水库（<span class="num">{{Reservoir.small}}座</span>）</div>
+        <div class="list  fl rl boxShadow" *ngFor="let list of ReservoirMList">
+            <div class="imgShow">
+                <img src="/assets/img/O8)E(YIA$}9()XOEGU95S3D.png" alt="">
+            </div>
+            <div class="info">
+                <div class="reservioirName">
+                    {{list.name}}
+                </div>
+                <ul class="res">
+                    <li class="fl">库容：{{list.kurong}}</li>
+                    <li class="fl">水库水位：{{list.sksw}}</li>
+                    <li class="fl">装机容量：{{list.zjrl}}</li>
+                    <li class="fl">型式：{{list.xs}}</li>
+                </ul>
+            </div>
+            <div class="hover">
+                <ul>
+                    <li class="enter fl" (click)="jump(2)">进入</li>
+                    <li class="care fl">关注</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix class" *ngIf="show.prevent">
+        <div class="nav_list">防洪和引调工程（<span class="num">{{Reservoir.prevent}}座</span>）</div>
+        <div class="list  fl rl boxShadow" *ngFor="let list of FhydList">
+            <div class="imgShow">
+                <img src="/assets/img/O8)E(YIA$}9()XOEGU95S3D.png" alt="">
+            </div>
+            <div class="info">
+                <div class="reservioirName">
+                    {{list.name}}
+                </div>
+                <ul class="res">
+                    <li class="fl">库容：{{list.kurong}}</li>
+                    <li class="fl">水库水位：{{list.sksw}}</li>
+                    <li class="fl">装机容量：{{list.zjrl}}</li>
+                    <li class="fl">型式：{{list.xs}}</li>
+                </ul>
+            </div>
+            <div class="hover">
+                <ul>
+                    <li class="enter fl" (click)="jump(2)">进入</li>
+                    <li class="care fl">关注</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix class" *ngIf="show.care">
+        <div class="nav_list">重点关注（<span class="num">{{Reservoir.care}}座</span>）</div>
+        <div class="list  fl rl boxShadow" *ngFor="let list of CareList">
+            <div class="imgShow">
+                <img src="/assets/img/O8)E(YIA$}9()XOEGU95S3D.png" alt="">
+            </div>
+            <div class="info">
+                <div class="reservioirName">
+                    {{list.name}}
+                </div>
+                <ul class="res">
+                    <li class="fl">库容：{{list.kurong}}</li>
+                    <li class="fl">水库水位：{{list.sksw}}</li>
+                    <li class="fl">装机容量：{{list.zjrl}}</li>
+                    <li class="fl">型式：{{list.xs}}</li>
+                </ul>
+            </div>
+            <div class="hover">
+                <ul>
+                    <li class="enter fl" (click)="jump(2)">进入</li>
+                    <li class="care fl">取消关注</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

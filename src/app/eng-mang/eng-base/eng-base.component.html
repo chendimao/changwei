@@ -1,0 +1,198 @@
+<div class="containerEng" [@flyIn]>
+    <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+    <div class="engBody">
+        <p-panel styleClass="secPanel" [toggleable]="true" expandIcon="fa-angle-double-up"
+                 collapseIcon="fa-angle-double-down">
+            <p-header>
+                <div class="t">
+                    基本信息
+                </div>
+            </p-header>
+            <div class="clearfix">
+                <ul>
+                    <li class="fl group group-3"><span class="importent">项目名称</span><input type="text" ngModel name="">
+                    </li>
+                    <li class="fl group group-3"><span>建设地点</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>涉及市、县（区）</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>项目法人或项目主管单位</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>移民安置规划设计单位</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>项目批准部门</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>项目属性</span><input type="text" ngModel name=""></li>
+                    <li class="fl group group-3"><span>项目状态</span>
+                        <p-selectButton [options]="types2" ngModel name="sfxw"
+                                        (click)="selectedTypea()"></p-selectButton>
+                    </li>
+                </ul>
+            </div>
+        </p-panel>
+        <div class="areaSelect clearfix">
+            <div class="fl t">工程详情信息</div>
+            <ul>
+                <li class="fl" (click)="showMore(1)" [ngClass]="{'active':showClass==1}">工程特性指标</li>
+                <li class="fl" (click)="showMore(2)" [ngClass]="{'active':showClass==2}">建设征地及影响情况</li>
+                <li class="fl" (click)="showMore(3)" [ngClass]="{'active':showClass==3}">多媒体资料</li>
+            </ul>
+        </div>
+        <div *ngIf="showMode==1">
+            <header class="clearfix">
+                <div class="fl sle">
+                    <span>阶段</span>
+                    <app-select-list  [width]="50" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                </div>
+                <div class="fl">
+                    <input type="text" class="searchInput" placeholder="名称">
+                </div>
+                <div class="btnGrop fr">
+                    <ul>
+                        <li class="fl" (click)="showModule(2)"><span class="img"><img
+                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        </li>
+                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                      alt=""></span>删除
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <p-treeTable  ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="name" header="序号">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="code" header="名称">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="jldw" header="单位">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="xh" header="数量" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;">
+                    </ng-template>
+                </p-column>
+                <p-column field="bz" header="备注" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;">
+                    </ng-template>
+                </p-column>
+            </p-treeTable>
+            <div  class="btn-group icon">
+                    <a >保存</a>
+                    <a >清空所有</a>
+                </div>
+
+        </div>
+        <div *ngIf="showMode==2">
+            <header class="clearfix">
+                <div class="fl sle">
+                    <span>阶段</span>
+                    <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                </div>
+                <div class="fl">
+                    <input type="text" class="searchInput" placeholder="名称">
+                </div>
+                <div class="btnGrop fr">
+                    <ul>
+                        <li class="fl" (click)="showModule(2)"><span class="img"><img
+                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        </li>
+                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                      alt=""></span>删除
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <p-treeTable  [tableStyle]="{'padding':'10px'}" [value]="TreeTable2"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="name" header="序号">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="code" header="名称">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="jldw" header="单位">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="xh" header="数量" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="bz" header="备注" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+            </p-treeTable>
+
+            <div  class="btn-group icon">
+                <a >保存</a>
+                <a >清空所有</a>
+            </div>
+
+        </div>
+        <div *ngIf="showMode==3">
+            <header class="clearfix">
+                <div class="fl sle">
+                    <span>阶段</span>
+                    <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                </div>
+                <div class="fl">
+                    <input type="text" class="searchInput" placeholder="名称">
+                </div>
+                <div class="btnGrop fr">
+                    <ul>
+                        <li class="fl" (click)="showModule(2)"><span class="img"><img
+                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        </li>
+                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                      alt=""></span>删除
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <p-treeTable  [tableStyle]="{'padding':'10px'}" [value]="TreeTable2"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="name" header="序号">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="code" header="名称">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="jldw" header="单位">
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="xh" header="数量" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+                <p-column field="bz" header="备注" >
+                    <ng-template let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                    </ng-template>
+                </p-column>
+            </p-treeTable>
+
+            <div  class="btn-group icon">
+                <a >保存</a>
+                <a >清空所有</a>
+            </div>
+
+        </div>
+    </div>
+</div>

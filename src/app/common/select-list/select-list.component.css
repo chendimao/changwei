@@ -1,0 +1,25 @@
+:host
+/deep/
+.ui-dropdown label.ui-dropdown-label{
+    padding: 7px;
+    color: #666666;
+}
+:host
+/deep/
+.ui-corner-all{
+    border-radius: 0px;
+}
+
+:host
+/deep/
+.ui-state-highlight{
+    background: #0099cb;
+}
+.inlin{
+    display: inline-block;
+}
+:host
+/deep/
+.ui-dropdown .ui-dropdown-trigger .fa{
+    margin-top: 50%;
+}

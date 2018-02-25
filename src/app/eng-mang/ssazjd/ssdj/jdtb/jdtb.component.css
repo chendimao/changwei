@@ -1,0 +1,292 @@
+
+
+.header {
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+
+}
+
+.tableEng {
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+
+.addpro {
+    margin: 7px 15px;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+}
+
+.searchAll .moreSearch {
+    border: 1px solid #cccccc;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    color: #333333;
+    margin: 7px;
+}
+
+.body {
+    padding: 15px;
+}
+
+.engBody {
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding-left: 1px;
+}
+
+.title {
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+
+.search_top .btnGrop div:first-child {
+    position: absolute;
+    right: 130px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btnGrop li {
+    border: 1px solid #cccccc;
+    padding: 3px 10px;
+    margin: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.btnGrop div:last-child {
+    border: 1px solid #cccccc;
+    padding: 7px 15px;
+    margin-top: 7px;
+}
+
+.btnGrop span {
+    padding: 0 5px;
+}
+
+.select {
+    margin: 7px;
+}
+
+.year {
+    margin-top: 13px;
+}
+
+.modul_btn div.active {
+    background: #546478;
+    color: white;
+}
+.table tr td input{
+    height: 100%;
+    padding: 9px 3px;
+}
+.table tr td:nth-child(7){
+    padding: 0px;
+}
+
+.search_top {
+    margin-top: 20px;
+    border-top: 1px solid #cccccc;
+}
+
+.table tbody tr > td:nth-child(2) {
+    text-align: left;
+}
+
+.jdtb_left {
+    width: 30%;
+    float: left;
+}
+
+.jdtb_right {
+    width: 69%;
+    margin-left: 1%;
+    float: left;
+}
+
+.modal_4 {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.module_foot {
+    display: inline-block;
+}
+.module_foot div:first-child{
+    background: #0099cb;
+    color: white;
+}
+
+.module_foot > div {
+    margin: 0 10px;
+    border: 1px solid #cccccc;
+    padding: 7px 15px;
+}
+
+:host
+/deep/
+.ui-dialog .ui-dialog-titlebar-close {
+    display: none;
+}
+
+:host
+/deep/
+.ui-paginator .ui-paginator-page.ui-state-active {
+    background: #0099cc;
+    /* padding: 19px; */
+    box-sizing: border-box;
+    height: 30px;
+    width: 30px;
+    border: 1px solid #ccc;
+    line-height: 30px;
+    border-radius: 0;
+    text-align: center;
+    border-radius: 0;
+    /*display: block;*/
+    /*float: left;*/
+}
+
+:host
+/deep/
+.ui-paginator-next.ui-paginator-element.ui-state-default.ui-corner-all {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+
+    /*display: block;*/
+    /*float: left;*/
+
+}
+
+:host
+/deep/
+.ui-paginator-last.ui-paginator-element.ui-state-default.ui-corner-all {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    /*display: block;*/
+    /*float: left;*/
+
+}
+
+:host
+/deep/
+.ui-paginator-first.ui-paginator-element.ui-state-default.ui-corner-all.ui-state-disabled {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    /*display: block;*/
+    /*float: left;*/
+
+}
+
+:host
+/deep/
+.ui-paginator-prev.ui-paginator-element.ui-state-default.ui-corner-all {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    /*display: block;*/
+    /*float: left;*/
+
+}
+
+:host
+/deep/
+.ui-paginator-prev.ui-paginator-element.ui-state-default.ui-corner-all.ui-state-disabled {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    /*display: block;*/
+    /*float: left;*/
+
+}
+
+:host
+/deep/
+.ui-paginator-first.ui-paginator-element.ui-state-default.ui-corner-all {
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    /*display: block;*/
+    /*float: left;*/
+}
+
+/*.all_box{*/
+/*padding: 15px;*/
+/*}*/
+.inputArea {
+    width: 50%;
+    margin-top: 15px;
+}
+
+.inputArea input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.inputLeft {
+    width: 36%;
+    margin-top: 8px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.inputRight {
+    width: 64%;
+}
+
+.inputRight .inputS {
+    width: 40%;
+}
+
+.inputRight input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+}
+
+.modul_header {
+    margin-top: 20px;
+}
+
+:host
+/deep/
+.timeInput .ui-inputtext {
+    background: url(/assets/img/icon/rili.png) no-repeat;
+    background-position: 96% 50%;
+    padding-left: 5px;
+    height: 34px;
+    border-radius: 0px;
+    border: 1px solid #cccccc;
+    width: 100%;
+}
+
+:host
+/deep/
+.timeInput.ui-calendar {
+    width: 100%;
+}
+
+.modul_btn div {
+    padding: 10px 15px;
+    /*border: 1px solid #cccccc;*/
+    margin-left: 15px;
+    background: #d9dee4;
+    cursor: pointer;
+}
+
+.ui-dialog .ui-dialog-content :host {
+    padding: 0;
+}

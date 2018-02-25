@@ -1,0 +1,23 @@
+<div class="secNav fl  rl" [ngClass]="{'yy':isAdd}" >
+    <div class="list clearfix" *ngFor="let list of NavValue;">
+        <div class="biaotou fl">
+            <span>{{list.name}}</span>
+            <span class="img1" ><img src="assets/img/icon/chevron-right.png" alt=""></span>
+        </div>
+        <ul class="fl ul_list " >
+
+            <li class="fl rl "   *ngFor="let secList of list.content"  >
+                <div (click)="close()" *ngIf="secList.content ==''" routerLink='{{routLink}}/{{projectId}}/{{list.routerLink}}/{{secList.routerLink}}'>{{secList.name}}</div>
+                <!--<div (click)="close()" *ngIf="secList.content ==''" [routerLink]="[routLink+'/'+projectId+'/'+list.routerLink,secList.routerLink]" >{{secList.name}}</div>-->
+                <div *ngIf="secList.content!=''" class="po">{{secList.name}}</div>
+                <div *ngIf="secList.content!=''" class="alertSelect">
+                    <span  (click)="close()" *ngFor="let threeList of getKeys(secList.content)" routerLink='{{routLink}}/{{projectId}}/{{list.routerLink}}/{{secList.routerLink}}/{{threeList}}'>
+                       {{secList.content[threeList]}}
+                    </span>
+               </div>
+
+            </li>
+        </ul>
+    </div>
+    <div class="close" (click)="close()"><span class="img"><img src="assets/img/icon/x.png" alt=""></span></div>
+</div>

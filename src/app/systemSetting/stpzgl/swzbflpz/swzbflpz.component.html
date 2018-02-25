@@ -1,0 +1,54 @@
+<div [@flyIn] style="height: 100%">
+<div class="fl letfNav nav">
+  <div class="gc_title">
+    <span><img src="assets/img/icon/diquxuanze.png" alt="" class="img"></span>
+    工程选择
+  </div>
+  <div class="rl cl">
+    <app-select-list  [width]="0" [values]="gcList" [search]="true" (SelectModel)="getProjectId($event)"></app-select-list>
+  </div>
+
+  <div>
+    <app-treeList [value]="treelist" (childEvent)="getAreaCode($event)"></app-treeList>
+  </div>
+</div>
+<div class="fl conBody ortherBody">
+  <div class="title_box">
+    <span class="title">实物指标分栏配置</span>
+  </div>
+  <header class="clearfix">
+    <div class="fl">
+      <span>阶段：</span>
+      <app-select-list [width]="40" [values]="jdList" [search]="false" (SelectModel)="getGzjdId($event)"></app-select-list>
+    </div>
+    <div class="fl">
+      <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="表名、字段名、数据类别">
+      <span class="btnClick" (click)="searchList('click',key)"></span>
+    </div>
+    <div class="btnGrop fr">
+      <ul>
+        <li class="fl" (click)="showModule('view')"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</li>
+        <li class="fl" (click)="addModel('add')"><span class="img"><img src="assets/img/icon/go.png" alt=""></span>新增</li>
+        <li class="fl" (click)="showModule('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png" alt=""></span>修改</li>
+        <li class="fl" (click)="delSelect('del')"><span class="img"><img src="assets/img/icon/clear.png" alt=""></span>删除</li>
+      </ul>
+    </div>
+    <div #alterRoom></div>
+  </header>
+  <div>
+    <p-dataTable [value]="TreeTable" emptyMessage=" " class="table" sortField="code" rowGroupMode="rowspan" [rows]="10" (onRowClick)="onRowSelect($event)"
+                 selectionMode="single" [style]="{'margin-top':'15px'}">
+      <p-column field="ssfllbmc" header="所属分栏类别"></p-column>
+      <p-column field="zblmc" header="指标类名称"></p-column>
+      <p-column field="zbldm" header="指标分类代码"></p-column>
+      <p-column field="ssflh" header="分栏号"></p-column>
+      <p-column field="bz" header="备注"></p-column>
+    </p-dataTable>
+
+  </div>
+
+
+  <p-growl [(value)]="msgs"></p-growl>
+
+</div>
+</div>

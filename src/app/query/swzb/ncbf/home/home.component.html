@@ -1,0 +1,411 @@
+<app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
+<div class="containerEng">
+    <div *ngIf="isShowRight">
+        <header>
+            <div class="title">
+                房屋查询统计
+            </div>
+        </header>
+        <div class="engBody">
+            <div class="tableEng">
+                福建省在建水利水电工程建设征地可行性研究报告阶段农村部分房屋多工程视角汇总信息
+            </div>
+
+            <div class="areaSelect clearfix">
+                <div class="fl t">选择视角</div>
+                <div class="fl">
+                    <ul>
+                        <li class="fl" (click)="showMore(1)" [ngClass]="{'active':show==1}">多工程视角</li>
+                        <li class="fl" (click)="showMore(2)" [ngClass]="{'active':show==2}">单工程视角</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="clearfix">
+                    <div class="fl searchDiv">
+                        <span>阶段：</span>
+                        <select name="" id="" class="inputH selectInput">
+                            <option value="1" >项目建议书阶段</option>
+                            <option value="1" selected="selected">可行性研究报告阶段</option>
+                            <option value="1">初步设计阶段</option>
+                            <option value="1">规划调整阶段</option>
+                        </select>
+                        <span >
+                            更多筛选
+                        </span>
+                    </div>
+                    <div class="btnGrop fr">
+                        <div class="fl">生成报表</div>
+                        <div class="fl">生成图表</div>
+                        <div class="fl" (click)="tabMx()">{{tabMsg}}</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="body clearfix">
+                <div *ngIf="show==1">
+                    <table class="table" *ngIf="huizhong">
+                        <thead>
+                        <tr>
+                            <td rowspan="2">工程名称</td>
+                            <td rowspan="2">小计</td>
+                            <td colspan="6">住房（㎡）</td>
+                            <td colspan="3">杂房（㎡）</td>
+                            <td colspan="4">生产用房（㎡）</td>
+                            <td colspan="3">经营用房（㎡）</td>
+                        </tr>
+                        <tr>
+                            <td>住房小计</td>
+                            <td>框架结构</td>
+                            <td>砖混结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>钢瓦结构</td>
+                            <td>杂房小计</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>生产用房小计</td>
+                            <td>框架结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>经营用房（㎡）</td>
+                            <td>框架结构</td>
+                            <td>砖木结构</td>
+
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let list of ReservoirLagList">
+                            <td>{{list.name}}</td>
+                            <td>{{list.miji}}</td>
+                            <td>{{list.zhufang}}</td>
+                            <td>{{list.zhufang1}}</td>
+                            <td>{{list.zhufang2}}</td>
+                            <td>{{list.zhufang3}}</td>
+                            <td>{{list.zhufang4}}</td>
+                            <td>{{list.zhufang5}}</td>
+                            <td>{{list.zhafang}}</td>
+                            <td>{{list.zhafang1}}</td>
+                            <td>{{list.zhafang2}}</td>
+                            <td>{{list.scyf}}</td>
+                            <td>{{list.scyf1}}</td>
+                            <td>{{list.scyf2}}</td>
+                            <td>{{list.scyf3}}</td>
+                            <td>{{list.hyyf}}</td>
+                            <td>{{list.hyyf1}}</td>
+                            <td>{{list.hyyf2}}</td>
+
+                        </tr>
+                        <tr>
+                            <td>合计：</td>
+                            <td>547509.9</td>
+                            <td></td>
+                            <td>1125.74</td>
+                            <td>74384.65</td>
+                            <td>80414.78</td>
+                            <td>62522.52</td>
+                            <td>130.31</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+
+
+
+
+                        </tbody>
+
+                    </table>
+                    <table class="table" *ngIf="mingxi">
+                        <thead>
+                        <tr>
+                            <td rowspan="2">
+                                户主姓名</td>
+                            <td rowspan="2">所属工程</td>
+                            <td rowspan="2">所属行政区域</td>
+                            <td rowspan="2">合计（㎡）</td>
+                            <td colspan="6">住房（㎡）</td>
+                            <td colspan="3">杂房（㎡）</td>
+                            <td colspan="4">生产用房（㎡）</td>
+
+                        </tr>
+                        <tr>
+                            <td>住房小计</td>
+                            <td>框架结构</td>
+                            <td>砖混结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>钢瓦结构</td>
+
+                            <td>杂房小计</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+
+                            <td>生产用房小计</td>
+                            <td>框架结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let list of geren">
+                            <td>{{list.name}}</td>
+                            <td>{{list.miji}}</td>
+                            <td>{{list.zhufang}}</td>
+                            <td>{{list.zhufang1}}</td>
+                            <td>{{list.zhufang2}}</td>
+                            <td>{{list.zhufang3}}</td>
+                            <td>{{list.zhufang4}}</td>
+                            <td>{{list.zhufang5}}</td>
+                            <td>{{list.zhafang}}</td>
+                            <td>{{list.zhafang1}}</td>
+                            <td>{{list.zhafang2}}</td>
+                            <td>{{list.scyf}}</td>
+                            <td>{{list.scyf1}}</td>
+                            <td>{{list.scyf2}}</td>
+                            <td>{{list.scyf3}}</td>
+                            <td>{{list.hyyf}}</td>
+                            <td>{{list.hyyf1}}</td>
+                            <td>{{list.hyyf2}}</td>
+                        </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="show==2">
+                    <table class="table table2">
+                        <thead>
+                        <tr>
+                            <td rowspan="2">区划</td>
+                            <td rowspan="2">合计</td>
+                            <td colspan="6">住房（㎡）</td>
+                            <td colspan="3">杂房（㎡）</td>
+                            <td colspan="4">生产用房（㎡）</td>
+                            <td colspan="3">经营用房（㎡）</td>
+                        </tr>
+                        <tr>
+                            <td>住房小计</td>
+                            <td>框架结构</td>
+                            <td>砖混结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>钢瓦结构</td>
+                            <td>杂房小计</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>生产用房小计</td>
+                            <td>框架结构</td>
+                            <td>砖木结构</td>
+                            <td>土木结构</td>
+                            <td>经营用房小计</td>
+                            <td>框架结构</td>
+                            <td>砖木结构</td>
+
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr >
+                            <td class="td1">福建省</td>
+                            <td>131833.83</td>
+                            <td>124192.74</td>
+                            <td>1125.74</td>
+                            <td>37569.39</td>
+                            <td>22844.78</td>
+                            <td>62522.52</td>
+                            <td>130.31</td>
+                            <td>4177.26</td>
+                            <td>1250.70</td>
+                            <td>2926.56</td>
+                            <td>2676.86</td>
+                            <td>93.08</td>
+                            <td>2418.07</td>
+                            <td>165.70</td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 20px">泉州市</td>
+                            <td >131833.83</td>
+                            <td>124192.74</td>
+                            <td>1125.74</td>
+                            <td>37569.39</td>
+                            <td>22844.78</td>
+                            <td>62522.52</td>
+                            <td>130.31</td>
+                            <td>4177.26</td>
+                            <td>1250.70</td>
+                            <td>2926.56</td>
+                            <td>2676.86</td>
+                            <td>93.08</td>
+                            <td>2418.07</td>
+                            <td>165.70</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 30px">德化县</td>
+                            <td >131833.83</td>
+                            <td>124192.74</td>
+                            <td>1125.74</td>
+                            <td>37569.39</td>
+                            <td>22844.78</td>
+                            <td>62522.52</td>
+                            <td>130.31</td>
+                            <td>4177.26</td>
+                            <td>1250.70</td>
+                            <td>2926.56</td>
+                            <td>2676.86</td>
+                            <td>93.08</td>
+                            <td>2418.07</td>
+                            <td>165.70</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 40px">盖德镇</td>
+                            <td>84407.05</td>
+                            <td>79401.97</td>
+                            <td>754.59</td>
+                            <td>24893.51</td>
+                            <td>14564.12</td>
+                            <td>39102.66</td>
+                            <td>86.99</td>
+                            <td>2710</td>
+                            <td>810.35</td>
+                            <td>1899.65</td>
+                            <td>1787.02</td>
+                            <td>62.14</td>
+                            <td>1614.27</td>
+                            <td>110.61</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 50px">林地村</td>
+                            <td>45527.5</td>
+                            <td>42472.54</td>
+                            <td>12416.48</td>
+                            <td>8080.51</td>
+                            <td>21975.55</td>
+                            <td></td>
+                            <td>1274.41</td>
+                            <td>253.03</td>
+                            <td>1021.38</td>
+                            <td>1618.21</td>
+                            <td>62.14</td>
+                            <td>1445.46</td>
+                            <td>110.61</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 50px">山坪村</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 40px">国宝乡</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr >
+                            <td style="padding-left: 40px">浔中镇</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+
+
+
+
+
+
+
+
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="tableEng clearfix footer">
+                <p-paginator [style]="{'height':'50px'}" rows="10" totalRecords="100" pageLinkSize="1"
+                             templateRight></p-paginator>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="defaultShow">
+        <app-waring></app-waring>
+    </div>
+</div>

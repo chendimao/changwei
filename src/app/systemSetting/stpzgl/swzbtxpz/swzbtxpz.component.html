@@ -1,0 +1,106 @@
+<div [@flyIn] style="height: 100%">
+<div class="fl letfNav nav">
+    <div class="gc_title">
+        <span><img src="assets/img/icon/diquxuanze.png" alt="" class="img"></span>
+        工程选择
+    </div>
+    <div class="rl cl">
+        <app-select-list [width]="0" [values]="gcList" [search]="true"
+              [placeholderValue]="'请选择工程'"  (SelectModel)="getProjectId($event)"></app-select-list>
+    </div>
+
+    <div>
+        <app-treeList [value]="treelist" (childEvent)="getAreaCode($event)"></app-treeList>
+    </div>
+</div>
+<div class="fl sec_nav nav">
+    <div class="three_title">
+        <span>指标分类</span>
+    </div>
+    <app-gc-list class="common" type="zbfl" [value]="zbflUrl" (selectProject)="getZbid($event)"></app-gc-list>
+</div>
+<div class="fl conBody">
+    <div class="title_box">
+        <span class="title">字典应用管理</span>
+
+    </div>
+    <header class="clearfix">
+    <div class="fl" style="width: 150px">
+        <span>阶段：</span>
+        <app-select-list [width]="40" [values]="jdList" [search]="false"
+                         (SelectModel)="getGzjdId($event)"></app-select-list>
+
+    </div>
+
+    <div class="fl">
+        <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="表名、字段名、数据类别">
+        <span class="btnClick" (click)="searchList('click',key)"></span>
+    </div>
+    <div class="btnGrop fr">
+        <ul>
+            <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                <span class="img icon fa fa-exchange"></span>
+                显示非空项
+            </li>
+            <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                <span class="img icon fa fa-exchange"></span>
+                显示所有项
+            </li>
+            <li class="fl" (click)="selectAll(1)" *ngIf="isShow2">
+                <span class="img icon fa fa-plus-square"></span>
+                全选
+            </li>
+            <li class="fl" (click)="selectAll(2)" *ngIf="!isShow2">
+                <span class="img icon fa fa-minus-square"></span>
+                取消全选
+            </li>
+            <li class="fl" (click)="saveAll(4)"><span class="img"><img src="assets/img/icon/save2.png"
+                                                                       alt=""></span>保存
+            </li>
+        </ul>
+    </div>
+</header>
+    <div>
+        <p-treeTable [value]="TreeTable"  [(selection)]="selectedFiles2" (onNodeSelect)="nodeSelect($event)"
+                     selectionMode="single"   [style]="{'margin-top':'15px','border':'1px solid #cccccc'}" #pTree>
+            <p-column field="zdxmc" header="名称" >
+                <ng-template let-col let-node="rowData" pTemplate="body">
+                    <p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true" [(ngModel)]="node.data.isCheck" (onChange)="checkbox(node,node.data.isCheck)"></p-checkbox>
+                </ng-template>
+            </p-column>
+            <p-column field="dm" header="代码">
+                <!--<ng-template let-col let-car="rowData" pTemplate="body" >-->
+                <!--<span title="标题">{{car[col.field]}}</span>-->
+                <!--</ng-template>-->
+            </p-column>
+            <p-column field="jldwId" header="计量单位">
+                <ng-template let-col let-node="rowData" pTemplate="body">
+                    <select name="" id="" (click)="getjlList(jldw)" [(ngModel)]="node.data.jldwId" >                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   " >
+                        <option [value]="i.id" *ngFor="let i of jldwList" >{{i.mc}}</option>
+
+                    </select>
+
+                </ng-template>
+
+            </p-column>
+            <p-column field="xh" header="序号" >
+                <ng-template let-col let-node="rowData" pTemplate="body">
+                    <input [(ngModel)]="node.data.xh" type="text" style="width:100%">
+                </ng-template>
+
+            </p-column>
+            <p-column field="bz" header="备注">
+                <ng-template let-col let-node="rowData" pTemplate="body">
+                    <input [(ngModel)]="node.data.bz" type="text" style="width:100%">
+                </ng-template>
+            </p-column>
+        </p-treeTable>
+    </div>
+    <!--<div class="foot">-->
+    <!--<app-paginator [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>-->
+    <!--</div>-->
+</div>
+
+<div>{{resPost1 | json}}</div>
+<p-growl [(value)]="msgs"></p-growl>
+</div>

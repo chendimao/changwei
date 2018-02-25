@@ -1,0 +1,180 @@
+
+<header>
+    <div>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType"
+                        (click)="selectedTypea1()"></p-selectButton>
+        <em>共 <span>3</span>人</em>
+    </div>
+</header>
+<div *ngIf="selectedType==1" class="clearfix">
+    <div class="left fl">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <td>序号</td>
+                <td>姓名</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
+                <td>{{i+1}}</td>
+                <td>{{personSign.mc}}</td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="right fl">
+        <div class="header clearfix rl">
+            <div class="fl headerTitle">人口详情</div>
+            <ul class="fr  btnGrop">
+                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back.png"
+                                                                       alt=""></span>上一条
+                </li>
+                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back .png"
+                                                                       alt=""></span>下一条
+                </li>
+
+                <li class="fl" (click)="addPerson(personSign)"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>增加</li>
+                <li class="fl" (click)="delEng(hcy)"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                            alt=""></span>删除
+                </li>
+                <li class="fl">
+                    <div class="selectLi rl">
+                        更多操作
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="box_botton clearfix">
+            <form #person="ngForm" >
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl importent">
+                        姓名:
+                    </div>
+                    <div class="input_right fl">
+                        <input type="text" class="inputH" value="" [(ngModel)]="hcy.mc" name="mc">
+                    </div>
+
+                </div>
+
+
+                <!--简单填写-->
+
+
+                <!--左右点击选择-->
+
+                <!--下拉框-->
+
+
+
+                <div class="inputBox  rl fl areaBox rl">
+                    <div class="input_left fl importent">
+                        所在行政区划
+                    </div>
+                    <div class="input_right fl">
+                        <input type="text" class="inputH"  [(ngModel)]="hcy.szxzqhdm" name="szxzqhdm">
+                        <i class="xiala" (click)="showAreaBlock()"></i>
+                        <app-area-select class="areaCommpont" [display]="isShowArea"
+                                         (childEvent)="getChildEvent($event)"></app-area-select>
+                    </div>
+
+                </div>
+
+
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl importent">
+                        调查范围
+                    </div>
+                    <div class="input_right fl">
+                        <select [(ngModel)]="hcy.dcfwdm" name="dcfwdm" class="inputH selectInput">
+                            <option value="1" selected="selected">汉族</option>
+                            <option value="1">满族</option>
+                            <option value="1">父女</option>
+                            <option value="1">4</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl importent">
+                        专业大类
+                    </div>
+                    <div class="input_right fl">
+                        <select [(ngModel)]="hcy.zydldm" name="zydldm" class="inputH selectInput">
+                            <option value="1" selected="selected">汉族</option>
+                            <option value="1">满族</option>
+                            <option value="1">父女</option>
+                            <option value="1">4</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="inputBox  rl fl clickInput">
+                    <div class="input_left fl importent">
+                        是否空挂人
+                    </div>
+                    <div class="input_right fl">
+                        <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkgr" name="sfkgr"
+                        ></p-selectButton>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="clearfix beizhu ">
+                    <div class="textareaBeizhu">
+                        <span>备注</span>
+                    </div>
+                    <textarea name="" id="" cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz" name="bz"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div *ngIf="selectedType==2">
+    <div style="width:100%;overflow: auto">
+        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true"
+                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)"   [style]="{'margin-top':'30px'}" bodyStyle="{'text-align':'center'}">
+            <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="szxzqhdm" header="所在行政区划分" [style]="{'width':'150px'}" [editable]="true"></p-column>
+            <p-column field="hbdm" header="户别" [style]="{'width':'150px'}"></p-column>
+            <p-column field="zydldm" header="专业大类" [style]="{'width':'150px'}"></p-column>
+            <p-column field="dcfwdm" header="调查范围" [style]="{'width':'150px'}"></p-column>
+
+            <p-column field="xbdm" header="性别" [style]="{'width':'150px'}" frozen="true"></p-column>
+            <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
+            <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
+            <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true" [style]=" {'overflow':'visible' }">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                    {{car[col.field]|date }}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
+                    <p-calendar [(ngModel)]="car[col.field]" appendTo="body"></p-calendar>
+                </ng-template>
+
+            </p-column>
+            <p-column field="whcddm" header="文化程度" [style]="{'width':'150px'}"></p-column>
+            <p-column field="hydm" header="婚姻" [style]="{'width':'150px'}"></p-column>
+            <p-column field="sfsldl" header="是否劳动" [style]="{'width':'150px'}"></p-column>
+
+            <p-column field="hkszd" header="户口所在地" [style]="{'width':'150px'}"></p-column>
+            <p-column field="rs" header="人数" [style]="{'width':'150px'}"></p-column>
+            <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
+            <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}"></p-column>
+
+
+        </p-dataTable>
+    </div>
+</div>
+

@@ -1,0 +1,112 @@
+<div [@flyIn] style="height: 100%;" >
+    <app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
+    <div class="showBox fl">
+        <div *ngIf="isShowRight">
+            <header>
+                <div class="title">
+                    <ul class="clearfix">
+                        <li class="fl active">   <app-breadcrumb [items]="breadcrumb"></app-breadcrumb></li>
+                        <!--<li class="fl">非专项部分</li>-->
+                    </ul>
+                </div>
+            </header>
+            <!--<div class="classme clearfix">-->
+            <!--<div class="fl">实物指标分类</div>-->
+            <!--<ul>-->
+            <!--<li class="fl">人口</li>-->
+            <!--<li class="fl">土地</li>-->
+            <!--<li class="fl">房屋</li>-->
+            <!--<li class="fl">附属设施</li>-->
+            <!--<li class="fl">零星树木</li>-->
+            <!--<li class="fl">房屋装修</li>-->
+            <!--<li class="fl">土地附着物</li>-->
+            <!--<li class="fl">小型专项</li>-->
+            <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="wraing">-->
+            <!--<img src="" alt="">-->
+            <!--<span>通知：</span>-->
+            <!--<span>福建省水利水电工程建设征地移民安置管理信息系统</span>-->
+            <!--</div>-->
+            <!--<div class="searchBtn" >-->
+            <!--<span><img src="/assets/img/icon/search1.png" alt=""></span>-->
+            <!--高级搜索-->
+            <!--</div>-->
+            <div class="swzb">
+                <div class="header">
+                   可行性阶段报告表
+                </div>
+                <div class="tableCom">
+                    <div class="searchAll clearfix">
+                        <div class="fl rl input1">
+                            <input type="text" class="searchInput" placeholder="户主名称，家庭成员名称，编号">
+                            <span class="btnClick"></span>
+                        </div>
+                        <div class="fl moreSearch" (click)="openModal('query')">
+                            更多筛选
+                            <!--<select name="" id="" class="select">-->
+                            <!--<option value="1" selected="selected">更多筛选</option>-->
+                            <!--<option value="1">2</option>-->
+                            <!--<option value="1">3</option>-->
+                            <!--<option value="1">4</option>-->
+                            <!--</select>-->
+                        </div>
+                        <ul class="fr  btnGrop">
+                            <li class="fl" (click)="openModal('view')"><span class="img"><img
+                                    src="assets/img/icon/browse_fill.png"
+                                    alt=""></span>查看
+                            </li>
+                            <li class="fl" (click)="openModal('addPerson')"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                                    alt=""></span>增加
+                            </li>
+                            <li class="fl" (click)="openModal('modPerson')"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                    alt=""></span>修改
+                            </li>
+                            <li class=" rl selectLi">
+                                <div>
+                                    更多操作
+                                    <span class="xiala"></span>
+                                    <div class="fj">
+                                        <span (click)="openModal('fj_view')">附件查看</span>
+                                        <span (click)="openModal('fj_mang')">附件管理</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tableBox">
+                        <p-dataTable [value]="persionList" class="table"  responsive="true" [rows]="10" (onRowClick)="onRowSelect($event)"
+                                     scrollable="true"    resizableColumns="true" selectionMode="single">
+                            <p-column field="cid" header="编号"></p-column>
+                            <p-column field="name" header="户主名称" sortable="true"></p-column>
+                            <p-column field="area" header="所在行政区域"></p-column>
+                            <p-column field="type" header="专业大类"></p-column>
+                            <p-column field="fanwei" header="调查范围"></p-column>
+                            <p-column field="kong" header="是否为空挂户"></p-column>
+                            <p-column field="xianwai" header="是否线外"></p-column>
+                            <p-column field="remark" header="备注"></p-column>
+                    </p-dataTable>
+                        <div class="foot">
+                            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+            <!--附件查看-->
+
+            <div #modelRoom></div>
+            <p-growl [(value)]="msgs"></p-growl>
+
+        </div>
+
+        <div *ngIf="defaultShow">
+            <app-waring [msg]="'waring'"></app-waring>
+        </div>
+    </div>
+</div>

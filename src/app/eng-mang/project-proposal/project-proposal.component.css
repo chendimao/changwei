@@ -1,0 +1,303 @@
+.project_content {
+    background: #eaedf2;
+    padding: 15px;
+}
+
+.timeBox {
+    position: absolute;
+    top: -33px;
+    left: 20px;
+}
+
+.time {
+    background: #5cb85c;
+    color: white;
+    padding: 6px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #0099cb;
+}
+
+i.xiala {
+    bottom: 0px;
+    top: 30px;
+    left: 10px;
+    border-top: 8px solid #5cb85c;
+}
+
+.title {
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+.warning {
+    font-size: 12px;
+}
+
+.pro_list {
+    height: 50px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pro_li {
+    font-size: 14px;
+    height: 100%;
+    width: 14%;
+    color: white;
+    background: #3c6b99;
+}
+
+.step {
+    display: inline-block;
+    float: left;
+    /* height: 100%; */
+    width: calc(100% - 51px);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pro_li span {
+    border: 2px solid white;
+    display: inline-block;
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    text-align: center;
+    float: left;
+
+    line-height: 30px;
+    margin: 8px 5px 8px 17px;
+}
+
+.active .triangle {
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 12px solid white;
+}
+
+p {
+    background: transparent;
+}
+
+.active span {
+    border: 2px solid #3c6b99;
+}
+
+.pro_list .pro_li {
+    position: relative;
+}
+
+.pro_list .pro_li:before, .pro_list .pro_li:after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+}
+
+.pro_list .pro_li.active:after {
+    border-left: 12px solid #ffffff;
+    right: -12px;
+    z-index: 1;
+}
+
+.pro_list .pro_li.active:before {
+    border: transparent;
+    right: -12px;
+
+}
+
+.pro_list .pro_li.bl:before {
+    border-left: 12px solid #3c6b99;
+    right: -12px;
+    z-index: 2;
+}
+
+.pro_list .pro_li.bl:after {
+    border-left: 15px solid #fff;
+    right: -15px;
+    z-index: 1;
+    top: -5px;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+}
+
+.active {
+    color: #3c6b99;
+    background: white;
+}
+
+.info {
+    margin-top: 20px;
+    padding: 10px;
+
+}
+
+.secd_title {
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.clearfix {
+    color: #666666;
+}
+
+.ul_list {
+    margin-top: 25px;
+    color: #666666;
+}
+
+.ul_list li {
+    margin: 7px;
+}
+
+.ul_list li span {
+    text-align: right;
+    width: 125px;
+}
+
+textarea.textarea {
+    width: calc(100% - 125px);
+}
+
+.btnGrop {
+    margin-top: 15px;
+}
+
+.btnGrop li:hover {
+    background: #0099cb;
+    color: white;
+
+}
+
+.btn-group li:last-child {
+    background-image: url("/assets/img/icon/trash.png");
+}
+.btn-group li:last-child:hover{
+    background-image: url("/assets/img/icon/trash-w.png");
+}
+
+.btn-group {
+    margin-top: 15px;
+}
+
+.qwe img {
+    width: 100%;
+}
+
+.searchInput {
+    background: none;
+}
+
+.ui-inputtext.ui-state-focus, .ui-inputtext:focus {
+    box-shadow: none;
+}
+
+:host
+/deep/
+.ui-datepicker.ui-widget {
+    width: 253px;
+}
+
+.file {
+    border: 1px solid #0086c8;
+    padding: 10px;
+    margin: 15px;
+    width: 70px;
+    height: 70px;
+    border-radius: 2px;
+}
+
+.file span {
+    color: #0086c8;
+}
+
+.fileWjj {
+    margin-left: 200px;
+}
+
+.shangchuan {
+    color: #cccccc;
+    border: 1px solid #cccccc;
+    background: url('/assets/img/upload.png') no-repeat;
+    background-size: 100%;
+    margin-top: 25px;
+}
+
+.shangchuan span {
+    color: #cccccc;
+}
+
+p-fileUpload {
+    opacity: 0;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.wj_b_b {
+    border-top: 1px solid #0099cb;
+    padding: 15px;
+}
+
+.wj_b_Im {
+    width: 50px;
+    padding: 10px;
+    color: #0099cb;
+    text-align: center
+}
+
+.wj_box {
+    width: 25%;
+    max-width: 250px;
+    height: 100px;
+    margin-left: 25px;
+    margin-top: 25px;
+    border: 1px solid #0099cd;
+    border-radius: 3px;
+    padding: 10px 15px;
+    color: #666666;
+    overflow: hidden;
+}
+
+.wj_box .text {
+    width: calc(100% - 70px);
+    border-left: 1px solid #0099cb;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.hover {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: white;
+    display: none;
+}
+
+.wj_box:hover .hover {
+    display: block;
+}
+
+.hover li {
+    font-size: 14px;
+    padding: 3px 15px;
+    cursor: pointer;
+}
+
+.hover .enter {
+    background: #008bc7;
+    border-top-left-radius: 4px;
+}
+
+.hover .care {
+    background: #ff6600;
+}
+
+

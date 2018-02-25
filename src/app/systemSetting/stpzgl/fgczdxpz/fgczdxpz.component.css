@@ -1,0 +1,55 @@
+.conBody{
+    padding-top: 0px;
+    width: calc(100% - 180px);
+}
+.group input{
+    width: calc(100% - 100px);
+}
+.group{
+    max-height: 52px;
+}
+
+.w-25{
+    overflow: hidden;
+}
+.bottonBox{
+    border: 1px solid #CCCCCC;
+    margin-top: 15px;
+}
+.tableBox{
+    min-width: 700px;
+}
+.showBdd{
+    position: absolute;
+    top: 43px;
+    left: 100px;
+    z-index: 1;
+
+}
+
+header{
+    padding: 15px 0;
+}
+.w-75 header{
+    padding: 0 0 15px 0;
+}
+.gc_title{
+    width: 180px;
+    box-sizing: border-box;
+    padding: 20px 15px;
+    color: #333333;
+    background: #d9dee4;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.nav{
+    background: #eaedf4;
+    width: 180px;
+    height: 100%;
+    color: white;
+    overflow: hidden;
+}
+.moduleAlert .w-75{
+    padding: 10px;
+}

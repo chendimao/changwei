@@ -1,0 +1,109 @@
+<div class="nav rl clearfix" [ngStyle]="{'width':width }">
+    <div class="showNav" *ngIf="navType=='1'">
+        <span class="closeNav" (click)="closeNav()"><img src="assets/img/icon/fullscreen-exit(1).png" alt="">收起</span>
+
+        <div class="tab clearfix ">
+            <p-tabView>
+                <p-tabPanel header="全部功能" class="fl nav_list1">
+                    <p-accordion>
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/xtpzgl.png" alt="">
+                                系统配置管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li routerLink="stpzgl/zdkgl" routerLinkActive="active">字典库管理</li>
+                                <li routerLink="stpzgl/zdyygl" routerLinkActive="active">字典应用管理</li>
+                                <li routerLink="stpzgl/fgczdxpz" routerLinkActive="active">分工程字典项配置</li>
+                                <li routerLink="stpzgl/swzbtxpz" routerLinkActive="active">实物指标体系配置</li>
+                                <li routerLink="stpzgl/qshsjswzbglxpz" routerLinkActive="active">权属户涉及实物指标管理项配置</li>
+                                <li routerLink="stpzgl/swzbflpz" routerLinkActive="active">实物指标分栏配置</li>
+
+                            </ul>
+                        </p-accordionTab>
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/xtjczygl.png" alt="">
+                                系统基础资源管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li routerLink="sxjczygl/gczc"  routerLinkActive="active">工程注册</li>
+                                <li routerLink="sxjczygl/xzqhgl"  routerLinkActive="active">行政区划管理</li>
+                            </ul>
+
+                        </p-accordionTab>
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/qxgl.png" alt="">
+                                权限管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li (click)="showNav('xmjys')" [ngClass]="{'active':index=='xmjys'}" routerLinkActive="active">基本角色管理</li>
+                                <li (click)="showNav('kxxyjbgjd')" [ngClass]="{'active':index=='kxxyjbgjd'}">综合角色管理</li>
+                            </ul>
+
+
+
+                        </p-accordionTab>
+
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/yhdwjsqgl.png" alt="">
+                                用户单位及授权管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li (click)="showNav('xmjys')" [ngClass]="{'active':index=='xmjys'}" routerLinkActive="active">用户单位管理</li>
+                            </ul>
+                        </p-accordionTab>
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/yhjsqgl.png" alt="">
+                                用户及授权管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li (click)="showNav('xmjys')" [ngClass]="{'active':index=='xmjys'}" routerLinkActive="active">用户管理</li>
+                            </ul>
+
+
+
+                        </p-accordionTab>
+                        <p-accordionTab >
+                            <p-header class="accorImg">
+                                <img src="assets/img/icon/yxztgl.png" alt="">
+                                运行状态管理
+                            </p-header>
+                            <ul class="secdList">
+                                <li (click)="showNav('xmjys')" [ngClass]="{'active':index=='xmjys'}" routerLinkActive="active">业务日志</li>
+                            </ul>
+
+
+
+                        </p-accordionTab>
+                    </p-accordion>
+                </p-tabPanel>
+                <p-tabPanel class="fl" header="常用功能">
+                    Content 2
+                </p-tabPanel>
+            </p-tabView>
+
+
+        </div>
+    </div>
+    <div class="scalNav" *ngIf="navType=='2'">
+
+        <div class="navListImg">
+            <span class="showIcon"><img src="/assets/img/icon/fullscreen(1).png" alt="" (click)="openNav()"></span>
+        </div>
+        <ul>
+            <li routerLink="EngBase" class="navListImg"><span class="img"><img src="assets/img/icon/wewqewqewq.png"
+                                                                               alt=""></span></li>
+            <li routerLink="ProjectProposal" class="navListImg"><span class="img"><img
+                    src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span></li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/gejieduanchengguo.png" alt=""></span>
+            </li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/img.png" alt=""></span></li>
+        </ul>
+    </div>
+
+
+</div>

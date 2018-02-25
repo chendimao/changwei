@@ -1,0 +1,86 @@
+<div class="containerEng">
+    <header>
+        <div class="title">
+            验收情况登记
+        </div>
+    </header>
+    <div class="body">
+
+
+        <div class="box rl">
+            <nav class="clearfix">
+                <div class="fl " (click)="select(1)" [ngClass]="{'active':active=='1'}">安溪县</div>
+                <div class="fl" (click)="select(2)" [ngClass]="{'active':active=='2'}">永春县</div>
+            </nav>
+            <div class="box_top clearfix ">
+                <div>
+                    <ul class="pro_list">
+                        <li (click)="tab(1)" class="fl pro_li bl " [ngClass]="{'active':index==1}"><span>1</span>
+                            <div class="step">自验</div>
+                            <!--<div class="triangle"></div>-->
+                        </li>
+                        <li (click)="tab(2)" class="fl pro_li bl " [ngClass]="{'active':index==2}"><span>2</span>
+                            <div class="step">初验</div>
+                        </li>
+                        <li (click)="tab(3)" class="fl pro_li bl" [ngClass]="{'active':index==3}"><span>3</span>
+                            <div class="step">终验</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fr"><span class="img"><img class="img" src="assets/img/icon/clear.png" alt="">清空所有</span>
+                </div>
+            </div>
+            <div class="box_body">
+                <div class="baseinfo">
+                    <div class="t">基本信息</div>
+                    <div class="clearfix">
+                        <div class="bs_h clearfix">
+                            <div><span class="importent">验收组织单位：</span><input type="text" class="inputH"
+                                                                              placeholder="安溪县移民局"></div>
+
+                            <div><span class="importent">完成日期：</span>
+                                <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
+                                            dateFormat="yy-mm-dd"  yearRange="1900:2030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
+
+                            </div>
+
+                            <div><span class="importent">实施单位：</span><input type="text" class="inputH"></div>
+                        </div>
+                        <div class="clearfix beizhu ">
+                            <div class="textareaBeizhu">
+                                <span class="beizuT">备注 ：</span>
+                            </div>
+                            <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="t">相关文件</div>
+                    <div class="clearfix">
+
+                        <div class="pdfbox fl">
+                            <div class="pdfImg fl"><img src="assets/img/icon/pdf.png" alt=""></div>
+                            <div class="pdfText fl">自验报告.pdf</div>
+                        </div>
+                        <div class="pdfbox fl">
+                            <div class="pdfImg fl"><img src="assets/img/icon/pdf.png" alt=""></div>
+                            <div class="pdfText fl">自验报告.pdf</div>
+                        </div>
+                        <div class="pdfbox fl">
+                            <div class="pdfImg fl"><img src="assets/img/icon/img06.png" alt=""></div>
+                            <div class="pdfText fl">上传附件</div>
+                        </div>
+
+
+                    </div>
+                    <div class="footer">
+                        <div class="footBtn clearfix">
+                            <div class="fl save"><span><img class="img" src="assets/img/icon/save.png" alt=""></span>保存
+                            </div>
+                            <div class="fl"><span><img class="img" src="assets/img/icon/clear.png" alt=""></span>清空
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

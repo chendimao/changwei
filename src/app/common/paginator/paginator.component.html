@@ -1,0 +1,9 @@
+<div class="rl">
+    <p-paginator (onPageChange)="paginate($event)"  rows="10" [totalRecords]="totalPage*10" class="paginate"
+             pageLinkSize="3" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+
+    <div class="user_p_class">
+        共有<span> {{totalPage}} </span>页,
+        一共有<span> {{count}} </span>条
+    </div>
+</div>

@@ -1,0 +1,270 @@
+.containerEng {
+    padding: 15px;
+    overflow-y: auto;
+    width: 100%;
+
+    position: fixed;
+    background: white;
+    left: 0px;
+    top: 37px;
+}
+.title{
+    padding: 0;
+    border: none
+
+}
+.close{
+    position: unset;
+    float: right;
+}
+.header {
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+
+}
+
+
+.top_class {
+    width: 25%;
+    box-sizing: border-box;
+    font-size: 12px;
+    padding: 6px 0px;
+}
+.selectArea {
+    padding: 9.5px 0;
+}
+.top_class>span {
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+}
+.top_class>span.bianhao{
+    text-align:center;
+}
+.inputH {
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+    width: calc(100% - 105px);
+    box-sizing: border-box;
+}
+
+:host
+/deep/
+.ui-growl-message p{
+    background: #f54c40;
+}
+
+
+
+
+
+.area {
+    width: 50%;
+}
+
+.area .inputArea {
+    width: calc(100% - 105px)
+}
+
+.selected {
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+.active {
+    padding: 0 10px;
+}
+
+.areaShow .list {
+    padding: 3px 10px;
+    cursor: pointer;
+}
+
+.areaShow .list:hover {
+    background: #0099cb;
+    color: white;
+}
+
+.areaShow {
+    background: white;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    width: calc(100% - 135px);
+    border: 1px solid #cccccc;
+    color: #999;
+    z-index: 1;
+}
+.zydl .areaShow.boxShadow{
+    width: 488px;
+    left: 100px;
+}
+.zydlArea  ul.showSecList{
+    white-space: nowrap;
+    font-size: 12px;
+}
+.zydlArea li{
+    padding: 10px 15px 10px ;
+}
+.zydlArea li:hover{
+    color: #0099cb;
+}
+
+.fl.zydltitle {
+    color: #333;
+    /*padding-right: 15px;*/
+    padding: 10px 15px;
+    font-weight: bold;
+
+}
+.top_1{
+    padding: 15px 0;
+}
+
+
+.zydlArea li:hover .showSecList{
+    display: block;
+}
+.showSecList{
+    position: absolute;
+    background: white;
+    width: auto;
+    display: none;
+}
+.threeList{
+    display: none;
+    position: absolute;
+
+}
+.showSecList li{
+    /*width: 100px;*/
+    padding: 5px;
+    text-align: center;
+}
+
+.showSecList li:hover{
+    background: #0099cb;
+    color: white;
+}
+.showSecList li:hover ul li{
+    color: #999999;
+}
+.zydlArea ul.showSecList.boxShadow.threeList li:hover {
+    color: white;
+}
+ul.showSecList.boxShadow .threeList {
+    z-index: 1;
+    background: white;
+  left: 110px;
+    top: 30px;
+}
+ul.showSecList.boxShadow .threeList li:hover{
+    color: white;
+}
+.zydlArea ul.showSecList.boxShadow.threeList {
+    display: none;
+}
+.zydlArea ul.showSecList li:hover .threeList{
+    display: block;
+}
+.showMoreInput{
+    float: left;
+    background: #0099cb;
+    color: white;
+    text-align: center;
+    width: 150px;
+    padding: 8px;
+    margin: 0px 10px;
+}
+.fl.top_class.beizhu {
+    width: 50%;
+}
+.textarea.textarea {
+    width: calc(100% - 140px);
+    height: 60px;
+    resize: none;
+    border: 1px solid #ccc;
+}
+.textareaBeizhu{
+    float: left;
+    margin-top: 10px;
+}
+.inputS{
+width: 60px;
+height: 30px;
+}
+nav{
+    margin-top: 20px;
+    overflow: hidden;
+}
+nav li.fl {
+    padding: 10px 15px;
+}
+nav ul li{
+    border-bottom: 1px solid #ccc;
+    outline: none;
+}
+nav ul li.active1{
+    position: relative;
+    border-bottom: 0;
+    border-top: 2px solid #0099cb;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+nav ul li.active1:after{
+    content: "";
+    width: 1500px;
+    height: 1px;
+    background-color: #CCCCCC;
+    position: absolute;
+    z-index: 1;
+    left: 100%;
+    bottom: 1px;
+}
+
+:host
+/deep/
+.secPanel.ui-panel.ui-widget .ui-panel-titlebar.ui-corner-all{
+    background: #ffffff;
+    border-top: none;
+    border-bottom: none;
+}
+:host
+/deep/
+.secPanel.ui-widget-content{
+    border-top: none;
+}
+
+.container2{
+    margin-bottom: 65px;
+}
+.footer{
+    padding: 10px;
+    color: #333333;
+    background: #f5f6fa;
+    border: 1px solid #cccccc;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.footer>div>div{
+    padding: 5px 10px;
+    border: 1px solid #cccccc;
+    background: #FFFFFF;
+    margin: 0 10px;
+}
+
+@media (max-width: 1140px) {
+    .top_class {
+        width: 50%;
+    }
+}
+:host
+/depp/
+.ui-state-default{
+    padding: 1px 7px;
+}

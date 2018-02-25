@@ -1,0 +1,326 @@
+.title ul {
+    border-bottom: 1px solid #cccccc;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.active {
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+
+}
+.title{
+    padding: 0;
+    border: 0;
+}
+
+.title li {
+    padding: 0 20px;
+}
+
+.classme {
+    margin: 15px 10px 15px 0;
+    border-left: 2px solid #0095cd;
+    padding-left: 20px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+.classme li {
+    background: #d9dee4;
+    padding: 0 10px;
+    margin: 0 10px;
+}
+.gallery-pic{
+    width: 100%;
+}
+.wraing {
+    background: #D9edf6;
+    border: 1px solid #cccccc;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+.group input.dcfw{
+    width: calc(100% - 100px);
+}
+.gallerys{
+    width: 560px;
+    height: 410px;
+    overflow: auto;
+}
+.searchBtn {
+    margin-top: 15px;
+    width: 110px;
+    height: 32px;
+    color: white;
+    background: #0099cb;
+    padding: 0 15px;
+    line-height: 32px;
+}
+
+.searchBtn span {
+    margin: 5px;
+}
+
+.swzb {
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding:0 1px;
+}
+
+.header {
+
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+
+.search {
+    position: absolute;
+    right: 15px;
+    top: 8px;
+}
+
+.comSearch {
+    box-sizing: border-box;
+    padding-left: 10px;
+    min-width: 300px;
+    height: 30px;
+    padding: 18px 10px;
+}
+
+.searchAll .moreSearch {
+    border: 1px solid #cccccc;
+
+    padding: 7px 10px;
+    color: #666666;
+    margin-left: 10px;
+}
+.xiala{
+    border-top: 10px solid #666666;
+}
+.tableBox{
+    margin-top: 15px;
+}
+
+.searchAll .input1 {
+    margin-left: 0;
+}
+
+.tableCom {
+    padding: 15px;
+    color: #333333;
+    overflow: hidden;
+}
+
+.btnGroup span {
+    cursor: pointer;
+}
+.alertSelect {
+    height: 26px;
+    border: 1px solid #cccccc;
+    width: 160px;
+}
+
+.fj {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    top: 33px;
+    border-top: none;
+    width: 88px;
+    left: -1px;
+    display: none;
+}
+.selectLi{
+    padding-right: 20px;
+}
+.fj span:hover {
+    color: #0099cb;
+}
+
+.fj span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    padding: 7px 15px;
+}
+
+
+.showBox {
+    width: calc(100% - 180px);
+    overflow-y: auto;
+    height: 100%;
+}
+
+p-header {
+    font-size: 15px;
+}
+
+.selectLi:hover .fj {
+    display: block;
+    z-index: 1;
+}
+
+.basetitle {
+    border-left: 2px solid #0099cb;
+    padding-left: 15px;
+    margin-bottom: 15px;
+}
+
+.baseinfo {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.fjname span {
+    color: #d86344;
+}
+
+.fjBtn {
+    float: right;
+}
+
+.fjBtn.btnGrop li {
+    width: auto;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    line-height: inherit;
+    height: auto;
+}
+
+.fjBtn.btnGrop li:last-child {
+    margin: 5px 0 5px 10px;
+}
+
+
+.fjname input {
+    height: 30px;
+}
+
+textarea {
+    width: calc(100% - 163px);
+    height: 65px;
+    resize: none;
+    margin: 7px;
+}
+
+.beizhu {
+    float: left;
+    margin-top: 10px;
+}
+
+.leftUl li {
+    width: auto;
+    padding-left: 30px;
+    margin: 10px 0px;
+    font-size: 12px;
+}
+
+.leftUl li:hover {
+    color: #0095cd;
+    cursor: pointer;
+}
+
+.leftUl {
+    width: 20%;
+    height: 100%;
+    float: left;
+    border-right: 1px solid #cccccc;
+}
+
+.leftUl ul {
+    border-top: 1px solid #cccccc;
+}
+
+.leftUl .basetitle {
+    width: auto;
+    margin: 10px;
+    display: inline-block;
+    font-size: 12px;
+    text-align: right;
+
+}
+
+.rightImg {
+    float: left;
+    width: 80%;
+}
+
+.rightImg li {
+    width: auto;
+}
+
+.rightImg li {
+    margin: 10px;
+}
+
+.fjImg {
+    width: 100%;
+    border-top: 1px solid #cccccc;
+    overflow: auto;
+}
+
+.wjlist {
+    color: #0095cd;
+    margin: 10px;
+}
+
+.wjlistC {
+    background: #0095cd;
+    opacity: 0.5;
+    position: absolute;
+    right: 0px;
+    color: black;
+}
+
+li {
+    cursor: pointer;
+}
+
+.table tbody tr:hover {
+    background: #ece8e8;
+}
+
+.table tbody tr.onselect {
+    background: #ece8e8;
+}
+
+
+
+
+.md4Body{
+    color: #666666;
+}
+
+:host
+
+.bigestClass{
+    height: 100% !important;
+    width: 100% !important;
+    background: red;
+}
+:host(.ui-widget-content){
+    background: white;
+}
+.
+
+:host
+.ui-dialog .ui-dialog-titlebar-close {
+    display: none;
+}
+.md4footer>div>div{
+    padding: 7px 17px;
+    color: #666666;
+    border: 1px solid #cccccc;
+    margin-right: 15px;
+}
+:host
+.modal3 .ui-dialog.ui-widget .ui-dialog-content {
+    padding: 0px;
+}
+
+
+

@@ -1,0 +1,72 @@
+<div class="containerEng">
+    <header >
+        <div class="title">
+            移民管理机构资料库
+        </div>
+    </header>
+    <div class="engBody">
+        <div class="clearfix">
+            <div class="fl searchDiv">
+                <div class="fl" style="margin-top: 15px">
+                    工程范围：
+                </div>
+                <div class="fl">
+                    <select name="" id="">
+                        <option value="" selected="selected">所有工程</option>
+                    </select>
+                </div>
+                <div class="fl">
+                    <input type="text" class="searchInput" placeholder="名称">
+                </div>
+                <div class="fl moreSearch" style="margin-top: 10px">
+                    更多筛选
+                </div>
+            </div>
+            <div class="btnGrop fr">
+                <div class="fl"><span class="img"><img src="assets/img/icon/a04.png" alt=""></span>上传</div>
+                <div class="fl"><span class="img"><img src="assets/img/icon/a03.png" alt=""></span>删除</div>
+                <div class="fl"><span class="img"><img src="assets/img/icon/a02.png" alt=""></span>下载</div>
+                <div class="fl"><span class="img"><img src="assets/img/icon/a01.png" alt=""></span>新建文件夹</div>
+            </div>
+        </div>
+        <p-breadcrumb [model]="items" [class]="p-breadcrumb"></p-breadcrumb>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>选择</td>
+                <td>名称</td>
+                <td>所属工程</td>
+                <td>所属分类</td>
+                <td>上传单位</td>
+                <td>上传人</td>
+                <td>上传时间</td>
+                <td>文件大小</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><p-checkbox class="fl" name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox></td>
+                <td>彭村水库建设征地移民安置规划报告.pdf</td>
+                <td>彭村水库</td>
+                <td>规划设计</td>
+                <td>福建院</td>
+                <td>李学军</td>
+                <td>2013-10-4</td>
+                <td>10</td>
+                <td><span class="xiazai"></span><span class="xiugai"></span><span class="shanchu"></span></td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="foot">
+            <app-paginator></app-paginator>
+
+        </div>
+
+    </div>
+
+    <app-del-waring></app-del-waring>
+</div>

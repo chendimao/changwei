@@ -1,0 +1,11 @@
+.warnSelect{
+    padding: 7px 15px;
+    border: 2px solid #bbd9e9;
+    background: #d9edf7;
+    color:#333333;
+    margin: 15px;
+    text-align: center;
+}
+.warnSelect img{
+    vertical-align: middle;
+}

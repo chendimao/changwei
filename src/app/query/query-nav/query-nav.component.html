@@ -1,0 +1,55 @@
+<app-header-nav> </app-header-nav>
+<div class="nav rl clearfix" [ngStyle]="{'width':width }">
+    <div class="showNav" *ngIf="navType=='1'">
+        <span class="closeNav" (click)="closeNav()"><img src="assets/img/icon/fullscreen-exit(1).png" alt="">收起</span>
+
+        <div class="tab clearfix ">
+            <p-tabView>
+                <p-tabPanel header="全部功能" class="fl nav_list1">
+                    <ul class="nav_list secdList">
+                        <li (click)="showNav('swzb')" [ngClass]="{'active':index=='swzb'}" >
+                            <span
+                                    class="img"><img src="assets/img/icon/query_swzb.png" alt=""></span>
+                            实物指标
+                        </li>
+                        <li (click)="showNav('ghzb')" [ngClass]="{'active':index=='ghzb'}" >
+                            <span
+                                    class="img"><img src="assets/img/icon/query_ghzb.png" alt=""></span>
+                            规划指标
+                        </li>
+                        <li (click)="showNav('tzgs')" [ngClass]="{'active':index=='tzgs'}"><span
+                                class="img"><img src="assets/img/icon/query_tzgs.png" alt=""></span>投资概算
+                        </li>
+                        <li (click)="showNav('ssjd')" [ngClass]="{'active':index=='ssjd'}" >
+                            <span
+                                    class="img"><img src="assets/img/icon/query_ssjd.png" alt=""></span>
+                            实施进度
+                        </li>
+                    </ul>
+                </p-tabPanel>
+                <p-tabPanel class="fl" header="常用功能">
+                    Content 2
+                </p-tabPanel>
+            </p-tabView>
+
+
+        </div>
+    </div>
+    <div class="scalNav" *ngIf="navType=='2'">
+
+        <div class="navListImg">
+            <span class="showIcon"><img src="/assets/img/icon/fullscreen(1).png" alt="" (click)="openNav()"></span>
+        </div>
+        <ul>
+            <li routerLink="EngBase" class="navListImg"><span class="img"><img src="assets/img/icon/wewqewqewq.png"
+                                                                               alt=""></span></li>
+            <li routerLink="ProjectProposal" class="navListImg"><span class="img"><img
+                    src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span></li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/gejieduanchengguo.png" alt=""></span>
+            </li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/img.png" alt=""></span></li>
+        </ul>
+    </div>
+</div>
+<div class="fl container " [ngStyle]="{'width':'calc(100% - '+width1+')'}"><router-outlet></router-outlet></div>
+<app-second-nav [values]="data" *ngIf="show" (childEvent)="getChildEvent($event)"></app-second-nav>

@@ -1,0 +1,122 @@
+li.active{
+    color: #0095cd;
+}
+*{
+    font-size: 13px;
+}
+.secNav{
+    left: 180px;
+    min-height: 250px;
+    z-index: 1;
+    position: absolute;
+    width: 60%;
+    height: auto;
+    margin-top: 335px;;
+    box-shadow: 3px 3px 6px #cbcbcb;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background: #f3f3f3;
+    border-left: transparent;
+}
+.list{
+    margin: 10px;
+}
+.close{
+    position: absolute;
+    cursor: pointer;
+    right: 18px;
+    top: 10px;
+}
+.biaotou{
+    margin: 5px 0;
+    font-weight: bold;
+    width: 125px;
+    text-align: right;
+    color: #333333;
+    position: relative;
+    width:5em;
+}
+.img1{
+    /*margin-left: 10px;*/
+
+    position: absolute;
+    right: -12px;
+    top: 0px;
+}
+li{
+    color: #565252;
+    margin: 5px 0;
+    cursor: pointer;
+    padding: 0px 10px;
+    position: relative;
+    border-left: 1px solid #ddd;
+}
+.ul_list{
+    margin-left: 15px;
+    border-bottom: 1px dotted #ddd;
+    padding-bottom: 10px;
+}
+.alertSelect{
+    padding: 15px;
+    position: absolute;
+    display: none;
+    width: 280px;
+    left: 70px;
+    top: 0;
+    background: white;
+    z-index: 1;
+    box-shadow: 0 0 20px #cbcbcb;
+}
+.alertSelect span{
+    display: inline-block;
+    margin: 10px;
+    color:#565252 ;
+}
+.list li:hover .alertSelect{
+    display: block;
+}
+.alertSelect span:hover{
+    color: #0099cb;
+}
+ul{
+    width: calc(100% - 100px);
+}
+li:hover{
+    color: #0095cd;
+}
+.yy {
+    animation: yy .5s ;
+}
+.po {
+    position: relative;
+}
+.po:after {
+    content: "";
+    display: block;
+    width: 7px;
+    height: 7px;
+    background-color: #08c;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    animation: po 1s alternate infinite linear;
+}
+@keyframes po{
+    0%{border-color: #fff;}
+    50%{border-color: #fff;}
+    100%{border-color: #8fe3ff;}
+}
+
+
+@keyframes yy
+{
+    from {visibility:hidden;opacity: 0;transform: translateX(20px);}
+    to {visibility:visible;opacity: 1;transform: translateX(0px);}
+}
+@media (max-width: 1025px){
+    .secNav{
+        bottom: 80px;
+    }
+}

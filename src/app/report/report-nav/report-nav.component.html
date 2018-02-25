@@ -1,0 +1,64 @@
+<div class="nav rl clearfix" [ngStyle]="{'width':width }">
+    <div class="showNav" *ngIf="navType=='1'">
+        <span class="closeNav" (click)="closeNav()"><img src="assets/img/icon/fullscreen-exit(1).png" alt="">收起</span>
+
+        <div class="tab clearfix ">
+            <p-tabView>
+                <p-tabPanel header="全部功能" class="fl nav_list1">
+                    <ul class="nav_list secdList">
+                        <li class="clearfix" routerLink="njgcymazqqgzjd" routerLinkActive="active">
+                            <span class="img"><img src="assets/img/icon/report_njgcymazqqgzjd.png" alt=""></span>
+                            <div>拟建工程移民安置前期工作进度</div>
+                        </li>
+                        <li class="clearfix" routerLink="a" routerLinkActive="active">
+                            <span
+                                    class="img"><img src="assets/img/icon/report_njgcymazjbqk.png" alt=""></span>
+                            <div>拟建工程移民安置基本情况</div>
+                        </li>
+                        <li class="clearfix" routerLink="a" routerLinkActive="active"><span
+                                class="img"><img src="assets/img/icon/report_zjgcymjbqk.png" alt=""></span>
+                            <div>在建工程移民基本情况</div>
+                        </li>
+                        <li class="clearfix" routerLink="a" routerLinkActive="active">
+                            <span
+                                    class="img"><img src="assets/img/icon/report_zjgcymazshbqjd.png" alt=""></span>
+                            <div>在建工程移民安置生活搬迁进度</div>
+                        </li>
+                        <li class="clearfix" routerLink="a" routerLinkActive="active">
+                            <span
+                                    class="img"><img src="assets/img/icon/report_zjgcymazzxfjjd.png" alt=""></span>
+                            <div>在建工程移民安置专项复建进度</div>
+                        </li>
+                        <li class="clearfix" routerLink="a" routerLinkActive="active">
+                            <span
+                                    class="img"><img src="assets/img/icon/report_zjgcymaztzwcqk.png" alt=""></span>
+                            <div>在建工程移民安置投资完成情况</div>
+                        </li>
+                    </ul>
+                </p-tabPanel>
+                <p-tabPanel class="fl" header="常用功能">
+                    Content 2
+                </p-tabPanel>
+            </p-tabView>
+
+
+        </div>
+    </div>
+    <div class="scalNav" *ngIf="navType=='2'">
+
+        <div class="navListImg">
+            <span class="showIcon"><img src="/assets/img/icon/fullscreen(1).png" alt="" (click)="openNav()"></span>
+        </div>
+        <ul>
+            <li routerLink="EngBase" class="navListImg"><span class="img"><img src="assets/img/icon/wewqewqewq.png"
+                                                                               alt=""></span></li>
+            <li routerLink="ProjectProposal" class="navListImg"><span class="img"><img
+                    src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span></li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/gejieduanchengguo.png" alt=""></span>
+            </li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/img.png" alt=""></span></li>
+        </ul>
+    </div>
+
+
+</div>

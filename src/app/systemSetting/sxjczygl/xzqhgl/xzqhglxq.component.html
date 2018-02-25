@@ -1,0 +1,69 @@
+
+    <p-dialog modal="modal"
+              responsive="true"
+              [(visible)]="display" height="100%" breakpoint="100%">
+        <p-header>
+            <div>区划详情信息</div>
+            <div class="showClose">
+                <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+                <img src="/assets/img/icon/x.png" alt="关闭" (click)="close()">
+            </div>
+        </p-header>
+        <form #info="ngForm">
+            <div class="moduleAlert">
+
+                <div>
+                    <ul>
+                        <li class="fl group group-2"><span class="importent">区划简称</span>
+                            <input type="text" [(ngModel)]="Xzqh.localityName"   name="localityName"></li>
+                        <li class="fl group group-2 rl"><span class="importent">区划全称</span>
+                            <input type="text" [(ngModel)]="Xzqh.localityDesc" name="localityDesc" disabled>
+                            <div class="fl zdbutton" (click)="zdButton('qc')">自动生成</div>
+                        </li>
+                        <li class="fl group group-2 rl"><span class="importent">区划代码</span>
+                            <input type="text" [(ngModel)]="Xzqh.localityCode" name="localityCode">
+                            <div class="fl zdbutton" (click)="zdButton('qhdm')">自动生成</div>
+                        </li>
+                        <li class="fl group group-2"><span class="importent">区划级别</span>
+                            <app-select-list [width]="120" [values]="selectList" (childEvent)="getSelect($event)"></app-select-list>
+                        </li>
+                        <li class="fl group group-2"><span class="importent">上级行政区划编码</span>
+                            <input type="text" [(ngModel)]="Xzqh.parentLocCode" name="parentLocCode" disabled></li>
+                        <li class="fl group group-2 rl"><span class="importent">下级行政区划代码表达式</span>
+                            <input type="text" [(ngModel)]="Xzqh.subLocalityExpression" name="subLocalityExpression" disabled>
+                            <div class="fl zdbutton" (click)="zdButton('xjxzqh')">自动生成</div>
+                        </li>
+
+
+                    </ul>
+                    <div>
+                        <div class="clearfix beizhu ">
+                            <div class="textareaBeizhu">
+                                <span>备注 </span>
+                            </div>
+                            <textarea [(ngModel)]="Xzqh.remark" name="remark" id="" cols="30" rows="10" class="textarea"></textarea>
+                        </div>
+                        <!--<div class="fl group group-2"><span class="importent">创建时间</span><input type="text" disabled></div>-->
+                        <!--<div class="fl group group-2"><span class="importent">最后修改时间</span><input type="text" disabled>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+        <p-footer>
+
+            <div class="btn-group icon clearfix">
+                <a class="active" (click)="save(Xzqh,'save')">保存</a>
+                <a (click)="save(Xzqh,'add')">保存并新增</a>
+                <a (click)="save(Xzqh)">退出</a>
+            </div>
+
+        </p-footer>
+
+
+    </p-dialog>
+
+
+<p-growl [(value)]="msgs"></p-growl>

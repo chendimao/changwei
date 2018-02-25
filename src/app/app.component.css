@@ -1,0 +1,76 @@
+:host
+/deep/
+.ui-calendar .ui-inputtext {
+    background: url('/assets/img/icon/rili.png') no-repeat;
+    background-position: 96% 50%;
+    padding: 7px;
+    padding-left: 5px;
+    margin: 0;
+    border-radius: 0px;
+    border: 1px solid #cccccc;
+}
+
+:host
+/deep/
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: none;
+}
+
+:host
+/deep/
+.ui-datatable .ui-datatable-thead > tr > th, .ui-datatable .ui-datatable-tfoot > tr > td, .ui-datatable .ui-datatable-data > tr > td {
+    padding: 7px 10px;
+}
+
+:host
+/deep/
+.ui-treetable thead th, .ui-treetable tbody td, .ui-treetable tfoot td {
+    padding: 7px 10px;
+}
+
+/*:host*/
+/*/deep/*/
+/*.ui-treetable tbody .ui-treetable-row td{*/
+/*border: 1px solid #CCCCCC;*/
+/*padding: 7px 10px;*/
+/*}*/
+
+:host
+/deep/
+.ui-selectbutton .ui-button.ui-state-default:first-child {
+    border-radius: 3px 0 0 3px;
+}
+
+:host
+/deep/
+.ui-selectbutton .ui-button.ui-state-default:last-child {
+    border-radius: 0 3px 3px 0;
+}
+
+:host
+/deep/
+.ui-selectbutton .ui-button.ui-state-active {
+
+    background: #0099cb;
+    border: 1px solid #0099cb;
+}
+
+:host
+/deep/
+.ui-button-text-only .ui-button-text {
+    padding: 7px 16px;
+}
+
+.header {
+    color: #666666;
+}
+
+:host
+/deep/
+.ui-datatable-resizable {
+    color: #666666;
+}
+
+
+
+

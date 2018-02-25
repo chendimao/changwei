@@ -1,0 +1,63 @@
+<p-dialog modal="modal"
+          responsive="true"
+          [(visible)]="display" height="100%" breakpoint="100%">
+    <p-header>
+        <div>字典应用详情维护</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(1)">
+        </div>
+    </p-header>
+    <form #project="ngForm">
+        <div class="moduleAlert">
+            <div>
+                <ul>
+                    <li class="fl group group-2 rl"><span class="importent">表名</span>
+                        <input type="text" [(ngModel)]="zidian.bm" name="bm">
+                        <i class="xiala" (click)="showTable(1)"></i>
+                        <div *ngIf="oneTable" class="sim_table">
+                            <app-sim-table value="bm"  (selectName)="getTableName($event)"></app-sim-table>
+                        </div>
+                    </li>
+                    <li class="fl group group-2 rl"><span class="importent">字段名</span>
+                        <input type="text" [(ngModel)]="zidian.zdm" name="zdm">
+                        <i class="xiala" (click)="showTable(2)"></i>
+                        <div *ngIf="secTable" class="sim_table">
+                            <app-sim-table [value]="zidian.bm" (selectName)="getTableName2($event)"></app-sim-table>
+                        </div>
+                    </li>
+                    <li class="fl group group-1 rl"><span class="importent">绑定的数据类别</span>
+                        <input type="text" [(ngModel)]="zidian.sslbId" name="sslbId">
+                        <i class="xiala" (click)="showTable(3)"></i>
+                        <div *ngIf="thirdTable" class="sim_table">
+                            <app-bddsjlb (ChilEventOut)="getSelectValue($event)"></app-bddsjlb>
+                        </div>
+                    </li>
+
+                </ul>
+                <div>
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea [(ngModel)]="zidian.bz" name="bz"  id="" cols="30" rows="10" class="textarea"></textarea>
+                    </div>
+                    <div class="fl group group-2"><span class="importent">创建时间</span><input type="text"  value="{{zidian.cjsj |  date:'yyyy-MM-dd'}}"    name="cjsj" disabled></div>
+                    <div class="fl group group-2"><span class="importent">最后修改时间</span><input type="text" value="{{zidian.zhgxsj |  date:'yyyy-MM-dd'}}"  name="zhgxsj" disabled>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <p-footer>
+
+        <div class="btn-group icon">
+            <a (click)="save(zidian,'save')">保存</a>
+            <a (click)="save(zidian,'add')">保存并新增</a>
+            <a (click)="close()">退出</a>
+        </div>
+
+    </p-footer>
+</p-dialog>
+<p-growl  	 [(value)]="msgs"></p-growl>

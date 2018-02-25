@@ -1,0 +1,57 @@
+:host
+/deep/
+.ui-widget-header{
+    text-align: right;
+    border: 1px solid #ccc;
+    border-top: none;
+
+}
+:host
+/deep/
+.ui-paginator .ui-paginator-page{
+    padding: 5px 12px;
+    border-radius: 0px;
+ 
+}
+:host
+/deep/
+.ui-paginator .ui-paginator-first{
+ 
+    padding: 5px 12px;
+    border-radius: 0px;
+}
+:host
+/deep/
+.ui-paginator .ui-paginator-prev{
+ 
+    padding: 5px 12px;
+    border-radius: 0px;
+}
+
+:host
+/deep/
+.ui-paginator .ui-paginator-next {
+ 
+    padding: 5px 12px;
+    border-radius: 0px;
+}
+:host
+/deep/
+.ui-paginator .ui-paginator-page.ui-state-active{
+    background: #0099cb;
+    border: 1px solid #CCCCCC;
+}
+:host
+/deep/
+.ui-paginator .ui-paginator-last{
+      padding: 5px 12px;
+    border-radius: 0px;
+}
+.user_p_class{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 400px;
+    color: #666;
+}
+

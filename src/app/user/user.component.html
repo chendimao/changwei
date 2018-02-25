@@ -1,0 +1,77 @@
+
+<app-header-nav></app-header-nav>
+<div class="container1 clearfix">
+  <div class="clearfix">
+    <div class="user fl back_color boxShadow">
+      <div class="user_left fl">
+        <div class="title1">你好：{{userInfo.userName}}</div>
+        <div class="user_intro">
+          <div>这是您第{{userInfo.num}}此登陆本系统</div>
+          <div>您最近一次登陆是在{{userInfo.time}}</div>
+        </div>
+
+      </div>
+      <div class="user_right fr">
+        <div class="title1">最近使用功能</div>
+        <div class="report">统计 <span></span></div>
+        <div class="report">工程管理 <span></span></div>
+      </div>
+    </div>
+    <div class="care fl back_color boxShadow">
+
+      <div class="title1">我的关注</div>
+      <div class="care_report" routerLink="/engmang"  *ngFor="let list of userInfo.careList;">
+        {{list}} <span></span>
+      </div>
+    </div>
+    <div class="msg fl back_color boxShadow">
+      <div class="title1">新的消息</div>
+      <ul class="msgList">
+        <li *ngFor="let msg of msgList">{{msg}}</li>
+      </ul>
+      <div class="more_msg">
+        <a href="">查看更多</a>
+      </div>
+    </div>
+  </div>
+  <div class="tall_msg back_color clearfix boxShadow">
+    <div class="msg_top">
+      <div class="title1">新的消息</div>
+      <div class="comTitle">福建省水利水电工程管理系统</div>
+      <div>
+        <!--<ul>-->
+          <!--<li>地址：XXXXXXXXXXXXXXXXXXXXXXX</li>-->
+        <!--</ul>-->
+      </div>
+    </div>
+    <div class="msg_b">
+      <div class="fl">
+        <div class="title1">
+          系统信息
+        </div>
+        <div class="perNum">
+          在线人数：569886
+        </div>
+      </div>
+      <div class="fr mag_r">
+        <ul>
+          <li><span class="fontBlod">最后更新时间：</span>2016.2.2</li>
+          <li><span class="fontBlod">系统运行状态：</span><span class="msg_type">良好</span></li>
+          <li><span class="fontBlod">版本号：</span>#11-15</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer clearfix">
+    <div class="fl">长江水利委员会@2017</div>
+    <div class="fr">
+      <ul>
+        <li class="fl">欢迎使用本系统</li>
+        <li class="fl">|</li>
+        <li class="fl">联系我们</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+

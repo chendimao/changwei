@@ -1,0 +1,311 @@
+<header>
+    <div>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType"
+                        (click)="selectedTypea()"></p-selectButton>
+        <em>共 <span>3</span>人</em>
+    </div>
+</header>
+<div *ngIf="selectedType==1" class="clearfix">
+    <div class="left fl">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>序号</td>
+                <td>与墓主关系</td>
+                <td>墓主姓名</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>父亲</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>母亲</td>
+                <td></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="right fl">
+        <div class="header clearfix rl">
+            <div class="fl headerTitle">坟墓详情</div>
+            <ul class="fr  btnGrop">
+                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back.png"
+                                                                       alt=""></span>上一条
+                </li>
+                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back .png"
+                                                                       alt=""></span>下一条
+                </li>
+                <li class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>增加</li>
+                <li class="fl" (click)="delEng()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                         alt=""></span>修改
+                </li>
+                <li class="fl">
+                    <div class="selectLi rl">
+                        更多操作
+                        <!--<span class="xiala"></span>-->
+                        <!--<div class="fj">-->
+                        <!--<span (click)="openFj()">附件查看</span>-->
+                        <!--<span>附件管理</span>-->
+                        <!--</div>-->
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="box_botton clearfix">
+            <div class="inputBox  rl fl">
+                <div class="input_left fl importent">
+                    产权人
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl areaBox rl">
+                <div class="input_left fl importent">
+                    所在行政区划
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" [(ngModel)]="area">
+                    <span class="xiala" (click)="showAreaBlock()"></span>
+                    <app-area-select class="areaCommpont" [display]="isShowArea"
+                                     (childEvent)="getChildEvent($event)"></app-area-select>
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl importent">
+                    专业大类
+                </div>
+                <div class="input_right fl">
+                    <select name="" id="" class="inputH selectInput">
+                        <option value="1" selected="selected">汉族</option>
+                        <option value="1">满族</option>
+                        <option value="1">父女</option>
+                        <option value="1">4</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl importent">
+                    调查范围
+                </div>
+                <div class="input_right fl">
+                    <select name="" id="" class="inputH selectInput">
+                        <option value="1" selected="selected">汉族</option>
+                        <option value="1">满族</option>
+                        <option value="1">父女</option>
+                        <option value="1">4</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl">
+                    数量
+                </div>
+                <div class="input_right fl">
+                    <select name="" id="" class="inputH selectInput">
+                        <option value="1" selected="selected">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+
+
+                    </select>
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl">
+                    与墓主关系
+                </div>
+                <div class="input_right fl">
+                    <select name="" id="" class="inputH selectInput">
+
+                        <option value="2" selected="selected">父子</option>
+                        <option value="3">父女</option>
+                        <option value="4">姐</option>
+                        <option value="5">哥</option>
+                        <option value="6">弟</option>
+                        <option value="7">弟媳</option>
+
+
+                    </select>
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    坟墓编号
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    所在位置
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    图幅号
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    图斑号
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    所在高程
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    断面编号
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    建成日期
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    规格尺寸
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    调查流水号
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" value="">
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="clearfix beizhu ">
+                <div class="textareaBeizhu">
+                    <span>备注 </span>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="selectedType==2">
+    <div style="width100%;overflow auto">
+
+        <table class="table table1">
+            <thead>
+            <tr>
+                <td>名称</td>
+                <td>产权人</td>
+                <td>身份证号码</td>
+                <td>所在行政区划分</td>
+                <td>户别</td>
+                <td>专业大类</td>
+                <td>调查范围</td>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

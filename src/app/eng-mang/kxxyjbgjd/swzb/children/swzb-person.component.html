@@ -1,0 +1,165 @@
+<div class="containerEng" [@flyIn] *ngIf="showqqq">
+
+    <div class="close" (click)="close()">
+        <span><img src="assets/img/icon/x.png" alt=""></span>
+    </div>
+
+    <form #hjbxx="ngForm" (ngSubmit)="show(hjbxx.value)" novalidate>
+        <div class="clearfix">
+            <p-panel toggleable="true" [(collapsed)]="showTOP" expandIcon="fa-angle-double-up"
+                     collapseIcon="fa-angle-double-down">
+                <p-header>
+                    <div class="title">
+                        户基本信息
+                    </div>
+                </p-header>
+                <div class="clearfix">
+                    <div class="top_1">
+                        <div>
+                            <div class="fl  top_class">
+                                <span class="importent">户类别：</span>
+                                <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.hlbdm" name="hlbdm"/>
+                            </div>
+                            <div class="fl top_class">
+                                <span class="importent">阶段：</span>
+                                <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.jddm" name="jddm"/>
+                            </div>
+                            <div class="fl  top_class">
+
+                                <span class="importent">户主姓名：</span>
+                                <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.hzxm" name="hzxm"/>
+                            </div>
+                            <div class="fl top_class selectArea">
+
+                                <span class="importent">是否空挂户：</span>
+                                <p-selectButton [disabled]="whetherDisabled" [options]="types1"
+                                                [(ngModel)]="hjbxx.sfkgh" name="sfkgh"
+                                                (click)="selectedTypea()"></p-selectButton>
+                            </div>
+                            <div class="fl top_class area rl">
+                                <span class="importent">所属行政区：</span>
+                                <input [disabled]="whetherDisabled" class='inputH inputArea' type="text"
+                                       [(ngModel)]="hjbxx.ssxzqhdm" name="ssxzqhdm"/>
+                                <i class="xiala" (click)="showAreaBlock()"></i>
+                                <app-area-select class="areaCommpont" [display]="isShowArea"
+                                                 (childEvent)="getChildEvent($event)"></app-area-select>
+
+                            </div>
+                            <div class="fl top_class rl">
+                                <span class="importent">编号：</span>
+                                <input [disabled]="whetherDisabled" class='inputH' type="text" [(ngModel)]="hjbxx.dabh"
+                                       name="dabh"/>
+                                <span class="bianhao">
+                            自动生成
+                        </span>
+                            </div>
+                            <div class="fl top_class selectArea">
+                                <span>是否线外：</span>
+                                <p-selectButton [disabled]="whetherDisabled" [options]="types2" [(ngModel)]="hjbxx.sfxw"
+                                                name="sfxw"
+                                                (click)="selectedTypea()"></p-selectButton>
+                            </div>
+                            <div class="fl top_class  ">
+
+                                <span class="importent">专业大类：</span>
+                                <app-select-list [width]="105" [values]="selectList"
+                                                 (SelectModel)="getChildEvent($event)"></app-select-list>
+                            </div>
+                            <div class="fl top_class rl zydl">
+                                <span class="importent">调查范围：</span>
+                                <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.dcfwdm" name="dcfwdm"/>
+                                <i class="xiala" (click)="showTypeBlock()"></i>
+                                <app-surver-area [values]="isShowDcfw"
+                                                 (childEvent)="getChildDcfw($event)"></app-surver-area>
+                            </div>
+                            <div class="fl top_class">
+                                <span>调查流水号：</span>
+                                <input [disabled]="whetherDisabled" [(ngModel)]="hjbxx.dclsh" name='dclsh'
+                                       class='inputH' type="text" placeholder="请输入内容"/>
+                            </div>
+                            <div class="top_class fl" (click)="showMoreInput()">
+                                <div class="showMoreInput ">
+                                    {{moreText}}
+                                </div>
+                            </div>
+                            <div class="clearfix" *ngIf="moreInput">
+                                <div class="fl top_class beizhu">
+                                    <div class="textareaBeizhu">
+                                        <span>备注 ：</span>
+                                    </div>
+                                    <textarea [disabled]="whetherDisabled" id="" cols="30" rows="10"
+                                              class="textarea" [(ngModel)]="hjbxx.bz" name="bz"></textarea>
+                                </div>
+                                <div class="fl title_gc top_class">
+                                    <span>所在高程：</span>
+                                    <input [disabled]="whetherDisabled" class='inputS' type="text"
+                                           [(ngModel)]="hjbxx.szzdgc" name="szzdgc"/>
+                                    <i>--</i>
+                                    <input [disabled]="whetherDisabled" class='inputS' type="text"
+                                           [(ngModel)]="hjbxx.szzggc" name="szzggc"/>
+                                    <i>M</i>
+                                </div>
+                                <div class="fl  top_class">
+                                    <span>断面编号：</span>
+                                    <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                           [(ngModel)]="hjbxx.dmbh" name="dmbh"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+            <p-growl [(value)]="msgs"></p-growl>
+
+        </div>
+        <div>
+            <nav>
+                <ul>
+                    <!--<li class="fl" routerLink="{{list.path}}" routerLinkActive="active1"  *ngFor="let list of navList">-->
+                    <!--<li class="fl" (click)="saveRouter(list.path)" *ngFor="let list of navList"-->
+                        <!--[ngClass]="{'active1':list.name==avtiveName}">-->
+                    <li class="fl" (click)="saveRouter(list.path)" *ngFor="let list of navList"
+                        [class.active1]="list.path === avtiveName">
+                        {{list.name}}
+                    </li>
+                </ul>
+            </nav>
+            <div class="container2 clearfix">
+                <p-panel (onBeforeToggle)="closeBottom()" toggleable="true" [(collapsed)]="showBoottom"
+                         styleClass="secPanel" [toggleable]="true" expandIcon="fa-angle-double-up"
+                         collapseIcon="fa-angle-double-down">
+                    <div #room></div>
+
+                </p-panel>
+            </div>
+            <div class="footer clearfix">
+                <div class="fl">
+                    {{router.value}}
+                    <div class="fl">上一户</div>
+                    <div class="fl">下一户</div>
+
+                </div>
+                <div class="fr">
+                    <div class="fl">保存并新增</div>
+                    <div class="fl">附件管理</div>
+                    <div class="fl">附件查看</div>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+
+</div>
+
+
+<!-- 底部区域 -->
+
+
+
+

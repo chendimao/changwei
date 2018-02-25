@@ -1,0 +1,372 @@
+header > div > div {
+    padding: 7px 15px;
+    color: #666666;
+    border: 1px solid #cccccc;
+}
+
+header .fl div {
+    margin-right: 20px;
+
+}
+
+header .fr div {
+    margin-left: 20px;
+}
+
+header > div > div.active {
+    background: #0099cb;
+    color: white;
+}
+
+.home_title {
+    background: #f7f7f7;
+    padding: 6px;
+}
+
+.all_box {
+    padding: 15px;
+}
+
+.inputArea {
+    min-height: 34px;
+    max-height: 34px;
+    width: 25%;
+    margin: 10px 0;
+}
+
+.textareaBeizhu {
+    float: left;
+    margin-top: 10px;
+    width: 8.5%;
+    text-align: right;
+}
+
+.beizhu {
+    margin-top: 20px;
+}
+
+.textarea.textarea {
+    width: 91.5%;
+    height: 60px;
+    resize: none;
+    border: 1px solid #ccc;
+    margin: 0;
+}
+
+.inputArea input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.inputLeft {
+    width: 34%;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.inputRight {
+    width: 66%;
+}
+
+.langest {
+    width: 50%;
+}
+
+.inputLeftSelect {
+    width: 17%;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.inputRight input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+}
+
+.inputRight select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+}
+
+.langest .inputRight {
+    width: 83%;
+}
+
+.Mianji {
+    width: calc(66% - 42px);
+}
+
+.mianji {
+    width: 30px;
+    border: 1px solid #cccccc;
+    margin-left: 10px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #0099cb;
+    background: #eeeeee;
+}
+
+.showMore {
+    float: left;
+    background: #0099cb;
+    color: white;
+    text-align: center;
+    width: 150px;
+    padding: 8px;
+    margin: 15px 20px 10px 50px;
+}
+
+:host
+/deep/
+.ui-inputtext {
+    background: url(/assets/img/icon/rili.png) no-repeat;
+    background-position: 96% 50%;
+    padding-left: 5px;
+    margin-right: 30px;
+    height: 34px;
+    border-radius: 0px;
+    border: 1px solid #cccccc;
+    width: 100%;
+}
+
+.beizhu {
+    margin-top: 20px;
+}
+
+.home_title {
+    margin: 15px 0;
+}
+
+.tab_box > div > div.table_left, div.table_right {
+    width: 50%;
+    box-sizing: border-box;
+    padding: 15px;
+}
+
+.table tbody > tr > td:nth-child(2) {
+    text-align: left;
+}
+
+.tab_box tbody input {
+    padding: 7px 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.tab_box div.btnChecbox {
+    text-align: right;
+}
+
+.inputRight .xiala {
+    width: auto;
+    border-top: 10px solid #6f6f6f;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+textarea {
+    width: calc(100% - 163px);
+    height: 65px;
+    resize: none;
+    margin: 7px;
+}
+
+.inputLeft > span {
+
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    text-align-last: justify
+
+}
+
+.danwei input {
+    width: calc(100% - 160px);
+}
+.danwei .mianji{
+    height: 32px;
+
+}
+
+.beizhu {
+
+    margin-top: 20px;
+}
+
+.btnGrop {
+    float: right;
+}
+
+.modalInput {
+    margin: 10px 0;
+}
+
+.clearfix .group {
+    padding: 5px 0;
+}
+
+
+
+
+.container{
+    padding: 15px 0;
+
+}
+
+.left{
+    width: 18%;
+}
+
+.right{
+    box-sizing: border-box;
+    padding: 15px;
+    padding-top: 0;
+    width: 82%;
+}
+
+.headerTitle{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.header{
+    padding: 10px 0;
+    border-bottom: 1px solid #cccccc;
+}
+.inputBox{
+    min-height: 34px;
+    max-height: 34px;
+    width: 33%;
+    margin: 5px 0;
+}
+.input_left{
+    width: 30%;
+    margin-top: 8px;
+    padding-right: 15px;
+    padding-left: 15px;
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    text-align-last: justify
+}
+.areaBox .input_left{
+    width: 15%;
+
+}
+.input_right{
+    width: 70%;
+}
+.areaBox .input_right{
+    width: 85%;
+}
+.box_botton{
+    margin-top: 20px;
+    font-size: 12px;
+}
+.inputH{
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+}
+.input_right input{
+    width: 100%;
+    box-sizing: border-box;
+}
+.selectInput{
+    padding: 5.5px;
+    width: 100%;
+}
+
+.areaBox{
+    width: 66%;
+}
+.table tbody tr.active{
+    background: #0099cb;
+    color: white;
+}
+:host
+/deep/
+.ui-calendar{
+    width: 100%;
+}
+:host
+/deep/
+.ui-widget-content{
+    color: #333333;
+}
+
+.areaShow .list {
+    padding: 3px 10px;
+    cursor: pointer;
+}
+
+.areaShow .list:hover {
+    background: #0099cb;
+    color: white;
+}
+
+.areaShow {
+    background: white;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    width: calc(100% - 135px);
+    border: 1px solid #cccccc;
+    color: #999;
+    z-index: 1;
+}
+
+.importent {
+    color: #ff3b03;
+}
+.inputBox .input_right .inputS{
+    width: 60px;
+    height: 30px;
+}
+:host
+/deep/
+.ui-corner-all{
+    padding: 2px 0;
+}
+.textarea.textarea{
+    width: calc(100% - 140px);
+    height: 60px;
+    resize: none;
+    border: 1px solid #ccc;
+}
+.timeSelect{
+    padding: 1px 0;
+}
+
+.textareaBeizhu{
+    float: left;
+    margin-top: 10px;
+    width: 100px;
+    text-align: right;
+}
+.table1{
+    min-width: 1400px;
+    white-space:nowrap;
+}
+.table1 input{
+    width: 100%;
+}
+.table1 thead tr td{
+    padding: 7px 15px;
+}
+.table1 {
+    margin-bottom: 20px;
+}
+.table1 tr td input{
+    border: none;
+}
+.table1 tbody tr td{
+    padding-left: 2px;
+}
+
+.clearfix .group{
+    padding: 5px 0;
+}

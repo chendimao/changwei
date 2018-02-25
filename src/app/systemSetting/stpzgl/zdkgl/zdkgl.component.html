@@ -1,0 +1,66 @@
+<div class="container1" [@flyIn]>
+    <div class="title_box" title="字典库管理">
+        <span class="title">字典库管理</span>
+    </div>
+
+    <div class="body">
+        <div class="bodybox">
+            <header class="clearfix">
+                <div class="fl rl">
+                    <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="名称、代码、字典类别">
+                    <span class="btnClick" (click)="searchList('click',key)"></span>
+                </div>
+                <div class="btnGrop fr">
+                    <ul>
+                        <li class="fl" (click)="showModule('add')"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                                      alt=""></span>新增
+                        </li>
+                        <li class="fl" (click)="showModule('rew')"><span class="img"><img
+                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        </li>
+                        <li class="fl" (click)="delSelect(3)"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                      alt=""></span>删除
+                        </li>
+                        <li class="fl" (click)="showModule('set')"><span class="img"><img
+                                src="assets/img/icon/shezhishujuxiang.png" alt=""></span>设置数据项
+                        </li>
+
+                    </ul>
+                </div>
+            </header>
+            <p-dataTable [value]="cars" class="table" (onRowClick)="onRowSelect($event)" resizableColumns="true" selectionMode="single" >
+                <p-column field="mc" title="mc" header="类别名称" [bodyStyle]="{'text-align':'left'}">
+                    <!--<ng-template let-col let-car="rowData" pTemplate="body">-->
+                        <!--<span>{{car[col.field]=='JCL'?'基础类':'实物指标类'}}</span>-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="dm" header="代码"></p-column>
+                <p-column field="lx" header="类型">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <span>{{car[col.field]==0?'数据项':'虚节点'}}</span>
+                    </ng-template>
+                </p-column>
+                <p-column field="zdlb" header="字典分类"></p-column>
+                <p-column field="qc" header="全称" [bodyStyle]="{'text-align':'left'}"></p-column>
+                <p-column field="bz" header="备注"></p-column>
+
+            </p-dataTable>
+            <div class="foot">
+                <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<p-growl [(value)]="msgs"></p-growl>
+<div #dmroom></div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+<div [@flyIn] style="height: 100%">
+<div class="fl sec_nav nav">
+    <div class="gc_title">
+        <span><img src="assets/img/icon/diquxuanze.png" alt="" class="img"></span>
+        工程列表
+    </div>
+    <app-gc-list [value]="gcUrl" type="gc" (selectProject)="getProjectId($event)"></app-gc-list>
+</div>
+<div class="fl conBody">
+    <div class="title_box">
+        <span class="title">分工程字典项配置</span>
+    </div>
+    <div>
+        <header class="clearfix">
+            <div class="fl"><input class="searchInput" placeholder="类别名称、字典分类" type="text"></div>
+            <div class="btnGrop fr">
+                <ul>
+                    <li class="fl" (click)="addAlert('view')"><span class="img"><img alt="" src="assets/img/icon/browse_fill.png">查看</span>
+                    </li>
+                    <li class="fl" (click)="addAlert('add')"><span class="img"><img alt="" src="assets/img/icon/jiahao.png"></span>新增
+                    </li>
+                    <li class="fl" (click)="addAlert('rew')"><span class="img"><img alt="" src="assets/img/icon/brush_fill.png"></span>修改
+                    </li>
+                    <li class="fl" (click)="delZdxpz"><span class="img"><img alt="" src="assets/img/icon/trash.png"></span>删除
+                    </li>
+                </ul>
+            </div>
+        </header>
+    </div>
+    <div class="tableBox">
+        <p-dataTable  [value]="cars" class="table" (onRowClick)="onRowSelect($event)" selectionMode ="single"
+                     resizableColumns="true" >
+            <p-column field="dicType" header="数据类别名称"></p-column>
+            <p-column field="dataTypeName" header="字典分类"></p-column>
+
+        </p-dataTable>
+    </div>
+    <div #pdialog></div>
+    <p-growl [(value)]="msgs"></p-growl>
+
+</div>
+</div>

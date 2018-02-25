@@ -1,0 +1,80 @@
+
+.areaShow {
+    background: white;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    width: calc(100% - 100px);
+    border: 1px solid #cccccc;
+    color: #999;
+    z-index: 1;
+    top: 42px;
+}
+.selected {
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+.showSecList{
+    position: absolute;
+    background: white;
+    width: auto;
+    display: none;
+    top: 32px;
+}
+.active {
+    padding: 0 10px;
+}
+.zydlArea  ul.showSecList{
+    white-space: nowrap;
+    font-size: 12px;
+}
+.zydlArea li{
+    padding: 10px 15px ;
+}
+.zydlArea li:hover .showSecList{
+    display: block;
+    background: white;
+    z-index: 1;
+}
+.zydlArea li:hover{
+    color: #0099cb;
+}
+.showSecList li:hover{
+    background: #0099cb;
+    color: white;
+}
+.fl.zydltitle {
+    color: #333;
+
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 13px;
+}
+.threeList{
+    display: none;
+    position: absolute;
+
+}
+.showSecList li:hover ul li{
+    color: #999999;
+}
+.zydlArea ul.showSecList.boxShadow.threeList li:hover {
+    color: white;
+}
+ul.showSecList.boxShadow .threeList {
+    z-index: 1;
+    background: white;
+    left: 110px;
+    top: 32px;
+}
+ul.showSecList.boxShadow .threeList li:hover{
+    color: white;
+}
+.zydlArea ul.showSecList.boxShadow.threeList {
+    display: none;
+}
+.zydlArea ul.showSecList li:hover .threeList{
+    display: block;
+}

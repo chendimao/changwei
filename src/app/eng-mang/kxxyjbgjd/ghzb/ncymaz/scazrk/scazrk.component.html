@@ -1,0 +1,123 @@
+<app-treeList (childEvent)="getEvent($event)"></app-treeList>
+<div class="containerEng">
+  <div *ngIf="isShowRight">
+    <header >
+      <div class="title">
+        生产安置人口
+      </div>
+    </header>
+    <div class="engBody">
+      <div class="tableEng">
+        按村粒度管理
+      </div>
+      <div class="showBox">
+        <div class="top clearfix">
+          <div class="top_left fl">
+            <span class="img"><img src="assets/img/icon/diquxuanze.png" alt=""></span>区划
+          </div>
+          <div class="btnGrop fl rl">
+            <div class="fl tab_title">
+              东阳村规划生产安置人口信息
+            </div>
+            <div class="fr sec">
+              <div class="fl text">
+                <p-checkbox class="fl" name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                仅显示非空项
+              </div>
+              <div class="fl"><span class="img"><img src="assets/img/icon/diquxuanze.png" alt=""></span>保存</div>
+              <div class="fl"><span class="img"><img src="assets/img/icon/clear.png" alt=""></span>清空</div>
+            </div>
+          </div>
+        </div>
+        <div class="body1 clearfix">
+          <div class="bodyLeft fl">
+            <p-accordion>
+              <p-accordionTab header="白濑乡">
+                <ul class="pro">
+                  <li >长基村</li>
+                  <li >下镇村
+                  </li>
+                  <li >寨板村</li>
+
+                </ul>
+              </p-accordionTab>
+            </p-accordion>
+            <p-accordion>
+              <p-accordionTab header="剑斗镇" [selected]="true">
+                <ul class="pro">
+                  <li class="slect">   东阳村</li>
+                  <li >后井寸</li>
+                  <li >    云溪村</li>
+                </ul>
+              </p-accordionTab>
+            </p-accordion>
+          </div>
+          <div class="bodyRight fl">
+            <table class="table">
+              <thead>
+              <tr>
+                <td>序号</td>
+                <td>名称</td>
+                <td>数量</td>
+                <td>计量单位</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+
+                <td >生产安置人数</td>
+                <td>1338</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td >按安置方式划分</td>
+                <td>1338</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2.1</td>
+                <td style="padding-left: 20px"> 农业安置</td>
+                <td>402</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2.2</td>
+                <td style="padding-left: 20px"> 非农业安置</td>
+                <td>936</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2.2.1</td>
+                <td style="padding-left: 40px">自谋职业</td>
+                <td>843</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2.2.2</td>
+                <td style="padding-left: 40px">养老保障</td>
+                <td>93</td>
+                <td>人</td>
+              </tr>
+              <tr>
+                <td>2.2.3</td>
+                <td style="padding-left: 40px">宅基地安置</td>
+                <td></td>
+                <td>人</td>
+              </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="defaultShow">
+
+    <app-waring [msg]="waring"></app-waring>
+
+  </div>
+
+</div>

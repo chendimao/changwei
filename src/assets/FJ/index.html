@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/jquery-1.12.4/jquery-1.12.4.min.js"></script>
+    <link href="http://115.28.69.231:8080/assets/FJ/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/bootstrap-3.3.7/js/bootstrap.js"></script>
+    <!--Echarts script-->
+    <script src="http://115.28.69.231:8080/assets/FJ/echarts-3.7.1/echarts.min.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/EchartsMap/js/province/fujian.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/Data.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/mapOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/jbqkOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/zjxmOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/ymrsOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/skzkrOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/zjrlOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/gcjtztzOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/yjxzsgltdOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/cqfwOption.js"></script>
+    <script type="text/javascript" src="http://115.28.69.231:8080/assets/FJ/options/ymazjttzOption.js"></script>
+    <script>
+        $(function () {
+            var map=echarts.init(document.getElementById('map'));
+            map.setOption(mapOption);
+            var jbqk=echarts.init(document.getElementById('jbqk'));
+            jbqk.setOption(jbqkOption);
+            var zjxm=echarts.init(document.getElementById('zjxm'));
+            zjxm.setOption(zjxmOption);
+            var ymrs=echarts.init(document.getElementById('ymrs'));
+            ymrs.setOption(ymrsOption);
+            var skzkr=echarts.init(document.getElementById('skzkr'));
+            skzkr.setOption(skzkrOption);
+            var zjrl=echarts.init(document.getElementById('zjrl'));
+            zjrl.setOption(zjrlOption);
+            var gcjtztz=echarts.init(document.getElementById('gcjtztz'));
+            gcjtztz.setOption(gcjtztzOption);
+            var yjxzsgltd=echarts.init(document.getElementById('yjxzsgltd'));
+            yjxzsgltd.setOption(yjxzsgltdOption);
+            var cqfw=echarts.init(document.getElementById('cqfw'));
+            cqfw.setOption(cqfwOption);
+            var ymazjttz=echarts.init(document.getElementById('ymazjttz'));
+            ymazjttz.setOption(ymazjttzOption);
+
+            $(window).resize(function() {
+                map.resize();
+                jbqk.resize();
+                zjxm.resize();
+                ymrs.resize();
+                skzkr.resize();
+                zjrl.resize();
+                gcjtztz.resize();
+                yjxzsgltd.resize();
+                cqfw.resize();
+                ymazjttz.resize();
+            });
+        })
+    </script>
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background-color: #d9dee4;
+        }
+    </style>
+</head>
+<body>
+<div id="left" style="width: 40%;height: 100%;float: left;">
+    <div id="map" style="width: 100%;height:100%;"></div>
+</div>
+<div id="right" style="width: 60%;height: 100%;float: left;">
+    <ul id="tab" class="nav nav-tabs">
+        <li class="active"><a href="#gcgk" data-toggle="tab">工程概况</a></li>
+        <li><a href="#ghsj" data-toggle="tab">规划设计</a></li>
+        <li><a href="#ssjd" data-toggle="tab">实施进度</a></li>
+    </ul>
+    <div id="tabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="gcgk">
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="jbqk"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="zjxm"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="ymrs"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="skzkr"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="zjrl"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:15px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="gcjtztz"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:20px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="yjxzsgltd"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:20px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="cqfw"></div>
+            </div>
+            <div class="col-xs-4" style="margin-top:20px;height: 250px;">
+                <div style="width: 100%;height: 100%;" id="ymazjttz"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="ghsj">
+
+        </div>
+        <div class="tab-pane fade" id="ssjd">
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

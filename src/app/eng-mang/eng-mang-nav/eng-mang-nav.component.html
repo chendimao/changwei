@@ -1,0 +1,62 @@
+<div class="nav rl clearfix" [ngStyle]="{'width':width }">
+    <div class="showNav" *ngIf="navType=='1'">
+        <span class="closeNav" (click)="closeNav()"><img src="assets/img/icon/fullscreen-exit(1).png" alt="">收起</span>
+        <div class="return" routerLink="/engmangHome"><span class="img"><img src="assets/img/icon/reply.png" alt=""></span>返回</div>
+        <div class="nav_img rl">
+            <img src="/assets/img/nav_header.png" alt="">
+            <span>{{projectName}}</span>
+        </div>
+        <div class="tab clearfix ">
+            <p-tabView>
+                <p-tabPanel header="全部功能" class="fl nav_list1">
+                    <ul class="nav_list">
+                        <li [routerLink]="['EngBase',projectId]" routerLinkActive="active" ><span class="img"><img src="assets/img/icon/wewqewqewq.png" alt=""></span>工程基本信息登记</li>
+                        <li [routerLink]="['ProjectProposal',projectId]" routerLinkActive="active"><span class="img" ><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>前期工作情况跟踪</li>
+                        <li class="moreList">
+                             <p-accordion >
+                                <!--<span class="img" ><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>-->
+                                <p-accordionTab   [selected]="true" >
+                                    <p-header class="accorImg" (mouseover)="closeNavList()">
+                                        <img src="assets/img/icon/gejieduanchengguo.png" alt="">
+                                        各阶段工作成果管理
+                                    </p-header>
+                                    <ul class="secdList">
+                                        <li (mouseenter)="showNav('xmjys',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='xmjys'}" >项目建议书阶段</li>
+                                        <li (mouseenter)="showNav('kxxyjbgjd',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='kxxyjbgjd'}">可行性研究报告阶段</li>
+                                        <li (mouseenter)="showNav('cbsjjd',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='cbsjjd'}">初步设计阶段</li>
+                                        <li (mouseenter)="showNav('ssazjd',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='ssazjd'}">安置实施阶段</li>
+                                        <li (mouseenter)="showNav('ghtzjd',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='ghtzjd'}">规划调整阶段</li>
+                                        <li (mouseenter)="showNav('ymanysjd',projectId)" routerLinkActive="active" [ngClass]="{'active':index=='ymanysjd'}">移民安置验收阶段</li>
+                                    </ul>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </li>
+                        <!--<li  routerLinkActive="active"><span class="img" ><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>系统设置模块</li>-->
+                    </ul>
+                </p-tabPanel>
+                <p-tabPanel class="fl" header="常用功能">
+                    Content 2
+                </p-tabPanel>
+            </p-tabView>
+
+
+        </div>
+    </div>
+    <div class="scalNav" *ngIf="navType=='2'">
+        <div class="navListImg " routerLink="/engmangHome">
+            <span class="showIcon returnImg"><img src="/assets/img/return.png" alt=""></span>
+
+        </div>
+        <div class="navListImg">
+            <span class="showIcon"><img src="/assets/img/icon/fullscreen(1).png" alt="" (click)="openNav()"></span>
+        </div>
+        <ul>
+            <li  [routerLink]="['EngBase',projectId]" class="navListImg"><span class="img"><img src="assets/img/icon/wewqewqewq.png" alt=""></span></li>
+            <li  [routerLink]="['ProjectProposal',projectId]" class="navListImg"><span class="img"><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span></li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/gejieduanchengguo.png" alt=""></span></li>
+            <li class="navListImg"><span class="img"><img src="assets/img/icon/img.png" alt=""></span></li>
+        </ul>
+    </div>
+</div>
+<!--<div class="fl container " [ngStyle]="{'width':'calc(100% - '+width1+')'}"><router-outlet></router-outlet></div>-->
+<app-second-nav [values]="data" *ngIf="display" (childEvent)="getChildEvent($event)"></app-second-nav>

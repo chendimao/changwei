@@ -1,0 +1,77 @@
+.nav{
+    width: 180px;
+    height: 100%;
+    color: white;
+    background: #eaedf4;
+}
+ul{
+    overflow: auto;
+    height: calc(100% - 160px);
+}
+.nav_title{
+    height: 25px;
+    background: #D9DEE4;
+    padding: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.ulList li{
+    padding: 7px 15px;
+    color: #333333;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #fff;
+}
+.ulList li:hover{
+    background: #8b909e;
+}
+.ulList li.list{
+    background: white;
+    color: #333333;
+}
+.fgczdxpz{
+    padding: 8px;
+}
+.searchInput{
+    background-color: #FFFFFF;
+    width: 100%;
+    margin: 0;
+}
+
+.alert{
+    background: #FFFFFF;
+    width: 100%;
+    margin-top: 5px;
+    padding: 8px;
+}
+.alert li{
+    border-bottom: 1px solid #CCCCCC;
+}
+.common .ulList{
+    margin-top: 15px;
+
+}
+.common .fgczdxpz{
+    padding: 0;
+}
+.alert .fgczdxpz{
+    padding: 0;
+}
+.common{
+    border-top: 1px solid #CCCCCC;
+    padding: 8px;
+    background: linear-gradient(to right,#ffffff 85%,#f5f5f5 100%);
+}
+.common li{
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 5px;
+    margin-bottom: 0px;
+    color: #666666;
+    width: 100%;
+    text-align: center;
+}
+.common li:last-child{
+    border-bottom: 1px solid #CCCCCC;
+}

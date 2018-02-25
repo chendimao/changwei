@@ -1,0 +1,70 @@
+
+.header{
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+
+}
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+.body{
+    padding: 15px;
+}
+.engBody{
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding-left: 1px;
+}
+.title{
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+.areaSelect{
+    padding: 15px 0;
+    margin: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+.areaSelect li{
+    padding: 10px 20px;
+    background: #D9dee4;
+    margin-left: 20px;
+}
+.areaSelect li.active{
+    background: #546478;
+    color: #FFFFFF;
+}
+.comSearch {
+    box-sizing: border-box;
+    padding-left: 10px;
+    min-width: 300px;
+    height: 30px;
+    padding: 18px 10px;
+}
+.searchAll .input1 {
+    margin-left: 0;
+}
+.search {
+    position: absolute;
+    right: 15px;
+    top: 8px;
+}
+.btnGrop li {
+    border: 1px solid #cccccc;
+    padding: 3px 10px;
+    margin: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+.response .table{
+    font-size: 12px;
+    color: #666666;
+    min-width: 1500px;
+}
+.response{
+    overflow-x: auto;
+}

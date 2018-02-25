@@ -1,0 +1,26 @@
+<div *ngIf="display" class="areaShow boxShadow">
+  <div>
+    <input class='searchInput' type="text"/>
+  </div>
+  <div class="selected">
+    <span>请选择地区：</span>
+    <ul>
+      <li class="active fl">{{selectProvince1}}</li>
+      <li class="active fl">{{selectCity1}}</li>
+      <li class="active fl">{{selectArea1}}</li>
+    </ul>
+    <span class="img" (click)="clearSelect()"><img src="assets/img/icon/x.png" alt=""></span>
+   </div>
+  <div>
+    <ul *ngIf="showProvice">
+      <li class="fl list" (click)="selectProvice(i)" *ngFor="let i of provice">{{i}}</li>
+    </ul>
+    <ul *ngIf="showCity">
+      <li class="fl list" (click)="selectCity(i)" *ngFor="let i of citys">{{i}}</li>
+    </ul>
+    <ul *ngIf="showArea">
+      <li class="fl list" (click)="selectArea(i)" *ngFor="let i of areas">{{i}}</li>
+    </ul>
+  </div>
+
+</div>

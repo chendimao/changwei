@@ -1,0 +1,12 @@
+.conBody{
+    width: calc(100% - 180px);
+}
+.group-2{
+    min-height: 52px;
+}
+.searchInput{
+    width: 220px;
+}
+header{
+    margin-bottom: 15px;
+}

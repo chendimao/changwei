@@ -1,0 +1,119 @@
+
+.container1{
+    background: #EAEDFE;
+    padding: 15px;
+    height: 100%;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.back_color{
+    background: white;
+    padding: 15px;
+}
+.user{
+    width: 40%;
+    height: 211px;
+}
+.care{
+    width: 25%;
+    height: 211px;
+    margin: 0 15px;
+}
+.msg{
+    width: calc(35% - 30px);
+    height: 211px;
+}
+.tall_msg{
+    margin-top: 14px;
+    background: url(/assets/img/bg03.png)no-repeat #ffffff;
+    background-position: right top;
+}
+.user_left{
+    width: 60%;
+}
+.user_intro{
+    color: #adadad;
+}
+.user_intro div{
+    margin-top: 10px;
+}
+.user_right{
+    width: 40%;
+
+}
+
+
+.report{
+    background: #f2f2f2;
+    margin-bottom: 15px;
+    padding: 18px 25px ;
+}
+.care_report{
+    background: #f2f2f2;
+    padding: 12px 25px ;
+}
+.care_report:hover{
+    color: #0099cb;
+    border: 1px solid #0099cb;
+    padding: 11px 24px;
+}
+.report:hover{
+    color: #0099cb;
+    border: 1px solid #0099cb;
+    padding: 17px 24px;
+}
+
+.care{
+    font-size: 12px;
+}
+.title1{
+    height: 35px;
+    font-size: 14px;
+}
+.care>div:nth-child(3){
+    margin: 10px 0;
+}
+.msgList>li{
+    /*height: 35px;*/
+    padding: 10px 0;
+    color: #666666;
+}
+.more_msg{
+    margin-top: 10px;
+}
+.tall_msg li{
+    margin: 15px 0;
+}
+.comTitle{
+    font-size: 16px;
+    font-weight: bolder;
+    color: #666666;
+}
+.msg_b{
+    margin-top: 20px;
+}
+.msg_type{
+    color: #00c1d1;
+}
+.msg_top{
+    border-bottom: 1px solid #cccccc;
+    height: 179px;
+}
+.mag_r li{
+    text-align: end;
+}
+.fontBlod{
+    font-weight: bold;
+}
+.footer{
+    color: #666666;
+    margin-top: 15px;
+    padding: 15px 0;
+    border-top: 1px solid #cccccc;
+    background: #EAEDFE;
+}
+.footer li{
+    margin: 0 10px;
+}
+
+

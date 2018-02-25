@@ -1,0 +1,83 @@
+
+table{
+    color: #666666;
+}
+.header{
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+}
+
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+.areaSelect div li.active{
+    background: #546478;
+    color: white;
+}
+.body{
+    padding: 15px;
+    padding-bottom:25px;
+}
+.engBody{
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding-left: 1px;
+    color: #333333;
+}
+.title{
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+.areaSelect{
+    padding: 15px 0;
+    margin: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+.areaSelect .t{
+    margin: 10px;
+    padding-left: 15px;
+    border-left: 2px solid #0099cb;
+}
+.areaSelect li{
+    padding: 10px 20px;
+    background: #D9dee4;
+    margin-left: 20px;
+}
+.btnGrop{
+    padding: 15px;
+}
+.btnGrop div:not(:first-child){
+    padding: 5px 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-left: 15px;
+}
+.text{
+    margin-top: 5px;
+}
+.xiala{
+    display: inline-block;
+    margin-right: 5px;
+    border-top: 10px solid #666666;
+}
+.table tbody>tr td:nth-child(2){
+    text-align: left;
+}
+span.img{
+     display: inline-block;
+     width: 20px;
+     height: 20px;
+     padding: 0px;
+     position: relative;
+     bottom: -2px;
+ }
+img.img{
+    display: inline-block;
+    width: 20px;
+   padding-right: 5px;
+}

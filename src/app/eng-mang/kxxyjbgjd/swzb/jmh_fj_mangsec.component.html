@@ -1,0 +1,75 @@
+<p-dialog modal="modal" [(visible)]="display"
+          height="100%" width="100%" [breakpoint]="1000">
+    <p-header>
+        <div>附件管理</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(3)">
+        </div>
+    </p-header>
+    <div class="moduleAlert3">
+        <div class="leftUl">
+            <span class="basetitle">附件列表</span>
+            <ul>
+                <li>人口房屋调查表</li>
+                <li>附设装修调查表</li>
+                <li>零星树木调查表</li>
+                <li>坟墓调查表</li>
+                <li>人口意愿调查表</li>
+                <li>照片</li>
+                <li>影相</li>
+            </ul>
+        </div>
+        <div class="rightImg">
+            <div class="clearfix">
+                <ul>
+                    <li class="fl" (click)="imgOperat(1)"><span class="img"><img
+                            src="assets/img/icon/search.png" alt=""></span>放大
+                    </li>
+                    <li class="fl" (click)="imgOperat(2)"><span class="img"><img
+                            src="assets/img/icon/scasl.png" alt=""></span>缩小
+                    </li>
+                    <li class="fl" (click)="imgOperat(3)"><span class="img"><img
+                            src="assets/img/icon/yuanshi.png" alt=""></span>原始大小
+                    </li>
+                    <li class="fl" (click)="imgOperat(4)"><span class="img"><img
+                            src="assets/img/icon/scal.png" alt=""></span>适合大小
+                    </li>
+                    <li class="fl" (click)="imgOperat(5)"><span class="img"><img
+                            src="assets/img/icon/rotate-right.png" alt=""></span>旋转
+                    </li>
+                </ul>
+                <div class="fr wjlist">
+                    文件列表
+                    <ul class="wjlistC">
+                        <li>人口房屋调查表</li>
+                        <li>附设装修调查表</li>
+                        <li>零星树木调查表</li>
+                        <li>坟墓调查表</li>
+                        <li>人口意愿调查表</li>
+                        <li>照片</li>
+                        <li>影相</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="gallerys">
+                <div #imgMang>
+                    <!--<img  class="gallery-pic" src="assets/img/111.png"/>-->
+                    <pdf-viewer src="http://127.0.0.1:4200/assets/pdf/api_tw.pdf"
+                                style="display: block;"
+                    ></pdf-viewer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <p-footer>
+        <div class="btnGroup">
+            <span style="color: #0099cb" class="btn" (click)="close1()">上一张</span>
+            <span style="color: #0099cb" class="btn" (click)="close1()">下一张</span>
+            <span style="color: #0099cb" class="btn" (click)="close1()">另存为</span>
+            <span style="color: #0099cb" class="btn" (click)="close2()">退出</span>
+        </div>
+
+    </p-footer>
+</p-dialog>

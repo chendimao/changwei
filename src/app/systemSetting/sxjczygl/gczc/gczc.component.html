@@ -1,0 +1,54 @@
+<div class="container1" [@flyIn]>
+    <div class="title">字典库管理</div>
+    <div class="body">
+        <div class="bodybox">
+            <header class="clearfix">
+                <div class="fl">
+                    <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="工程名称、工程简称、工程类别">
+                    <span class="btnClick" (click)="searchList('click',key)"></span>
+                </div>
+                <div class="btnGrop fr">
+                    <ul>
+                        <li class="fl" (click)="showModule('add')"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                                      alt=""></span>新增
+                        </li>
+                        <li class="fl" (click)="showModule('rew')"><span class="img"><img
+                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        </li>
+                        <li class="fl" (click)="delSelect(3)"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                     alt=""></span>删除
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <p-dataTable [value]="cars" class="table" sortField="code" rowGroupMode="rowspan" [rows]="10" (onRowClick)="onRowSelect($event)"
+                         selectionMode ="single">
+
+                <p-column field="name" header="工程名称"></p-column>
+                <p-column field="code" header="工程代码" sortable="true"></p-column>
+                <!--<ng-template pTemplate="rowgroupheader" let-rowData sortable="true">{{rowData['code']}}</ng-template>-->
+                <p-column field="shortName" header="工程简称"></p-column>
+                <p-column field="projectTypeCode" header="工程类别"></p-column>
+
+            </p-dataTable>
+            <div class="foot">
+                              <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+
+            </div>
+    </div>
+
+        <div #alertBox></div>
+    </div>
+</div>
+<p-growl [(value)]="msgs"></p-growl>
+
+
+
+
+
+
+
+
+
+
+

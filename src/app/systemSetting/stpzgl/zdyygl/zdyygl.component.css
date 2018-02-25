@@ -1,0 +1,48 @@
+:host
+/deep/
+.ui-datatable-tablewrapper .ui-datatable .ui-datatable-thead>tr>th, .ui-datatable .ui-datatable-tfoot>tr>td, .ui-datatable .ui-datatable-data>tr>td{
+    border-color: inherit;
+    box-sizing: border-box;
+    padding: 0px;
+    border-width: 1px;
+    border-style: solid;
+}
+.container1{
+    padding: 15px;
+}
+:host
+/deep/
+.ui-dialog .ui-dialog-titlebar-close {
+    display: none;
+}
+.searchInput{
+    margin: 0px;
+    width: 250px;
+}
+header{
+    margin: 15px 0;
+}
+.xiala{
+    right: 30px;
+}
+
+
+
+.sim_table{
+    position: absolute;
+    top: 44px;
+    right: 0px;
+    z-index: 1;
+}
+
+.textareaBeizhu{
+    width: 100px;
+}
+.textarea.textarea{
+    width: calc(100% - 120px);
+}
+:host
+/deep/
+.sim_table .boxShadow{
+    width: inherit;
+}

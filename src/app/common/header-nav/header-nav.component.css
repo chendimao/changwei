@@ -1,0 +1,25 @@
+.header{
+    background: url('/assets/img/b02.jpg');
+    color: white;
+    margin:0;
+    border-top: 1px solid #555A5D;
+
+}
+.header>ul{
+    font-size: 16px;
+    /*height: 16px;*/
+}
+.header li{
+    padding: 17px 0;
+    width: 120px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+.active{
+    color:#00c1d1 ;
+    border-bottom: 3px solid #00c1d1;
+}
+span{
+    padding-right: 5px;
+}

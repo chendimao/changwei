@@ -1,0 +1,51 @@
+<p-dialog modal="modal" [(visible)]="display"
+         
+          height="100%" width="100%" [breakpoint]="1000">
+    <p-header>
+        <div>附件查看</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(4)">
+        </div>
+    </p-header>
+    <div class="moduleAlert">
+        <div class="basetitle">
+            查询窗口
+        </div>
+        <div class="md4Body clearfix">
+
+
+            <ul>
+                <li class="group group-2 fl">
+                    <span class="spanHeader">主要文件类型</span>
+                    <app-select-list [width]="100" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                </li>
+                <li class="group group-2 fl">
+                    <span class="spanHeader">上传（like）</span>
+                    <input type="text" class="md4Input" placeholder="请填入姓名">
+                </li>
+                <li class="group group-2 fl">
+                    <span class="spanHeader">时间范围-开始</span>
+                    <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
+                                dateFormat="yy-mm-dd"  yearRange="1900:2030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy" name="qrrq"></p-calendar>
+                </li>
+                <li class="group group-2 fl">
+                    <span class="spanHeader">时间范围-结束</span>
+                    <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
+                                dateFormat="yy-mm-dd"  yearRange="1900:2030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy" name="qrrq"></p-calendar>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <p-footer>
+        <div class="btn-group icon clearfix">
+            <a class="active" (click)="clear()"><i><img class="img" src="assets/img/icon/save.png"/></i>重置</a>
+            <a><i><img class="img" src="assets/img/icon/go.png"/></i>查询</a>
+
+        </div>
+
+
+    </p-footer>
+</p-dialog>

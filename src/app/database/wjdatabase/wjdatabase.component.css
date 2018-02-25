@@ -1,0 +1,95 @@
+.containerEng{
+    padding: 15px;
+    overflow-y: auto;
+
+}
+.header{
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+
+}
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+.body{
+    padding: 15px;
+}
+.engBody{
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding-left: 1px;
+    padding: 15px;
+}
+.title{
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+.searchDiv{
+    padding: 15px;
+}
+.btnGrop{
+    padding: 15px;
+}
+.btnGrop div{
+    padding: 8px 15px;
+    border: 1px solid #cccccc;
+    margin-left: 15px;
+}
+.btnGrop div:first-child{
+    background: #0099cb;
+    color: white;
+}
+/*.btnGrop div:hover{*/
+    /*background: #0099cb;*/
+    /*color: white;*/
+/*}*/
+
+.searchDiv select{
+    padding-left: 5px;
+    margin: 7px;
+    margin-right: 30px;
+    height: 30px;
+    border: 1px solid #cccccc;
+}
+.table td{
+    font-size: 12px;
+}
+.p-breadcrumb{
+    color: #cccccc;
+}
+.table td span{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+.table tbody tr td:first-child{
+    padding-left: 20px;
+}
+.moreSearch{
+    padding: 7px 15px;
+    margin-top: 2px;
+    border: 1px solid #cccccc;
+}
+.xiazai{
+   background: url('/assets/img/icon/xiazai.png')no-repeat ;
+}
+.xiazai:hover{
+    background: url('/assets/img/icon/xiazaiblue.png')no-repeat ;
+}
+.xiugai{
+    background: url('/assets/img/icon/xiugai.png')no-repeat ;
+}
+.xiugai:hover{
+    background: url('/assets/img/icon/xiugaiblue.png')no-repeat ;
+}
+.shanchu{
+    background: url('/assets/img/icon/shanchu.png')no-repeat ;
+}
+.shanchu:hover{
+    background: url('/assets/img/icon/shanchublue.png')no-repeat ;
+}

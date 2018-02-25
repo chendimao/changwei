@@ -1,0 +1,57 @@
+<div class="container1" [@flyIn]>
+  <div class="title_box">
+    <span class="title">字典应用管理</span>
+  </div>
+  <div class="body">
+    <div class="bodybox">
+      <header class="clearfix">
+        <div class="fl rl">
+          <input type="text" class="searchInput" (keydown)="searchList($event,key)" [(ngModel)]="key" placeholder="表名、字段名、数据类别">
+          <span class="btnClick" (click)="searchList('click',key)"></span>
+        </div>
+        <div class="btnGrop fr">
+          <ul>
+            <li class="fl" (click)="showModule('add')"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</li>
+            <li class="fl" (click)="showModule('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png" alt=""></span>修改</li>
+            <li class="fl" (click)="delSelect()"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</li>
+          </ul>
+        </div>
+      </header>
+      <p-dataTable resizableColumns="true" [value]="cars" class="table" (onRowClick)="onRowSelect($event)" selectionMode="single">
+        <p-column field="bm" header="表名"></p-column>
+        <p-column field="zdm" header="字段名"></p-column>
+        <p-column field="sjlbmc" header="绑定的数据类别"></p-column>
+        <p-column field="bz" header="备注"></p-column>
+        <p-column field="cjsj" header="创建时间">
+          <ng-template let-col let-car="rowData" pTemplate="body">
+            <span>{{car[col.field] | date:"yyyy-MM-dd" }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="zhgxsj" header="最后更新时间">
+          <ng-template let-col let-car="rowData" pTemplate="body">
+            <span>{{car[col.field] | date:"yyyy-MM-dd" }}</span>
+          </ng-template>
+        </p-column>
+    </p-dataTable>
+      <div class="foot">
+        <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+      </div>
+    </div>
+
+    <div #alertRoom></div>
+    <p-growl [(value)]="msgs"></p-growl>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

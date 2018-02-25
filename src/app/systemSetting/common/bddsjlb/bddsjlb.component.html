@@ -1,0 +1,13 @@
+<div class="boxShadow">
+  <div>
+    <input type="text" class="searchInput" placeholder="请输入需要搜索的内容">
+  </div>
+  <div class="botton">
+   <div class="list rl clearfix" *ngFor="let list of bddsjlx">
+      <div class="fl">{{list.name}}</div>
+      <ul class="fl">
+         <li class="fl" *ngFor="let i of list.zdkList" (click)="OutputValue(i)">{{i.mc}}</li>
+      </ul>
+   </div>
+  </div>
+</div>

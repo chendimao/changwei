@@ -1,0 +1,31 @@
+:host
+/deep/
+.ui-widget-header{
+    border: none;
+    background: white;
+}
+:host
+/deep/
+a.ui-menuitem-link:hover{
+    color: #0099cb;
+}
+:host
+ /deep/
+ .bread li:last-child a{
+     color: #0099cb;
+ }
+:host
+/deep/
+.bread li:nth-child(2){
+    display: none;
+}
+:host
+/deep/
+.ui-state-active{
+    background: none;
+}
+:host
+/deep/
+.ui-breadcrumb a{
+    color: #666;
+}

@@ -1,0 +1,13 @@
+<div class="nav fl" [ngClass]="class">
+    <div class="fgczdxpz">
+        <input type="text" class="searchInput" placeholder="名称" [(ngModel)]="inputValue" (ngModelChange)="searchList(inputValue)">
+    </div>
+    <ul class="ulList">
+
+        <li [ngClass]="{'list':classSel==list}" *ngFor="let list of gcList" (click)="onselect(list)" [ngSwitch]="type">
+            <div *ngSwitchCase="'gc'">{{list.name}}</div>
+            <div *ngSwitchCase="'zbfl'">{{list.mc}}</div>
+
+        </li>
+    </ul>
+</div>

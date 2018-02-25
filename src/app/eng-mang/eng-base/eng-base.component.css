@@ -1,0 +1,54 @@
+.containerEng{
+    padding: 15px;
+    overflow-y: auto;
+
+}
+li.fl.group.group-3{
+    max-height: 50px;
+}
+*{
+    color: #666666;
+}
+.header{
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+
+}
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+.areaSelect li{
+    color: #666666;
+}
+.areaSelect li.active{
+    background: #546478;
+    color: white;
+}
+.body{
+    border: none;
+    padding: 15px;
+}
+.engBody{
+    margin-top: 15px;
+    padding-left: 1px;
+}
+:host
+/deep/
+.sle select.alertSelect{
+    width: calc(100% - 45px);
+    padding: 4.5px;
+}
+.sle{
+    width: 200px;
+}
+.t{
+    display: inherit;
+}
+.searchInput{
+    margin-top: 0px;
+}
+.btn-group{
+    margin-top: 20px;
+}

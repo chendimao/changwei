@@ -1,0 +1,127 @@
+.nav {
+    background: #eaedf4;
+    width: 180px;
+    height: 100%;
+    color: white;
+    overflow: hidden;
+    padding-top: 15px;
+}
+
+.cl {
+    padding: 8px;
+    width: 180px;
+    box-sizing: border-box;
+}
+
+.inputH {
+    padding: 8px;
+    border: 1px solid #ccc;
+    color: #999999;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cl .xiala {
+    right: 15px;
+}
+
+.letfNav {
+    background: #eaedf4;
+    padding-top: 0;
+}
+
+.conBody {
+    width: calc(100% - 360px);
+}
+
+header {
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+header select {
+    padding: 6.5px 5px;
+}
+
+.searchInput {
+    margin: 0;
+    padding: 8px 2px;
+    height: auto;
+    margin-left: 10px;
+    width: 150px;
+}
+
+.title {
+    padding-top: 8px;
+}
+
+.gc_title {
+    width: 180px;
+    box-sizing: border-box;
+    padding: 20px 15px;
+    color: #333333;
+    background: #d9dee4;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.three_title {
+    font-size: 12px;
+    width: 180px;
+    box-sizing: border-box;
+    padding: 20px 15px;
+    background: linear-gradient(to right, #ffffff 85%, #f5f5f5 100%);
+}
+
+.btn-group {
+    margin-top: 15px;
+}
+
+.three_title span {
+    padding-left: 20px;
+    border-left: 2px solid #0099cb;
+}
+
+.model_three_title {
+    padding: 10px 15px;
+    background: none;
+}
+
+.sec_nav {
+    padding-top: 0;
+    color: #333333;
+}
+
+.ortherBody {
+    width: calc(100% - 180px);
+}
+
+.clickTree {
+    width: 45%;
+    padding: 15px;
+}
+.nodeBtn{
+    width: 10%;
+    box-sizing: border-box;
+    padding: 1px 10px;
+}
+.nodeBtn li{
+    border: 1px solid #5ebede;
+    padding: 7px 15px;
+    text-align: center;
+    margin-top: 15px;
+    border-radius: 15px;
+    color: #666;
+
+}
+.nodeBtn li:hover{
+    background: #8de0fc;
+    color: white;
+}
+
+@media (max-width: 1025px) {
+    .btnGrop li {
+        border: none;
+    }
+}
+

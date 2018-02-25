@@ -1,0 +1,44 @@
+<div [@flyIn] style="height: 100%">
+<app-treeList (childEvent)="isSearchList($event)" [value]="treelist"></app-treeList>
+<div *ngIf="isShow !=1">
+    <div class="conBody fl">
+        <div class="title">
+            下级行政区划列表
+        </div>
+        <header class="clearfix">
+            <div class="fl rl">
+                <input class="searchInput" (keydown)="searchList($event,key)" [(ngModel)]="key" placeholder="区划编码、简称、全称、级别" type="text">
+                <span class="btnClick" (click)="searchList('click',key)"></span>
+            </div>
+            <div class="btnGrop fr">
+                <ul>
+                    <li class="fl" (click)="showModel('add')"><span class="img"><img alt="" src="assets/img/icon/jiahao.png"></span>新增
+                    </li>
+                    <li class="fl" (click)="showModel('rew')"><span class="img"><img alt="" src="assets/img/icon/brush_fill.png"></span>修改
+                    </li>
+                    <li class="fl" (click)="delSelect()"><span class="img"><img alt="" src="assets/img/icon/trash.png"></span>删除
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <p-dataTable selectionMode="single" [style]="{'text-align':'left'}" [value]="tableList" class="table" (onRowClick)="onRowSelect($event)" resizableColumns="true">
+            <p-column field="localityName" header="区划简称"></p-column>
+            <p-column field="localityDesc" header="区划全称"></p-column>
+            <p-column field="localityCode" header="区划代码" [style]="{'width':'135px'}"></p-column>
+            <p-column field="parentLocCode" header="上级区划代码" [style]="{'width':'135px'}"></p-column>
+            <p-column field="localityLevel" header="区划级别" [style]="{'width':'75px'}" ></p-column>
+            <p-column field="remark" header="备注"></p-column>
+
+        </p-dataTable>
+
+        <div class="foot">
+            <app-paginator [url]="listUrl"  [count]="count"  [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+        </div>
+        <div #xzqhglxq></div>
+        <p-growl [(value)]="msgs"></p-growl>
+    </div>
+</div>
+<div *ngIf="isShow ==1" class="conBody fl">
+    <app-waring></app-waring>
+</div>
+</div>

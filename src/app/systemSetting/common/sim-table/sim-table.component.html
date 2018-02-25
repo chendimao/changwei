@@ -1,0 +1,17 @@
+<div class="boxShadow clearfix">
+    <header class="clearfix">
+        <div class="fl group-2">{{head.name}}</div>
+        <div class="fl group-2">{{head.dec}}</div>
+    </header>
+    <div class="list_content">
+        <ul class="clearfix" *ngFor="let list of tableInfo" (click)="selectItem(list)">
+            <!--<li class="group-2 fl" *ngIf="list.columnName !=''">{{list.tableName}}</li>-->
+            <!--<li class="group-2 fl">{{list.columnName}}</li>-->
+            <li class="group-2 fl" [ngSwitch]="swtichBtn">
+                <div  *ngSwitchCase="1">{{list.tableName}}</div>
+                <div  *ngSwitchDefault>{{list.columnName}}</div>
+            </li>
+            <li class="group-2 fl">{{list.comments}}</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+
+.areaShow .list {
+    padding: 3px 10px;
+    cursor: pointer;
+}
+
+.areaShow .list:hover {
+    background: #0099cb;
+    color: white;
+}
+
+.areaShow {
+    background: white;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    width: calc(100% - 135px);
+    border: 1px solid #cccccc;
+    color: #999;
+    z-index: 2;
+}
+.selected {
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+ul{
+    display: inline-block;
+}
+.active{
+    padding: 0 10px;
+}

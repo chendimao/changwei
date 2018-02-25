@@ -1,0 +1,49 @@
+<p-dialog modal="modal"
+          responsive="true"
+          [(visible)]="display"  height="100%"  breakpoint="100%">
+    <p-header>
+        <div>工程注册详情</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(1)">
+        </div>
+    </p-header>
+    <div class="moduleAlert">
+        <form action="" #ngModel="ngForm">
+            <div>
+                <ul>
+                    <li class="fl group group-2"><span class="importent">工程名称</span><input type="text" [(ngModel)]="project.name" name="name"></li>
+                    <li class="fl group group-2"><span class="importent">工程简称</span><input type="text" [(ngModel)]="project.shortName" name="shortName"></li>
+                    <li class="fl group group-2"><span class="importent" >工程类别</span>
+                        <app-select-list [width]="120" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    </li>
+                    <li class="fl group group-2 rl"><span class="importent">工程代码</span>
+                        <input type="text" [(ngModel)]="project.code" name="code" disabled>
+                        <div class="fl zdbutton" (click)="zdButton()">自动生成</div>
+                    </li>
+                </ul>
+                <div >
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea  cols="30" rows="10" class="textarea" [(ngModel)]="project.remark" name="remark"></textarea>
+                    </div>
+                    <div class="fl group group-2"><span >创建时间</span><input type="text" value="{{ project.creatTime | date:'yyyy-MM-dd' }}" name="cjsj" disabled></div>
+                    <div class="fl group group-2"><span >最后修改时间</span><input type="text" value="{{ project.creatTime | date:'yyyy-MM-dd' }}" name="zhgxsj" disabled></div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <p-footer>
+
+        <div class="btn-group icon">
+            <a (click)="save(project,'save')">保存</a>
+            <a (click)="save(project,'add')">保存并新增</a>
+            <a (click)="close()">退出</a>
+        </div>
+
+    </p-footer>
+</p-dialog>
+<p-growl  	 [(value)]="msgs"></p-growl>

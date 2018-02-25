@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var arr = [
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "data": {
+
+                                                "start": null,
+                                                "limit": null,
+                                                "orderCol": null,
+                                                'isCheck': 0,
+                                                "zdxmc": "五",
+
+
+                                            }
+                                        }
+                                    ],
+                                    "data": {
+                                        "start": null,
+                                        "limit": null,
+                                        "orderCol": null,
+                                        'isCheck': 0,
+                                        "zdxmc": "四",
+
+                                    }
+                                }
+                            ],
+                            "data": {
+                                "start": null,
+                                "limit": null,
+                                "orderCol": null,
+                                "zdxmc": "三",
+                                'isCheck': 0,
+
+
+                            }
+                        }
+                    ],
+                    "data": {
+                        "start": null,
+                        "limit": null,
+                        "orderCol": null,
+                        "zdxmc": "er",
+                        'isCheck': 0,
+
+                    }
+                }
+            ],
+            "data": {
+                "start": null,
+                "limit": null,
+                "orderCol": null,
+                "zdxmc": "一",
+                'isCheck': 0,
+
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "data": {
+                                                "data": {
+                                                    "start": null,
+                                                    "limit": null,
+                                                    "orderCol": null,
+                                                    "zdxmc": "五",
+
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "data": {
+                                        "start": null,
+                                        "limit": null,
+                                        "orderCol": null,
+                                        "zdxmc": "四",
+
+                                    }
+                                }
+                            ],
+                            "data": {
+                                "start": null,
+                                "limit": null,
+                                "orderCol": null,
+                                "zdxmc": "三",
+
+                            }
+                        }
+                    ],
+                    "data": {
+                        "start": null,
+                        "limit": null,
+                        "orderCol": null,
+                        "zdxmc": "er",
+
+                    }
+                }
+            ],
+            "data": {
+                "start": null,
+                "limit": null,
+                "orderCol": null,
+                "zdxmc": "二",
+
+            }
+        }
+    ];
+    var resArr = [
+        {
+            "children": null,
+            "data": {
+                "start": null,
+                "limit": null,
+                "orderCol": null,
+                "zdxmc": "一",
+                'id': "D984061EC9414A3BAE2DCD12EC3FA26E",
+
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "data": {
+                                                "data": {
+                                                    "start": null,
+                                                    "limit": null,
+                                                    "orderCol": null,
+                                                    "zdxmc": "五",
+
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "data": {
+                                        "start": null,
+                                        "limit": null,
+                                        "orderCol": null,
+                                        "zdxmc": "四",
+
+                                    }
+                                }
+                            ],
+                            "data": {
+                                "start": null,
+                                "limit": null,
+                                "orderCol": null,
+                                "zdxmc": "三",
+
+                            }
+                        }
+                    ],
+                    "data": {
+                        "start": null,
+                        "limit": null,
+                        "orderCol": null,
+                        "zdxmc": "er",
+
+                    }
+                }
+            ],
+            "data": {
+                "start": null,
+                "limit": null,
+                "orderCol": null,
+                "zdxmc": "二",
+
+            }
+        }
+    ];
+    var id = "D984061EC9414A3BAE2DCD12EC3FA26E";
+    var item = {
+        "start": null,
+        "limit": null,
+        "orderCol": null,
+        "zdxmc": "children",
+    }
+
+    function checkAll(arr) {
+        for (let key of arr) {
+            if (key.children) {
+                key.data.isCheck=1;
+                checkAll(key.children)
+            }else{
+                key.data.isCheck=1;
+            }
+        }
+        return arr;
+    }
+
+    console.log(checkAll(arr));
+
+
+</script>
+</body>
+</html>

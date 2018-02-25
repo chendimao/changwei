@@ -1,0 +1,504 @@
+<app-treeList (childEvent)="getEvent($event)"></app-treeList>
+<div class="containerEng">
+    <div *ngIf="isShowRight">
+        <header>
+            <div class="title">
+                年度计划登记
+            </div>
+        </header>
+        <div class="engBody">
+            <div class="tableEng">
+                年度计划信息
+            </div>
+            <div class="clearfix">
+                <div class="fl searchDiv">
+                    <input type="text" class="searchInput" placeholder="计划年度、实施主管单位、计划下达单位">
+                </div>
+                <div class="btnGrop fr">
+                    <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
+                    <div class="fl" (click)="openModule()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                  alt=""></span>编辑
+                    </div>
+                    <div class="fl"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
+                    <div class="fl"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</div>
+                </div>
+            </div>
+            <div class="body clearfix">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>计划年度</td>
+                        <td>计划实施主管单位</td>
+                        <td>计划下达单位</td>
+                        <td>计划实施主管单位行政区域</td>
+                        <td>投资计划（万元）</td>
+                        <td>备注</td>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>2016</td>
+                        <td>安溪县移民局</td>
+                        <td>泉州白赖水利枢纽工程
+                            投资开发有限公司
+                        </td>
+                        <td>福州省泉州市安溪县</td>
+                        <td>3000.00</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2017</td>
+                        <td>安溪县移民局</td>
+                        <td>泉州白赖水利枢纽工程
+                            投资开发有限公司
+                        </td>
+                        <td>福州省泉州市安溪县</td>
+                        <td>5000.00</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+                <p-dialog modal="modal" [(visible)]="display" [style]="{'width':'100%','height':'100%','padding':'0','margin':'0','padding-bottom':'100px'}"
+                          [contentStyle]="{'width':'100%','height':'100%','margin':'0',left:'0px','overflow':'auto'}"
+                          height="100%" width="100%" [breakpoint]="1000">
+                    <p-header>
+                        <div>年度计划详情信息</div>
+                        <div class="showClose">
+                            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="bigest()">
+                            <img src="/assets/img/icon/x.png" alt="关闭" (click)="closeModule(1)">
+                        </div>
+                    </p-header>
+                    <div class="moduleAlert">
+                        <div class="wraper">
+                            <div class="com no-bor">
+                                <h4 class="title-1 pb-4">基本信息</h4>
+                                <div class="form clearfix">
+                                    <div class="group group-2 red">
+                                        <label>年度计划：</label>
+                                        <input type="" name="" id="" value="" placeholder="2016">
+                                    </div>
+                                    <div class="group group-2 red">
+                                        <label>计划实施主管单位：</label>
+                                        <select>
+                                            <option>泉州白赖水利枢纽工程投资开发有限公司</option>
+                                        </select>
+                                    </div>
+                                    <div class="group group-2 red">
+                                        <label>计划实施主管单位：</label>
+                                        <select>
+                                            <option>福建省泉州市安溪县</option>
+                                        </select>
+                                    </div>
+                                    <div class="group group-2 red dw-wrap">
+                                        <label>计划总投资：</label>
+                                        <input type="" name="" id="" value="" placeholder="3000">
+                                        <span class="dw">万元</span>
+                                    </div>
+                                    <div class="group group-0 ">
+                                        <label>计划摘要：</label>
+                                        <textarea name="" rows="" cols="" placeholder="请输入内容"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="com no-bor">
+                                <h4 class="title-1 pb-4 inline-b">
+                                    明细信息分类
+                                    <ul class="com-tab clearfix">
+                                        <li (click)='tabNav(1)' class="active" [ngClass]="{'active':show==1}">工作计划</li>
+                                        <li (click)="tabNav(2)" [ngClass]="{'active':show==2}">资金计划</li>
+                                        <li (click)="tabNav(3)" [ngClass]="{'active':show==3}">相关附件文件</li>
+                                    </ul>
+                                </h4>
+                                <div *ngIf="show==1">
+                                    <div class="form clearfix">
+                                        <div class="group search float-l">
+                                            <input type="text" name="" id="" value="" placeholder="项目...">
+                                            <label for="id02"><img src="assets/img/icon/search.png"/><input
+                                                    type="submit" name="" id="id02" value="提交"></label>
+                                        </div>
+                                        <div class="group float-r">
+                                            <input type="checkbox" name="" id="id01" value="">
+                                            <label class="text-left" for="id01">仅显示非空项</label>
+                                        </div>
+                                    </div>
+                                    <div class="table-wrap">
+                                        <table class="table table1">
+                                            <thead>
+                                            <tr>
+                                                <td>序号</td>
+                                                <td>项目</td>
+                                                <td>单位</td>
+                                                <td>本年计划</td>
+                                                <td>备注</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>土地征收面积</td>
+                                                <td>亩</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>土地平整面积
+                                                </td>
+                                                <td>亩</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>移民安置房建设面积</td>
+                                                <td>㎡</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>搬迁安置移民人数
+                                                </td>
+                                                <td>人</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>生产安置移民人数
+                                                </td>
+                                                <td>人</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>房屋拆除面积
+                                                </td>
+                                                <td>㎡</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>等级公路复建里程
+                                                </td>
+                                                <td>km</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>8</td>
+                                                <td>
+                                                    输电线路复建里程
+                                                </td>
+                                                <td>km</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>9</td>
+                                                <td>通讯线路复建里程
+                                                </td>
+                                                <td>km</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>10</td>
+                                                <td>小水电补偿
+                                                </td>
+                                                <td>人</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>10.1</td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;数量
+                                                </td>
+                                                <td>座</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>10.2</td>
+                                                <td> &nbsp;&nbsp;&nbsp;&nbsp;装机容量
+                                                </td>
+                                                <td>kw</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>11</td>
+                                                <td>小型专项设施补偿数量
+                                                </td>
+                                                <td>项</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>12</td>
+                                                <td>库底清理面积
+                                                </td>
+                                                <td>亩</td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div *ngIf="show==2">
+                                    <div class="form clearfix">
+                                        <div class="group search float-l">
+                                            <input type="text" name="" id="" value="" placeholder="项目...">
+                                            <label for="id02"><img src="assets/img/icon/search.png"/><input
+                                                    type="submit" name="" id="id02" value="提交"></label>
+                                        </div>
+                                        <div class="group float-r">
+                                            <input type="checkbox" name="" id="id01" value="">
+                                            <label class="text-left" for="id01">仅显示非空项</label>
+                                        </div>
+                                    </div>
+                                    <div class="table-wrap">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <td>序号</td>
+                                                <td>项目</td>
+                                                <td>单位</td>
+                                                <td>本年计划</td>
+                                                <td>备注</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>农村移民安置补偿费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>城集镇迁建补偿费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>工业企业处理补偿费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>专业项目改复建补偿费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>防护工程费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>库底清理费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>其他费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>8</td>
+                                                <td>有关税费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>9</td>
+                                                <td>
+                                                    预备费</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10</td>
+                                                <td>静态总投资</td>
+                                                <td>万元</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+
+
+
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div *ngIf="show==3">
+                                    <div class="file clearfix">
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img01.png">
+                                                    <p class="mt-1">img</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>泉州白濑水利枢纽工程建设征地移民安置2016年度计划（安溪县）</p>
+                                                    <p>XXXXX.文件名</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img02.png">
+                                                    <p class="mt-1">pdf</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>泉州白濑水利枢纽工程建设征地移民安置2016年度计划（安溪县）</p>
+                                                    <p>XXXXX.文件名</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img03.png">
+                                                    <p class="mt-1">word</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>泉州白濑水利枢纽工程建设征地移民安置2016年度计划（安溪县）</p>
+                                                    <p>XXXXX.文件名</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img04.png">
+                                                    <p class="mt-1">video</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>泉州白濑水利枢纽工程建设征地移民安置2016年度计划（安溪县）</p>
+                                                    <p>XXXXX.文件名</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img05.png">
+                                                    <p class="mt-1">excel</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>泉州白濑水利枢纽工程建设征</p>
+                                                    <p>XXXXX.文件名</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel group group-3">
+                                            <div class="panel-wrap clearfix">
+                                                <div class="panel-heading">
+                                                    <img src="assets/img/icon//img06.png">
+                                                    <p class="mt-1">upload</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p class="update">上传文件</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="btn-group icon mt-4">
+                                <a class="active" ><i><img src="assets/img/icon/save.png"/></i>保存</a>
+                                <a ><i><img src="assets/img/icon/go.png"/></i>保存并新增</a>
+                                <a ><i><img src="assets/img/icon/exit.png"/></i>退出</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </p-dialog>
+            </div>
+            <div class="tableEng footer">
+                <p-paginator rows="10" totalRecords="100" pageLinkSize="1" templateRight></p-paginator>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="defaultShow">
+        <app-waring></app-waring>
+    </div>
+</div>

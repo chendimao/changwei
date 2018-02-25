@@ -1,0 +1,55 @@
+<p-dialog modal="modal"
+          responsive="true"
+          [(visible)]="display" height="100%" breakpoint="100%">
+    <p-header>
+        <div>筛选条件</div>
+        <div class="showClose">
+            <img src="/assets/img/icon/bigest.png" alt="最大化" (click)="showtype()">
+            <img src="/assets/img/icon/x.png" alt="关闭" (click)="close()">
+        </div>
+    </p-header>
+    <form #query="ngForm">
+        <div class="moduleAlert">
+            <div>
+                <ul>
+                    <li class="fl group group-2"><span>户主名称</span><input type="text" ngModel name="mc" ></li>
+                    <li class="fl group group-2"><span>户主身份证号</span><input type="text" ngModel name="cardId" ></li>
+                    <li class="fl group group-2"><span>家庭成员姓名</span><input type="text" ngModel name="mc"></li>
+                    <li class="fl group group-2"><span>家庭成员省份证号</span><input type="text" ngModel name="mc"></li>
+                    <li class="fl group group-2"><span>编号</span><input type="text" ngModel name="mc"></li>
+                    <li class="fl group group-2"><span>专业大类</span>
+                        <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    </li>
+                    <li class="fl group group-1 rl"><span>调查范围</span>
+                        <input type="text" class="dcfw">
+                        <i class="xiala" (click)="showTypeBlock()"></i>
+                        <app-surver-area [values]="isShowDcfw"></app-surver-area>
+                    </li>
+                    <li class="fl group group-2"><span>是否线外</span>
+                        <p-selectButton [options]="types1" ngModel name="mc"
+                                        (click)="selectedTypea()"></p-selectButton>
+                    </li>
+                    <li class="fl group group-2">
+                        <span>是否空挂户</span>
+                        <p-selectButton [options]="types2" [(ngModel)]="selectedType2" name="sfgkh"
+                                        (click)="selectedTypeb()"></p-selectButton>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+        <p-footer>
+
+
+
+                <div class="btn-group icon clearfix">
+                    <a class="active" (click)="clear()"><i><img class="img" src="assets/img/icon/save.png"/></i>清空筛选条件</a>
+                    <a><i><img class="img" src="assets/img/icon/go.png"/></i>执行筛选</a>
+
+                </div>
+
+
+    </p-footer>
+
+</p-dialog>

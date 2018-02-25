@@ -1,0 +1,48 @@
+.nav{
+    background: #eaedf4;
+    width: 180px;
+    height: 100%;
+    color: white;
+}
+.nav_title{
+    height: 25px;
+    background: #D9DEE4;
+    padding: 15px;
+    color: black;
+    font-weight: bold;
+}
+.pro li{
+    padding-left: 30px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid white;
+}
+.pro li:hover{
+    background: #cbd0da;
+
+}
+:host
+/deep/
+.ui-accordion .ui-accordion-header{
+    background: #eaedf4;
+    border: none;
+    height: 40px;
+}
+:host
+/deep/
+.ui-widget-content{
+    background: #eaedf4;
+    padding: 0 11px;
+}
+:host
+/deep/
+.ui-accordion .ui-accordion-header a{
+    margin-top: 5px;
+}
+
+/*:host*/
+/*/deep/*/
+/*.ui-accordion .ui-accordion-header>.fa{*/
+
+/*display: none;*/
+/*}*/

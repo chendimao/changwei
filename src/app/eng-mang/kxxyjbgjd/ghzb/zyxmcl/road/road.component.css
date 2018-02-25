@@ -1,0 +1,215 @@
+table{
+    color: #666666;
+}
+.header{
+    border-bottom: 1px solid #cccccc;
+    font-size: 15px;
+}
+header{
+    border-bottom: 1px solid #cccccc;
+}
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
+.body{
+    padding: 0 15px 25px;
+}
+.engBody{
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    padding-left: 1px;
+    color: #333333;
+}
+.title{
+    display: inline-block;
+    padding: 15px;
+    border-bottom: 3px solid #0095cd;
+    color: #0095cd;
+}
+
+.btnGrop{
+    padding: 15px;
+}
+.text{
+    margin-top: 5px;
+}
+.xiala{
+    display: inline-block;
+    margin-right: 5px;
+    border-top: 10px solid #666666;
+}
+.btnGrop div{
+    padding: 8px 15px;
+    border: 1px solid #cccccc;
+    margin-left: 15px;
+}
+.searchDiv{
+padding: 15px;
+    width: 250px;
+}
+.footer{
+    border-top: 1px solid #cccccc;
+}
+.searchInput{
+    width: 100%;
+}
+:host
+/deep/
+.ui-widget-header{
+    border: none;
+}
+
+h4 {
+    font-size: 14px;
+    color: #333;
+    font-weight: normal;
+}
+.com {
+    padding: 8px 15px 30px 15px;
+    border-bottom: 1px solid #ddd;
+}
+.title-1 {
+    text-indent: 0.75em;
+    position: relative;
+}
+.title-1:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top:2px;
+    width: 3px;
+    height: 12px;
+    background-color: #08c;
+}
+input,select,textarea {
+    color: #999;
+    border-width: 1px;
+    border-color: #ddd;
+    border-style: solid;
+    padding: 8px 6px;
+    transition: all .33s;
+}
+::-webkit-input-placeholder,::-ms-input-placeholder,::-moz-placeholder {
+    color: #999;
+}
+textarea {
+    min-height: 5rem;
+}
+label {
+    color: #666;
+    padding: 8px 6px;
+    transition: all .33s;
+}
+[type="checkbox"] {
+    margin-top: 8px;
+    width: auto !important;
+}
+input:focus,select:focus,textarea:focus  {
+    border-color: #00c1de;
+}
+.group {
+    float: left;
+    padding: .75rem 0;
+}
+.group-0 {
+    width: 100%;
+}
+.group-1 {
+    width: 60%;
+}
+.group-2 {
+    width: 50%;
+}
+.group-3 {
+    width: 33.33%;
+}
+.group> label {
+    width: 100px;
+    text-align: right;
+    float: left;
+}
+.group >input,.group >select,.group >textarea {
+    width: calc(100% - 120px);
+    float: left;
+}
+.group-2-1 input{
+    width: calc(100% - 220px);
+}
+.group-2-1 .unit{
+    border: 1px solid #cccccc;
+    background: #666666;
+    color: white;
+    box-sizing: border-box;
+    padding: 7px 15px;
+    margin-right: 20px;
+    width: 60px;
+    float: right;
+}
+.red label {
+    color: #ff5029;
+}
+.text-left {
+    text-align: left !important;
+}
+.float-l {
+    float: left !important;
+}
+.float-r {
+    float: right !important;
+}
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+.table thead {
+    background: #e7ebee;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    border-bottom: 2px solid #cccccc;
+}
+.table tr td {
+    border: 1px solid #cccccc;
+    padding: 13px;
+    color: #666;
+    transition: all .33s;
+}
+.table tr {
+    transition: all .33s;
+}
+.table tr:hover {
+    background-color: #8fe3ff;
+}
+.table tbody>tr>td:nth-child(2){
+    text-align: left;
+}
+.no-bor {
+    border-bottom: none;
+}
+.btn-group {
+    text-align: center;
+}
+.btn-group.icon>a {
+    padding: 10px 16px;
+    margin: 3px;
+    background-color: #f5f6fa;
+    border: 1px solid #ddd;
+    color: #666;
+}
+.btn-group.icon>a.active {
+    background-color: #09c;
+    color: #fff;
+}
+.btn-group.icon>a>i>img {
+    margin-bottom: -3px;
+    margin-right: 3px;
+}
+
+:host
+/deep/
+.ui-dialog .ui-dialog-content{
+    padding: 0;
+}
