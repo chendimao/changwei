@@ -1,19 +1,21 @@
 <app-header-nav></app-header-nav>
 <header class="fl clearfix">
     <ul class="fl">
-        <li class="fl" (click)="tab('all')" [ngClass]="{'active':show.all=='true'}">所有（{{Reservoir.count}}座）</li>
-        <li class="fl" (click)="tab('langer')" [ngClass]="{'active':show.langer==true}">大中型水库（{{Reservoir.langer}}座）
+        <li class="fl" (click)="tab('all')" [class.active]="showIndex==='all'">所有（{{Reservoir.count}}座）</li>
+        <li class="fl" (click)="tab('langer')" [class.active]="showIndex==='langer'">大中型水库（{{Reservoir.langer}}座）
         </li>
-        <li class="fl" (click)="tab('small')" [ngClass]="{'active':show.small==true}">小型水库（{{Reservoir.small}}座）</li>
-        <li class="fl" (click)="tab('prevent')" [ngClass]="{'active':show.prevent==true}">
+        <li class="fl" (click)="tab('small')" [class.active]="showIndex==='small'">小型水库（{{Reservoir.small}}座）</li>
+        <li class="fl" (click)="tab('prevent')" [class.active]="showIndex==='prevent'">
             防洪和引调工程（{{Reservoir.prevent}}座）
         </li>
-        <li class="fl" (click)="tab('care')" [ngClass]="{'active':show.care==true}">重点关注（{{Reservoir.care}}座）</li>
+        <li class="fl" (click)="tab('care')" [class.active]="showIndex==='care'">重点关注（{{Reservoir.care}}座）</li>
     </ul>
-    <input type="text" class="fr searchInput" placeholder="输入水利水电工程名称">
+    <div class="slsdgc">
+        <input type="text" class="fr searchInput" placeholder="输入水利水电工程名称">
+    </div>
 </header>
 <div class="contaner clearfix">
-    <div class="clearfix class" *ngIf="show.langer">
+    <div class="clearfix class" *ngIf="showIndex==='langer'||showIndex==='all'">
         <div class="nav_list">大中型水库（<span class="num">{{Reservoir.langer}}座</span>）</div>
         <div class="list  fl rl boxShadow" *ngFor="let list of ReservoirLList">
             <div class="imgShow">
@@ -38,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div class="clearfix class" *ngIf="show.small">
+    <div class="clearfix class" *ngIf="showIndex==='small'||showIndex==='all'">
         <div class="nav_list">小型水库（<span class="num">{{Reservoir.small}}座</span>）</div>
         <div class="list  fl rl boxShadow" *ngFor="let list of ReservoirMList">
             <div class="imgShow">
@@ -63,7 +65,7 @@
             </div>
         </div>
     </div>
-    <div class="clearfix class" *ngIf="show.prevent">
+    <div class="clearfix class" *ngIf="showIndex==='prevent'||showIndex==='all'">
         <div class="nav_list">防洪和引调工程（<span class="num">{{Reservoir.prevent}}座</span>）</div>
         <div class="list  fl rl boxShadow" *ngFor="let list of FhydList">
             <div class="imgShow">
@@ -88,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="clearfix class" *ngIf="show.care">
+    <div class="clearfix class" *ngIf="showIndex==='care'||showIndex==='all'">
         <div class="nav_list">重点关注（<span class="num">{{Reservoir.care}}座</span>）</div>
         <div class="list  fl rl boxShadow" *ngFor="let list of CareList">
             <div class="imgShow">

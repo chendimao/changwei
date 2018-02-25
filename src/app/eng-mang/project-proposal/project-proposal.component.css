@@ -159,11 +159,12 @@ p {
 
 .ul_list li span {
     text-align: right;
-    width: 125px;
+    width: 140px;
+    display: inline-block;
 }
 
 textarea.textarea {
-    width: calc(100% - 125px);
+    width: calc(100% - 140px);
 }
 
 .btnGrop {
@@ -298,6 +299,17 @@ p-fileUpload {
 
 .hover .care {
     background: #ff6600;
+}
+.wnStyle{
+    background: #eaedf2;
+    color: #3c6b99;
+}
+.pro_list  .pro_li.bl.wnStyle:before{
+
+    border-left: 12px solid #eaedf2;
+}
+.textareaBeizhu{
+    width: 125px;
 }
 
 

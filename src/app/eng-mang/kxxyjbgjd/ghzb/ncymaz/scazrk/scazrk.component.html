@@ -1,9 +1,13 @@
-<app-treeList (childEvent)="getEvent($event)"></app-treeList>
+<app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
 <div class="containerEng">
   <div *ngIf="isShowRight">
-    <header >
+
+    <header>
       <div class="title">
-        生产安置人口
+        <ul class="clearfix">
+          <li class="fl active">   <app-breadcrumb [items]="breadcrumb"></app-breadcrumb></li>
+          <!--<li class="fl">非专项部分</li>-->
+        </ul>
       </div>
     </header>
     <div class="engBody">

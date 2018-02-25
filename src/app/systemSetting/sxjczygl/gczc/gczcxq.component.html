@@ -1,6 +1,6 @@
-<p-dialog modal="modal"
-          responsive="true"
-          [(visible)]="display"  height="100%"  breakpoint="100%">
+<p-dialog modal="modal" #ngModel
+          height="100%" width="100%" [breakpoint]="1000"
+          [(visible)]="display"  >
     <p-header>
         <div>工程注册详情</div>
         <div class="showClose">
@@ -46,4 +46,4 @@
 
     </p-footer>
 </p-dialog>
-<p-growl  	 [(value)]="msgs"></p-growl>
+<p-growl  [(value)]="msgs"></p-growl>

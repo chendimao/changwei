@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {HttpService} from "../../../../../service/http-service";
+import {DataProcessingService} from "../../../../../service/dataProcessing.service";
 
 @Component({
     selector: 'app-road',
@@ -11,8 +13,9 @@ export class RoadComponent implements OnInit {
     defaultShow: boolean = true;
 
     display1: boolean = false;
+    private treelist: any;
 
-    constructor() {
+    constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
     openModal() {
@@ -24,6 +27,12 @@ export class RoadComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.HttpService.get(`locality/listTree`)
+            .then(res => {
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+
+            });
     }
 
     getEvent(event) {

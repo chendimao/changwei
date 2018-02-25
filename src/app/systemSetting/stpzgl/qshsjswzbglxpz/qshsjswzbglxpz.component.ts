@@ -29,6 +29,8 @@ export class QshsjswzbglxpzComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.msgs = [];
+        this.msgs.push({severity: 'warn', summary: '填入提醒', detail: '请选择工程'});
         this.qshlbUrl = 'qsrsjswzb/listQsrlb';
         this.HttpService.get('gczc/allList')
             .then(res => {
@@ -143,21 +145,25 @@ export class QshsjswzbglxpzComponent implements OnInit {
         if (resPost['addRes']) {
             console.log('新增，名称，地址，排序号，必填');
         }
-        console.log(resPost['list']);
+        console.log(this.isNull(resPost));
         console.log(resPost['list'].length === 0);
         if (resPost['list'].length !== 0) {
-            this.HttpService.post('qsrsjswzb/save', resPost)
-                .then(res => {
-                    if (res['success'] == true) {
-                        this.msgs = [];
-                        this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
-                    } else {
-                        this.msgs = [];
-                        this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
-                    }
+            if (this.isNull(resPost)) {
+                this.HttpService.post('qsrsjswzb/save', resPost)
+                    .then(res => {
+                        if (res['success'] == true) {
+                            this.msgs = [];
+                            this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
+                        } else {
+                            this.msgs = [];
+                            this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
+                        }
+                    })
+            }else{
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '保存失败', detail: '有必填项未填'});
+            }
 
-
-                })
         } else {
             this.msgs = [];
             this.msgs.push({severity: 'error', summary: '保存失败', detail: '页面没有任何修改'});
@@ -228,7 +234,25 @@ export class QshsjswzbglxpzComponent implements OnInit {
             this.showBlock = true;
         }
     }
+
+    //判断地址是否填写
+    isNull(arr) {
+        for (let item of arr.list) {
+            // console.log(item);
+            for (let item2 of item.list) {
+
+
+                if (item2.swzbflmc && item2.swzblbId && item2.pxh && item2.url) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
 }
+
 
 export class qshGetParme {
     ssgcdm: string	    //所属工程代码	是

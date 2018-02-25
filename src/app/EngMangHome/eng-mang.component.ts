@@ -13,6 +13,7 @@ export class EngMangHomeComponent implements OnInit {
     public ReservoirMList;
     public FhydList;
     public CareList;
+    private showIndex: string = 'all';
 
 
     constructor(private router: Router) {
@@ -24,18 +25,14 @@ export class EngMangHomeComponent implements OnInit {
         this.FhydList = FhydList;
         this.CareList = CareList;
         this.Reservoir = {'count': 98, 'langer': 26, 'small': 15, 'prevent': 43, 'care': 5};
-        this.show = {'all': true, 'langer': true, 'small': true, 'prevent': true, 'care': true};
-    }
+   }
 
     tab(id): void {
-        this.show = {'all': true, 'langer': false, 'small': false, 'prevent': false, 'care': false};
-        this.show[id] = true;
-        if (id == "all") {
-            this.show = {'all': true, 'langer': true, 'small': true, 'prevent': true, 'care': true};
-        }
+        this.showIndex = id;
+
     }
 
-    jump(id,name): void {
+    jump(id, name): void {
         // this.router.navigate(['/engmang/'], {queryParams: {id: id}});
         this.router.navigate(['/engmang/'], {queryParams: {id: id, name: name}});
     }
@@ -43,16 +40,11 @@ export class EngMangHomeComponent implements OnInit {
 
 }
 
-export class Show {
-    langer: boolean;
-    small: boolean;
-    prevent: boolean;
-    care: boolean;
-}
+
 
 const ReservoirLagList: any = [
     {
-        id: 1, name: '泉州安溪白濑水库', kurong: '57517', sksw: '643.5', zjrl: '5.4', xs: '混凝土面板堆石坝'
+        id: 'S000001', name: '泉州安溪白濑水库', kurong: '57517', sksw: '643.5', zjrl: '5.4', xs: '混凝土面板堆石坝'
     },
     {
         id: 2, name: '莲花水库', kurong: '1135', sksw: '643.5', zjrl: '7.4', xs: '混凝土面板堆石坝'

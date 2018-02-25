@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from "../../../service/http-service";
+import { DataProcessingService } from "../../../service/dataProcessing.service";
 
 @Component({
   selector: 'app-kcqlssqk',
@@ -10,9 +12,18 @@ export class KcqlssqkComponent implements OnInit {
     // 加的加载
     isShowRight: boolean = false;
     defaultShow: boolean = true;
-  constructor() { }
+    private treelist: any;
 
-  ngOnInit() {
+    constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
+    }
+
+
+    ngOnInit() {
+        this.HttpService.get(`locality/listTree`)
+            .then(res => {
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+
+            });
       this.ch = {
           firstDayOfWeek: 0,
           dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],

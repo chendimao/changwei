@@ -29,6 +29,8 @@
     box-sizing: border-box;
     font-size: 12px;
     padding: 6px 0px;
+    max-height: 43px;
+    min-height: 43px;
 }
 .selectArea {
     padding: 9.5px 0;
@@ -188,6 +190,10 @@ ul.showSecList.boxShadow .threeList li:hover{
     resize: none;
     border: 1px solid #ccc;
 }
+.beizhu{
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
 .textareaBeizhu{
     float: left;
     margin-top: 10px;
@@ -197,7 +203,7 @@ width: 60px;
 height: 30px;
 }
 nav{
-    margin-top: 20px;
+    margin-top: 25px;
     overflow: hidden;
 }
 nav li.fl {

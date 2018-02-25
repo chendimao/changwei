@@ -4,13 +4,17 @@ import {HttpService} from "../../../service/http-service";
 import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
 import {SwzbComparedService} from "../../service/swzbCompared.service";
 import {SearchService} from "../../../service/search.service";
+import {SwzbAddService} from "../../service/swzbAdd.service";
+import {ConfirmationService} from "primeng/primeng";
+import {ShareService} from "../../service/share.service";
+
 import * as _ from 'lodash';
 
 @Component({
     selector: 'app-swzbflpzxq',
     templateUrl: './swzbflpzxq.component.html',
     styleUrls: ['../swzbtxpz/swzbtxpz.component.css'],
-    providers: [SearchService, SwzbComparedService]
+    providers: [SearchService, SwzbComparedService, SwzbAddService, ConfirmationService]
 })
 export class SwzbflpzxqComponent implements OnInit {
     display: boolean = true;
@@ -21,17 +25,32 @@ export class SwzbflpzxqComponent implements OnInit {
     private node: any;
     private addObj: addObj = new addObj;
     private rewObj: any;
-    private rewAddObj: any;
-    private rewDelObj: any;
-    private rewUpdateObj: any;
+    private displayDel: boolean = true;
 
-    private sourceTreeTable: any;
+    private rewAddObj: object = {
+        "oper": "Add",
+        "list": []
+    };
+    private rewDelObj: object = {
+        "oper": "Delete",
+        "list": []
+    };
+    private rewUpdateObj: object = {
+        "oper": "Update",
+        "list": []
+    };
+
+    private sourceTreeTable = [];
     private initSourceTreeTable: any;
     private sourceTreeTableSelect: any;
     private isSourceShow1: boolean = false;
     private isSourceShow2: boolean = true;
-    private targetTreeTable: any;
+    private targetTreeTable = [];
     private targetSelectItemZdxId: any;
+    private targetTreeTableSjid: string;
+    private showZbdm: string = 'rew';
+
+    private isSourSelectParentZdxid: string;
 
 
     selectedFiles: any;
@@ -49,7 +68,9 @@ export class SwzbflpzxqComponent implements OnInit {
     list2: any;
     @ViewChild('alterRoom', {read: ViewContainerRef}) AlertBox: ViewContainerRef;
 
-    constructor(private SwzbComparedService: SwzbComparedService, private SearchService: SearchService, private dmRoom: ComponentFactoryResolver, private DataProcessingService: DataProcessingService, private HttpService: HttpService) {
+    @ViewChild('ngModel') model: Element;
+
+    constructor(private ShareService: ShareService, private ConfirmationService: ConfirmationService, private SwzbAddService: SwzbAddService, private SwzbComparedService: SwzbComparedService, private SearchService: SearchService, private dmRoom: ComponentFactoryResolver, private DataProcessingService: DataProcessingService, private HttpService: HttpService) {
         console.log(this.sourceTreeTable);
         console.log(this.initSourceTreeTable);
 
@@ -59,184 +80,9 @@ export class SwzbflpzxqComponent implements OnInit {
     ngOnInit() {
 
 
-
-        var test = [
-            {
-                "start": null,
-                "limit": null,
-                "orderCol": null,
-                "orderType": null,
-                "sql": null,
-                "searchKey": null,
-                "id": "78E84352AA6B488BB9A9E4A6FD5E9466",
-                "ssxtdm": "X000001",
-                "ssgcdm": "S000001",
-                "ssxzqhdm": "350526000000000",
-                "zdxId": "048B5E7E66A74F2CAB1AEA53C8360389",
-                "jldwId": "AC2C4490AFFB4999BCD4D27CAEE774B7",
-                "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                "xh": "1",
-                "pxh": "01",
-                "bz": "test",
-                "cjsj": null,
-                "zhgxsj": null,
-                "zbflId": null,
-                "isCheck": 1,
-                "zdxmc": "主房",
-                "childList": [{
-                    "start": null,
-                    "limit": null,
-                    "orderCol": null,
-                    "orderType": null,
-                    "sql": null,
-                    "searchKey": null,
-                    "id": "2BF49E9CB03D47FBA4BAFA01794D5E45",
-                    "ssxtdm": "X000001",
-                    "ssgcdm": "S000001",
-                    "ssxzqhdm": "350526000000000",
-                    "zdxId": "1FC2A4375A864DFE8B56005F1EF7D90C",
-                    "jldwId": null,
-                    "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                    "xh": "1.1",
-                    "pxh": "0101",
-                    "bz": null,
-                    "cjsj": null,
-                    "zhgxsj": null,
-                    "zbflId": null,
-                    "isCheck": 1,
-                    "zdxmc": "框架结构",
-                    "childList": null,
-                    "zdIdList": null
-                }, {
-                    "start": null,
-                    "limit": null,
-                    "orderCol": null,
-                    "orderType": null,
-                    "sql": null,
-                    "searchKey": null,
-                    "id": "1C636305861E4795A935445BABFB627C",
-                    "ssxtdm": "X000001",
-                    "ssgcdm": "S000001",
-                    "ssxzqhdm": "350526000000000",
-                    "zdxId": "E98E7AAFE83F4F28A39CA3056A24991B",
-                    "jldwId": null,
-                    "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                    "xh": "1.1",
-                    "pxh": "0101",
-                    "bz": null,
-                    "cjsj": null,
-                    "zhgxsj": null,
-                    "zbflId": null,
-                    "isCheck": 1,
-                    "zdxmc": "土木结构",
-                    "childList": null,
-                    "zdIdList": null
-                }],
-                "zdIdList": null
-            },
-            {
-                "start": null,
-                "limit": null,
-                "orderCol": null,
-                "orderType": null,
-                "sql": null,
-                "searchKey": null,
-                "id": "EC9CA75E961B4B018BA13CCF855D31DB",
-                "ssxtdm": "X000001",
-                "ssgcdm": "S000001",
-                "ssxzqhdm": "350526000000000",
-                "zdxId": "1F69419055E94B7B984443FCEC21DF14",
-                "jldwId": "AC2C4490AFFB4999BCD4D27CAEE774B7",
-                "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                "xh": "3",
-                "pxh": "03",
-                "bz": null,
-                "cjsj": null,
-                "zhgxsj": null,
-                "zbflId": null,
-                "isCheck": 1,
-                "zdxmc": "厂房",
-                "childList": [{
-                    "start": null,
-                    "limit": null,
-                    "orderCol": null,
-                    "orderType": null,
-                    "sql": null,
-                    "searchKey": null,
-                    "id": "7E864B87A53E48FA824F8AF203A2C115",
-                    "ssxtdm": "X000001",
-                    "ssgcdm": "S000001",
-                    "ssxzqhdm": "350526000000000",
-                    "zdxId": "5AC509E469A2456F998A85B7A5C63973",
-                    "jldwId": null,
-                    "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                    "xh": "3.1",
-                    "pxh": "0301",
-                    "bz": null,
-                    "cjsj": null,
-                    "zhgxsj": null,
-                    "zbflId": null,
-                    "isCheck": 1,
-                    "zdxmc": "砖混结构",
-                    "childList": null,
-                    "zdIdList": null
-                }],
-                "zdIdList": null
-            },
-            {
-                "start": null,
-                "limit": null,
-                "orderCol": null,
-                "orderType": null,
-                "sql": null,
-                "searchKey": null,
-                "id": "E09C3F04CA4E4B32BDB70E46DF87880F",
-                "ssxtdm": "X000001",
-                "ssgcdm": "S000001",
-                "ssxzqhdm": "350526000000000",
-                "zdxId": "B5834F84C98D48F5BD5E81EA583FCCFC",
-                "jldwId": "AC2C4490AFFB4999BCD4D27CAEE774B7",
-                "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                "xh": "2",
-                "pxh": "02",
-                "bz": null,
-                "cjsj": null,
-                "zhgxsj": null,
-                "zbflId": null,
-                "isCheck": 1,
-                "zdxmc": "杂房",
-                "childList": [{
-                    "start": null,
-                    "limit": null,
-                    "orderCol": null,
-                    "orderType": null,
-                    "sql": null,
-                    "searchKey": null,
-                    "id": "BC2DB8E634894162919B5A359EFD8AAA",
-                    "ssxtdm": "X000001",
-                    "ssgcdm": "S000001",
-                    "ssxzqhdm": "350526000000000",
-                    "zdxId": "D984061EC9414A3BAE2DCD12EC3FA26E",
-                    "jldwId": null,
-                    "jdId": "4DDBCC17FC9348DC945B42F7C46769B0",
-                    "xh": "2.2",
-                    "pxh": "0202",
-                    "bz": null,
-                    "cjsj": null,
-                    "zhgxsj": null,
-                    "zbflId": null,
-                    "isCheck": 1,
-                    "zdxmc": "土木结构",
-                    "childList": null,
-                    "zdIdList": null
-                }],
-                "zdIdList": null
-            }];
-        var test1 = this.DataProcessingService.replaceChildlValue(test, 'childList', 'children', 'zdxMc', 'zdxmc');
-        this.test = this.DataProcessingService.returnTreeTable(test1);
-
         console.log(this.info);
         console.log(this.type);
+        this.showZbdm = this.type;
         this.flhList = [
             {label: '第一栏', value: '1', name: '第一栏'},
             {label: '第二栏', value: '2', name: '第二栏'},
@@ -260,7 +106,6 @@ export class SwzbflpzxqComponent implements OnInit {
                     .then(res => {
                         this.zbflList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'mc', 'label', 'id', 'value');
                         this.addObj.zblId = this.zbflList[0].value;
-
                     });
                 //获取所属分栏列表
                 this.HttpService.get('zbflpz/listFllb')
@@ -268,7 +113,7 @@ export class SwzbflpzxqComponent implements OnInit {
                         console.log(res['returnObject']);
                         this.ssfllbList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'mc', 'label', 'id', 'value');
                         this.addObj.ssfllbdm = this.ssfllbList[0].value;
-
+                        console.log(this.addObj.ssfllbdm);
                     });
 
                 this.msgs = [];
@@ -299,7 +144,9 @@ export class SwzbflpzxqComponent implements OnInit {
                     .then(res => {
                         const resList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', 'zdxMc', 'zdxmc');
                         this.targetTreeTable = this.DataProcessingService.replaceisCheck(this.DataProcessingService.returnTreeTable(resList));
+
                     });
+
                 this.isDisabled = true;
                 break;
 
@@ -314,7 +161,7 @@ export class SwzbflpzxqComponent implements OnInit {
                 // 获取指标分栏类别
                 this.HttpService.get('zbflpz/listZbfl?zdlb=ZBL')
                     .then(res => {
-                        var zbflList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'mc', 'label', 'id', 'value');
+                        const zbflList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'mc', 'label', 'id', 'value');
                         this.zbflList = this.SearchService.searchByRegExp(this.info['zblId'], zbflList, 'value');
 
                     });
@@ -333,8 +180,10 @@ export class SwzbflpzxqComponent implements OnInit {
                 //修改时候目标数据
                 this.HttpService.get(`zbflpz/listFlzbxpz?sszbflpzId=${this.info['id']}`)
                     .then(res => {
-                        const resList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', 'zdxMc', 'zdxmc');
+                        let resList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', 'zdxMc', 'zdxmc');
+                        resList = this.DataProcessingService.replaceChildlValue(resList, 'jddwId', 'jldwId', 'zdxXh', 'xh');
                         this.targetTreeTable = this.DataProcessingService.replaceisCheck(this.DataProcessingService.returnTreeTable(resList));
+
                     });
                 break;
         }
@@ -343,7 +192,6 @@ export class SwzbflpzxqComponent implements OnInit {
             .then(res => {
                 this.jldwList = res['returnObject'];
 
-                this.jldw = res['returnObject'][0].id;
             });
         //原始数据
         this.HttpService.get(`zbflpz/listSjly?ssgcdm=${this.info['ssgcdm']}&ssxzqhdm=${this.info['ssxzqhdm']}&zblId=${this.info['zblId']}&jdId=${this.info['jdId']}`)
@@ -353,6 +201,11 @@ export class SwzbflpzxqComponent implements OnInit {
                 console.log(this.sourceTreeTable);
                 const initreslist = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', '', '');
                 this.initSourceTreeTable = this.DataProcessingService.replaceisCheck(this.DataProcessingService.returnTreeTable(initreslist));
+                console.log(this.targetTreeTable);
+                if (this.targetTreeTable) {
+                    this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+                }
+
             });
         this.zbdm = this.info['zbldm'];
 
@@ -361,6 +214,7 @@ export class SwzbflpzxqComponent implements OnInit {
 
 
     }
+
 
     close() {
         this.display = false;
@@ -378,31 +232,56 @@ export class SwzbflpzxqComponent implements OnInit {
 
     checkbox(e, res) {
         console.log(e);
+        if (e.parent) {
+            this.isSourSelectParentZdxid = e.parent.data.zdxId;
+        }
+
         console.log(res);
-        if (!this.isSourceShow1) {
-            console.log("勾选下级");
-            console.log(e.children === null);
-            if (e.children) {
-                for (var i = 0; i < e.children.length; i++) {
-                    e.children[i].select = true;
+        console.log(this.isSourceShow1);
+        if (res === true) {
+            if (!this.isSourceShow1) {
+                console.log("勾选下级");
+                this.sourceTreeTableSelect = {
+                    "data": e.data,
+                    "children": e.children,
+                };
+                console.log(e.children);
+                if (e.children) {
+                    let list = this.SwzbAddService.checkAll(e.children);
+                    console.log(list);
+                    // this.sourceTreeTableSelect = this.SwzbAddService.selectCheck(list);
                 }
+
+
+            } else {
+                console.log("不勾选下一级");
+                this.sourceTreeTableSelect = {
+                    "data": e.data,
+                    "children": null,
+                };
+            }
+
+        } else {
+            this.sourceTreeTableSelect = null;
+            if (!this.isSourceShow1) {
+                console.log("勾选下级");
+                console.log(e.children === null);
+                if (e.children) {
+                    this.SwzbAddService.noCheckAll(e.children);
+                }
+
+            } else {
+                e.data.select = true;
             }
         }
-        this.sourceTreeTableSelect = {
-            "data": e.data,
-            "children": e.data,
-        };
+
+
         console.log(this.sourceTreeTableSelect);
 
-        this.node = e;
 
-        console.log(this.node);
-        console.log(res);
     }
 
     selectSourceAll(i) {
-        console.log(this.sourceTreeTable);
-        console.log(this.initSourceTreeTable);
         if (this.isSourceShow2) {
             this.isSourceShow2 = false;
         } else {
@@ -415,6 +294,7 @@ export class SwzbflpzxqComponent implements OnInit {
                 break;
             case 2:
                 this.sourceTreeTable = JSON.parse(JSON.stringify(this.initSourceTreeTable));
+                this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
                 console.log("取消全选");
                 break;
         }
@@ -422,17 +302,12 @@ export class SwzbflpzxqComponent implements OnInit {
 
 
     saveAll() {
-        this.SwzbComparedService.SwzbCompared(this.targetTreeTable,this.sourceTreeTable);
-
-
-
-
         console.log("保存初始数据");
-
         console.log("保存最终数据");
         console.log(this.targetTreeTable);
         console.log(this.addObj);
         console.log(this.type);
+
         //新增时候保存
         if (this.type === 'add') {
             if (this.targetTreeTable) {
@@ -441,8 +316,17 @@ export class SwzbflpzxqComponent implements OnInit {
                     this.HttpService.post('zbflpz/add', this.addObj)
                         .then(res => {
                             if (res['success'] === true) {
+                                this.addObj.zbxpzList = [];
+
                                 this.msgs = [];
                                 this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
+                                this.ShareService.sendMessage({
+                                    severity: 'success',
+                                    summary: '填入提醒',
+                                    detail: '新增成功',
+                                    display: 'true',
+                                    clear: 'clear'
+                                });
                             } else {
                                 this.msgs = [];
                                 this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
@@ -456,34 +340,68 @@ export class SwzbflpzxqComponent implements OnInit {
                 this.msgs = [];
                 this.msgs.push({severity: 'error', summary: '保存失败', detail: '请配置分栏列表'});
             }
+
+
         }
         if (this.type === 'rew') {
-            if (this.rewAddObj) {
-                this.rewObj.list.push(this.rewAddObj);
-            }
-            if (this.rewDelObj) {
-                this.rewObj.list.push(this.rewDelObj);
-            }
-            if (this.rewUpdateObj) {
-                this.rewObj.list.push(this.rewUpdateObj);
-            }
-            console.log(this.rewObj);
             console.log(this.rewAddObj);
             console.log(this.rewDelObj);
             console.log(this.rewUpdateObj);
 
 
-            this.HttpService.post('zbflpz/update', this.rewObj)
-                .then(res => {
-                    if (res['success'] == true) {
-                        this.msgs = [];
-                        this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
-                    } else {
-                        this.msgs = [];
-                        this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
-                    }
+            if (this.rewAddObj['list'].length !== 0) {
+                console.log(this.rewAddObj['list'][0]);
+                let arr = Object.keys(this.rewAddObj['list'][0]);
+                if (arr.length !== 0) {
+                    this.rewObj.list.push(this.rewAddObj);
+                    var list = this.SwzbAddService.repleaceZd(_.cloneDeep(this.rewAddObj['list']));
+                    this.rewAddObj['list'] = list;
+                }
 
-                })
+
+            }
+            if (this.rewDelObj['list'].length !== 0) {
+                this.rewObj.list.push(this.rewDelObj);
+            }
+            if (this.rewUpdateObj['list'].length !== 0) {
+                this.rewObj.list.push(this.rewUpdateObj);
+                this.rewUpdateObj['list'] = this.DataProcessingService.replaceChildlValue(this.rewUpdateObj['list'], 'jldwId', 'jddwId', 'xh', 'zdxXh');
+
+            }
+
+            console.log(this.rewObj);
+
+            if (this.rewObj.list.length == 0) {
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '填入提醒', detail: '没有数据发生改变'});
+            } else {
+                this.HttpService.post('zbflpz/update', this.rewObj)
+                    .then(res => {
+                        if (res['success'] == true) {
+                            // 刷新源数据
+                            this.rewAddObj['list'] = [];
+                            this.rewDelObj['list'] = [];
+                            this.rewUpdateObj['list'] = [];
+                            console.log(this.rewDelObj);
+                            //修改时候目标数据
+                            this.HttpService.get(`zbflpz/listFlzbxpz?sszbflpzId=${this.info['id']}`)
+                                .then(res => {
+                                    let resList = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', 'zdxMc', 'zdxmc');
+                                    resList = this.DataProcessingService.replaceChildlValue(resList, 'jddwId', 'jldwId', 'zdxXh', 'xh');
+                                    this.targetTreeTable = this.DataProcessingService.replaceisCheck(this.DataProcessingService.returnTreeTable(resList));
+
+                                });
+                            this.msgs = [];
+                            this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
+                        } else {
+                            this.msgs = [];
+                            this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
+                        }
+
+                    })
+            }
+
+
         }
 
 
@@ -494,72 +412,78 @@ export class SwzbflpzxqComponent implements OnInit {
         console.log(this.selectedFiles);
     }
 
-
-    //增加根节点,
-    addSelectParentNode(e) {
-        this.targetTreeTable.push(this.sourceTreeTableSelect);
-    }
-
-    //增加子节点，先做页面操作，在进行记录
-    addSelectChildrenNode(e) {
-        console.log(this.targetSelectItemZdxId);
-        console.log(this.targetTreeTable);
+    //平级，先增加，在记录，要求目标树有该项
+    addSelectSibNode(e) {
+        console.log(e);
         console.log(this.sourceTreeTableSelect);
-
-        this.targetTreeTable = this.DataProcessingService.addTreeNode(this.targetTreeTable, this.targetSelectItemZdxId, this.sourceTreeTableSelect)
-
-
-        // if (this.node.parent) {
-        //     console.log(this.node);
-        //     console.log(this.node.parent.data.zdxId);
-        //     console.log(this.node.data);
-        //     console.log(this.targetTreeTable);
-        //     let res = addTreeItem(this.targetTreeTable, this.node.parent.data.zdxId, this.node.data);
-        //     if (res === false) {
-        //         this.msgs = [];
-        //         this.msgs.push({severity: 'error', summary: '填入提醒', detail: '请先选择父节点项'});
-        //     }
-        // } else {
-        //     this.msgs = [];
-        //     this.msgs.push({severity: 'error', summary: '填入提醒', detail: '请选择子节点项'});
-        // }
-
+        let parentId = this.isSourSelectParentZdxid;
         if (this.type === 'rew') {
-            this.rewAddObj = {
-                "oper": "add",
-            };
-            let ls = {};
-            ls['zdxId'] = this.node.data.zdxId;
-            ls['zdxMc'] = this.node.data.zdxmc;
-            ls['sjId'] = this.node.parent.data.id;
-            ls['zdxPxh'] = this.node.data.zdxPxh;
-            ls['zdxXh'] = this.node.data.zdxXh;
-            ls['jddwId'] = this.node.data.jldwId;
-            ls['bz'] = this.node.data.bz;
-            console.log(ls);
-
-            let list = [];
-            list.push(ls);
-            console.log(list);
-            this.rewAddObj.list = list;
-
+            let addRes = this.SwzbAddService.addItem(this.targetTreeTable, this.sourceTreeTableSelect, parentId);
+            if (addRes === false) {
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '填入提醒', detail: '请选择目标树有的子项'});
+            }
+            this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+            console.log(this.sourceTreeTableSelect);
+            this.rewAddObj['list'].push(this.sourceTreeTableSelect);
+            console.log(this.rewAddObj);
+        }
+        if (this.type === 'add') {
+            this.targetTreeTable.push(this.sourceTreeTableSelect);
+            console.log(this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable));
         }
 
 
     }
 
-    addSelectSibNode(e) {
-        let list = this.DataProcessingService.swzbflpzShowCheck(_.cloneDeep(this.sourceTreeTable), false);
-        console.log(list);
-        this.targetTreeTable = list;
-        console.log(e);
+    //增加根节点,
+    addSelectParentNode(e) {
+        if (this.type === 'rew') {
+            this.targetTreeTable.push(this.sourceTreeTableSelect);
+            this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+            console.log(this.sourceTreeTableSelect);
+            this.rewAddObj['list'].push(this.sourceTreeTableSelect);
+            console.log(this.rewAddObj);
+        }
+        if (this.type === 'add') {
+            this.targetTreeTable.push(this.sourceTreeTableSelect);
+            console.log(this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable));
+        }
+    }
+
+    //增加子节点，先做页面操作，在进行记录
+    addSelectChildrenNode(e) {
+
+        console.log(this.targetSelectItemZdxId);
+        if (this.targetSelectItemZdxId) {
+            this.targetTreeTable = this.DataProcessingService.addTreeNode(this.targetTreeTable, this.targetSelectItemZdxId, this.sourceTreeTableSelect);
+
+            if (this.type === 'rew') {
+                console.log(this.targetTreeTableSjid);
+                this.sourceTreeTableSelect.data.sjId = this.targetTreeTableSjid;
+                this.rewAddObj['list'].push(this.sourceTreeTableSelect);
+                console.log(this.rewAddObj);
+            }
+            this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+        } else {
+            this.msgs = [];
+            this.msgs.push({severity: 'error', summary: '填入提醒', detail: '请在源数据树中选择父节点项'});
+        }
+
 
     }
 
-    addNode(e) {
+
+    addAllNode() {
+        this.targetTreeTable = this.sourceTreeTable;
+        this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+    }
+
+    addNode() {
+        console.log(this.targetTreeTable);
+        this.targetTreeTable.push({"data": '', "childern": ''});
 
 
-        console.log(e);
     }
 
 
@@ -573,30 +497,68 @@ export class SwzbflpzxqComponent implements OnInit {
 
     //先记录，在进行删除操作
     delNode(e) {
-        if (this.type === 'rew') {
-            let id = e.data.id;
-            this.rewAddObj = {
-                "oper": "Delete",
-            };
-            let ls = {};
-            ls['id'] = id;
+        console.log(e);
+        if (e.children) {
+            this.ConfirmationService.confirm({
+                message: `你是否需要删除${e.data.zdxmc}节点包括其子节点`,
+                accept: () => {
+                    if (this.type === 'rew') {
+                        let id = e.data.id;
+                        let ls = {};
+                        ls['id'] = id;
+                        console.log(this.rewAddObj);
+                        this.rewDelObj['list'].push(ls);
+                        console.log("删除所选项");
+                    }
+                    this.targetTreeTable = this.DataProcessingService.delTreeNode(this.targetTreeTable, e.data.id);
 
-            let list = [];
-            list.push(ls);
-            console.log(list);
-            this.rewAddObj.list = list;
-            console.log(id);
-            console.log("删除所选项");
+                }
+            });
+
+        } else {
+            if (this.type === 'rew') {
+                // 如果是新增的则不需要记录
+                if ("sszbflpzId" in e.data) {
+                    // 删除数据库已有数据
+                    let id = e.data.id;
+                    let ls = {};
+                    ls['id'] = id;
+                    this.rewDelObj['list'].push(ls);
+                    this.targetTreeTable = this.DataProcessingService.delTreeNode(this.targetTreeTable, e.data.id);
+
+                } else {
+                    let list = this.SwzbAddService.delNweAdd(this.rewAddObj['list'], e.data.id);
+                    console.log(list);
+                    for (let key in this.targetTreeTable) {
+                        console.log(!this.targetTreeTable[key])
+                        console.log(JSON.stringify(this.targetTreeTable[key]) == '{}');
+                        if (JSON.stringify(this.targetTreeTable[key]) === '{}') {
+                            console.log(key);
+                            this.targetTreeTable.splice(parseInt(key), 1);
+                            console.log("删除所选项");
+                        }
+                    }
+                    console.log(list);
+
+                }
+
+                console.log(this.rewDelObj);
+
+            }
+
         }
-        this.targetTreeTable = this.DataProcessingService.delTreeNode(this.targetTreeTable, e.data.id);
+
         console.log(this.targetTreeTable);
+        console.log(this.sourceTreeTable);
 
-
+        // this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+        console.log(this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable));
     }
 
     selectSing(e) {
         console.log(e.node);
         console.log(e.node.data);
+        this.targetTreeTableSjid = e.node.data.id;
         this.targetSelectItemZdxId = e.node.data.zdxId;
 
 
@@ -604,33 +566,17 @@ export class SwzbflpzxqComponent implements OnInit {
 
     update(e, zd, value) {
         console.log(e);
-        this.rewUpdateObj = {
-            "oper": "Update",
-        };
+        console.log(zd);
+        console.log(value);
         let ls = {};
         ls['id'] = e.data.id;
-        if (zd === 'jldwId') {
-            ls['jddwId'] = value;
-        }
-        if (zd === 'zdxXh') {
-            ls['zdxXh'] = value;
-        }
-        let list = [];
-        list.push(ls);
-        console.log(list);
-        this.rewUpdateObj.list = list;
+        ls[zd] = value;
+        this.rewUpdateObj['list'] = this.SwzbAddService.update(this.rewUpdateObj['list'], ls);
+        console.log(this.rewUpdateObj['list']);
 
 
     }
 
-    getjSourcelList(e) {
-        console.log(e);
-    }
-
-    getjlTargetList(e) {
-        console.log(e);
-
-    }
 
     getSsfllb(e) {
         console.log(e);
@@ -647,7 +593,9 @@ export class SwzbflpzxqComponent implements OnInit {
                 console.log(JSON.stringify(this.sourceTreeTable));
                 const initreslist = this.DataProcessingService.replaceChildlValue(res['returnObject'], 'childList', 'children', '', '');
                 this.initSourceTreeTable = this.DataProcessingService.replaceisCheck(this.DataProcessingService.returnTreeTable(initreslist));
-                console.log(this.sourceTreeTable);
+                if (this.targetTreeTable && this.sourceTreeTable) {
+                    this.SwzbComparedService.SwzbCompared(this.targetTreeTable, this.sourceTreeTable);
+                }
             });
 
     }
@@ -656,15 +604,19 @@ export class SwzbflpzxqComponent implements OnInit {
         this.addObj.ssflh = e;
         console.log(e);
     }
+
+    bigest() {
+        console.log(this.model);
+    }
 }
 
 function showCheck(list) {
     for (var i = 0; i < list.length; i++) {
-        if (list[i].select == false) {
+        if (list[i].select === false) {
             list.splice(i--, 1);
             list = list;
         } else {
-            list[i].select == false;
+            list[i].select === false;
             if (list[i].children) {
                 showCheck(list[i].children);
             }

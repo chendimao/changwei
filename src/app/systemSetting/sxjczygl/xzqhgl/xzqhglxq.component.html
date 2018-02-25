@@ -1,7 +1,7 @@
 
-    <p-dialog modal="modal"
-              responsive="true"
-              [(visible)]="display" height="100%" breakpoint="100%">
+    <p-dialog modal="modal" #ngModel
+              height="100%" width="100%" [breakpoint]="1000"
+              [(visible)]="display">
         <p-header>
             <div>区划详情信息</div>
             <div class="showClose">
@@ -61,9 +61,9 @@
             </div>
 
         </p-footer>
+        <p-growl [(value)]="msgs"></p-growl>
 
 
     </p-dialog>
 
 
-<p-growl [(value)]="msgs"></p-growl>

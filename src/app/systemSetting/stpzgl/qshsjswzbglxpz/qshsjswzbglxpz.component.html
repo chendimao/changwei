@@ -30,7 +30,7 @@
             <app-select-list [width]="40" [values]="jdList" [search]="false"
                              (SelectModel)="getGzjdId($event)"></app-select-list>
         </div>
-        <div class="fl">
+        <div class="fl" style="margin-left: 15px">
             <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="名称">
             <span class="btnClick" (click)="searchList('click',key)"></span>
         </div>
@@ -72,7 +72,7 @@
 
                 <p-column field="swzbflmc" title="mc" header="指标分类" [bodyStyle]="{'text-align':'left'}">
                     <ng-template let-col let-node="rowData" pTemplate="body">
-                        <input [(ngModel)]="node.swzbflmc" type="text" style="width:100%">
+                        <input [(ngModel)]="node.swzbflmc" type="text" style="width:100%" disabled>
                         <!--<span>{{car[col.field]}}</span>-->
                     </ng-template>
                 </p-column>
@@ -91,7 +91,7 @@
                 </p-column>
                 <p-column field="pxh" header="排序号"[style]="{'width':'60px'}">
                     <ng-template let-col let-car="rowData" pTemplate="body">
-                        <input [(ngModel)]="car[col.field]" type="text" style="width:100%">
+                        <input [(ngModel)]="car[col.field]" type="number" style="width:100%" >
                     </ng-template>
                 </p-column>
                 <!--<p-column field="bz" header="备注">-->

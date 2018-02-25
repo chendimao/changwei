@@ -5,6 +5,7 @@
 }
 .searchInput{
     width: 250px;
+    margin-bottom: 15px;
 }
 .list{
     border-top: 1px solid #CCCCCC;

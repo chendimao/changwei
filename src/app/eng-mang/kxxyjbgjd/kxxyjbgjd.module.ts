@@ -4,7 +4,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
-import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 import {
     BreadcrumbModule,
@@ -57,7 +56,7 @@ import {DataProcessingService} from "../../service/dataProcessing.service";
 
     imports: [
 
-        PdfViewerModule,
+
         BreadcrumbModule,
         PanelModule,
         DropdownModule,

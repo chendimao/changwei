@@ -5,10 +5,12 @@ import {DataProcessingService} from "../../../../service/dataProcessing.service"
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    styleUrls: ['./home.component.css'],
+    providers: [DataProcessingService]
 })
 export class HomeComponent implements OnInit {
     private ch;
+    private treelist;
     show: number = 1;
     // 加的加载
     isShowRight: boolean = false;
@@ -18,19 +20,16 @@ export class HomeComponent implements OnInit {
     huizhong: boolean = true;
     mingxi: boolean = false;
     geren: any;
-    treelist: any;
-    constructor(public HttpService: HttpService, public DataProcessingService: DataProcessingService) {
+
+    constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
     ngOnInit() {
-
         this.HttpService.get(`locality/listTree`)
             .then(res => {
-this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
 
             });
-
-
         this.ReservoirLagList = ReservoirLagList;
         this.geren = geren;
         this.ch = {
@@ -45,6 +44,7 @@ this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject']
         };
     }
 
+
     getEvent(event) {
         this.isShowRight = event;
         this.defaultShow = false;
@@ -57,7 +57,7 @@ this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject']
     tabMx() {
         if (this.huizhong == true) {
             this.mingxi = true;
-            this.huizhong=false;
+            this.huizhong = false;
             this.tabMsg = '切换至明细';
         } else {
             this.huizhong = true;
@@ -260,7 +260,7 @@ const ReservoirLagList: any = [
 
 
 ];
-const geren:any=[
+const geren: any = [
     {
         id: 1,
         name: '蒋仕弟',

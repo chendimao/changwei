@@ -24,6 +24,7 @@ export class SwzbtxpzComponent implements OnInit {
     private swzbtxpzGetParme = new swzbtxpzGetParme;
     private params: string;
     private TreeTable = new Array;
+    private arrRes = [];
 
     protected initTreeTable = new Array;
 
@@ -34,11 +35,25 @@ export class SwzbtxpzComponent implements OnInit {
     private value: boolean = true;
     public resPost1: any;
 
+    private rewAddObj: object = {
+        "oper": "Add",
+        "list": []
+    };
+    private rewDelObj: object = {
+        "oper": "Delete",
+        "list": []
+    };
+    private rewUpdateObj: object = {
+        "oper": "Update",
+        "list": []
+    };
+
     constructor(private TreeTablePostService: TreeTablePostService, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
     ngOnInit() {
-
+        this.msgs = [];
+        this.msgs.push({severity: 'warn', summary: '填入提醒', detail: '请选择工程'});
 
         //指标分类
         this.zbflUrl = 'xtswzbfl/listZbfl?zdlb=ZBL';
@@ -114,7 +129,9 @@ export class SwzbtxpzComponent implements OnInit {
     //e为当前点击节点
     // 1:先判断点击true，false。
     // 2：判断是子集还是顶集
+
     checkbox(e, res) {
+        console.log(e);
         if (res) {
             e.data.isCheck = 1;
             console.log(res);
@@ -125,13 +142,26 @@ export class SwzbtxpzComponent implements OnInit {
                     e.children[i].data.isCheck = 1;
                 }
             }
+            //
+            //1:如果为新增,记录新增的数据.判断依据:是否有id
+            //2:如果为
+            var arr = [];
+            arr.push(e);
+            this.arrRes = [];
+            let lsArr = this.returnAddList(arr);
+            for (let key of lsArr) {
+                this.rewAddObj['list'].push(key);
+            }
+            console.log(this.rewAddObj);
         } else {
             if (typeof(e.parent) === 'undefined') {
                 for (var i = 0; i < e.children.length; i++) {
                     e.children[i].data.isCheck = 0;
                 }
             }
+            // 如果为删除,记录删除的id;
         }
+
 
     }
 
@@ -259,6 +289,51 @@ export class SwzbtxpzComponent implements OnInit {
         this.getList();
     }
 
+    //处理新增数据
+
+
+    returnAddList(list) {
+        console.log(list)
+        for (let key of list) {
+            console.log(key);
+            var item = new Object;
+            item['zdxId'] = key.data.zdxId;
+            item['jdId'] = key.data.jdId;
+            item['jldwId'] = key.data.jldwId;
+            item['pxh'] = key.data.pxh;
+            item['xh'] = key.data.xh;
+            item['bz'] = key.data.bz;
+            if (key.children) {
+                // console.log(item);
+                this.returnAddList(key.children);
+            }
+            console.log(item);
+            this.arrRes.push(item);
+            console.log(this.arrRes);
+        }
+        return this.arrRes;
+    }
+    returnDelList(list) {
+        console.log(list)
+        for (let key of list) {
+            console.log(key);
+            var item = new Object;
+            item['zdxId'] = key.data.zdxId;
+            item['jdId'] = key.data.jdId;
+            item['jldwId'] = key.data.jldwId;
+            item['pxh'] = key.data.pxh;
+            item['xh'] = key.data.xh;
+            item['bz'] = key.data.bz;
+            if (key.children) {
+                // console.log(item);
+                this.returnDelList(key.children);
+            }
+            console.log(item);
+            this.arrRes.push(item);
+            console.log(this.arrRes);
+        }
+        return this.arrRes;
+    }
 
 }
 

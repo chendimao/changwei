@@ -18,12 +18,12 @@ import {
     MenuItem
 } from 'primeng/primeng';
 
-import { UserCommonModule } from '../common/UserCommon.module';
-import { DataBaseRoutingModule } from "./data-base-routing.module";
+import {UserCommonModule} from '../common/UserCommon.module';
+import {DataBaseRoutingModule} from "./data-base-routing.module";
 import {DataBaseComponent} from './data-base.component';
 import {WjdatabaseComponent} from './wjdatabase/wjdatabase.component';
-import { DatabaseNavComponent } from './database-nav/database-nav.component';
-import { SsjhComponent } from './ssjh/ssjh.component';
+import {DatabaseNavComponent} from './database-nav/database-nav.component';
+import {SsjhComponent} from './ssjh/ssjh.component';
 import {ShareService} from "../systemSetting/service/share.service";
 
 @NgModule({
@@ -53,9 +53,7 @@ import {ShareService} from "../systemSetting/service/share.service";
         SsjhComponent,
 
     ],
-    providers: [
-        ShareService
-    ]
+    providers: [ShareService]
 })
 export class DataBaseModule {
 }

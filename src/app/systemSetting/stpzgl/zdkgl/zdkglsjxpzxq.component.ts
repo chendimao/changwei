@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from "../../../service/http-service";
 import {ZdkglModel} from "./zdkgl.model";
 import {SaveService} from "../../service/save.service";
@@ -20,6 +20,8 @@ export class ZdkglsjxpzxqComponent implements OnInit {
     public childInfo;
     private zidian: ZdkglModel = new ZdkglModel();
     private subscription: Subscription;
+
+    @ViewChild('ngModel') model;
 
 
     constructor(private HttpService: HttpService, private saveService: SaveService, private ShareService: ShareService) {
@@ -68,48 +70,6 @@ export class ZdkglsjxpzxqComponent implements OnInit {
 
     }
 
-    // save(item, i) {
-    //     this.msgs = [];
-    //     console.log("id" in this.zidian);
-    //     if ("id" in this.zidian) {
-    //         // 修改
-    //         this.HttpService.post('zdk/update', JSON.stringify(this.zidian))
-    //             .then(res => {
-    //                 console.log(res);
-    //                 if (res['success'] == true) {
-    //                     this.msgs.push({severity: 'success', summary: '填入提醒', detail: '修改成功'});
-    //                     if (i == 'add') {
-    //                         this.zidian = new ZdkglModel;
-    //                     } else {
-    //                         this.display = false;
-    //                     }
-    //                 } else {
-    //                     this.msgs.push({severity: 'error', summary: '填入提醒', detail: '删除失败'});
-    //                 }
-    //             });
-    //     } else {
-    //         //保存新一项
-    //         if (this.zidian.mc == null || this.zidian.qc == null || this.zidian.zdlb == null || this.zidian.pxh == null) {
-    //             this.msgs.push({severity: 'error', summary: '填入提醒', detail: '有必填项未填'});
-    //         } else {
-    //             console.log(this.zidian);
-    //             this.HttpService.post('zdk/save', JSON.stringify(this.zidian))
-    //                 .then(res => {
-    //                     console.log(res);
-    //                     if (res['success'] == true) {
-    //                         this.msgs.push({severity: 'success', summary: '填入提醒', detail: '新增成功'});
-    //                         if (i == 'add') {
-    //                             this.zidian = new ZdkglModel;
-    //                         } else {
-    //                             this.display = false;
-    //                         }
-    //                     } else {
-    //                         this.msgs.push({severity: 'error', summary: '填入提醒', detail: res['errorMessage']});
-    //                     }
-    //                 });
-    //         }
-    //     }
-    // }
 
     zdBtn(i): void {
         switch (i) {
@@ -131,7 +91,20 @@ export class ZdkglsjxpzxqComponent implements OnInit {
                 break;
             case 'pxh':
                 console.log("自动生成pxh");
-                this.zidian.pxh = this.pxh(this.zidian.xh);
+                console.log(this.parentInfo);
+                console.log(this.childInfo);
+
+                if (this.zidian.xh) {
+                    this.zidian.pxh = this.pxh(this.zidian.xh);
+
+                } else {
+                    this.HttpService.get(`zdk/generateOrderNum?sjId=${this.parentInfo.id}`)
+                        .then(res => {
+                            console.log(res['returnObject']);
+                            this.zidian.pxh = res['returnObject'];
+                            this.zidian.xh = this.returnXh(this.zidian.pxh);
+                        });
+                }
 
 
                 console.log(this.zidian.pxh);
@@ -160,6 +133,28 @@ export class ZdkglsjxpzxqComponent implements OnInit {
             b += a[i];
         }
         return b;
+    }
+
+    public returnXh(a) {
+        a = a.replace(/0/g, ".");
+        a = a.split('.');
+        let b = "";
+        for (var i = 0; i < a.length; i++) {
+            if (a[i]) {
+                if (i > 1) {
+                    b += "." + a[i];
+                } else {
+                    b += a[i];
+                }
+            }
+        }
+        return b;
+    }
+
+
+    bigest() {
+        this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";
+        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
     }
 
     //判断不能为空

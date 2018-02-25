@@ -250,18 +250,24 @@ export class DataProcessingService {
             } else {
                 if (key['data'].id == id) {
                     for (let i in key) {
-                        key.remove(i);
+                        delete  key[i];
                     }
                     console.log(list);
                     break;
-
+                 }
+            }
+         }
+         delete list[0].parent;
+         console.log(list);
+        list = JSON.parse(JSON.stringify(list).replace('[{}]', null));
+        list = JSON.parse(JSON.stringify(list).replace('{}', null));
+        if(list){
+            for(var i=0;i<list.length;i++){
+                if(list[i]==null){
+                    list.splice(i,1);
                 }
             }
-
         }
-        console.log(list);
-        list = JSON.parse(JSON.stringify(list).replace('[{}]', null));
-        console.log(list);
         return list;
     }
 
@@ -273,21 +279,34 @@ export class DataProcessingService {
             if (key.children) {
                 console.log(key['data'].id);
                 if (key['data'].zdxId === id) {
-                    key['children'] = [];
-                    key['children'].push(itemLs);
+
+                    if(key['children']){
+                        key['children'].push(itemLs);
+                    }else{
+                        key['children'] = [];
+                        key['children'].push(itemLs);
+                    }
+
                     break;
                 }
                 this.addTreeNode(key.children, id, itemLs);
             } else {
                 if (key['data'].zdxId === id) {
-                    key['children'] = [];
-                    key['children'].push(itemLs);
+                    if(key['children']){
+                        key['children'].push(itemLs);
+                    }else{
+                        key['children'] = [];
+                        key['children'].push(itemLs);
+                    }
                     break;
                 }
             }
         }
         return initList;
     }
+
+
+    //
 
 
 }

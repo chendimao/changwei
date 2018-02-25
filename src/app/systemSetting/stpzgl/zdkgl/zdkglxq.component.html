@@ -1,8 +1,6 @@
-<p-dialog modal="modal"
-
+<p-dialog modal="modal" #ngModel
           height="100%" width="100%" [breakpoint]="1000"
-
-          [(visible)]="display">
+            [(visible)]="display">
     <p-header>
         <div>字典库详情维护</div>
         <div class="showClose">
@@ -10,7 +8,7 @@
             <img src="/assets/img/icon/x.png" alt="关闭" (click)="close(1)">
         </div>
     </p-header>
-    <div class="moduleAlert">
+    <div class="moduleAlert" style="height: 100%">
         <form #project="ngForm">
             <div>
                 <ul>

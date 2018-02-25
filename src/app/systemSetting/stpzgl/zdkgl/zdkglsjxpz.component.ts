@@ -6,7 +6,7 @@ import {DataProcessingService} from "../../../service/dataProcessing.service";
 import {SearchService} from "../../../service/search.service";
 import {Subscription} from 'rxjs/Subscription';
 import {ShareService} from "../../service/share.service";
-import { DelWaringComponent } from "../../../common/del-waring/del-waring.component";
+import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
 
 @Component({
     selector: 'app-zdkglxq',
@@ -33,6 +33,7 @@ export class ZdkglsjxpzComponent implements OnInit {
 
 
     @ViewChild('dmroom', {read: ViewContainerRef}) dmRoom: ViewContainerRef;
+    @ViewChild('ngModel') model;
 
     constructor(private shareService: ShareService, private SearchService: SearchService, private HttpService: HttpService, private AlertBox: ComponentFactoryResolver, private DataProcessingService: DataProcessingService) {
         this.subscription = this.shareService.getMessage()
@@ -110,6 +111,7 @@ export class ZdkglsjxpzComponent implements OnInit {
                 break;
         }
     }
+
     delSelect() {
         if (this.project['id'] == null) {
             this.msgs = [];
@@ -143,6 +145,8 @@ export class ZdkglsjxpzComponent implements OnInit {
     }
 
     isSearchList(e) {
+        console.log(e);
+        // this.SearchList = e.children;
         this.HttpService.get(`/zdk/list?sjId=${e.sjId}&start=1&limit=10`)
             .then(res => {
                 this.SearchList = res['returnObject'];
@@ -166,11 +170,16 @@ export class ZdkglsjxpzComponent implements OnInit {
     //前台查询
     searchList(e, key) {
         if (e.keyCode == 13 || e == 'click') {
-
             this.SearchList = this.SearchService.searchByRegExp(key, this.defaultList, 'mc');
-
-
         }
+    }
 
+    bigest() {
+        console.log(this.model);
+        console.log(this.model.containerViewChild.nativeElement);
+        console.log(this.model.containerViewChild.nativeElement.children);
+        this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";
+        this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";
+        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
     }
 }

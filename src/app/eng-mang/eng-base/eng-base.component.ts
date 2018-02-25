@@ -20,6 +20,7 @@ export class EngBaseComponent implements OnInit {
     private selectList: any;
     types2: SelectItem[];
     private breadcrumb: MenuItem[];
+    private isShow1: boolean = true;
 
     constructor(private route: ActivatedRoute) {
 
@@ -358,11 +359,13 @@ export class EngBaseComponent implements OnInit {
     }
 
 
-    // for (let i = 0; i < this.route.snapshot.url.length; i++) {
-    //     console.log(this.route.snapshot.url[i]);
-    //
-    // }
-
+    showAll(){
+        if (this.isShow1) {
+            this.isShow1 = false;
+        } else {
+            this.isShow1 = true;
+        }
+    }
 
     showMore(i) {
         this.showClass = i;

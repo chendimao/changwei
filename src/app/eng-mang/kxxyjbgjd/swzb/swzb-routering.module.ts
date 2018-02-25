@@ -46,6 +46,7 @@ export const SwzbRoutingModule = [
     {
         path: '',
         component: JmhComponent,
+
     },
 
 

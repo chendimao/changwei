@@ -19,6 +19,13 @@
     margin: 0px;
     width: 250px;
 }
+.showBdd{
+    position: absolute;
+    top: 43px;
+    left: 100px;
+    z-index: 1;
+
+}
 header{
     margin: 15px 0;
 }

@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import{ HttpService } from "../../../../service/http-service";
+import { DataProcessingService } from "../../../../service/dataProcessing.service";
 import {DialogModule, MessagesModule, Message, SelectButtonModule, SelectItem, LightboxModule} from 'primeng/primeng';
 
 @Component({
@@ -15,10 +17,17 @@ export class JdtbComponent implements OnInit {
     isShowRight: boolean = false;
     defaultShow: boolean = true;
 
-    constructor() {
+    private treelist: any;
+
+    constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
     ngOnInit() {
+        this.HttpService.get(`locality/listTree`)
+            .then(res => {
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+
+            });
         this.active=1;
         this.ch = {
             firstDayOfWeek: 0,

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from "../../../service/http-service";
 import {ZdyyglModel} from "./zdyygl.model";
 import {SaveService} from "../../service/save.service";
@@ -18,7 +18,9 @@ export class ZdyyglxqComponent implements OnInit {
     private oneTable: boolean = false;
     private secTable: boolean = false;
     private thirdTable: boolean = false;
+    private sslbMc:string;
     subscription = new Subscription;
+    @ViewChild('ngModel') model;
 
     constructor(private HttpService: HttpService, private saveService: SaveService, private shareService: ShareService) {
         this.subscription = this.shareService.getMessage()
@@ -52,48 +54,6 @@ export class ZdyyglxqComponent implements OnInit {
 
     }
 
-    // save(item, i) {
-    //     this.msgs = [];
-    //     console.log(this.zidian);
-    //     if ("id" in this.zidian) {
-    //         // 修改
-    //         this.HttpService.post('/zdyy/update', JSON.stringify(this.zidian))
-    //             .then(res => {
-    //                 console.log(res);
-    //                 if (res['success'] == true) {
-    //                     this.msgs.push({severity: 'success', summary: '填入提醒', detail: '修改成功'});
-    //                     if (i == 'add') {
-    //                         this.zidian = new ZdyyglModel;
-    //                     } else {
-    //                         this.display = false;
-    //                     }
-    //                 } else {
-    //                     this.msgs.push({severity: 'error', summary: '填入提醒', detail: '删除失败'});
-    //                 }
-    //             });
-    //     } else {
-    //         //保存新一项
-    //         if (item.bm == null || item.zdm == null) {
-    //             this.msgs.push({severity: 'error', summary: '填入提醒', detail: '有必填项未填'});
-    //         } else {
-    //             console.log(item);
-    //             this.HttpService.post('zdyy/save', JSON.stringify(this.zidian))
-    //                 .then(res => {
-    //                     console.log(res);
-    //                     if (res['success'] == true) {
-    //                         this.msgs.push({severity: 'success', summary: '填入提醒', detail: '新增成功'});
-    //                         if (i == 'add') {
-    //                             this.zidian = new ZdyyglModel;
-    //                         } else {
-    //                             this.display = false;
-    //                         }
-    //                     } else {
-    //                         this.msgs.push({severity: 'error', summary: '填入提醒', detail: res['errorMessage']});
-    //                     }
-    //                 });
-    //         }
-    //     }
-    // }
 
     showTable(e) {
         switch (e) {
@@ -127,6 +87,7 @@ export class ZdyyglxqComponent implements OnInit {
                     this.thirdTable = true;
                 }
 
+
                 break;
         }
     }
@@ -144,8 +105,9 @@ export class ZdyyglxqComponent implements OnInit {
 
     getSelectValue(e) {
         console.log(e);
-        this.zidian.sslbId = e;
-        this.thirdTable = false;
+        this.thirdTable=false;
+        this.sslbMc = e.mc;
+        this.zidian.sslbId = e.id;
     }
 
     tjWaringShow(info: object): boolean {
@@ -160,6 +122,9 @@ export class ZdyyglxqComponent implements OnInit {
         return res;
     }
 
+    bigest() {
+       this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
+    }
 
 }
 

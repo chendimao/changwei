@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
-import {PdfViewerModule} from 'ng2-pdf-viewer';
+
 import {
     BreadcrumbModule,
     PanelModule,
@@ -121,7 +121,7 @@ import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
 
     imports: [
 
-        PdfViewerModule,
+
         BreadcrumbModule,
         PanelModule,
         DropdownModule,

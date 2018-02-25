@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,ViewChild} from '@angular/core';
 import {HttpService} from "../../../service/http-service";
 import {DataProcessingService} from "../../../service/dataProcessing.service";
 import {SwzbflpzTreeTablePostService} from "../../service/swzbflpzTreeTablePost.service";
@@ -26,9 +26,10 @@ export class FgczdxpzxqComponent implements OnInit {
     private zdflBtn: boolean = true;
     private msgs = [];
 
+
     selectedFile: any;
     private showTable: number = 0;
-
+    @ViewChild('ngModel') model;
     constructor(private TreeTablePostService: SwzbflpzTreeTablePostService, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
@@ -71,6 +72,7 @@ export class FgczdxpzxqComponent implements OnInit {
                 this.searchTreelist(`xtfqhzdx/query?dm=${this.projectId.code}&dataTypeId=${this.info.dataTypeId}`);
                 this.HttpService.get(`locality/listTree`)
                     .then(res => {
+
                         this.localTreelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
 
                     });
@@ -222,7 +224,10 @@ export class FgczdxpzxqComponent implements OnInit {
     close() {
         this.display = false;
     }
-
+    bigest() {
+       this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";
+       this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
+    }
 }
 
 export class bdzdxModel {

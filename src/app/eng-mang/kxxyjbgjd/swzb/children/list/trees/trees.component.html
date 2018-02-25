@@ -37,24 +37,19 @@
                 <span class="importent">专业大类</span>
             </div>
             <div class="inputRight fl">
-                <select id="" name="">
-                    <option selected="selected" value="1">农村部分</option>
-                    <option value="1"> 县城部分</option>
-                    <option value="1"> 集镇部分</option>
-
-                </select>
+                <app-select-list [width]="0" [values]="selectListHzgx"
+                                 (SelectModel)="getChildEvent1($event)"></app-select-list>
             </div>
         </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>总面积</span>
+
+
+        <div class="fl group group-4 danwei">
+            <span>总面积</span>
+            <input type="text">
+            <div class="fl mianji">
+                ㎡
             </div>
-            <div class="inputRight fl Mianji">
-                <input type="text" value="121">
-            </div>
-            <div class="inputRight fl mianji">
-                亩
-            </div>
+
         </div>
         <div>
             <div class="inputArea fl">

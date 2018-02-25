@@ -27,7 +27,7 @@ export class SwzbflpzTreeTablePostService implements OnInit {
                     if (initTreeTable[i].data.isCheck == 1) {
                         for (let key in initTreeTable[i].data) {
                             if (initTreeTable[i].data[key] != TreeTable[i].data[key]) {
-                                updateItemls['id'] = TreeTable[i].data.zdxId;
+                                updateItemls['id'] = TreeTable[i].data.id;
                                 updateItemls[key] = TreeTable[i].data[key];
                             }
                         }
@@ -43,7 +43,7 @@ export class SwzbflpzTreeTablePostService implements OnInit {
                     if (initTreeTable[i].data.isCheck == 1) {
                         for (let key in initTreeTable[i].data) {
                             if (initTreeTable[i].data[key] != TreeTable[i].data[key]) {
-                                updateItemls1['id'] = TreeTable[i].data.zdxId;
+                                updateItemls1['id'] = TreeTable[i].data.id;
                                 updateItemls1[key] = TreeTable[i].data[key];
                             }
                         }
@@ -122,7 +122,7 @@ export class SwzbflpzTreeTablePostService implements OnInit {
                 if (initTreeTable[i].data.isCheck !== TreeTable[i].data.isCheck) {
                     if (TreeTable[i].data.isCheck == 0) {
                         detailDeleteList = {};
-                        detailDeleteList['id'] = initTreeTable[i].data.zdxId;
+                        detailDeleteList['id'] = initTreeTable[i].data.id;
                         console.log(detailDeleteList);
                         this.deleteObj['list'].push(detailDeleteList);
                     }
@@ -132,7 +132,7 @@ export class SwzbflpzTreeTablePostService implements OnInit {
                 if (initTreeTable[i].data.isCheck != TreeTable[i].data.isCheck) {
                     if (TreeTable[i].data.isCheck == 0) {
                         detailDeleteList = {};
-                        detailDeleteList['id'] = initTreeTable[i].data.zdxId;
+                        detailDeleteList['id'] = initTreeTable[i].data.id;
                         if (detailDeleteList['id']) {
                             this.deleteObj['list'].push(detailDeleteList);
                         }

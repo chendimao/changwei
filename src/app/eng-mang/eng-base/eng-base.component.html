@@ -37,18 +37,23 @@
             <header class="clearfix">
                 <div class="fl sle">
                     <span>阶段</span>
-                    <app-select-list  [width]="50" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    <app-select-list  [width]="40" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
                 </div>
                 <div class="fl">
                     <input type="text" class="searchInput" placeholder="名称">
                 </div>
                 <div class="btnGrop fr">
                     <ul>
-                        <li class="fl" (click)="showModule(2)"><span class="img"><img
-                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                            <span class="img icon fa fa-square-o"></span>
+                            显示非空项
+                        </li>
+                        <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                            <span class="img icon fa fa-check-square"></span>
+                            显示所有项
                         </li>
                         <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
-                                                                                      alt=""></span>删除
+                                                                                      alt=""></span>清空
                         </li>
                     </ul>
                 </div>
@@ -90,15 +95,20 @@
             <header class="clearfix">
                 <div class="fl sle">
                     <span>阶段</span>
-                    <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    <app-select-list [width]="40" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
                 </div>
                 <div class="fl">
                     <input type="text" class="searchInput" placeholder="名称">
                 </div>
                 <div class="btnGrop fr">
                     <ul>
-                        <li class="fl" (click)="showModule(2)"><span class="img"><img
-                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
+                        <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                            <span class="img icon fa fa-square-o"></span>
+                            显示非空项
+                        </li>
+                        <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                            <span class="img icon fa fa-check-square"></span>
+                            显示所有项
                         </li>
                         <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
                                                                                       alt=""></span>删除
@@ -106,30 +116,30 @@
                     </ul>
                 </div>
             </header>
-            <p-treeTable  [tableStyle]="{'padding':'10px'}" [value]="TreeTable2"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+            <p-treeTable  ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
                 <p-column field="name" header="序号">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
                 </p-column>
                 <p-column field="code" header="名称">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
                 </p-column>
                 <p-column field="jldw" header="单位">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
                 </p-column>
                 <p-column field="xh" header="数量" >
                     <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                        <input type="text"  style="width:100%;">
                     </ng-template>
                 </p-column>
                 <p-column field="bz" header="备注" >
                     <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
+                        <input type="text"  style="width:100%;">
                     </ng-template>
                 </p-column>
             </p-treeTable>
@@ -141,53 +151,150 @@
 
         </div>
         <div *ngIf="showMode==3">
-            <header class="clearfix">
-                <div class="fl sle">
-                    <span>阶段</span>
-                    <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
-                </div>
-                <div class="fl">
-                    <input type="text" class="searchInput" placeholder="名称">
-                </div>
-                <div class="btnGrop fr">
-                    <ul>
-                        <li class="fl" (click)="showModule(2)"><span class="img"><img
-                                src="assets/img/icon/brush_fill.png" alt=""></span>修改
-                        </li>
-                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
-                                                                                      alt=""></span>删除
-                        </li>
-                    </ul>
-                </div>
-            </header>
-            <p-treeTable  [tableStyle]="{'padding':'10px'}" [value]="TreeTable2"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
-                <p-column field="name" header="序号">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
-                </p-column>
-                <p-column field="code" header="名称">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
-                </p-column>
-                <p-column field="jldw" header="单位">
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
-                </p-column>
-                <p-column field="xh" header="数量" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
-                </p-column>
-                <p-column field="bz" header="备注" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;border-width:0px 0px 1px 0px">
-                    </ng-template>
-                </p-column>
-            </p-treeTable>
 
+            <div class="clearfix">
+                <div>
+                    <header  class="clearfix">
+
+                        <div  class="btnGrop fr">
+                            <ul  >
+                                <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                                    <span class="img icon fa fa-square-o"></span>
+                                    多选
+                                </li>
+                                <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                                    <span class="img icon fa fa-check-square"></span>
+                                    取消多选
+                                </li>
+                                <li  class="fl"><span  class="img fa fa-minus-square-o"></span>批量删除
+                                </li>
+                            </ul>
+                        </div>
+                    </header>
+                    <div class="secd_title">
+                        <span>
+                             图片
+                        </span>
+
+                    </div>
+                    <div class="fl wj_box rl">
+                        <div class="wj_b_h clearfix">
+                            <div class="fl wj_b_Im">
+                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
+                                <span>pdf</span>
+                            </div>
+                            <div class="fl text">
+                                泉州白濑水利枢纽工程建设征地
+                                移民安置监理月报2016年度第1期
+                            </div>
+                        </div>
+                        <div class="wj_b_b">
+                            <div>
+                                <span>上传单位：</span>福建省移民局
+                            </div>
+                            <div>
+                                <span>上传日期：</span>2016-12-10
+                            </div>
+                        </div>
+                        <div class="model">
+                            <ul class="btn_write">
+                                <li>编辑</li>
+                                <li>删除</li>
+                                <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
+                            </ul>
+                        </div>
+                    </div>   <div class="fl wj_box rl">
+                    <div class="wj_b_h clearfix">
+                        <div class="fl wj_b_Im">
+                            <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
+                            <span>pdf</span>
+                        </div>
+                        <div class="fl text">
+                            泉州白濑水利枢纽工程建设征地
+                            移民安置监理月报2016年度第1期
+                        </div>
+                    </div>
+                    <div class="wj_b_b">
+                        <div>
+                            <span>上传单位：</span>福建省移民局
+                        </div>
+                        <div>
+                            <span>上传日期：</span>2016-12-10
+                        </div>
+                    </div>
+                    <div class="model">
+                        <ul class="btn_write">
+                            <li>编辑</li>
+                            <li>删除</li>
+                            <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+                <div class="clearfix">
+
+                    <div class="secd_title">
+                        <span>
+                             视频
+                        </span>
+
+                    </div>
+                    <div class="fl wj_box rl">
+                        <div class="wj_b_h clearfix">
+                            <div class="fl wj_b_Im">
+                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
+                                <span>pdf</span>
+                            </div>
+                            <div class="fl text">
+                                泉州白濑水利枢纽工程建设征地
+                                移民安置监理月报2016年度第1期
+                            </div>
+                        </div>
+                        <div class="wj_b_b">
+                            <div>
+                                <span>上传单位：</span>福建省移民局
+                            </div>
+                            <div>
+                                <span>上传日期：</span>2016-12-10
+                            </div>
+                        </div>
+                        <div class="model">
+                            <ul class="btn_write">
+                                <li>编辑</li>
+                                <li>删除</li>
+                                <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
+                            </ul>
+                        </div>
+                    </div>   <div class="fl wj_box rl">
+                    <div class="wj_b_h clearfix">
+                        <div class="fl wj_b_Im">
+                            <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
+                            <span>pdf</span>
+                        </div>
+                        <div class="fl text">
+                            泉州白濑水利枢纽工程建设征地
+                            移民安置监理月报2016年度第1期
+                        </div>
+                    </div>
+                    <div class="wj_b_b">
+                        <div>
+                            <span>上传单位：</span>福建省移民局
+                        </div>
+                        <div>
+                            <span>上传日期：</span>2016-12-10
+                        </div>
+                    </div>
+                    <div class="model">
+                        <ul class="btn_write">
+                            <li>编辑</li>
+                            <li>删除</li>
+                            <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+
+            </div>
             <div  class="btn-group icon">
                 <a >保存</a>
                 <a >清空所有</a>

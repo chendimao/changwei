@@ -6,7 +6,7 @@
     </div>
 </header>
 <div *ngIf="selectedType==1" class="clearfix">
-    <div class="left fl">
+    <div class="grave_left fl">
         <table class="table">
             <thead>
             <tr>
@@ -30,7 +30,7 @@
             </tbody>
         </table>
     </div>
-    <div class="right fl">
+    <div class="right grave_right fl">
         <div class="header clearfix rl">
             <div class="fl headerTitle">坟墓详情</div>
             <ul class="fr  btnGrop">
@@ -83,12 +83,8 @@
                     专业大类
                 </div>
                 <div class="input_right fl">
-                    <select name="" id="" class="inputH selectInput">
-                        <option value="1" selected="selected">汉族</option>
-                        <option value="1">满族</option>
-                        <option value="1">父女</option>
-                        <option value="1">4</option>
-                    </select>
+                    <app-select-list [width]="0" [values]="selectListHzgx"
+                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
                 </div>
 
             </div>
@@ -97,12 +93,8 @@
                     调查范围
                 </div>
                 <div class="input_right fl">
-                    <select name="" id="" class="inputH selectInput">
-                        <option value="1" selected="selected">汉族</option>
-                        <option value="1">满族</option>
-                        <option value="1">父女</option>
-                        <option value="1">4</option>
-                    </select>
+                    <app-select-list [width]="0" [values]="selectListHzgx"
+                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
                 </div>
 
             </div>
@@ -111,17 +103,8 @@
                     数量
                 </div>
                 <div class="input_right fl">
-                    <select name="" id="" class="inputH selectInput">
-                        <option value="1" selected="selected">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-
-
-                    </select>
+                    <app-select-list [width]="0" [values]="selectListHzgx"
+                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
                 </div>
 
             </div>
@@ -130,17 +113,8 @@
                     与墓主关系
                 </div>
                 <div class="input_right fl">
-                    <select name="" id="" class="inputH selectInput">
-
-                        <option value="2" selected="selected">父子</option>
-                        <option value="3">父女</option>
-                        <option value="4">姐</option>
-                        <option value="5">哥</option>
-                        <option value="6">弟</option>
-                        <option value="7">弟媳</option>
-
-
-                    </select>
+                    <app-select-list [width]="0" [values]="selectListHzgx"
+                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
                 </div>
 
             </div>

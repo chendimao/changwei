@@ -1,4 +1,5 @@
-<app-treeList (childEvent)="getEvent($event)"></app-treeList>
+<app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
+
 <div class="containerEng">
   <div *ngIf="isShowRight">
     <header >

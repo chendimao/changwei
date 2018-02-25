@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,ViewChild} from '@angular/core';
 import {HttpService} from "../../../service/http-service";
 import {GczcModel} from "./gczc.model";
 import {SaveService} from "../../service/save.service";
@@ -19,7 +19,7 @@ export class GczcxqComponent implements OnInit {
     public info;
     private project: GczcModel = new GczcModel();
     subscription = new Subscription;
-
+    @ViewChild('ngModel') model;
     constructor(private HttpService: HttpService, private saveService: SaveService, private shareService: ShareService) {
         this.subscription = this.shareService.getMessage()
             .subscribe(message => {
@@ -87,6 +87,9 @@ export class GczcxqComponent implements OnInit {
             }
         }
         return res;
+    }
+    bigest() {
+       this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
     }
 }
 

@@ -22,8 +22,8 @@ import {QueryNavComponent} from './query-nav/query-nav.component';
 import { UserCommonModule } from '../common/UserCommon.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './swzb/ncbf/home/home.component';
-import {HttpService} from "../service/http-service";
-import {DataProcessingService} from "../service/dataProcessing.service";
+import { HttpService } from "../service/http-service";
+
 @NgModule({
     declarations: [
         QueryNavComponent,
@@ -49,7 +49,7 @@ import {DataProcessingService} from "../service/dataProcessing.service";
 
     ],
 
-    providers: [HttpService, DataProcessingService],
+    providers: [HttpService],
 })
 export class QueryModule {
 }

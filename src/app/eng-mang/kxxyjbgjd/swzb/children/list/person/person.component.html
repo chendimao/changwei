@@ -1,4 +1,3 @@
-
 <header>
     <div>
         <p-selectButton [options]="types" [(ngModel)]="selectedType"
@@ -17,7 +16,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign)" #defaultPerson
+                [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
             </tr>
@@ -37,9 +37,11 @@
                                                                        alt=""></span>下一条
                 </li>
 
-                <li class="fl" (click)="addPerson(personSign)"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>增加</li>
+                <li class="fl" (click)="addPerson(personSign)"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                                      alt=""></span>增加
+                </li>
                 <li class="fl" (click)="delEng(hcy)"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                         alt=""></span>删除
+                                                                            alt=""></span>删除
                 </li>
                 <li class="fl">
                     <div class="selectLi rl">
@@ -54,7 +56,7 @@
             </ul>
         </div>
         <div class="box_botton clearfix">
-            <form #person="ngForm" >
+            <form #person="ngForm">
                 <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
                         姓名
@@ -70,26 +72,20 @@
                     </div>
                     <div class="input_right fl">
                         <p-selectButton [options]="types1" [(ngModel)]="hcy.hbdm" name="hbdm"
-                                    ></p-selectButton>
+                        ></p-selectButton>
                     </div>
 
                 </div>
                 <div class="inputBox  rl fl">
-                    <div class="input_left fl">
+                   <span class="input_left fl">
                         与户主关系
-                    </div>
+                </span>
                     <div class="input_right fl">
-                        <!--<select  class="inputH selectInput" [(ngModel)]="hcy.hlbdm" name="hlbdm">-->
-                            <!--<option value="1" selected="selected">户主</option>-->
-                            <!--<option value="父子">父子</option>-->
-                            <!--<option value="父女">父女</option>-->
-                            <!--<option value="姐">姐</option>-->
-                            <!--<option value="哥">哥</option>-->
-                            <!--<option value="弟">弟</option>-->
-                            <!--<option value="弟媳">弟媳</option>-->
-                        <!--</select>-->
-                        <app-select-list  [width]="50" [values]="selectListHzgx" (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
+
+
 
                 </div>
                 <!--简单填写-->
@@ -98,7 +94,7 @@
                         身份证号
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH"  [(ngModel)]="hcy.sfzh" value="hcy.sfzh" name="sfzh">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.sfzh" value="hcy.sfzh" name="sfzh">
                     </div>
 
                 </div>
@@ -107,9 +103,10 @@
                         出生日期
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH"  [(ngModel)]="hcy.csrq" value="{{hcy.sfzh | cardReform}}" name="csrq">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.csrq" value="{{hcy.sfzh | cardReform}}"
+                               name="csrq">
                         <!--<p-calendar styleClass="timeInput" placeholder="请填入时间"   disabledDates yearNavigator="true"  monthNavigator="true"-->
-                             <!--dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.csrq" name="csrq"></p-calendar>-->
+                        <!--dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.csrq" name="csrq"></p-calendar>-->
                     </div>
 
                 </div>
@@ -120,7 +117,7 @@
                     </div>
                     <div class="input_right fl">
                         <p-selectButton [options]="types2" [(ngModel)]="hcy.xbdm" name="xbdm"
-                                        ></p-selectButton>
+                        ></p-selectButton>
                     </div>
 
                 </div>
@@ -130,12 +127,8 @@
                         民族
                     </div>
                     <div class="input_right fl">
-                        <select  class="inputH selectInput" [(ngModel)]="hcy.mzdm" name="mzdm">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">傣族</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -144,12 +137,8 @@
                         文化程度
                     </div>
                     <div class="input_right fl">
-                        <select  class="inputH selectInput" [(ngModel)]="hcy.whcddm" name="whcddm">
-                            <option value="1" selected="selected">小学</option>
-                            <option value="1">初中</option>
-                            <option value="1">高中</option>
-                            <option value="1">大学</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
 
@@ -159,19 +148,17 @@
                         从业情况
                     </div>
                     <div class="input_right fl">
-                        <select  class="inputH selectInput" [(ngModel)]="hcy.cyzkdm" name="cyzkdm">
-                            <option value="1" selected="selected">农民</option>
-                            <option value="1">务工</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
-                <div class="inputBox  rl fl areaBox rl">
+                <div class="inputBox  rl fl areaBox">
                     <div class="input_left fl importent">
                         所在行政区划
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH"  [(ngModel)]="hcy.szxzqhdm" name="szxzqhdm">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.szxzqhdm" name="szxzqhdm">
                         <i class="xiala" (click)="showAreaBlock()"></i>
                         <app-area-select class="areaCommpont" [display]="isShowArea"
                                          (childEvent)="getChildEvent($event)"></app-area-select>
@@ -184,7 +171,7 @@
                     </div>
                     <div class="input_right fl">
                         <p-selectButton [options]="types3" [(ngModel)]="hcy.hydm" name="hydm"
-                                        ></p-selectButton>
+                        ></p-selectButton>
                     </div>
 
                 </div>
@@ -193,12 +180,8 @@
                         专业大类
                     </div>
                     <div class="input_right fl">
-                        <select [(ngModel)]="hcy.zydldm" name="zydldm" class="inputH selectInput">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">4</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -208,12 +191,8 @@
                         调查范围
                     </div>
                     <div class="input_right fl">
-                        <select [(ngModel)]="hcy.dcfwdm" name="dcfwdm" class="inputH selectInput">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">4</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -223,7 +202,7 @@
                     </div>
                     <div class="input_right fl">
                         <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkgr" name="sfkgr"
-                                        ></p-selectButton>
+                        ></p-selectButton>
                     </div>
 
                 </div>
@@ -232,12 +211,8 @@
                         户口情况
                     </div>
                     <div class="input_right fl">
-                        <select [(ngModel)]="hcy.hkqkdm" name="hkqkdm" class="inputH selectInput">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">4</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -247,24 +222,28 @@
                     </div>
                     <div class="input_right fl timeSelect">
 
-                        <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
-                                    dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
+                        <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
+                                    monthNavigator="true"
+                                    dateFormat="yy-mm-dd" yearRange="19002030" [inline]="false" [locale]="ch"
+                                    [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
 
                     </div>
 
                 </div>
                 <div class="inputBox  rl fl">
-                    <div class="input_left fl timeSelect">
+                    <div class="input_left fl">
                         迁出日期
                     </div>
                     <div class="input_right fl timeSelect">
-                        <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
-                                    dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.qcrq" name="qcrq"></p-calendar>
+                        <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
+                                    monthNavigator="true"
+                                    dateFormat="yy-mm-dd" yearRange="19002030" [inline]="false" [locale]="ch"
+                                    [(ngModel)]="hcy.qcrq" name="qcrq"></p-calendar>
 
                     </div>
 
                 </div>
-                <div class="inputBox  rl fl">
+                <div class="inputBox  rl fl danwei">
                     <div class="input_left fl ">
                         所在高程
                     </div>
@@ -272,7 +251,7 @@
                         <input class='inputS' type="text" [(ngModel)]="hcy.szzdgc" name="szzdgc"/>
                         <i>--</i>
                         <input class='inputS' type="text" [(ngModel)]="hcy.szzggc" name="szzggc"/>
-                        <i>M</i>
+                        <i class="mianji perDanwei">M</i>
                     </div>
                 </div>
                 <div class="inputBox  rl fl clickInput">
@@ -281,7 +260,7 @@
                     </div>
                     <div class="input_right fl">
                         <p-selectButton [options]="types5" [(ngModel)]="hcy.sfsldl" name="sfsldl"
-                                        ></p-selectButton>
+                        ></p-selectButton>
                     </div>
 
                 </div>
@@ -295,140 +274,144 @@
 
                 </div>
                 <div class="clearfix beizhu ">
-                <div class="textareaBeizhu">
-                    <span>备注 </span>
+                    <div class="textareaBeizhu">
+                        <span>备注 </span>
+                    </div>
+                    <textarea name="" id="" cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz"
+                              name="bz"></textarea>
                 </div>
-                <textarea name="" id="" cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz" name="bz"></textarea>
-            </div>
             </form>
         </div>
     </div>
 </div>
 <div *ngIf="selectedType==2">
     <div style="width100%;overflow auto">
-    <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true"
-                 frozenWidth="300px" unfrozenWidth="calc(100% - 300px)"   [style]="{'margin-top':'30px'}" bodyStyle="{'text-align''center'}">
-        <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-        <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-        <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-        <p-column field="szxzqhdm" header="所在行政区划分" [style]="{'width':'150px'}" [editable]="true"></p-column>
-        <p-column field="hbdm" header="户别" [style]="{'width':'150px'}"></p-column>
-        <p-column field="zydldm" header="专业大类" [style]="{'width':'150px'}"></p-column>
-        <p-column field="dcfwdm" header="调查范围" [style]="{'width':'150px'}"></p-column>
+        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true"
+                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)" [style]="{'margin-top':'30px'}"
+                     bodyStyle="{'text-align''center'}">
+            <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true"
+                      [editable]="true"></p-column>
+            <p-column field="szxzqhdm" header="所在行政区划分" [style]="{'width':'150px'}" [editable]="true"></p-column>
+            <p-column field="hbdm" header="户别" [style]="{'width':'150px'}"></p-column>
+            <p-column field="zydldm" header="专业大类" [style]="{'width':'150px'}"></p-column>
+            <p-column field="dcfwdm" header="调查范围" [style]="{'width':'150px'}"></p-column>
 
-        <p-column field="xbdm" header="性别" [style]="{'width':'150px'}" frozen="true"></p-column>
-        <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
-        <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
-        <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true" [style]=" {'overflow':'visible' }">
-            <ng-template let-col let-car="rowData" pTemplate="body">
-                {{car[col.field]|date }}
-            </ng-template>
-            <ng-template let-col let-car="rowData" pTemplate="editor">
-                <p-calendar [(ngModel)]="car[col.field]" appendTo="body"></p-calendar>
-            </ng-template>
+            <p-column field="xbdm" header="性别" [style]="{'width':'150px'}" frozen="true"></p-column>
+            <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
+            <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
+            <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true"
+                      [style]=" {'overflow':'visible' }">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+                    {{car[col.field]|date }}
+                </ng-template>
+                <ng-template let-col let-car="rowData" pTemplate="editor">
+                    <p-calendar [(ngModel)]="car[col.field]" appendTo="body"></p-calendar>
+                </ng-template>
 
-        </p-column>
-        <p-column field="whcddm" header="文化程度" [style]="{'width':'150px'}"></p-column>
-        <p-column field="hydm" header="婚姻" [style]="{'width':'150px'}"></p-column>
-        <p-column field="sfsldl" header="是否劳动" [style]="{'width':'150px'}"></p-column>
+            </p-column>
+            <p-column field="whcddm" header="文化程度" [style]="{'width':'150px'}"></p-column>
+            <p-column field="hydm" header="婚姻" [style]="{'width':'150px'}"></p-column>
+            <p-column field="sfsldl" header="是否劳动" [style]="{'width':'150px'}"></p-column>
 
-        <p-column field="hkszd" header="户口所在地" [style]="{'width':'150px'}"></p-column>
-        <p-column field="rs" header="人数" [style]="{'width':'150px'}"></p-column>
-        <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
-        <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}"></p-column>
+            <p-column field="hkszd" header="户口所在地" [style]="{'width':'150px'}"></p-column>
+            <p-column field="rs" header="人数" [style]="{'width':'150px'}"></p-column>
+            <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
+            <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}"></p-column>
 
 
-    </p-dataTable>
+        </p-dataTable>
     </div>
     <!--<div style="width100%;overflow auto">-->
 
-        <!--<table class="table table1">-->
-            <!--<thead>-->
-            <!--<tr>-->
-                <!--<td>名称</td>-->
-                <!--<td>曾用名</td>-->
-                <!--<td>身份证号码</td>-->
-                <!--<td>所在行政区划分</td>-->
-                <!--<td>户别</td>-->
-                <!--<td>专业大类</td>-->
-                <!--<td>调查范围</td>-->
-                <!--<td>性别</td>-->
-                <!--<td>民族</td>-->
-                <!--<td>与户主关系</td>-->
-                <!--<td>出生日期</td>-->
-                <!--<td>文化程度</td>-->
-                <!--<td>婚姻</td>-->
-                <!--<td>是否劳动</td>-->
-                <!--<td>户口所在地</td>-->
-                <!--<td>人数</td>-->
-                <!--<td>备注</td>-->
-                <!--<td>创建时间</td>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-            <!--<tr>-->
-                <!--<td align="center"><input type="text" value="蔡国成"/></td>-->
-                <!--<td><input type="text" value=""/></td>-->
-                <!--<td><input type="text" value="530128194209233010"/></td>-->
-                <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
-                <!--<td><input type="text" value="农业"/></td>-->
-                <!--<td><input type="text" value="农村部分"/></td>-->
-                <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
-                <!--<td><input type="text" value="男"/></td>-->
-                <!--<td><input type="text" value="汉族"/></td>-->
-                <!--<td><input type="text" value="户主"/></td>-->
-                <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
-                <!--<td><input type="text" value="高中"/></td>-->
-                <!--<td><input type="text" value="已婚"/></td>-->
-                <!--<td><input type="text" value="否"/></td>-->
-                <!--<td><input type="text" /></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td align="center"><input type="text" value="白应福"/></td>-->
-                <!--<td><input type="text" value=""/></td>-->
-                <!--<td><input type="text" value="530128194209233010"/></td>-->
-                <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
-                <!--<td><input type="text" value="农业"/></td>-->
-                <!--<td><input type="text" value="农村部分"/></td>-->
-                <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
-                <!--<td><input type="text" value="男"/></td>-->
-                <!--<td><input type="text" value="汉族"/></td>-->
-                <!--<td><input type="text" value="父子"/></td>-->
-                <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
-                <!--<td><input type="text" value="高中"/></td>-->
-                <!--<td><input type="text" value="已婚"/></td>-->
-                <!--<td><input type="text" value="否"/></td>-->
-                <!--<td><input type="text" /></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td align="center"><input type="text" value="李才香"/></td>-->
-                <!--<td><input type="text" value=""/></td>-->
-                <!--<td><input type="text" value="530128194209233010"/></td>-->
-                <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
-                <!--<td><input type="text" value="农业"/></td>-->
-                <!--<td><input type="text" value="农村部分"/></td>-->
-                <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
-                <!--<td><input type="text" value="女"/></td>-->
-                <!--<td><input type="text" value="汉族"/></td>-->
-                <!--<td><input type="text" value="夫妻"/></td>-->
-                <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
-                <!--<td><input type="text" value="高中"/></td>-->
-                <!--<td><input type="text" value="已婚"/></td>-->
-                <!--<td><input type="text" value="否"/></td>-->
-                <!--<td><input type="text" /></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-                <!--<td><input type="text"/></td>-->
-            <!--</tr>-->
+    <!--<table class="table table1">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<td>名称</td>-->
+    <!--<td>曾用名</td>-->
+    <!--<td>身份证号码</td>-->
+    <!--<td>所在行政区划分</td>-->
+    <!--<td>户别</td>-->
+    <!--<td>专业大类</td>-->
+    <!--<td>调查范围</td>-->
+    <!--<td>性别</td>-->
+    <!--<td>民族</td>-->
+    <!--<td>与户主关系</td>-->
+    <!--<td>出生日期</td>-->
+    <!--<td>文化程度</td>-->
+    <!--<td>婚姻</td>-->
+    <!--<td>是否劳动</td>-->
+    <!--<td>户口所在地</td>-->
+    <!--<td>人数</td>-->
+    <!--<td>备注</td>-->
+    <!--<td>创建时间</td>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr>-->
+    <!--<td align="center"><input type="text" value="蔡国成"/></td>-->
+    <!--<td><input type="text" value=""/></td>-->
+    <!--<td><input type="text" value="530128194209233010"/></td>-->
+    <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
+    <!--<td><input type="text" value="农业"/></td>-->
+    <!--<td><input type="text" value="农村部分"/></td>-->
+    <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
+    <!--<td><input type="text" value="男"/></td>-->
+    <!--<td><input type="text" value="汉族"/></td>-->
+    <!--<td><input type="text" value="户主"/></td>-->
+    <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
+    <!--<td><input type="text" value="高中"/></td>-->
+    <!--<td><input type="text" value="已婚"/></td>-->
+    <!--<td><input type="text" value="否"/></td>-->
+    <!--<td><input type="text" /></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td align="center"><input type="text" value="白应福"/></td>-->
+    <!--<td><input type="text" value=""/></td>-->
+    <!--<td><input type="text" value="530128194209233010"/></td>-->
+    <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
+    <!--<td><input type="text" value="农业"/></td>-->
+    <!--<td><input type="text" value="农村部分"/></td>-->
+    <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
+    <!--<td><input type="text" value="男"/></td>-->
+    <!--<td><input type="text" value="汉族"/></td>-->
+    <!--<td><input type="text" value="父子"/></td>-->
+    <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
+    <!--<td><input type="text" value="高中"/></td>-->
+    <!--<td><input type="text" value="已婚"/></td>-->
+    <!--<td><input type="text" value="否"/></td>-->
+    <!--<td><input type="text" /></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td align="center"><input type="text" value="李才香"/></td>-->
+    <!--<td><input type="text" value=""/></td>-->
+    <!--<td><input type="text" value="530128194209233010"/></td>-->
+    <!--<td><input type="text" value="云南省昆明市禄劝彝族苗族自治县皎平渡镇皎平村红门厂组"/></td>-->
+    <!--<td><input type="text" value="农业"/></td>-->
+    <!--<td><input type="text" value="农村部分"/></td>-->
+    <!--<td><input type="text" value="水库淹没影响区-淹没区"/></td>-->
+    <!--<td><input type="text" value="女"/></td>-->
+    <!--<td><input type="text" value="汉族"/></td>-->
+    <!--<td><input type="text" value="夫妻"/></td>-->
+    <!--<td><input type="text" value="" placeholder="请输入时间"/></td>-->
+    <!--<td><input type="text" value="高中"/></td>-->
+    <!--<td><input type="text" value="已婚"/></td>-->
+    <!--<td><input type="text" value="否"/></td>-->
+    <!--<td><input type="text" /></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--<td><input type="text"/></td>-->
+    <!--</tr>-->
 
-            <!--</tbody>-->
-        <!--</table>-->
+    <!--</tbody>-->
+    <!--</table>-->
     <!--</div>-->
 
 </div>

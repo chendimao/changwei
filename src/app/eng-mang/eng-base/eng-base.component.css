@@ -42,6 +42,7 @@ li.fl.group.group-3{
 }
 .sle{
     width: 200px;
+    margin-right: 15px;
 }
 .t{
     display: inherit;
@@ -51,4 +52,14 @@ li.fl.group.group-3{
 }
 .btn-group{
     margin-top: 20px;
+}
+.secd_title{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    padding-left: 20px;
+
+}
+.secd_title span{
+    border-left: 2px solid #0099cb;
+    padding-left: 20px;
 }

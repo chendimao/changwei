@@ -5,7 +5,7 @@
     工程选择
   </div>
   <div class="rl cl">
-    <app-select-list  [width]="0" [values]="gcList" [search]="true" (SelectModel)="getProjectId($event)"></app-select-list>
+    <app-select-list [placeholderValue]="'请选择工程'"  [width]="0" [values]="gcList" [search]="true" (SelectModel)="getProjectId($event)"></app-select-list>
   </div>
 
   <div>
@@ -19,9 +19,9 @@
   <header class="clearfix">
     <div class="fl">
       <span>阶段：</span>
-      <app-select-list [width]="40" [values]="jdList" [search]="false" (SelectModel)="getGzjdId($event)"></app-select-list>
+      <app-select-list [width]="60" [values]="jdList" [search]="false" (SelectModel)="getGzjdId($event)"></app-select-list>
     </div>
-    <div class="fl">
+    <div class="fl rl">
       <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="表名、字段名、数据类别">
       <span class="btnClick" (click)="searchList('click',key)"></span>
     </div>

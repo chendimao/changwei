@@ -261,17 +261,7 @@
     margin-top: 20px;
 }
 
-:host
-/deep/
-.timeInput .ui-inputtext {
-    background: url(/assets/img/icon/rili.png) no-repeat;
-    background-position: 96% 50%;
-    padding-left: 5px;
-    height: 34px;
-    border-radius: 0px;
-    border: 1px solid #cccccc;
-    width: 100%;
-}
+
 
 :host
 /deep/

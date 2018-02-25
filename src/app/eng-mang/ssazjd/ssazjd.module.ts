@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
+import { HttpService } from "../../service/http-service";
+import { DataProcessingService } from "../../service/dataProcessing.service";
 import {
     TabViewModule,
     CheckboxModule,
@@ -59,7 +61,7 @@ import { KcqlssqkComponent } from "./kcqlssqk/kcqlssqk.component";
         CalendarModule,
         RouterModule.forChild(SsazjdRoutingModule)
     ],
-    providers: [],
+    providers: [HttpService,DataProcessingService],
 })
 export class SsazjdModule {
 }

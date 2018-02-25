@@ -92,12 +92,8 @@
                         调查范围
                     </div>
                     <div class="input_right fl">
-                        <select [(ngModel)]="hcy.dcfwdm" name="dcfwdm" class="inputH selectInput">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">4</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -106,12 +102,8 @@
                         专业大类
                     </div>
                     <div class="input_right fl">
-                        <select [(ngModel)]="hcy.zydldm" name="zydldm" class="inputH selectInput">
-                            <option value="1" selected="selected">汉族</option>
-                            <option value="1">满族</option>
-                            <option value="1">父女</option>
-                            <option value="1">4</option>
-                        </select>
+                        <app-select-list [width]="0" [values]="selectListHzgx"
+                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>

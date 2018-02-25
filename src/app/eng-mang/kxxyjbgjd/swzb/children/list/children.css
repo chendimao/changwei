@@ -31,7 +31,7 @@ header > div > div.active {
     min-height: 34px;
     max-height: 34px;
     width: 25%;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .textareaBeizhu {
@@ -59,13 +59,13 @@ header > div > div.active {
 }
 
 .inputLeft {
-    width: 34%;
+    width: 100px;
     margin-top: 8px;
     text-align: right;
 }
 
 .inputRight {
-    width: 66%;
+    width: calc(100% - 100px);
 }
 
 .langest {
@@ -73,7 +73,7 @@ header > div > div.active {
 }
 
 .inputLeftSelect {
-    width: 17%;
+    width: 100px;
     margin-top: 8px;
     text-align: right;
 }
@@ -92,7 +92,7 @@ header > div > div.active {
 }
 
 .langest .inputRight {
-    width: 83%;
+    width: calc(100% - 100px);
 }
 
 .Mianji {
@@ -120,18 +120,6 @@ header > div > div.active {
     margin: 15px 20px 10px 50px;
 }
 
-:host
-/deep/
-.ui-inputtext {
-    background: url(/assets/img/icon/rili.png) no-repeat;
-    background-position: 96% 50%;
-    padding-left: 5px;
-    margin-right: 30px;
-    height: 34px;
-    border-radius: 0px;
-    border: 1px solid #cccccc;
-    width: 100%;
-}
 
 .beizhu {
     margin-top: 20px;
@@ -237,31 +225,20 @@ textarea {
     padding: 10px 0;
     border-bottom: 1px solid #cccccc;
 }
-.inputBox{
-    min-height: 34px;
-    max-height: 34px;
-    width: 33%;
-    margin: 5px 0;
-}
+
 .input_left{
     width: 30%;
     margin-top: 8px;
-    padding-right: 15px;
-    padding-left: 15px;
+ padding: 0 10px;
     text-align: justify;
     text-justify: distribute-all-lines;
     text-align-last: justify
 }
-.areaBox .input_left{
-    width: 15%;
 
-}
 .input_right{
     width: 70%;
 }
-.areaBox .input_right{
-    width: 85%;
-}
+
 .box_botton{
     margin-top: 20px;
     font-size: 12px;
@@ -323,14 +300,10 @@ textarea {
     color: #ff3b03;
 }
 .inputBox .input_right .inputS{
-    width: 60px;
+    width: 40px;
     height: 30px;
 }
-:host
-/deep/
-.ui-corner-all{
-    padding: 2px 0;
-}
+
 .textarea.textarea{
     width: calc(100% - 140px);
     height: 60px;
@@ -369,4 +342,21 @@ textarea {
 
 .clearfix .group{
     padding: 5px 0;
+}
+.perDanwei{
+    display: inline-block;
+}
+.inputBox{
+    min-height: 34px;
+    max-height: 34px;
+    width: 33%;
+    margin: 5px 0;
+}
+.grave_right{
+    width: calc(100% - 240px);
+}
+@media (max-width: 1025px) {
+   .inputBox{
+       width: 50%;
+   }
 }

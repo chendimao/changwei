@@ -26,7 +26,7 @@ export class PaginatorUserComponent implements OnInit {
             resUrl = `zdk/list?sjId=&start=${value.first + 1}&limit=${value.rows}`;
         } else {
             resUrl = `${this.url}?start=${value.first + 1}&limit=${value.rows}`;
-        }
+    }
         console.log(value);
         console.log(resUrl);
         this.HttpService.get(resUrl)

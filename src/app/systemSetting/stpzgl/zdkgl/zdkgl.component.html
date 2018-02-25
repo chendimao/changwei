@@ -28,7 +28,7 @@
                     </ul>
                 </div>
             </header>
-            <p-dataTable [value]="cars" class="table" (onRowClick)="onRowSelect($event)" resizableColumns="true" selectionMode="single" >
+            <p-dataTable resizableColumns="true" [value]="cars" class="table" (onRowClick)="onRowSelect($event)" responsive="true" selectionMode="single" >
                 <p-column field="mc" title="mc" header="类别名称" [bodyStyle]="{'text-align':'left'}">
                     <!--<ng-template let-col let-car="rowData" pTemplate="body">-->
                         <!--<span>{{car[col.field]=='JCL'?'基础类':'实物指标类'}}</span>-->

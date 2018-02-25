@@ -56,17 +56,37 @@
                 <td>10</td>
                 <td><span class="xiazai"></span><span class="xiugai"></span><span class="shanchu"></span></td>
             </tr>
-
+            <tr>
+                <td><p-checkbox class="fl" name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox></td>
+                <td>彭村水库建设征地移民安置2016年度工作计划.pdf</td>
+                <td>彭村水库</td>
+                <td>年度计划</td>
+                <td>德化县移民局</td>
+                <td>叶星</td>
+                <td>2016-10-4</td>
+                <td>2M</td>
+                <td><span class="xiazai"></span><span class="xiugai"></span><span class="shanchu"></span></td>
+            </tr>
+            <tr>
+                <td><p-checkbox class="fl" name="groupname" value="val3" [(ngModel)]="selectedValues"></p-checkbox></td>
+                <td>彭村水库建设征地移民安置综合监理月报2016年度第1期.pdf</td>
+                <td>彭村水库</td>
+                <td>综合监理</td>
+                <td>福建省江海工程管理有限公司</td>
+                <td>杨娟</td>
+                <td>2016-3-15</td>
+                <td>5M</td>
+                <td><span class="xiazai"></span><span class="xiugai"></span><span class="shanchu"></span></td>
+            </tr>
             </tbody>
-
         </table>
 
-        <div class="foot">
-            <app-paginator></app-paginator>
 
-        </div>
 
     </div>
-
+    <div class="foot">
+        <p-paginator [style]="{'height':'50px'}" rows="10" totalRecords="100" pageLinkSize="1"
+                     templateRight></p-paginator>
+    </div>
     <app-del-waring></app-del-waring>
 </div>

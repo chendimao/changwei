@@ -3,4 +3,5 @@ export class ZdyyglModel {
     bm: string;
     zdm: string;
     sslbId: string;
+    sslbMc: string;
 }

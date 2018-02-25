@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from "../../../service/http-service";
 import {ZdkglModel} from "./zdkgl.model";
 
@@ -17,6 +17,8 @@ export class ZdkglxqComponent implements OnInit {
     private zidian: ZdkglModel = new ZdkglModel();
 
 
+    @ViewChild('ngModel') model;
+
     constructor(private HttpService: HttpService) {
     }
 
@@ -32,14 +34,13 @@ export class ZdkglxqComponent implements OnInit {
             {label: '虚节点', name: '虚节点', value: '0'},
         ];
         this.HttpService.get('zdk/zdflList')
-            .then(res=>{
+            .then(res => {
                 console.log(res['returnObject']);
                 const resList = JSON.stringify(res['returnObject']);
                 let list = resList.replace(/name/g, 'label');
                 list = list.replace(/code/g, "value");
                 this.selectList2 = JSON.parse(list);
             });
-
 
 
     }
@@ -71,7 +72,7 @@ export class ZdkglxqComponent implements OnInit {
                 });
         } else {
             //保存新一项
-            if (item.mc == null || item.qc == null ) {
+            if (item.mc == null || item.qc == null) {
                 this.msgs.push({severity: 'error', summary: '填入提醒', detail: '有必填项未填'});
             } else {
                 console.log(item);
@@ -91,6 +92,15 @@ export class ZdkglxqComponent implements OnInit {
                     });
             }
         }
+    }
+
+    bigest() {
+        console.log(this.model);
+        console.log(this.model.containerViewChild.nativeElement);
+        console.log(this.model.containerViewChild.nativeElement.children);
+        console.log(this.model.containerViewChild.nativeElement.children[1]);
+       this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
+
     }
 
     getChildEvent1(e) {

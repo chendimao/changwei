@@ -1,5 +1,6 @@
-<p-dialog modal="modal"
-          responsive="true"
+<p-dialog modal="modal" responsive="true" #ngModel
+          [style]="{'width':'100%','height':'100%','margin':'0',left:'0px','overflow':'auto'}"
+          [contentStyle]="{'width':'100%','height':'100%','padding':'0','margin':'0'}"
           [(visible)]="display" height="100%" breakpoint="100%">
     <p-header>
         <div>实物指标分栏配置详情</div>
@@ -15,21 +16,21 @@
         <div>
             <ul>
                 <li class="group group-4 fl">
-                    <span class="importent">所属分栏类别：</span>
+                    <span class="importent">所属分栏类别</span>
                     <app-select-list [width]="100" [values]="ssfllbList" [search]="false"
                                      [disabled]="isDisabled" (SelectModel)="getSsfllb($event)"></app-select-list>
                 </li>
                 <li class="group group-4 fl">
-                    <span class="importent">指标分类：</span>
+                    <span class="importent">指标分类</span>
                     <app-select-list [width]="100" [values]="zbflList" [search]="false"
                                      [disabled]="isDisabled" (SelectModel)="getZbfllb($event)"></app-select-list>
                 </li>
-                <li class="group group-4 fl">
-                    <span class="importent">指标代码：</span>
+                <li class="group group-4 fl" *ngIf="showZbdm==='rew'">
+                    <span class="importent">指标代码</span>
                     <input type="text" [(ngModel)]="zbdm" [disabled]="isDisabled">
                 </li>
                 <li class="group group-4 fl">
-                    <span class="importent">分栏号：</span>
+                    <span class="importent">分栏号</span>
                     <app-select-list [width]="100" [values]="flhList" [search]="false"
                                      [disabled]="isDisabled" (SelectModel)="getFlh($event)"></app-select-list>
                 </li>
@@ -43,8 +44,8 @@
                 <div class="fl clickTree boxShadow">
                     <header class="clearfix">
                         <div class="fl">
-                            <span>数据来源：</span>
-                            <input type="text" class="searchInput">
+                            <span>数据来源：数据指标分类字典</span>
+
                             <!--<input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" -->
                             <!--placeholder="表名、字段名、数据类别">-->
                             <!--<span class="btnClick" (click)="searchList('click',key)"></span>-->
@@ -75,11 +76,14 @@
                                  [style]="{'margin-top':'15px','border':'1px solid #cccccc'}" #pTree>
                         <p-column field="zdxmc" header="名称">
                             <ng-template let-col let-node="rowData" pTemplate="body">
-                                <p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"
-                                            [(ngModel)]="node.select"
-                                            (onChange)="checkbox(node,node.select)">
-                                </p-checkbox>
-                                <span>{{node.data.zdxmc}}</span>
+                                <span [ngStyle]="{'display':node.data.isDisplayCheck==='0'?'none':'inline'}">
+                                    <p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"
+                                                [(ngModel)]="node.select"
+                                                (onChange)="checkbox(node,node.select)">
+                                    </p-checkbox>
+                                </span>
+                                <span [ngStyle]="{'display':node.data.isDisplayCheck==='0'?'inline':'none'}">{{node.data.zdxmc}}</span>
+
                             </ng-template>
                         </p-column>
                         <p-column field="ssxtdm" header="代码">
@@ -98,24 +102,24 @@
                     </p-treeTable>
                 </div>
                 <ul class="nodeBtn fl">
-                    <li (click)="addSelectParentNode(selectedFiles)">拷贝为根节点</li>
-                    <li (click)="addSelectChildrenNode(selectedFiles)">拷贝为子节点</li>
-                    <li (click)="addSelectSibNode(selectedFiles)">拷贝为平级节点</li>
-                    <li>原样式拷贝节点</li>
+                    <li (click)="addSelectParentNode(selectedFiles2)">拷贝为根节点</li>
+                    <li (click)="addSelectChildrenNode(selectedFiles2)">拷贝为子节点</li>
+                    <li (click)="addSelectSibNode(node)">拷贝为平级节点</li>
+                    <li (click)="addAllNode(selectedFiles2)">原样式拷贝节点</li>
                 </ul>
                 <div class="fl clickTree boxShadow">
                     <header class="clearfix">
 
                         <div class="btnGrop fr">
                             <ul>
-                                <li class="fl" (click)="addNode(selectedFiles)">
-                                    <span class="img icon fa  fa-plus-circle"></span>
-                                    新增节点
-                                </li>
-                                <li class="fl" (click)="addChildrenNode(selectedFiles)">
-                                    <span class="img icon fa fa-plus"></span>
-                                    新增子节点
-                                </li>
+                                <!--<li class="fl" (click)="addNode()">-->
+                                    <!--<span class="img icon fa  fa-plus-circle"></span>-->
+                                    <!--新增节点-->
+                                <!--</li>-->
+                                <!--<li class="fl" (click)="addChildrenNode()">-->
+                                    <!--<span class="img icon fa fa-plus"></span>-->
+                                    <!--新增子节点-->
+                                <!--</li>-->
                                 <!--<li class="fl" (click)="addSibNode(selectedFiles)" >-->
                                 <!--<span class="img icon fa fa-plus-square"></span>-->
                                 <!--新增平级节点-->
@@ -135,9 +139,9 @@
                                  [style]="{'margin-top':'15px','border':'1px solid #cccccc'}">
                         <p-column field="zdxmc" header="名称">
                             <!--<ng-template let-col let-node="rowData" pTemplate="body">-->
-                            <!--<p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"-->
-                            <!--[(ngModel)]="node.isCheck"-->
-                            <!--(onChange)="checkbox(node,isCheck)"></p-checkbox>-->
+                                <!--<p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"-->
+                                            <!--[(ngModel)]="node.isCheck"-->
+                                            <!--(onChange)="checkbox(node,isCheck)"></p-checkbox>-->
                             <!--</ng-template>-->
                         </p-column>
                         <p-column field="ssxtdm" header="代码">
@@ -146,20 +150,19 @@
                             <!--</ng-template>-->
                         </p-column>
                         <p-column field="jldwId" header="计量单位">
-                            <!--<ng-template let-col let-node="rowData" pTemplate="body">-->
-                            <!--<select name="" id="" (click)="getjSourcelList(jldw)" [(ngModel)]="node.data.jldwId"-->
-                            <!--(change)="update(selectedFiles,'jldwId',jldw)"> " >-->
-                            <!--<option [value]="i.id" *ngFor="let i of jldwList">{{i.mc}}</option>-->
 
-                            <!--</select>-->
-                            <!--</ng-template>-->
+                            <ng-template let-col let-node="rowData" pTemplate="body">
+                                <select name="" id=""  [(ngModel)]="node?.data.jldwId" (change)="update(selectedFiles,'jldwId',node.data.jldwId)">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   " >
+                                    <option [value]="i.id" *ngFor="let i of jldwList" >{{i.mc}}</option>
+                                 </select>
+                            </ng-template>
 
 
                         </p-column>
-                        <p-column field="zdxXh" header="序号">
+                        <p-column field="xh" header="序号">
                             <ng-template let-col let-node="rowData" pTemplate="body">
-                                <input [(ngModel)]="node?.data.zdxXh" type="text"
-                                       (change)="update(selectedFiles,'zdxXh',node.data.zdxXh)" style="width:100%">
+                                <input [(ngModel)]="node?.data.xh" type="text"
+                                       (change)="update(selectedFiles,'xh',node.data.xh)" style="width:100%">
                             </ng-template>
                         </p-column>
 
@@ -188,4 +191,10 @@
     </p-footer>
 </p-dialog>
 <p-growl [(value)]="msgs"></p-growl>
+<p-confirmDialog header="删除提醒" icon="fa fa-question-circle" width="425" #cd>
+    <p-footer>
+        <button type="button" pButton icon="fa-close" label="取消" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="fa-check" label="确定" (click)="cd.accept()"></button>
+    </p-footer>
+</p-confirmDialog>
 <div #alterRoom></div>

@@ -39,8 +39,8 @@
                 <div class="tableCom">
                     <div class="searchAll clearfix">
                         <div class="fl rl input1">
-                            <input type="text" class="searchInput" placeholder="户主名称，家庭成员名称，编号">
-                            <span class="btnClick"></span>
+                            <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="户主名称，家庭成员名称，编号">
+                            <span class="btnClick" (click)="searchList('click',key)"></span>
                         </div>
                         <div class="fl moreSearch" (click)="openModal('query')">
                             更多筛选
@@ -56,10 +56,10 @@
                                     src="assets/img/icon/browse_fill.png"
                                     alt=""></span>查看
                             </li>
-                            <li class="fl" (click)="openModal('addPerson')"><span class="img"><img src="assets/img/icon/jiahao.png"
+                            <li class="fl" (click)="openModal('add')"><span class="img"><img src="assets/img/icon/jiahao.png"
                                                                                     alt=""></span>增加
                             </li>
-                            <li class="fl" (click)="openModal('modPerson')"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                            <li class="fl" (click)="openModal('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
                                                                                     alt=""></span>修改
                             </li>
                             <li class=" rl selectLi">
@@ -77,14 +77,26 @@
                     <div class="tableBox">
                         <p-dataTable [value]="persionList" class="table"  responsive="true" [rows]="10" (onRowClick)="onRowSelect($event)"
                                      scrollable="true"    resizableColumns="true" selectionMode="single">
-                            <p-column field="cid" header="编号"></p-column>
-                            <p-column field="name" header="户主名称" sortable="true"></p-column>
-                            <p-column field="area" header="所在行政区域"></p-column>
-                            <p-column field="type" header="专业大类"></p-column>
-                            <p-column field="fanwei" header="调查范围"></p-column>
-                            <p-column field="kong" header="是否为空挂户"></p-column>
-                            <p-column field="xianwai" header="是否线外"></p-column>
-                            <p-column field="remark" header="备注"></p-column>
+                            <p-column field="dabh" header="编号"></p-column>
+                            <p-column field="hzxm" header="户主名称" sortable="true"></p-column>
+                            <p-column field="xzqhmc" header="所在行政区域">
+                                <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <span title="{{car[col.field]}}">{{car[col.field]}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="zydlmc" header="专业大类"></p-column>
+                            <p-column field="dcfwmc" header="调查范围"></p-column>
+                            <p-column field="sfkgh" header="是否为空挂户">
+                                <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <span title="{{car[col.field]}}">{{car[col.field]==0?'否':'是'}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="sfxw" header="是否线外">
+                                <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <span title="{{car[col.field]}}">{{car[col.field]==0?'否':'是'}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="bz" header="备注"></p-column>
                     </p-dataTable>
                         <div class="foot">
                             <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>

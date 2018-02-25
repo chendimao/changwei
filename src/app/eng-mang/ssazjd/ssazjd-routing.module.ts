@@ -12,13 +12,13 @@ export const SsazjdRoutingModule = [
         path: '',
         component: SsazjdComponent,
         children: [
-            {path: 'ndjh/ndjh', component: NdjhComponent},
-            {path: 'kdqlss/kcqlss', component: KcqlssqkComponent},
-            {path: 'jdpgzlk/dlpgzl', component: DlpgzlComponent},
-            {path: 'jdpgzlk/zhjlzl', component: ZhjlzlComponent},
+            {path: 'ndjh/ndjh/:id', component: NdjhComponent},
+            {path: 'kdqlss/kcqlss/:id', component: KcqlssqkComponent},
+            {path: 'jdpgzlk/dlpgzl/:id', component: DlpgzlComponent},
+            {path: 'jdpgzlk/zhjlzl/:id', component: ZhjlzlComponent},
 
             {
-                path: 'ssjd',
+                path: 'ssazjd',
                 component: SsjdComponent,
                 children: [
                     {

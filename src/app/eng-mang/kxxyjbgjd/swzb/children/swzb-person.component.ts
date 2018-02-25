@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import {Component, OnInit, AfterViewInit,ViewChild, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import {HttpService} from "../../../../service/http-service";
 import {MenuItem, Message, SelectItem} from 'primeng/primeng';
 import {flyIn} from "../../../../animations/fly-in";
 import {HjbxxModel} from "./Hjbxx.model";
-import {alertModelInfo } from "../alertModelInfo";
+import {alertModelInfo} from "../alertModelInfo";
 
 import {PersonComponent} from "./list/person/person.component";
 import {HousesComponent} from "./list/houses/houses.component";
@@ -50,7 +51,8 @@ import {QtzxjbxxComponent} from './list/qtzxjbxx/qtzxjbxx.component';
 export class SwzbPersonComponent implements OnInit {
     private selectList = new Array;
     public hjbxx = new HjbxxModel;
-    public info: alertModelInfo = new alertModelInfo;
+    public info: any;
+    public type: string;
     private showBoottom: boolean = false;
     private showTOP: boolean = false;
     private childrenModel: any;
@@ -70,33 +72,57 @@ export class SwzbPersonComponent implements OnInit {
     public isShowArea: boolean = false;
     ssxzqhdm: string;
     public isDisabled: boolean = true;
+    private alertModelInfo: alertModelInfo = new alertModelInfo;
+
 
     @ViewChild('room', {read: ViewContainerRef}) ModelRoom: ViewContainerRef;
 
 
-    constructor(private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private router: Router) {
+    constructor(private HttpService: HttpService, private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private router: Router) {
         this.types1 = [];
-        this.types1.push({label: '是', value: 'yes'});
-        this.types1.push({label: '否', value: 'no'});
+        this.types1.push({label: '是', value: '1'});
+        this.types1.push({label: '否', value: '0'});
         this.types2 = [];
-        this.types2.push({label: '是', value: 'yes'});
-        this.types2.push({label: '否', value: 'no'});
+        this.types2.push({label: '是', value: '1'});
+        this.types2.push({label: '否', value: '0'});
+        this.navList = personLIst;
     }
 
     ngOnInit() {
         console.log(this.info);
 
 
-        this.selectedType1 = 'yes';
-        this.selectedType2 = 'yes';
-        this.navList = navList;
+        console.log(this.type);
+        switch (this.type) {
+            case 'view':
+                this.HttpService.get(`/jmh/show?id=${this.info.id}`)
+                    .then(res => {
+                        console.log(res);
+                        this.hjbxx = res['returnObject']['bHjbxx'];
+                    });
+                break;
+            case 'add':
+                break;
+            case 'rew':
+                this.HttpService.get(`/jmh/show?id=${this.info.id}`)
+                    .then(res => {
+                        console.log(res);
+                        this.hjbxx = res['returnObject']['bHjbxx'];
+                    });
+                break;
+        }
         this.selectList = [
             {label: '农村部分', name: '农村部分', value: '0'},
             {label: '县城部分', name: '县城部分', value: '1'},
             {label: '集镇部分', name: '集镇部分', value: '2'},
         ];
-    }
 
+
+    }
+    ngAfterViewInit() {
+        this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
+        this.ModelRoom.createComponent(this.childrenModel);
+    }
     selectedTypea(): void {
         console.log(this.selectedType1);
     }
@@ -147,7 +173,9 @@ export class SwzbPersonComponent implements OnInit {
 
     saveRouter(url) {
         this.avtiveName = url;
+        console.log(this.ModelRoom);
         this.ModelRoom.clear();
+        this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
         switch (url) {
             case 'person':
                 this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
@@ -250,42 +278,45 @@ export class SwzbPersonComponent implements OnInit {
                 break;
         }
         this.ModelRoom.createComponent(this.childrenModel);
+        console.log(this.AlertModel);
+        console.log(PersonComponent);
+        console.log(this.childrenModel);
 
 
     }
 
 
-    show(info: object): void {
-        console.log(sessionStorage['person']);
-        for (let i in info) {
-            if (info[i] == "") {
-                for (let f in this.hjbxx) {
-                    if (i == f) {
-                        console.log(this.hjbxx[f]);
-                        this.msgs = [];
-                        this.msgs.push({severity: 'error', summary: '填入提醒', detail: this.hjbxx[f] + ' 必填'});
-                    }
-                }
-            }
-        }
-    }
+    // show(info: object): void {
+    //     console.log(sessionStorage['person']);
+    //     for (let i in info) {
+    //         if (info[i] == "") {
+    //             for (let f in this.hjbxx) {
+    //                 if (i == f) {
+    //                     console.log(this.hjbxx[f]);
+    //                     this.msgs = [];
+    //                     this.msgs.push({severity: 'error', summary: '填入提醒', detail: this.hjbxx[f] + ' 必填'});
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 
-const hjbxx = {
-    ssxtdm: '所属系统',
-    ssgcdm: '所属工程',
-    jddm: '阶段',
-    ssxzqhdm: '所属行政区划',
-    zydldm: '专业大类',
-    dcfwdm: '调查范围',
-    hlbdm: '户类型',
-    hzxm: '户主姓名',
-    dabh: '档案编号',
-    hs: '户数',
-    sfkgh: '是否空挂户',
-
-};
+// const hjbxx = {
+//     ssxtdm: '所属系统',
+//     ssgcdm: '所属工程',
+//     jddm: '阶段',
+//     ssxzqhdm: '所属行政区划',
+//     zydldm: '专业大类',
+//     dcfwdm: '调查范围',
+//     hlbdm: '户类型',
+//     hzxm: '户主姓名',
+//     dabh: '档案编号',
+//     hs: '户数',
+//     sfkgh: '是否空挂户',
+//
+// };
 
 const navList = [
     {path: 'person', name: '人口'}, {path: 'houses', name: '房屋'}, {path: 'decoration', name: '装修'},
@@ -304,5 +335,15 @@ const navList = [
     {path: 'swqxzjbxx', name: '水文（气象）站'},
     {path: 'qtzxjbxx', name: '其他专项'},
 ];
+const personLIst = [
+    {path: 'person', name: '人口'}, {path: 'houses', name: '房屋'}, {path: 'decoration', name: '装修'},
+    {path: 'fsss', name: '附属设施'}, {path: 'land', name: '土地'}, {path: 'landOther', name: '土地附着物'},
+    {path: 'trees', name: '零星树木'}, {path: 'water', name: '小型水利水电'}, {path: 'grave', name: '坟墓'}
+];
+const jtjjzzLIst = [
+    {path: 'qsr', name: '权属人'}, {path: 'houses', name: '房屋'}, {path: 'decoration', name: '装修'},
+    {path: 'fsss', name: '附属设施'}, {path: 'land', name: '土地'}, {path: 'landOther', name: '土地附着物'},
+    {path: 'trees', name: '零星树木'}, {path: 'water', name: '小型水利水电'}, {path: 'grave', name: '坟墓'}
+]
 
 

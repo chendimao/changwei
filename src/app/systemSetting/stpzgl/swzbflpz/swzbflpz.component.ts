@@ -31,14 +31,12 @@ export class SwzbflpzComponent implements OnInit {
         this.subscription = this.shareService.getMessage()
             .subscribe(message => {
                 console.log(message);
-                if (message['message']['display'] === "false") {
-                    this.AlertBox.clear();
-                }
-                this.msgs = [];
-                this.msgs.push(message['message']);
+
                 if (message['message']['severity'] === 'success') {
+                    console.log("新增成功");
                     this.HttpService.get('zbflpz/listZbflpz?' + this.params)
                         .then(res => {
+                            console.log("新增成功1");
                             this.TreeTable = res['returnObject'];
 
                         })
@@ -50,6 +48,8 @@ export class SwzbflpzComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.msgs = [];
+        this.msgs.push({severity: 'warn', summary: '填入提醒', detail: '请选择工程'});
         this.HttpService.get('gczc/allList')
             .then(res => {
                 console.log(res);
@@ -88,10 +88,10 @@ export class SwzbflpzComponent implements OnInit {
 
     showModule(i) {
         if (this.project['id'] == null) {
-            if(i==='view'){
+            if (i === 'view') {
                 this.msgs = [];
                 this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择查看项'});
-            }else{
+            } else {
                 this.msgs = [];
                 this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择修改项'});
             }

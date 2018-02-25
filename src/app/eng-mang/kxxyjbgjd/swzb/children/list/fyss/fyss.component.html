@@ -35,12 +35,8 @@
       <span class="importent">调查范围</span>
     </div>
     <div class="inputRight fl">
-      <select class="inputH selectInput" id="" name="">
-        <option selected="selected" value="1"> 水库淹没影响区</option>
-        <option value="1"> 水库淹没影响区</option>
-        <option value="1"> 水库淹没影响区</option>
-        <option value="1"> 水库淹没影响区</option>
-      </select>
+      <app-select-list [width]="0" [values]="selectListHzgx"
+                       (SelectModel)="getChildEvent1($event)"></app-select-list>
     </div>
   </div>
   <!--下拉框-->
@@ -49,35 +45,29 @@
       <span class="importent">专业大类</span>
     </div>
     <div class="inputRight fl">
-      <select id="" name="">
-        <option selected="selected" value="1">农村部分</option>
-        <option value="1"> 县城部分</option>
-        <option value="1"> 集镇部分</option>
+      <app-select-list [width]="0" [values]="selectListHzgx"
+                       (SelectModel)="getChildEvent1($event)"></app-select-list>
+    </div>
+  </div>
 
-      </select>
-    </div>
-  </div>
-  <div class="inputArea fl">
-    <div class="inputLeft fl">
-      <span>建筑总面积</span>
-    </div>
-    <div class="inputRight fl Mianji">
-      <input type="text" value="121">
-    </div>
-    <div class="inputRight fl mianji">
+
+  <div class="fl group group-4 danwei">
+    <span>建筑总面积</span>
+    <input type="text">
+    <div class="fl mianji">
       ㎡
     </div>
+
   </div>
-  <div class="inputArea fl">
-    <div class="inputLeft fl">
-      <span>宅基地面积</span>
-    </div>
-    <div class="inputRight fl Mianji">
-      <input type="text" value="110">
-    </div>
-    <div class="inputRight fl mianji">
+
+
+  <div class="fl group group-4 danwei">
+    <span>宅基地面积</span>
+    <input type="text">
+    <div class="fl mianji">
       ㎡
     </div>
+
   </div>
   <div class="showMore" (click)="showMoreInput()">
     {{moreText}}
@@ -114,12 +104,8 @@
         <span>房屋性质</span>
       </div>
       <div class="inputRight fl">
-        <select id="" name="">
-          <option selected="selected" value="1">农村部分</option>
-          <option value="1"> 县城部分</option>
-          <option value="1"> 集镇部分</option>
-
-        </select>
+        <app-select-list [width]="0" [values]="selectListHzgx"
+                         (SelectModel)="getChildEvent1($event)"></app-select-list>
       </div>
     </div>
     <div class="inputArea fl">
@@ -127,12 +113,8 @@
         <span>房屋主要用途</span>
       </div>
       <div class="inputRight fl">
-        <select id="" name="">
-          <option selected="selected" value="1">农村部分</option>
-          <option value="1"> 县城部分</option>
-          <option value="1"> 集镇部分</option>
-
-        </select>
+        <app-select-list [width]="0" [values]="selectListHzgx"
+                         (SelectModel)="getChildEvent1($event)"></app-select-list>
       </div>
     </div>
     <div class="inputArea fl">
@@ -143,16 +125,15 @@
         <input type="text" value="" placeholder="请输入房产证号">
       </div>
     </div>
-    <div class="inputArea fl">
-      <div class="inputLeft fl">
-        <span>宅基地面积</span>
-      </div>
-      <div class="inputRight fl Mianji">
-        <input type="text" value="王友群">
-      </div>
-      <div class="inputRight fl mianji">
+
+
+    <div class="fl group group-4 danwei">
+      <span>宅基地面积</span>
+      <input type="text">
+      <div class="fl mianji">
         ㎡
       </div>
+
     </div>
     <div class="inputArea fl">
       <div class="inputLeft fl">
@@ -432,16 +413,15 @@
             <input type="text">
           </div>
         </div>
-        <div class="inputArea fl">
-          <div class="inputLeft fl">
-            <span>建筑面积</span>
-          </div>
-          <div class="inputRight fl Mianji">
-            <input type="text">
-          </div>
-          <div class="inputRight fl mianji">
+
+
+        <div class="fl group group-4 danwei">
+          <span>总数量</span>
+          <input type="text">
+          <div class="fl mianji">
             ㎡
           </div>
+
         </div>
         <!--<div class="inputArea fl">-->
         <!--<div class="inputLeft fl">-->

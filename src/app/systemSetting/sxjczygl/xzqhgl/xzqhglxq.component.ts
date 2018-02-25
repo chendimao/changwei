@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {XzqhglModel} from "../model/Xzqhgl-model";
 import {HttpService} from "../../../service/http-service";
 import {ShareService} from "../../service/share.service";
@@ -17,6 +17,7 @@ export class XzqhglxqComponent implements OnInit {
     private Xzqh = new XzqhglModel;
     public info;
     public type;
+    @ViewChild('ngModel') model;
 
     constructor(private HttpService: HttpService, private shareService: ShareService) {
 
@@ -121,7 +122,7 @@ export class XzqhglxqComponent implements OnInit {
 
 
     bigest() {
-        console.log(1);
+       this.model.containerViewChild.nativeElement.children[1].style = "height:calc(100vh - 100px) ;overflow: auto";        this.model.containerViewChild.nativeElement.style = "width:100%;top:0px;left:0px;button:0px;z-index:10000;right:0;height:100%";
     }
 
     getSelect(value) {

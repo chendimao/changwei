@@ -12,7 +12,7 @@
 
 
                 </li>
-                <li (click)="tab(2)" class="fl pro_li bl " [ngClass]="{'active':index==2}"><span>2</span>
+                <li (click)="tab(2)" class="fl pro_li bl wnStyle" [ngClass]="{'active':index==2}"><span>2</span>
                     <div class="step">实物指标调查大细则批复</div>
                     <div class="rl timeBox">
                         <div class="time">时间：2017/08/23</div>
@@ -78,7 +78,13 @@
 
                         <div  class="btnGrop fr">
                             <ul  >
-                                <li  class="fl"><span  class="img  fa fa-check-square-o"></span>多选
+                                <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                                    <span class="img icon fa fa-square-o"></span>
+                                    显示非空项
+                                </li>
+                                <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                                    <span class="img icon fa fa-check-square"></span>
+                                    显示所有项
                                 </li>
                                 <li  class="fl"><span  class="img fa fa-minus-square-o"></span>批量删除
                                 </li>

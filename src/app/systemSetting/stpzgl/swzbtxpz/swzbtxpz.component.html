@@ -32,18 +32,19 @@
 
     </div>
 
-    <div class="fl">
+    <div class="fl" style="margin-left: 15px">
         <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="表名、字段名、数据类别">
         <span class="btnClick" (click)="searchList('click',key)"></span>
     </div>
     <div class="btnGrop fr">
         <ul>
+
             <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
-                <span class="img icon fa fa-exchange"></span>
+                <span class="img icon fa fa-square-o"></span>
                 显示非空项
             </li>
             <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
-                <span class="img icon fa fa-exchange"></span>
+                <span class="img icon fa fa-check-square"></span>
                 显示所有项
             </li>
             <li class="fl" (click)="selectAll(1)" *ngIf="isShow2">
@@ -101,6 +102,6 @@
     <!--</div>-->
 </div>
 
-<div>{{resPost1 | json}}</div>
+<!--<div>{{resPost1 | json}}</div>-->
 <p-growl [(value)]="msgs"></p-growl>
 </div>

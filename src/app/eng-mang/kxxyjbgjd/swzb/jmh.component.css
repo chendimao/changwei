@@ -14,9 +14,7 @@
     border: 0;
 }
 
-.title li {
-    padding: 0 20px;
-}
+
 
 .classme {
     margin: 15px 10px 15px 0;
@@ -69,6 +67,7 @@
 }
 
 .header {
+    display: none;
 
     padding: 18px;
     background: #f5f6fa;
@@ -305,7 +304,7 @@ li {
 :host(.ui-widget-content){
     background: white;
 }
-.
+
 
 :host
 .ui-dialog .ui-dialog-titlebar-close {

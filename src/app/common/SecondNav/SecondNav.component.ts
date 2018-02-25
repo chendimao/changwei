@@ -79,7 +79,7 @@ const emgList = {
             name: '实物指标',
             routerLink: 'swzb',
             content: [
-                {name: '居民户', routerLink: 'jmh', content: ''},
+                {name: '居民户', routerLink: 'jmh', id: 'E21ADA1A444F4C01B4D1997A61706980', content: ''},
                 {name: '集体经济组织', routerLink: 'jtjjzz', content: ''},
                 {name: '农副业', routerLink: 'nfy', content: ''},
                 {name: '个体工商', routerLink: 'gtgs', content: ''},
@@ -195,7 +195,7 @@ const emgList = {
     'ssazjd': [
 
         {
-            name: '实物指标',
+            name: '实施安置阶段',
             routerLink: 'swzb',
             content: [
                 {name: '居民户', routerLink: 'kxxyj', content: ''},

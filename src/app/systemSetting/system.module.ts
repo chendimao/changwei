@@ -6,6 +6,7 @@ import {HttpService} from "../service/http-service";
 import {DataProcessingService} from "../service/dataProcessing.service";
 import {ShareService} from "./service/share.service";
 import {
+    ConfirmDialogModule,
     SidebarModule,
     TreeTableModule,
     TabViewModule,
@@ -84,6 +85,7 @@ import {SaveService} from "./service/save.service";
         CommonModule,
         UserCommonModule,
         SystemRoutingModule,
+        ConfirmDialogModule,
         CheckboxModule,
         DataTableModule,
         SharedModule,

@@ -12,6 +12,7 @@ export class ProjectProposalComponent implements OnInit {
     private index: number = 1;
     private ch;
     private value1: Date;
+    private isShow1:boolean=true;
 
 
     constructor() {
@@ -40,6 +41,12 @@ export class ProjectProposalComponent implements OnInit {
         console.log(this.value1);
 
     }
-
+    showAll(i){
+        if (this.isShow1) {
+            this.isShow1 = false;
+        } else {
+            this.isShow1 = true;
+        }
+    }
 
 }

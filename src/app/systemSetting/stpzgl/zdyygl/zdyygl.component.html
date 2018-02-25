@@ -17,17 +17,17 @@
           </ul>
         </div>
       </header>
-      <p-dataTable resizableColumns="true" [value]="cars" class="table" (onRowClick)="onRowSelect($event)" selectionMode="single">
+      <p-dataTable responsive="true"  [value]="cars" class="table" (onRowClick)="onRowSelect($event)" selectionMode="single" resizableColumns="true">
         <p-column field="bm" header="表名"></p-column>
         <p-column field="zdm" header="字段名"></p-column>
         <p-column field="sjlbmc" header="绑定的数据类别"></p-column>
         <p-column field="bz" header="备注"></p-column>
-        <p-column field="cjsj" header="创建时间">
-          <ng-template let-col let-car="rowData" pTemplate="body">
+        <p-column field="cjsj" header="创建时间" [style]="{'width':'135px'}">
+          <ng-template let-col let-car="rowData" pTemplate="body" >
             <span>{{car[col.field] | date:"yyyy-MM-dd" }}</span>
           </ng-template>
         </p-column>
-        <p-column field="zhgxsj" header="最后更新时间">
+        <p-column field="zhgxsj" header="最后更新时间" [style]="{'width':'135px'}">
           <ng-template let-col let-car="rowData" pTemplate="body">
             <span>{{car[col.field] | date:"yyyy-MM-dd" }}</span>
           </ng-template>
