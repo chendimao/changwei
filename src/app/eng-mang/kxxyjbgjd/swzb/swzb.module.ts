@@ -20,7 +20,8 @@ import {
     FieldsetModule,
     DataTableModule,
     SharedModule,
-    GrowlModule
+    GrowlModule,
+    TreeTableModule
 } from 'primeng/primeng';
 import {SwzbRoutingModule} from "./swzb-routering.module";
 
@@ -121,7 +122,7 @@ import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
 
     imports: [
 
-
+        TreeTableModule,
         BreadcrumbModule,
         PanelModule,
         DropdownModule,
@@ -150,7 +151,7 @@ import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
         GykqyxqComponent, TljbxxComponent, GljbxxComponent, QhjbxxComponent, HdjbxxComponent,
         GkjbxxComponent, MtjbxxComponent, SbdgcjbxxComponent, DxgcjbxxComponent, GbdsjbxxComponent,
         GdgcjbxxComponent, SlsdgcjbxxComponent, KczyjbxxComponent, WwgjjbxxComponent, SwqxzjbxxComponent,
-        QtzxjbxxComponent
+        QtzxjbxxComponent,
 
     ],
     providers: [HttpService, ValuChangeService, DataProcessingService],

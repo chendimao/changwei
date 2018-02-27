@@ -2,7 +2,7 @@
     <div>
         <p-selectButton [options]="types" [(ngModel)]="selectedType"
                         (click)="selectedTypea1()"></p-selectButton>
-        <em>共 <span>3</span>人</em>
+        <em>共 <span ></span>人</em>
     </div>
 </header>
 <div *ngIf="selectedType==1" class="clearfix">
@@ -222,10 +222,7 @@
                     </div>
                     <div class="input_right fl timeSelect">
 
-                        <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
-                                    monthNavigator="true"
-                                    dateFormat="yy-mm-dd" yearRange="19002030" [inline]="false" [locale]="ch"
-                                    [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
+                        <app-p-calendar [value]="hcy.qrrq" (SelectModel)="getQrrqDate($event)"></app-p-calendar>
 
                     </div>
 
@@ -235,14 +232,12 @@
                         迁出日期
                     </div>
                     <div class="input_right fl timeSelect">
-                        <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
-                                    monthNavigator="true"
-                                    dateFormat="yy-mm-dd" yearRange="19002030" [inline]="false" [locale]="ch"
-                                    [(ngModel)]="hcy.qcrq" name="qcrq"></p-calendar>
-
+                        <app-p-calendar [value]="hcy.qcrq" (SelectModel)="getQcrqDate($event)"></app-p-calendar>
                     </div>
 
                 </div>
+
+
                 <div class="inputBox  rl fl danwei">
                     <div class="input_left fl ">
                         所在高程
@@ -285,7 +280,7 @@
     </div>
 </div>
 <div *ngIf="selectedType==2">
-    <div style="width100%;overflow auto">
+    <div style="width:100%;overflow:auto;">
         <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true"
                      frozenWidth="300px" unfrozenWidth="calc(100% - 300px)" [style]="{'margin-top':'30px'}"
                      bodyStyle="{'text-align''center'}">

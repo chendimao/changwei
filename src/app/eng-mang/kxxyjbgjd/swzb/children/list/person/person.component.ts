@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild, ElementRef, ViewChildren, QueryList} from 
 import {NgForm} from "@angular/forms";
 import {SelectItem, DataTableModule, SharedModule, LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
 import { ValuChangeService } from "../../../../../../service/valuChange.service";
+import {HttpService} from "../../../../../../service/http-service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
     selector: 'app-person',
@@ -10,9 +12,9 @@ import { ValuChangeService } from "../../../../../../service/valuChange.service"
 })
 export class PersonComponent implements OnInit {
     public hcy: any;
-    private selectListHzgx=new Array;
-    private tableList: any;
-    private personList: any;
+    public selectListHzgx=new Array;
+    public tableList: any;
+    public personList: any;
     types: SelectItem[];
     public selectedType: number;
     types1: SelectItem[];
@@ -20,14 +22,24 @@ export class PersonComponent implements OnInit {
     types3: SelectItem[];
     types4: SelectItem[];
     types5: SelectItem[];
-    private ch;
-    private isShowArea: boolean = false;
+
+    public qshflId;
+    public childInfo:any;
+    public hcy_count: number; //总共多少人
+    public isShowArea: boolean = false;
     area: string;
     @ViewChild('person') person: NgForm;
     @ViewChildren('defaultPerson') defaultPerson: QueryList<ElementRef>;
 
 
-    constructor(private ValuChangeService: ValuChangeService) {
+    constructor(private ValuChangeService: ValuChangeService, private HttpService: HttpService, private route: ActivatedRoute) {
+
+        //获取居民户id
+        this.route.params.subscribe((params: Params)=>{
+
+            this.qshflId = params.qshflId;
+        });
+        console.log(sessionStorage['linshiPerson']);
         this.types = [];
         this.types.push({label: '详情视图', value: '1'});
         this.types.push({label: '列表视图', value: '2'});
@@ -48,70 +60,11 @@ export class PersonComponent implements OnInit {
         this.types5.push({label: '否', value: '否'});
 
 
-        this.tableList = [
-            {
-                "mc": "蔡国成",
-                'cym': '农业',
-                'sfzh': '父子',
-                'szxzqhdm': "所属系统代码",
-                'hbdm': "所属工程代码",
-                'zydldm': "专业大类代码",
-                'dcfwdm': "所在最高高程",
-                'xbdm': "所在最低高程",
-                'mzdm': "调查范围代码",
-                'yhzgx': "所属系统代码",
-                'csrq': "",
-                'whcddm': "专业大类代码",
-                'hydm': "所在最高高程",
-                'sfsldl': "所在最低高程",
-                'hkszd': "调查范围代码",
-                'rs': "所在最高高程",
-                'bz': "所在最低高程",
-                'cjsj': "调查范围代码"
-            },
-            {
 
-                'mc': '白应福',
-                'cym': '农业',
-                'sfzh': '父子',
-                'szxzqhdm': "所属系统代码",
-                'hbdm': "所属工程代码",
-                'zydldm': "专业大类代码",
-                'dcfwdm': "所在最高高程",
-                'xbdm': "所在最低高程",
-                'mzdm': "调查范围代码",
-                'yhzgx': "所属系统代码",
-                'csrq': "",
-                'whcddm': "专业大类代码",
-                'hydm': "所在最高高程",
-                'sfsldl': "所在最低高程",
-                'hkszd': "调查范围代码",
-                'rs': "所在最高高程",
-                'bz': "所在最低高程",
-                'cjsj': "调查范围代码"
-            },
-            {
 
-                'mc': '李才香',
-                'cym': '农业',
-                'sfzh': '父子',
-                'szxzqhdm': "所属系统代码",
-                'hbdm': "所属工程代码",
-                'zydldm': "专业大类代码",
-                'dcfwdm': "所在最高高程",
-                'xbdm': "所在最低高程",
-                'mzdm': "调查范围代码",
-                'yhzgx': "所属系统代码",
-                'csrq': "",
-                'whcddm': "专业大类代码",
-                'hydm': "所在最高高程",
-                'sfsldl': "所在最低高程",
-                'hkszd': "调查范围代码",
-                'rs': "所在最高高程",
-                'bz': "所在最低高程",
-                'cjsj': "调查范围代码"
-            }
-        ]
+
+
+
     }
 
     ngOnInit() {
@@ -125,32 +78,31 @@ export class PersonComponent implements OnInit {
             {label:'弟媳',name:'户主',value:'1'},
         ];
 
-        this.hcy = this.tableList[0];
-        sessionStorage['linshiPerson'] = JSON.stringify(this.tableList);
-        sessionStorage['person'] = '{}';
+
+
         this.selectedType = 1;
         this.area = '福建省泉州市安溪县白濑乡长基村';
-        this.ch = {
-            firstDayOfWeek: 0,
-            dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-            dayNamesShort: ['天', '一', '二', '三', '四', '五', '六'],
-            dayNamesMin: ['天', '一', '二', '三', '四', '五', '六'],
-            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-            monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
-            today: '今天',
-            clear: '清除',
-        };
+
+
+        this.tableList =this.childInfo;
+        console.log(this.tableList);
+        this.hcy = this.tableList[0];
+        this.hcy.qcrq = new Date(this.hcy.qcrq);
+
+        sessionStorage['linshiPerson'] = JSON.stringify(this.tableList);
+        sessionStorage['person'] = '{}';
+
     }
 
     ngAfterViewInit(): void {
         // 订阅表单值改变事件
-        this.person.valueChanges.subscribe(data => {
-                let linshiPerson = JSON.parse(sessionStorage.getItem('linshiPerson'));
-                let confuInfo = JSON.parse(sessionStorage.getItem('person'));
-                let duibiPerson = JSON.stringify(this.ValuChangeService.changeDate(linshiPerson, data, confuInfo));
-                sessionStorage['person'] = JSON.stringify(duibiPerson);
-            }
-        );
+        // this.person.valueChanges.subscribe(data => {
+        //         let linshiPerson = JSON.parse(sessionStorage.getItem('linshiPerson'));
+        //         let confuInfo = JSON.parse(sessionStorage.getItem('person'));
+        //         let duibiPerson = JSON.stringify(this.ValuChangeService.changeDate(linshiPerson, data, confuInfo));
+        //         sessionStorage['person'] = JSON.stringify(duibiPerson);
+        //     }
+        // );
     }
 
     // 选择人
@@ -167,9 +119,11 @@ export class PersonComponent implements OnInit {
     addPerson(personSign): void {
         this.tableList.push({
             "mc": "", 'cym': '', 'sfzh': '', 'szxzqhdm': "", 'zydldm': "", 'dcfwdm': "",
-            'xbdm': "", 'mzdm': "", 'yhzgx': "", 'csrq': "", 'whcddm': "", 'hydm': "", 'sfsldl': "", 'hkszd': "",
+            'xbdm': "", 'mzdm': "", 'yhzgx': "", 'csrq': "", 'whcddm': "", 'hydm': "", 'sfsldl': "",'qrrq':'','qcrq':'', 'hkszd': "",
             'rs': "", 'bz': "", 'cjsj': ""
         });
+
+        console.log(this.hcy);
         let that = this.defaultPerson;
         setTimeout(function () {
             that.last.nativeElement.click();
@@ -189,6 +143,14 @@ export class PersonComponent implements OnInit {
             console.log(this.isShowArea);
         }
 
+    }
+
+    getQrrqDate(event){
+        console.log(event);
+    }
+
+    getQcrqDate(event){
+        console.log(event);
     }
 
     getChildEvent(index) {

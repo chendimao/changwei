@@ -35,19 +35,21 @@ export class SelectListComponent implements OnInit {
                 this.isdisabled = true;
             } else {
                 if (this.values.length == 1) {
+
                     this.isdisabled = true;
                     this.selected = this.values[0].value;
                 } else {
                     this.isdisabled = false;
                 }
             }
-            console.log(this.SelectModel);
 
+            console.log(this.SelectModel);
         }
 
     }
 
     OutPutValue(value) {
+
         this.SelectModel.emit(value);
     }
 

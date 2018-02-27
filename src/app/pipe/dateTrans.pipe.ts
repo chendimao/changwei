@@ -12,6 +12,7 @@ export class DateTrans implements PipeTransform {
 
 
     var date =  new Date(value);
+
     var y = date.getFullYear();
     var m = "0"+(date.getMonth()+1);
     var d = "0"+date.getDate();

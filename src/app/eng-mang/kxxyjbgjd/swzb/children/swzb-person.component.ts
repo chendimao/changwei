@@ -73,6 +73,11 @@ export class SwzbPersonComponent implements OnInit {
     ssxzqhdm: string;
     public isDisabled: boolean = true;
     private alertModelInfo: alertModelInfo = new alertModelInfo;
+    public hcylb;
+
+    //保存子组件data数据
+    private trees_data;
+    private water_data;
 
 
     @ViewChild('room', {read: ViewContainerRef}) ModelRoom: ViewContainerRef;
@@ -99,6 +104,7 @@ export class SwzbPersonComponent implements OnInit {
                     .then(res => {
                         console.log(res);
                         this.hjbxx = res['returnObject']['bHjbxx'];
+                        this.hcylb = res['returnObject']['listHcy'];
                     });
                 break;
             case 'add':
@@ -108,6 +114,12 @@ export class SwzbPersonComponent implements OnInit {
                     .then(res => {
                         console.log(res);
                         this.hjbxx = res['returnObject']['bHjbxx'];
+                        this.hcylb = res['returnObject']['listHcy'];
+
+                        const alert  = this.AlertModel.resolveComponentFactory(PersonComponent);
+                        const alert2 = this.ModelRoom.createComponent(alert);
+                        alert2.instance.childInfo = this.hcylb;
+
                     });
                 break;
         }
@@ -120,8 +132,8 @@ export class SwzbPersonComponent implements OnInit {
 
     }
     ngAfterViewInit() {
-        this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
-        this.ModelRoom.createComponent(this.childrenModel);
+
+
     }
     selectedTypea(): void {
         console.log(this.selectedType1);
@@ -175,109 +187,220 @@ export class SwzbPersonComponent implements OnInit {
         this.avtiveName = url;
         console.log(this.ModelRoom);
         this.ModelRoom.clear();
-        this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
+       // this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
         switch (url) {
             case 'person':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
+
+                const person  = this.AlertModel.resolveComponentFactory(PersonComponent);
+                const person2 = this.ModelRoom.createComponent(person);
+                person2.instance.childInfo = this.hcylb;
                 break;
             case 'houses':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(HousesComponent);
+                const houses = this.AlertModel.resolveComponentFactory(HousesComponent);
+                const houses2 = this.ModelRoom.createComponent(houses);
                 break;
             case 'decoration':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(DecorationComponent);
+                const decoration = this.AlertModel.resolveComponentFactory(DecorationComponent);
+                const decoration2 = this.ModelRoom.createComponent(decoration);
                 break;
             case 'fsss':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(FsssComponent);
+                const fsss = this.AlertModel.resolveComponentFactory(FsssComponent);
+                const fsss2 =  this.ModelRoom.createComponent(fsss);
                 break;
             case 'land':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(LandComponent);
+                const land = this.AlertModel.resolveComponentFactory(LandComponent);
+                const land2 = this.ModelRoom.createComponent(land);
                 break;
             case 'landOther':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(LandOtherComponent);
+
+                const landOther = this.AlertModel.resolveComponentFactory(LandOtherComponent);
+                const landOther2 = this.ModelRoom.createComponent(landOther);
                 break;
             case 'trees':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(TreesComponent);
+
+
+
+
+                if(this.trees_data == null){
+                    const params = 'jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=S000001&xzqhdm=350526000000000&jmhId=7BCD3BE587394F4D969D3B0CC6225E95&zblId=2F0E8D93C2B74B2AA569A961F951741D';
+                    this.HttpService.get('lxgm/list?'+params).then((data)=>{
+
+
+                        const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
+                        const trees2 = this.ModelRoom.createComponent(trees);
+
+                        trees2.instance.childInfo = this.hjbxx;
+                        trees2.instance.childInfo2 = this.hcylb;
+
+
+                        this.trees_data  = data;
+                        trees2.instance.data = data;
+
+                    });
+                }else{
+                    const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
+                    const trees2 = this.ModelRoom.createComponent(trees);
+
+                    trees2.instance.childInfo = this.hjbxx;
+                    trees2.instance.childInfo2 = this.hcylb;
+                    trees2.instance.data = this.trees_data;
+                }
+
+
+
                 break;
             case 'water':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(WaterComponent);
+                if(this.water_data == null){
+                    const params = 'jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=S000001&xzqhdm=350526000000000&jmhId=7BCD3BE587394F4D969D3B0CC6225E95&zblId=2F0E8D93C2B74B2AA569A961F951741D';
+                    this.HttpService.get('xxzx/list?'+params).then((data)=>{
+
+
+                        const trees = this.AlertModel.resolveComponentFactory(WaterComponent);
+                        const trees2 = this.ModelRoom.createComponent(trees);
+
+                        trees2.instance.childInfo = this.hjbxx;
+                        trees2.instance.childInfo2 = this.hcylb;
+
+
+                        this.water_data  = data;
+                        trees2.instance.data = data;
+
+                    });
+                }else{
+                    const trees = this.AlertModel.resolveComponentFactory(WaterComponent);
+                    const trees2 = this.ModelRoom.createComponent(trees);
+
+                    trees2.instance.childInfo = this.hjbxx;
+                    trees2.instance.childInfo2 = this.hcylb;
+                    trees2.instance.data = this.water_data;
+                }
                 break;
             case 'grave':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(GraveComponent);
+
+                if(this.trees_data == null){
+                    const params = 'jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=S000001&xzqhdm=350526000000000&jmhId=7BCD3BE587394F4D969D3B0CC6225E95&zblId=2F0E8D93C2B74B2AA569A961F951741D';
+                    this.HttpService.get('lxgm/list?'+params).then((data)=>{
+
+
+                        const trees = this.AlertModel.resolveComponentFactory(GraveComponent);
+                        const trees2 = this.ModelRoom.createComponent(trees);
+
+                        trees2.instance.childInfo = this.hjbxx;
+                        trees2.instance.childInfo2 = this.hcylb;
+
+
+                        this.trees_data  = data;
+                        trees2.instance.data = data;
+
+                    });
+                }else{
+                    const trees = this.AlertModel.resolveComponentFactory(GraveComponent);
+                    const trees2 = this.ModelRoom.createComponent(trees);
+
+                    trees2.instance.childInfo = this.hjbxx;
+                    trees2.instance.childInfo2 = this.hcylb;
+                    trees2.instance.data = this.trees_data;
+                }
                 break;
             case 'qsr':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(QsrComponent);
+                const qsr = this.AlertModel.resolveComponentFactory(QsrComponent);
+                const qsr2 = this.ModelRoom.createComponent(qsr);
                 break;
 
             case 'gtgsjbqk':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(JtgsjbxqComponent);
+                const gtgsjbqk= this.AlertModel.resolveComponentFactory(JtgsjbxqComponent);
+                const gtgsjbqk2 = this.ModelRoom.createComponent(gtgsjbqk);
                 break;
             case 'shebei':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(ShebeiComponent);
+                const shebei= this.AlertModel.resolveComponentFactory(ShebeiComponent);
+                const shebei2 = this.ModelRoom.createComponent(shebei);
                 break;
             case 'sheshi':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(SheshiComponent);
+                const sheshi= this.AlertModel.resolveComponentFactory(SheshiComponent);
+                const sheshi2 = this.ModelRoom.createComponent(sheshi);
                 break;
             case 'nfyssjbqk':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(NfyssjbqkComponent);
+                const nfyssjbqk= this.AlertModel.resolveComponentFactory(NfyssjbqkComponent);
+                const nfyssjbqk2 = this.ModelRoom.createComponent(nfyssjbqk);
                 break;
             case 'fyss':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(FyssComponent);
+                const fyss= this.AlertModel.resolveComponentFactory(FyssComponent);
+                const fyss2 = this.ModelRoom.createComponent(fyss);
                 break;
             case 'dwqbqk':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
+                const dwqbqk= this.AlertModel.resolveComponentFactory(DwqbqkComponent);
+                const dwqbqk2 = this.ModelRoom.createComponent(dwqbqk);
                 break;
             // case 'gykqyxq':
             //     this.childrenModel = this.AlertModel.resolveComponentFactory(GykqyxqComponent);
             //     break;
             case 'tljbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(TljbxxComponent);
+                const tljbxx = this.AlertModel.resolveComponentFactory(TljbxxComponent);
+                const tljbxx2 = this.ModelRoom.createComponent(tljbxx);
                 break;
             case 'gljbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(GljbxxComponent);
+                const gljbxx= this.AlertModel.resolveComponentFactory(GljbxxComponent);
+                const gljbxx2 = this.ModelRoom.createComponent(gljbxx);
                 break;
             case 'qhjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(QhjbxxComponent);
+                const qhjbxx= this.AlertModel.resolveComponentFactory(QhjbxxComponent);
+                const qhjbxx2 = this.ModelRoom.createComponent(qhjbxx);
                 break;
 
             case 'hdjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(HdjbxxComponent);
+                const hdjbxx = this.AlertModel.resolveComponentFactory(HdjbxxComponent);
+                const hbjbxx2 = this.ModelRoom.createComponent(hdjbxx);
                 break;
             case 'gkjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(GkjbxxComponent);
+
+                const gkjbxx = this.AlertModel.resolveComponentFactory(GkjbxxComponent);
+                const gkjbxx2 =this.ModelRoom.createComponent(gkjbxx);
                 break;
             case 'mtjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(MtjbxxComponent);
+
+                const mtjbxx = this.AlertModel.resolveComponentFactory(MtjbxxComponent);
+                const mtjbxx2 = this.ModelRoom.createComponent(mtjbxx);
                 break;
             case 'sbdgcjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(SbdgcjbxxComponent);
+                const sbdgcjbxx= this.AlertModel.resolveComponentFactory(SbdgcjbxxComponent);
+                const sbdgcjbxx2 =this.ModelRoom.createComponent(sbdgcjbxx);
                 break;
             case 'dxgcjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(DxgcjbxxComponent);
+                const dxgcjbxx= this.AlertModel.resolveComponentFactory(DxgcjbxxComponent);
+                const dxgcjbxx2 = this.ModelRoom.createComponent(dxgcjbxx);
                 break;
             case 'gbdsjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(GbdsjbxxComponent);
+                const gbdsjbxx= this.AlertModel.resolveComponentFactory(GbdsjbxxComponent);
+                const gbdsjbxx2 = this.ModelRoom.createComponent(gbdsjbxx);
                 break;
             case 'gdgcjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(GdgcjbxxComponent);
+
+                const gdgcjbxx= this.AlertModel.resolveComponentFactory(GdgcjbxxComponent);
+                const gdgcjbxx2 = this.ModelRoom.createComponent(gdgcjbxx);
                 break;
             case 'slsdgcjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(SlsdgcjbxxComponent);
+                const slsdgcjbxx = this.AlertModel.resolveComponentFactory(SlsdgcjbxxComponent);
+                const slsdgcjbxx2= this.ModelRoom.createComponent(slsdgcjbxx);
                 break;
             case 'kczyjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(KczyjbxxComponent);
+                const kczyjbxx = this.AlertModel.resolveComponentFactory(KczyjbxxComponent);
+                const kczyjbxx2 = this.ModelRoom.createComponent(kczyjbxx);
                 break;
             case 'wwgjjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
+                const wwgjjbxx= this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
+                const wwgjjbxx2 = this.ModelRoom.createComponent(wwgjjbxx);
                 break;
 
             case 'swqxzjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(SwqxzjbxxComponent);
+                const swqxzjbxx = this.AlertModel.resolveComponentFactory(SwqxzjbxxComponent);
+                const swqxzjbxx2 = this.ModelRoom.createComponent(swqxzjbxx);
                 break;
             case 'qtzxjbxx':
-                this.childrenModel = this.AlertModel.resolveComponentFactory(QtzxjbxxComponent);
+                const qtzxjbxx = this.AlertModel.resolveComponentFactory(QtzxjbxxComponent);
+                const qtzxjbxx2 = this.ModelRoom.createComponent(qtzxjbxx);
                 break;
         }
-        this.ModelRoom.createComponent(this.childrenModel);
+
         console.log(this.AlertModel);
         console.log(PersonComponent);
         console.log(this.childrenModel);

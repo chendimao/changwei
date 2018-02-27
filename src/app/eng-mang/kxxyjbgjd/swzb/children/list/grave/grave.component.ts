@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SelectItem, DataTableModule, SharedModule, LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
+import {TreesData} from "../trees/trees.component";
 @Component({
   selector: 'app-grave',
   templateUrl: './grave.component.html',
@@ -24,6 +25,14 @@ export class GraveComponent implements OnInit {
     private isShowArea: boolean = false;
     area: string;
 
+    public datalist: Array<TreesData>;
+    public name_active_data: any; //选中样式
+    public name_active_base: any; //选中样式
+    public selectPersonList=new Array(); //新增下拉列表
+    public displaySelectPserson:boolean = false; //显示隐藏新增人员下拉列表
+    public childInfo2;
+    public data;
+    public childInfo;
 // 表单组件
 //     cars: Car[];
 //

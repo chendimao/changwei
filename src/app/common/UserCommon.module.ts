@@ -35,6 +35,7 @@ import {PaginatorUserComponent} from "./paginator/paginator.component";
 import {SimTableComponent} from '../systemSetting/common/sim-table/sim-table.component';
 import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {DelWaringComponent} from './del-waring/del-waring.component';
+import {PcalendarComponent} from "./p-calendar/Pcalendar.component";
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import {DelWaringComponent} from './del-waring/del-waring.component';
         SimTableComponent,
         BreadcrumbComponent,
         DelWaringComponent,
+        PcalendarComponent
     ],
     imports: [
         ConfirmDialogModule,
@@ -76,7 +78,7 @@ import {DelWaringComponent} from './del-waring/del-waring.component';
         AccordionModule,
         CalendarModule,
     ],
-    exports: [DelWaringComponent, HeaderNavComponent, WaringComponent, PaginatorUserComponent, TreeListComponent, BreadcrumbComponent, SecondNavComponent, AreaSelectComponent, SelectListComponent, SurverAreaComponent, SafePipe, SimTableComponent],
+    exports: [PcalendarComponent, DelWaringComponent, HeaderNavComponent, WaringComponent, PaginatorUserComponent, TreeListComponent, BreadcrumbComponent, SecondNavComponent, AreaSelectComponent, SelectListComponent, SurverAreaComponent, SafePipe, SimTableComponent],
     providers: [],
 })
 export class UserCommonModule {
