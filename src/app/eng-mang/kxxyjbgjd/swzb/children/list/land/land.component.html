@@ -1,14 +1,18 @@
 <div>
     <header class="clearfix">
-        <div class="fl">
-            <div class="fl active">蔡国成</div>
-            <div class="fl">白应福</div>
+        <div class="fl"  >
+            <div class="fl" *ngFor="let land of landList"  (click)="selectNmae(land)" [ngClass]="{'active':land == name_active_data}" [innerHTML]="land.qsrmc"></div>
+            <app-select-list class="fr" *ngIf="displaySelectPserson"  [values]="selectPersonList"
+                             (SelectModel)="getChildEvent1($event)"></app-select-list>
         </div>
         <div class="fr">
-            <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" class="img" alt=""></span>新增土地</div>
-            <div class="fl"><span><img src="assets/img/icon/clear.png" alt="" class="img"></span>删除土地</div>
+            <div class="fl" (click)="displaySlect()"><span class="img"><img src="assets/img/icon/jiahao.png" class="img" alt=""></span>新增土地</div>
+            <div class="fl"  (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt="" class="img"></span>删除土地</div>
         </div>
     </header>
+
+    <form #person="ngForm">
+    <div *ngIf="name_active_data">
     <div class="home_title ">土地基本信息</div>
     <div class="all_box clearfix">
         <div class="inputArea fl">
@@ -16,7 +20,9 @@
                 <span class="importent">权属人</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" value="蔡国成">
+                <app-select-list [width]="0"  [values]="selectPersonList"
+                                 (SelectModel)="eventQsr($event)"    [selectValue]="name_active_data.qsrId" ngDefaultControl></app-select-list>
+
             </div>
         </div>
         <div class="inputArea rl fl langest">
@@ -24,7 +30,7 @@
                 <span class="importent">所在行政区划</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" class="inputH" value="福建省泉州市安溪县白濑乡长基村">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.swszxzqhdm" name="swszxzqhdm">
                 <span class="xiala" (click)="showAreaBlock()"></span>
                 <app-area-select class="areaCommpont" [display]="isShowArea"
                                  (childEvent)="getChildEvent($event)"></app-area-select>
@@ -36,18 +42,36 @@
             <div class="inputLeft fl">
                 <span class="importent">专业大类</span>
             </div>
-            <div class="inputRight fl">
-                <app-select-list [width]="0" [values]="selectListHzgx"
-                                 (SelectModel)="getChildEvent1($event)"></app-select-list>
+            <div class="inputRight fl" *ngIf="zydl_list">
+                <app-select-list [width]="0" [values]="zydl_list"
+                                 (SelectModel)="eventZydl($event)" [selectValue]="name_active_data.zydldm" name="zydl" ngDefaultControl></app-select-list>
             </div>
         </div>
+        <div class="inputArea fl">
+            <div class="inputLeft fl">
+                <span class="">总数量</span>
+            </div>
+            <div class="inputRight fl" style="width:calc(100% - 140px )">
+                <input type="text" placeholder="这个数据哪里来">
+            </div>
 
-        <div class="fl group group-4 danwei">
-            <span>总数量</span>
-            <input type="text">
             <div class="fl mianji">
                 ㎡
             </div>
+
+        </div>
+
+
+        <div class="inputArea  rl fl">
+            <div class="inputLeft fl importent">
+                调查范围
+            </div>
+            <div class="inputRight fl">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.dcfwmc" name="dcfw">
+                <i class="xiala" (click)="dcfw_show()"></i>
+                <app-surver-area [values]="dcfw_list" [isShow]="dcfw_list_is_show" (childEvent)="dcfw_data($event)"></app-surver-area>
+            </div>
+
 
         </div>
         <div>
@@ -56,7 +80,7 @@
                     <span>是否线外</span>
                 </div>
                 <div class="inputRight fl">
-                    <p-selectButton [options]="types" [(ngModel)]="selectedType"
+                    <p-selectButton [options]="types" name="sfxw"  [(ngModel)]="name_active_data.sfxw"
                                     (click)="selectedTypea()"></p-selectButton>
                 </div>
             </div>
@@ -66,8 +90,8 @@
                 <span >土地性质</span>
             </div>
             <div class="inputRight fl">
-                <app-select-list [width]="0" [values]="selectListHzgx"
-                                 (SelectModel)="getChildEvent1($event)"></app-select-list>
+                <app-select-list [width]="0" [values]="tdxz_list"
+                                 (SelectModel)="eventTdxz($event)" [selectValue]="name_active_data.tdxzdm"></app-select-list>
             </div>
         </div>
         <div class="inputArea fl">
@@ -75,7 +99,7 @@
                 <span >土地经营权证号</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" value="蔡国成">
+                <input type="text" [(ngModel)]="name_active_data.tdjyqzh" name="tdjyqzh">
             </div>
         </div>
         <div class="inputArea fl">
@@ -83,7 +107,7 @@
                 <span >林权证号</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" value="">
+                <input type="text" [(ngModel)]="name_active_data.lqzh" name="lqzh">
             </div>
         </div>
         <div class="inputArea fl">
@@ -91,7 +115,7 @@
                 <span >田坎系数</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" value="">
+                <input type="text" [(ngModel)]="name_active_data.tkxs" name="tkxs">
             </div>
         </div>
         <div class="inputArea fl">
@@ -99,7 +123,7 @@
                 <span >调查流水号</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" value="">
+                <input type="text" value="" name='dclsh' [(ngModel)]="name_active_data.dclsh">
             </div>
         </div>
 
@@ -113,394 +137,63 @@
             <div class="textareaBeizhu">
                 <span>备注 </span>
             </div>
-            <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+            <textarea name="bz" id="bz" cols="30" rows="10" class="textarea" [(ngModel)]="name_active_data.bz"></textarea>
         </div>
     </div>
-    <div class="home_title">土地分类别信息</div>
-    <div>
-        <p-selectButton [options]="types3" [(ngModel)]="selectedType3"
-                        (click)="selectedTypea3()"></p-selectButton>
+    </div>
+    </form>
+    <div *ngIf="name_active_base">
+        <div class="home_title">房屋分类信息</div>
+
+
+        <div class="tab_box clearfix" >
+
+            <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl" >
+
+                <p-treeTable   ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                    <p-column field="xh"  header="序号">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
+                    <p-column field="zdxmc" header="类别">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
+                    <p-column field="sl" header="数量" >
+                        <ng-template let-node="rowData" pTemplate="body">
+                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.sl" (keyup)="Tree_update(TreeTable,node.data,i)"   >
+                        </ng-template>
+                    </p-column>
+                    <p-column field="dwmc" header="单位">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
+
+                    <p-column field="bz" header="备注" >
+                        <ng-template let-node="rowData" pTemplate="body">
+                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (keyup)="Tree_update(TreeTable,node.data,i)">
+                        </ng-template>
+                    </p-column>
+                </p-treeTable>
+
+
+            </div>
+
+
+
+
+
+        </div>
+
     </div>
 
 
-    <div class="tab_box">
-        <div *ngIf="showTable==1">
-            <div class="table_left fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>耕地</td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.1</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.2</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.3</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
 
-                    </tbody>
-                </table>
-            </div >
-            <div class="table_right fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td>林地</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1</td>
-                        <td style="padding-left 20px"></td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1.1</td>
-                        <td style="padding-left 30px">砖混</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1.2</td>
-                        <td style="padding-left 20px"></td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="table_left fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>4</td>
-                        <td>牧草地</td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4.1</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4.1.2</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4.1.3</td>
-                        <td  style="padding-left 20px"></td>
-                        <td></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
+    <p-growl [(value)]="msgs"></p-growl>
 
-                    </tbody>
-                </table>
-            </div >
-            <div class="table_right fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>7</td>
-                        <td>交通运输用地</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>7.1</td>
-                        <td style="padding-left 20px"></td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>7.1.1</td>
-                        <td style="padding-left 30px">砖混</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>7.1.2</td>
-                        <td style="padding-left 20px"></td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>亩</td>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div *ngIf="showTable==2">
-            <div class="btnGrop">
-                <ul>
-                    <li class="fl">
-                        <span><img src="assets/img/icon/jiahao.png" alt=""></span>
-                        新增
-                    </li>
-                    <li class="fl">
-                        <span><img src="assets/img/icon/x.png" alt=""></span>
-                        删除
-                    </li>
-                </ul>
-            </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <td>序号</td>
-                    <td>土地分类</td>
-                    <td>图幅号</td>
-                    <td>图斑号</td>
-                    <td>地块编号</td>
-                    <td>图斑面积</td>
-                    <td>单位</td>
-                    <td>田梗桑面积</td>
-                    <td>断面编号</td>
-                    <td>原始地类</td>
-                    <td>备注</td>
-
-
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>8.8*2.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.1*2.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*2.1</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*1.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*1.3</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>合计</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-                </tbody>
-            </table>
-            <div class="clearfix modalInput">
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span class="importent">土地分类</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >图幅号</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >图斑号</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >地块编号</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >丈量尺寸</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-
-
-                <div class="fl group group-4 danwei">
-                    <span>图斑面积</span>
-                    <input type="text">
-                    <div class="fl mianji">
-                        ㎡
-                    </div>
-
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >田梗面积</span>
-                    </div>
-                    <div class="inputRight fl ">
-                        <input type="text">
-                    </div>
-
-                </div>
-
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >断面编号</span>
-                    </div>
-                    <div class="inputRight fl ">
-                        <input type="text">
-                    </div>
-
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span >原始地类</span>
-                    </div>
-                    <div class="inputRight fl ">
-                        <input type="text">
-                    </div>
-
-                </div>
-                <div class="clearfix beizhu ">
-                    <div class="textareaBeizhu">
-                        <span>备注 </span>
-                    </div>
-                    <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 </div>

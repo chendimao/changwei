@@ -18,14 +18,17 @@
                         <div>
                             <div class="fl  top_class">
                                 <span class="importent">户类别</span>
-                                <input [disabled]="whetherDisabled" class='inputH' type="text"
-                                       [(ngModel)]="hjbxx.hlbdm" name="hlbdm"/>
+                                <input class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.hlbmc" name="hlbdm" disabled/>
                             </div>
-                            <div class="fl top_class">
-                                <span class="importent">阶段</span>
-                                <input [disabled]="whetherDisabled" class='inputH' type="text"
-                                       [(ngModel)]="hjbxx.jddm" name="jddm"/>
+                            <div *ngFor="let i of gzjd">
+                                <div class="fl top_class" *ngIf="def_jddm===i.dm">
+                                    <span class="importent">阶段</span>
+                                    <input class='inputH' type="text"
+                                           [ngModel]="i.mc" name="jddmmc" disabled/>
+                                </div>
                             </div>
+
                             <div class="fl  top_class">
 
                                 <span class="importent">户主姓名</span>
@@ -37,12 +40,12 @@
                                 <span class="importent">是否空挂户</span>
                                 <p-selectButton [disabled]="whetherDisabled" [options]="types1"
                                                 [(ngModel)]="hjbxx.sfkgh" name="sfkgh"
-                                                (click)="selectedTypea()"></p-selectButton>
+                                                (click)="selectedTypea(hjbxx.sfkgh)"></p-selectButton>
                             </div>
                             <div class="fl top_class area rl">
                                 <span class="importent">所属行政区</span>
                                 <input [disabled]="whetherDisabled" class='inputH inputArea' type="text"
-                                       [(ngModel)]="hjbxx.ssxzqhdm" name="ssxzqhdm"/>
+                                       [(ngModel)]="hjbxx.xzqhmc" name="xzqhmc" />
                                 <i class="xiala" (click)="showAreaBlock()"></i>
                                 <app-area-select class="areaCommpont" [display]="isShowArea"
                                                  (childEvent)="getChildEvent($event)"></app-area-select>
@@ -52,28 +55,30 @@
                                 <span class="importent">编号</span>
                                 <input [disabled]="whetherDisabled" class='inputH' type="text" [(ngModel)]="hjbxx.dabh"
                                        name="dabh"/>
-                                <span class="bianhao">
+                                <span class="bianhao" (click)="getZdlsh(hjbxx.xzqhmc)">
                             自动生成
                         </span>
                             </div>
                             <div class="fl top_class selectArea">
                                 <span>是否线外</span>
-                                <p-selectButton [disabled]="whetherDisabled" [options]="types2" [(ngModel)]="hjbxx.sfxw"
-                                                name="sfxw"
-                                                (click)="selectedTypea()"></p-selectButton>
+                                <p-selectButton [disabled]="whetherDisabled" [options]="types2"
+                                                [(ngModel)]="hjbxx.sfxw" name="sfxw"
+                                                (click)="selectedTypea2(hjbxx.sfxw)"></p-selectButton>
                             </div>
                             <div class="fl top_class  ">
 
                                 <span class="importent">专业大类</span>
-                                <app-select-list [width]="105" [values]="selectList"
-                                                 (SelectModel)="getChildEvent($event)"></app-select-list>
+                                <app-select-list [width]="105" [values]="zydlList" [selectValue]="hjbxx.zydldm"
+                                                 (SelectModel)="getZydl($event)"></app-select-list>
                             </div>
                             <div class="fl top_class rl zydl">
                                 <span class="importent">调查范围</span>
+                                <!--<input  class='inputH' type="text"-->
+                                <!--[(ngModel)]="hjbxx.dcfwdm" name="dcfwdm" style="display: none"/>-->
                                 <input [disabled]="whetherDisabled" class='inputH' type="text"
-                                       [(ngModel)]="hjbxx.dcfwdm" name="dcfwdm"/>
+                                       [(ngModel)]="hjbxx.dcfwmc" name="dcfwmc" readonly="readonly"/>
                                 <i class="xiala" (click)="showTypeBlock()"></i>
-                                <app-surver-area [values]="isShowDcfw"
+                                <app-surver-area [values]="dcfwList" [isShow]="isShowDcfw"
                                                  (childEvent)="getChildDcfw($event)"></app-surver-area>
                             </div>
                             <div class="fl top_class">
@@ -115,7 +120,7 @@
                     </div>
                 </div>
             </p-panel>
-            <p-growl [(value)]="msgs"></p-growl>
+            <p-growl [(value)]="msgs" ></p-growl>
 
         </div>
         <div>
@@ -124,9 +129,9 @@
                     <!--<li class="fl" routerLink="{{list.path}}" routerLinkActive="active1"  *ngFor="let list of navList">-->
                     <!--<li class="fl" (click)="saveRouter(list.path)" *ngFor="let list of navList"-->
                     <!--[ngClass]="{'active1':list.name==avtiveName}">-->
-                    <li class="fl" (click)="saveRouter(list.path)" *ngFor="let list of navList"
-                        [class.active1]="list.path === avtiveName">
-                        {{list.name}}
+                    <li class="fl"  *ngFor="let list of navList">
+                        <span *ngIf="list.isCheck" (click)="saveRouter(list.url,list.swzblbId)" [class.active1]="list.url === avtiveName">{{list.zdxmc}}</span>
+
                     </li>
                 </ul>
             </nav>
@@ -140,14 +145,14 @@
             </div>
             <div class="footer clearfix">
                 <div class="fl">
-                    {{router.value}}
+
                     <div class="fl">上一户</div>
                     <div class="fl">下一户</div>
 
                 </div>
                 <div class="fr">
-
-                    <div class="fl">保存并新增</div>
+                    <div class="fl" (click)="save()">保存</div>
+                    <div class="fl" (click)="save('add')">保存并新增</div>
                     <div class="fl">附件管理</div>
                     <div class="fl">附件查看</div>
                 </div>

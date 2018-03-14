@@ -1,7 +1,7 @@
-<div #surver *ngIf="values" class="areaShow boxShadow">
-  <div>
-    <input class='searchInput' placeholder="请输入需要检索的内容" type="text"/>
-  </div>
+<div  *ngIf="isShow" class="areaShow boxShadow">
+  <!--<div>-->
+    <!--<input class='searchInput' placeholder="请输入需要检索的内容" type="text"/>-->
+  <!--</div>-->
   <div class="selected clearfix">
     <span>请选择地区：</span>
     <ul>
@@ -10,78 +10,108 @@
     </ul>
   </div>
   <div>
-    <div class="zydlArea clearfix">
-      <div class="fl zydltitle">水库淹没影响区</div>
+    <div class="zydlArea clearfix" *ngFor="let item of list" >
+      <div class="fl zydltitle" (click)="getDcfwId(item)">{{item.mc}}</div>
       <div class="fl">
         <ul>
-          <li class="fl rl">
-            淹没区
-            <ul class="showSecList boxShadow">
-              <li>围堰水位及以下(一期蓄水位及以下)</li>
-              <li class="rl">
-                围堰水位及以下
-                <ul class="threeList boxShadow">
-                  <li class="threeChild" (click)="ceshi($event)">围堰水位及正常蓄水位</li>
-                  <li class="threeChild">正常蓄水位至耕园地淹没区</li>
-                  <li class="threeChild">耕园地淹没区至人口迁移线</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="fl rl">
-            影响区
-            <ul class="showSecList boxShadow">
-              <li>水库影响处理区</li>
-              <li>水库影响待观区</li>
+          <li class="fl rl" *ngFor="let key of item.listZdk" >
+            <span (click)="getDcfwId(key)">
+              {{key.mc}}
+            </span>
 
-            </ul>
-          </li>
-          <li class="fl">扩迁区</li>
-          <li class="fl">远迁区</li>
-        </ul>
-      </div>
-    </div>
-    <div class="zydlArea clearfix">
-      <div class="fl zydltitle">枢纽工程建设区</div>
-      <div class="fl">
-        <ul>
-          <li class="fl">永久占地区</li>
-          <li class="fl">临时用地区</li>
-        </ul>
-      </div>
-    </div>
-    <div class="zydlArea clearfix">
-      <div class="fl zydltitle">城集镇迁建新址占地区</div>
-      <div class="fl">
-        <ul>
-          <li class="fl">城镇迁建新址占地区</li>
-          <li class="fl rl">
-            县镇迁建新址占地区
             <ul class="showSecList boxShadow">
-              <li class="rl">
-                二期扩容新址占地区
-                <ul class="threeList boxShadow">
-                  <li class="threeChild">污水处理厂占地区</li>
-                  <li class="threeChild">其他占地区</li>
-                </ul>
+              <li *ngFor="let key2 of key.listZdk" >
+                <span (click)="getDcfwId(key2)">
+                     {{key2.mc}}
+                </span>
+
               </li>
+              <!--<li class="rl">-->
+                <!--围堰水位及以下-->
+                <!--<ul class="threeList boxShadow">-->
+                  <!--<li class="threeChild" (click)="ceshi($event)">围堰水位及正常蓄水位</li>-->
+                  <!--<li class="threeChild">正常蓄水位至耕园地淹没区</li>-->
+                  <!--<li class="threeChild">耕园地淹没区至人口迁移线</li>-->
+                <!--</ul>-->
+              <!--</li>-->
             </ul>
           </li>
-          <li class="fl">
-            集镇迁建新址占地区
-            <ul class="showSecList boxShadow">
-              <li class="rl">
-                二期扩容新址占地区
-                <ul class="threeList boxShadow">
-                  <li class="threeChild">污水处理厂占地区</li>
-                  <li class="threeChild">其他占地区</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
+
         </ul>
       </div>
     </div>
+    <!--<div class="zydlArea clearfix">-->
+      <!--<div class="fl zydltitle">水库淹没影响区</div>-->
+      <!--<div class="fl">-->
+        <!--<ul>-->
+          <!--<li class="fl rl">-->
+            <!--淹没区-->
+            <!--<ul class="showSecList boxShadow">-->
+              <!--<li>围堰水位及以下(一期蓄水位及以下)</li>-->
+              <!--<li class="rl">-->
+                <!--围堰水位及以下-->
+                <!--<ul class="threeList boxShadow">-->
+                  <!--<li class="threeChild" (click)="ceshi($event)">围堰水位及正常蓄水位</li>-->
+                  <!--<li class="threeChild">正常蓄水位至耕园地淹没区</li>-->
+                  <!--<li class="threeChild">耕园地淹没区至人口迁移线</li>-->
+                <!--</ul>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="fl rl">-->
+            <!--影响区-->
+            <!--<ul class="showSecList boxShadow">-->
+              <!--<li>水库影响处理区</li>-->
+              <!--<li>水库影响待观区</li>-->
+
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="fl">扩迁区</li>-->
+          <!--<li class="fl">远迁区</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="zydlArea clearfix">-->
+      <!--<div class="fl zydltitle">枢纽工程建设区</div>-->
+      <!--<div class="fl">-->
+        <!--<ul>-->
+          <!--<li class="fl">永久占地区</li>-->
+          <!--<li class="fl">临时用地区</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="zydlArea clearfix">-->
+      <!--<div class="fl zydltitle">城集镇迁建新址占地区</div>-->
+      <!--<div class="fl">-->
+        <!--<ul>-->
+          <!--<li class="fl">城镇迁建新址占地区</li>-->
+          <!--<li class="fl rl">-->
+            <!--县镇迁建新址占地区-->
+            <!--<ul class="showSecList boxShadow">-->
+              <!--<li class="rl">-->
+                <!--二期扩容新址占地区-->
+                <!--<ul class="threeList boxShadow">-->
+                  <!--<li class="threeChild">污水处理厂占地区</li>-->
+                  <!--<li class="threeChild">其他占地区</li>-->
+                <!--</ul>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="fl">-->
+            <!--集镇迁建新址占地区-->
+            <!--<ul class="showSecList boxShadow">-->
+              <!--<li class="rl">-->
+                <!--二期扩容新址占地区-->
+                <!--<ul class="threeList boxShadow">-->
+                  <!--<li class="threeChild">污水处理厂占地区</li>-->
+                  <!--<li class="threeChild">其他占地区</li>-->
+                <!--</ul>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
 
   </div>
 

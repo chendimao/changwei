@@ -43,6 +43,7 @@ header > div > div.active {
 
 .beizhu {
     margin-top: 20px;
+    padding-top: 5px;
 }
 
 .textarea.textarea {
@@ -165,7 +166,7 @@ textarea {
 }
 
 .inputLeft > span {
-
+    padding-right: 10px;
     text-align: justify;
     text-justify: distribute-all-lines;
     text-align-last: justify
@@ -364,5 +365,14 @@ textarea {
 .button_10{
     margin-bottom:10px;
 }
+.inputArea .input_left{
+    width: 30%;
+    margin-top: 8px;
+    padding: 0 10px;
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    text-align-last: justify;
+}
+
 
 

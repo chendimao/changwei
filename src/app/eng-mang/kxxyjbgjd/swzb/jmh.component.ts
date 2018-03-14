@@ -52,7 +52,7 @@ export class JmhComponent implements OnInit {
         switch (url[4]) {
             case "kxxyjbgjd":
                 this.secNav = "可行性研究报告阶段";
-                this.getParem.jddm = '1';
+                this.getParem.jddm = 'A';
                 break;
             case "cbsjjd":
                 this.secNav = "初步设计概况";
@@ -73,6 +73,7 @@ export class JmhComponent implements OnInit {
             console.log(res);
             this.getParem.ssgcdm = res['id'];
             this.getParem.id = res['qshflId'];
+            console.log(this.getParem.id);
             this.alertModelInfo.huId = res['id'];
             this.alertModelInfo.item = res['item'];
             console.log(res);
@@ -80,72 +81,9 @@ export class JmhComponent implements OnInit {
                 {label: '首页', routerLink: '/engmang'},
                 {label: this.secNav},
                 {label: '实物指标'},
+                {label: this.alertModelInfo.item}
             ];
-            switch (this.alertModelInfo.item) {
-                case "jmh":
-                    this.breadcrumb.push({label: '居民户'});
-                    break;
-                case "jtjjzz":
-                    this.breadcrumb.push({label: '集体经济组织'});
-                    break;
-                case "nfy":
-                    this.breadcrumb.push({label: '农副业'});
-                    break;
-                case "gtgs":
-                    this.breadcrumb.push({label: '个体工商'});
-                    break;
-                case "xcqsdw":
-                    this.breadcrumb.push({label: '乡村企事单位'});
-                    break;
-                case "gykqy":
-                    this.breadcrumb.push({label: '工业（矿）企业'});
-                    break;
-                case "tl":
-                    this.breadcrumb.push({label: '铁路'});
-                    break;
-                case "gl":
-                    this.breadcrumb.push({label: '公路'});
-                    break;
-                case "qh":
-                    this.breadcrumb.push({label: '桥涵'});
-                    break;
-                case "hd":
-                    this.breadcrumb.push({label: '航道'});
-                    break;
-                case "gk":
-                    this.breadcrumb.push({label: '港口'});
-                    break;
-                case "mt":
-                    this.breadcrumb.push({label: '码头'});
-                    break;
-                case "sbdgc":
-                    this.breadcrumb.push({label: '输变电工程'});
-                    break;
-                case "dxgc":
-                    this.breadcrumb.push({label: '电信工程'});
-                    break;
-                case "gbdsgc":
-                    this.breadcrumb.push({label: '广播电视工程'});
-                    break;
-                case "gdgc":
-                    this.breadcrumb.push({label: '管道工程'});
-                    break;
-                case "slsdgc":
-                    this.breadcrumb.push({label: '水利水电工程'});
-                    break;
-                case "kczy":
-                    this.breadcrumb.push({label: '矿产资源'});
-                    break;
-                case "wwgj":
-                    this.breadcrumb.push({label: '文物古迹'});
-                    break;
-                case "swz":
-                    this.breadcrumb.push({label: '水文（气象）站'});
-                    break;
-                case "qtzx":
-                    this.breadcrumb.push({label: '其他专项'});
-                    break;
-            }
+
             console.log(this.breadcrumb);
             console.log('路由在改变');
         });
@@ -200,6 +138,7 @@ export class JmhComponent implements OnInit {
                     const perModel = this.ModelRoom.createComponent(person);
                     perModel.instance.type = name;
                     perModel.instance.info = this.huInfo;
+                    perModel.instance.qshflId = this.getParem;
                 } else {
                     if (name === 'view') {
                         this.msgs = [];
@@ -211,6 +150,9 @@ export class JmhComponent implements OnInit {
                         const person = this.AlertModel.resolveComponentFactory(SwzbPersonComponent);
                         const perModel = this.ModelRoom.createComponent(person);
                         perModel.instance.type = name;
+                        perModel.instance.info = null;
+                        perModel.instance.qshflId = this.getParem;
+
 
                     }
                 }
@@ -234,6 +176,7 @@ export class JmhComponent implements OnInit {
     }
 
     onRowSelect(list) {
+        console.log(list);
         this.huInfo = list.data;
 
     }

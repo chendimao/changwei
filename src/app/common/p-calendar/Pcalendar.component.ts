@@ -7,8 +7,8 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
 })
 export class PcalendarComponent implements OnInit {
     @Input() value: number;
-    private dateValue: any;
-    private ch: any;
+    public dateValue: any;
+    public ch: any;
     @Output() SelectModel = new EventEmitter;
 
 
@@ -17,6 +17,9 @@ export class PcalendarComponent implements OnInit {
     }
 
     ngOnInit() {
+
+
+
         console.log(this.value);
         this.dateValue = new Date(this.value);
         console.log(this.dateValue);

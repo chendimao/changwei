@@ -25,14 +25,24 @@ export class GraveComponent implements OnInit {
     private isShowArea: boolean = false;
     area: string;
 
+    public init_grave_data; //初始化的数据
+    public del_grave_data = new Array(); //删除的数据
+    public update_grave_data = new Array(); //对比后修改的数据
+    public add_grave_data = new Array(); //新增的数据
+    public childInfo;
+    public childInfo2;
+    public qshflId;
+    public grave_data;
+    public type;
+
     public datalist: Array<TreesData>;
     public name_active_data: any; //选中样式
     public name_active_base: any; //选中样式
     public selectPersonList=new Array(); //新增下拉列表
     public displaySelectPserson:boolean = false; //显示隐藏新增人员下拉列表
-    public childInfo2;
+
     public data;
-    public childInfo;
+
 // 表单组件
 //     cars: Car[];
 //

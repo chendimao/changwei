@@ -100,11 +100,12 @@ export class DataProcessingService {
         const resList = JSON.stringify(TreeTable1);
 
         var list = resList.replace(new RegExp(regexp1, 'g'), replacement1);
+
         list = list.replace(new RegExp(regexp2, 'g'), replacement2);
 
 
         list = JSON.parse(list);
-        console.log(list);
+
         return list;
     }
 
@@ -164,6 +165,51 @@ export class DataProcessingService {
 
             }
         }
+        return arr;
+    }
+
+    //恢复城组件树2
+    returnTree2(arr) {
+
+
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].children) {
+                var children = arr[i].children;
+                // console.log(arr[i].data.zdxmc);
+                arr[i]['bz'] = arr[i].data['bz'];
+                arr[i]['id'] = arr[i].data.id;
+                arr[i]['sl'] = arr[i].data.sl;
+                arr[i]['zdxmc'] = arr[i].data.zdxmc;
+
+                delete arr[i].data;
+                delete arr[i].expanded;
+                delete arr[i].partialSelected;
+                delete arr[i].select;
+                delete arr[i].parent;
+                delete arr[i].children;
+
+                arr[i].childList = children;
+
+                console.log(arr);
+                this.returnTree(arr[i].childList);
+            } else {
+                arr[i]['bz'] = arr[i].data['bz'];
+                arr[i]['id'] = arr[i].data.cjsj;
+                arr[i]['sjId'] = null;
+                arr[i]['sl'] = arr[i].data.sl;
+                arr[i]['zdxmc'] = arr[i].data.zdxmc;
+                delete arr[i].data;
+                delete arr[i].expanded;
+                delete arr[i].partialSelected;
+                delete arr[i].parent;
+                delete arr[i].select;
+                delete arr[i].children;
+                arr[i].childList = null;
+                console.log(arr);
+
+            }
+        }
+        console.log(arr);
         return arr;
     }
 

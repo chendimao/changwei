@@ -76,9 +76,9 @@
                     </div>
                     <div class="tableBox">
                         <p-dataTable [value]="persionList" class="table"  responsive="true" [rows]="10" (onRowClick)="onRowSelect($event)"
-                                     scrollable="true"    resizableColumns="true" selectionMode="single">
-                            <p-column field="dabh" header="编号"></p-column>
-                            <p-column field="hzxm" header="户主名称" sortable="true"></p-column>
+                                     [emptyMessage]="'查询数据为空'"     scrollable="true"    resizableColumns="true" selectionMode="single">
+                            <p-column field="dabh" header="编号" sortable="true"></p-column>
+                            <p-column field="hzxm" header="户主名称" ></p-column>
                             <p-column field="xzqhmc" header="所在行政区域">
                                 <ng-template let-col let-car="rowData" pTemplate="body">
                                     <span title="{{car[col.field]}}">{{car[col.field]}}</span>

@@ -145,10 +145,10 @@ export class QsrComponent implements OnInit {
     ngAfterViewInit(): void {
         // 订阅表单值改变事件
         this.person.valueChanges.subscribe(data => {
-                let linshiPerson = JSON.parse(sessionStorage.getItem('linshiPerson'));
-                let confuInfo = JSON.parse(sessionStorage.getItem('person'));
-                let duibiPerson = JSON.stringify(this.ValuChangeService.changeDate(linshiPerson, data, confuInfo));
-                sessionStorage['person'] = JSON.stringify(duibiPerson);
+                // let linshiPerson = JSON.parse(sessionStorage.getItem('linshiPerson'));
+                // let confuInfo = JSON.parse(sessionStorage.getItem('person'));
+                // let duibiPerson = JSON.stringify(this.ValuChangeService.changeDate(linshiPerson, data));
+                // sessionStorage['person'] = JSON.stringify(duibiPerson);
             }
         );
     }

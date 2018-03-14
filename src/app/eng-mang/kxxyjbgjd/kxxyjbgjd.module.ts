@@ -39,6 +39,7 @@ import {TzgsComponent} from "./tzgs/tzgs.component";
 
 
 import {DataProcessingService} from "../../service/dataProcessing.service";
+import {SelectListHttpService} from "../../service/select-list-http.service";
 
 
 @NgModule({
@@ -80,7 +81,7 @@ import {DataProcessingService} from "../../service/dataProcessing.service";
         RouterModule.forChild(KxxyjbgjdRoutingModule)
     ],
     entryComponents: [],
-    providers: [HttpService, ValuChangeService, DataProcessingService],
+    providers: [HttpService, ValuChangeService, DataProcessingService, SelectListHttpService],
 })
 export class KxxyjbgjdModule {
 }

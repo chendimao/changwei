@@ -25,6 +25,7 @@ import {UserComponent} from './user/user.component';
 import {EngMangHomeComponent} from './EngMangHome/eng-mang.component';
 import {LoginComponent} from './login/login.component';
 import {UserCommonModule} from './common/UserCommon.module';
+import {SelectListHttpService} from "./service/select-list-http.service";
 
 
 
@@ -54,6 +55,7 @@ import {UserCommonModule} from './common/UserCommon.module';
     ],
     providers:
         [
+
             LoadingBarService,
             PopupService,
             {

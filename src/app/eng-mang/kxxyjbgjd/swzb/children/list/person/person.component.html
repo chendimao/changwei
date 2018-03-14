@@ -1,8 +1,8 @@
 <header>
-    <div>
+    <div >
         <p-selectButton [options]="types" [(ngModel)]="selectedType"
                         (click)="selectedTypea1()"></p-selectButton>
-        <em>共 <span ></span>人</em>
+        <em>共 <span >{{hcy_count}}</span>人</em>
     </div>
 </header>
 <div *ngIf="selectedType==1" class="clearfix">
@@ -16,10 +16,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign)" #defaultPerson
+            <tr  *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign,i)" #defaultPerson
                 [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
-                <td>{{personSign.mc}}</td>
+                <td >{{personSign.mc}}</td>
             </tr>
             </tbody>
 
@@ -30,17 +30,17 @@
         <div class="header clearfix rl">
             <div class="fl headerTitle">人口详情</div>
             <ul class="fr  btnGrop">
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back.png"
+                <li class="fl" (click)="up()"><span class="img"><img src="assets/img/icon/arrow-back.png"
                                                                        alt=""></span>上一条
                 </li>
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back .png"
+                <li class="fl" (click)="down()"><span class="img"><img src="assets/img/icon/arrow-back .png"
                                                                        alt=""></span>下一条
                 </li>
 
-                <li class="fl" (click)="addPerson(personSign)"><span class="img"><img src="assets/img/icon/jiahao.png"
+                <li class="fl" (click)="addPerson()"><span class="img"><img src="assets/img/icon/jiahao.png"
                                                                                       alt=""></span>增加
                 </li>
-                <li class="fl" (click)="delEng(hcy)"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                <li class="fl" (click)="delPerson()"><span class="img"><img src="assets/img/icon/brush_fill.png"
                                                                             alt=""></span>删除
                 </li>
                 <li class="fl">
@@ -55,7 +55,7 @@
                 </li>
             </ul>
         </div>
-        <div class="box_botton clearfix">
+        <div  *ngIf="tableList[0]"  class="box_botton clearfix">
             <form #person="ngForm">
                 <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
@@ -70,8 +70,8 @@
                     <div class="input_left fl">
                         户别
                     </div>
-                    <div class="input_right fl">
-                        <p-selectButton [options]="types1" [(ngModel)]="hcy.hbdm" name="hbdm"
+                    <div *ngIf="hbdm_list" class="input_right fl">
+                        <p-selectButton [options]="hbdm_list" (change)="eventHbdm(hcy.hbdm)" [(ngModel)]="hcy.hbdm" name="hbdm"
                         ></p-selectButton>
                     </div>
 
@@ -81,8 +81,8 @@
                         与户主关系
                 </span>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0"  [selectValue]="hcy.yhzgxdm"  [values]="yhzgx_list"
+                                         (SelectModel)="eventYhzgx($event)" ></app-select-list>
                     </div>
 
 
@@ -94,7 +94,7 @@
                         身份证号
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.sfzh" value="hcy.sfzh" name="sfzh">
+                        <input type="text" class="inputH"  [(ngModel)]="hcy.sfzh"  name="sfzh">
                     </div>
 
                 </div>
@@ -103,8 +103,9 @@
                         出生日期
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.csrq" value="{{hcy.sfzh | cardReform}}"
-                               name="csrq">
+                        <!--<input type="text" class="inputH" [(ngModel)]="hcy.csrq" (ngOnchange)="hcy.csrq=$event"-->
+                               <!--name="csrq">-->
+                        <app-p-calendar [value]="hcy.csrq" (SelectModel)="getCsrqDate($event)" ></app-p-calendar>
                         <!--<p-calendar styleClass="timeInput" placeholder="请填入时间"   disabledDates yearNavigator="true"  monthNavigator="true"-->
                         <!--dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.csrq" name="csrq"></p-calendar>-->
                     </div>
@@ -115,8 +116,8 @@
                     <div class="input_left fl ">
                         性别
                     </div>
-                    <div class="input_right fl">
-                        <p-selectButton [options]="types2" [(ngModel)]="hcy.xbdm" name="xbdm"
+                    <div *ngIf="xb_list" class="input_right fl">
+                        <p-selectButton [options]="xb_list" [(ngModel)]="hcy.xbdm" (onOptionClick)="eventXb($event)"  name="xbdm"
                         ></p-selectButton>
                     </div>
 
@@ -127,8 +128,8 @@
                         民族
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0" [values]="mz_list"
+                                         (SelectModel)="eventMz($event)" [selectValue]="hcy.mzdm"></app-select-list>
                     </div>
 
                 </div>
@@ -137,8 +138,8 @@
                         文化程度
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0" [values]="whcd_list"
+                                         (SelectModel)="eventWhcd($event)" [selectValue]="hcy.whcddm"></app-select-list>
                     </div>
 
 
@@ -148,8 +149,8 @@
                         从业情况
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0" [values]="cyzk_list"
+                                         (SelectModel)="eventCyqk($event)" [selectValue]="hcy.cyzkdm"></app-select-list>
                     </div>
 
                 </div>
@@ -158,7 +159,7 @@
                         所在行政区划
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.szxzqhdm" name="szxzqhdm">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.szxzqhdm"  name="xzqhmc">
                         <i class="xiala" (click)="showAreaBlock()"></i>
                         <app-area-select class="areaCommpont" [display]="isShowArea"
                                          (childEvent)="getChildEvent($event)"></app-area-select>
@@ -169,8 +170,8 @@
                     <div class="input_left fl ">
                         婚姻状况
                     </div>
-                    <div class="input_right fl">
-                        <p-selectButton [options]="types3" [(ngModel)]="hcy.hydm" name="hydm"
+                    <div *ngIf="hyzk_list" class="input_right fl">
+                        <p-selectButton [options]="hyzk_list" (change)="eventHyzt(hcy.hydm)" [(ngModel)]="hcy.hydm" name="hydm"
                         ></p-selectButton>
                     </div>
 
@@ -180,8 +181,8 @@
                         专业大类
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0"  [values]="zydl_list"
+                                         (SelectModel)="eventZydl($event)" [selectValue]="hcy.zydldm"></app-select-list>
                     </div>
 
                 </div>
@@ -191,9 +192,11 @@
                         调查范围
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <input type="text" class="inputH" [(ngModel)]="dcfw_mc" name="dcfw">
+                        <i class="xiala" (click)="dcfw_show()"></i>
+                        <app-surver-area [values]="dcfw_list" [isShow]="dcfw_list_is_show" (childEvent)="dcfw_data($event)"></app-surver-area>
                     </div>
+
 
                 </div>
                 <div class="inputBox  rl fl clickInput">
@@ -201,7 +204,7 @@
                         是否空挂人
                     </div>
                     <div class="input_right fl">
-                        <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkgr" name="sfkgr"
+                        <p-selectButton [options]="types4" (change)="eventSfkgr($event)" [(ngModel)]="hcy.sfkgr" name="sfkgr"
                         ></p-selectButton>
                     </div>
 
@@ -211,8 +214,8 @@
                         户口情况
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <app-select-list [width]="0" [values]="hkqk_list" [selectValue]="hcy.hkqkdm"
+                                         (SelectModel)="eventHkqk($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -243,9 +246,9 @@
                         所在高程
                     </div>
                     <div class="input_right fl">
-                        <input class='inputS' type="text" [(ngModel)]="hcy.szzdgc" name="szzdgc"/>
+                        <input class='inputS' type="text"  [(ngModel)]="hcy.szzdgc" name="szzdgc"/>
                         <i>--</i>
-                        <input class='inputS' type="text" [(ngModel)]="hcy.szzggc" name="szzggc"/>
+                        <input class='inputS' type="text"  [(ngModel)]="hcy.szzggc" name="szzggc"/>
                         <i class="mianji perDanwei">M</i>
                     </div>
                 </div>
@@ -254,7 +257,7 @@
                         是否劳动力
                     </div>
                     <div class="input_right fl">
-                        <p-selectButton [options]="types5" [(ngModel)]="hcy.sfsldl" name="sfsldl"
+                        <p-selectButton [options]="types5" (change)="eventSFLDL($event)" [(ngModel)]="hcy.sfsldl" name="sfsldl"
                         ></p-selectButton>
                     </div>
 
@@ -264,7 +267,7 @@
                         曾用名
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.hlbdm" name="hlbdm">
+                        <input type="text" class="inputH"[(ngModel)]="hcy.hlbdm" name="hlbdm">
                     </div>
 
                 </div>
@@ -272,7 +275,7 @@
                     <div class="textareaBeizhu">
                         <span>备注 </span>
                     </div>
-                    <textarea name="" id="" cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz"
+                    <textarea name="" id="" cols="30" rows="10"  (change)="eventBz(hcy.bz)" class="textarea" [(ngModel)]="hcy.bz"
                               name="bz"></textarea>
                 </div>
             </form>
@@ -297,12 +300,10 @@
             <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
             <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
             <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true"
-                      [style]=" {'overflow':'visible' }">
+                  >
                 <ng-template let-col let-car="rowData" pTemplate="body">
-                    {{car[col.field]|date }}
-                </ng-template>
-                <ng-template let-col let-car="rowData" pTemplate="editor">
-                    <p-calendar [(ngModel)]="car[col.field]" appendTo="body"></p-calendar>
+
+                    <app-p-calendar [value]="car[col.field]" (SelectModel)="getQcrqDate($event)"></app-p-calendar>
                 </ng-template>
 
             </p-column>
@@ -313,7 +314,12 @@
             <p-column field="hkszd" header="户口所在地" [style]="{'width':'150px'}"></p-column>
             <p-column field="rs" header="人数" [style]="{'width':'150px'}"></p-column>
             <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
-            <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}"></p-column>
+            <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}">
+                <ng-template let-col let-car="rowData" pTemplate="body">
+
+                    <app-p-calendar [value]="car[col.field]" (SelectModel)="getQcrqDate($event)"></app-p-calendar>
+                </ng-template>
+            </p-column>
 
 
         </p-dataTable>

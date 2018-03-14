@@ -1,6 +1,4 @@
-import {Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChildren} from '@angular/core';
-
-declare var $: any;
+import {Component, OnInit, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
     selector: 'app-surver-area',
@@ -9,40 +7,28 @@ declare var $: any;
 })
 export class SurverAreaComponent implements OnInit {
     @Input() values;
+    @Input() isShow;
     @Output() childEvent = new EventEmitter<any>();
 
-    @ViewChildren('surver') todoName: ElementRef;
+    private list;
 
-
-    constructor(public elementRef: ElementRef) {
+    constructor() {
     }
 
-    ngAfterViewInit() {
-
-        // var select=this.elementRef.nativeElement.querySelectorAll('.threeChild');
-        // for(var i in select){
-        //     console.log(select[i]);
-        //     select[i].onclick=function () {
-        //         console.log(this.parentNode.parentNode);
-        //     }
-        // }
-
+    ngOnInit(){
 
     }
 
-    ngOnInit() {
-        console.log('ngAfterViewInit执行了····');
-        // $('#zydltitle11').on('click', function (e) {
-        //     console.log(1);
-        //     console.log($(this).html());
-        // })
 
+
+    ngOnChanges() {
+        console.log(this.values);
+        this.list = this.values;
     }
 
-    ceshi(e) {
-        console.log(e.target);
-        console.log($('#zydltitle11').html());
-
+    getDcfwId(e) {
+        console.log(e);
+        this.childEvent.emit(e);
     }
 
 

@@ -1,133 +1,83 @@
 <header class="clearfix">
-    <div class="fl">
-        <div class="fl" *ngFor="let houses of houesList">{{houses.name}}房产</div>
+
+    <div class="fl"  >
+        <div class="fl" *ngFor="let houses of houesList;let i = index;"  (click)="selectNmae(houses,i)" [ngClass]="{'active':houses == name_active_data}" [innerHTML]="houses.qsrmc"></div>
+        <app-select-list class="fr" *ngIf="displaySelectPserson" [width]="0"  [values]="selectPersonList"
+                         (SelectModel)="addHouses($event)"></app-select-list>
     </div>
-    <p-dropdown [options]="selectPersonList" [(ngModel)]="selectedCity2" optionLabel="name"></p-dropdown>
+
     <div class="fr">
-        <div class="fl" (click)="addHouses()"><span class="img"><img src="assets/img/icon/jiahao.png" class="img" alt=""></span>新增房屋</div>
-        <div class="fl" (click)="delHouses()"><span><img src="assets/img/icon/clear.png" alt="" class="img"></span>删除房屋</div>
+        <div class="fl" (click)="displaySlect()"><span class="img"><img src="assets/img/icon/jiahao.png" class="img" alt=""></span>新增房屋</div>
+        <div class="fl" (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt="" class="img"></span>删除房屋</div>
     </div>
 </header>
-<div class="home_title">房屋基本信息</div>
-<div class="all_box clearfix">
-    <div class="inputArea fl">
-        <div class="inputLeft fl">
-            <span class="importent">权属人</span>
-        </div>
-        <div class="inputRight fl">
-            <input type="text" value="蔡国成">
-        </div>
-    </div>
-    <div class="inputArea rl fl langest">
-        <div class="inputLeftSelect fl ">
-            <span class="importent">所在行政区划</span>
-        </div>
-        <div class="inputRight fl">
-            <input type="text" class="inputH" value="福建省泉州市安溪县白濑乡长基村">
-            <span class="xiala" (click)="showAreaBlock()"></span>
-            <app-area-select class="areaCommpont" [display]="isShowArea"
-                             (childEvent)="getChildEvent($event)"></app-area-select>
-            <!--<input type="text" value="王友群">-->
-        </div>
-    </div>
-    <div class="inputArea fl">
-        <div class="inputLeft fl">
-            <span class="importent">调查范围</span>
-        </div>
-        <div class="inputRight fl">
-            <app-select-list [width]="0" [values]="selectListHzgx"
-                             (SelectModel)="getChildEvent1($event)"></app-select-list>
-        </div>
-    </div>
-    <!--下拉框-->
-    <div class="inputArea fl">
-        <div class="inputLeft fl">
-            <span class="importent">专业大类</span>
-        </div>
-        <div class="inputRight fl">
-            <app-select-list [width]="0" [values]="selectListHzgx"
-                             (SelectModel)="getChildEvent1($event)"></app-select-list>
-        </div>
-    </div>
 
-    <div class="fl group group-4 danwei">
-        <span>建筑总面积</span>
-        <input type="text">
-        <div class="fl mianji">
-            ㎡
-        </div>
+<form #person="ngForm">
+<div *ngIf="name_active_data">
 
-    </div>
-    <div class="fl group group-4 danwei">
-        <span>宅基地面积</span>
-        <input type="text">
-        <div class="fl mianji">
-            ㎡
-        </div>
+    <div class="home_title">房屋基本信息</div>
+    <div class="all_box clearfix">
+        <div class="inputArea fl">
+            <div class="inputLeft fl">
+                <span class="importent">权属人</span>
+            </div>
+            <div class="inputRight fl">
+                <app-select-list [width]="0"  [values]="selectPersonList"
+                                 (SelectModel)="eventQsr($event)"    [selectValue]="name_active_data.qsrId" ngDefaultControl></app-select-list>
 
-    </div>
-
-    <div class="showMore" (click)="showMoreInput()">
-        {{moreText}}
-    </div>
-    <div *ngIf="moreInput">
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>权属人</span>
-            </div>
-            <div class="inputRight fl">
-                <p-selectButton [options]="types" [(ngModel)]="selectedType"
-                                (click)="selectedTypea()"></p-selectButton>
             </div>
         </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>是否有无房产</span>
+        <div class="inputArea rl fl langest">
+            <div class="inputLeftSelect fl ">
+                <span class="importent">所在行政区划</span>
             </div>
             <div class="inputRight fl">
-                <p-selectButton [options]="types2" [(ngModel)]="selectedType2"
-                                (click)="selectedTypea2()"></p-selectButton>
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>土地证号</span>
-            </div>
-            <div class="inputRight fl">
-                <input type="text" value="" placeholder="请输入内容">
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>房屋性质</span>
-            </div>
-            <div class="inputRight fl">
-                <app-select-list [width]="0" [values]="selectListHzgx"
-                                 (SelectModel)="getChildEvent1($event)"></app-select-list>
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>房屋主要用途</span>
-            </div>
-            <div class="inputRight fl">
-                <app-select-list [width]="0" [values]="selectListHzgx"
-                                 (SelectModel)="getChildEvent1($event)"></app-select-list>
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>房产证号</span>
-            </div>
-            <div class="inputRight fl">
-                <input type="text" value="" placeholder="请输入房产证号">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.swszxzqhdm" name="szxzqhdm">
+                <span class="xiala" (click)="showAreaBlock()"></span>
+                <app-area-select class="areaCommpont" [display]="isShowArea"
+                                 (childEvent)="getChildEvent($event)"></app-area-select>
+                <!--<input type="text" value="王友群">-->
             </div>
         </div>
 
+        <!--下拉框-->
+        <div class="inputArea fl">
+            <div class="inputLeft fl">
+                <span class="importent">专业大类</span>
+            </div>
 
-        <div class="fl group group-4 danwei">
-            <span>宅基地面积</span>
-            <input type="text">
+            <div class="inputRight fl">
+            <app-select-list [width]="0"  [values]="zydl_list"
+                             (SelectModel)="eventZydl($event)" [(ngModel)]="name_active_data.zydldm" name="zydl"    [selectValue]="name_active_data.zydldm" ngDefaultControl></app-select-list>
+             </div>
+
+
+        </div>
+
+
+        <div class="inputArea rl fl langest">
+            <div class="inputLeftSelect fl">
+                <span class="importent">调查范围</span>
+            </div>
+
+            <div class="inputRight fl">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.dcfw_mc" name="dcfw">
+                <i class="xiala" (click)="dcfw_show()"></i>
+                <app-surver-area [values]="dcfw_list" [isShow]="dcfw_list_is_show" (childEvent)="dcfw_data($event)"></app-surver-area>
+             </div>
+
+
+        </div>
+
+
+        <div class="inputArea fl">
+            <div class="inputLeft fl">
+                <span class="importent">建筑总面积</span>
+            </div>
+            <div class="inputRight fl" style="width:calc(100% - 140px )">
+                <input type="text" placeholder="这个数据哪里来">
+            </div>
+
             <div class="fl mianji">
                 ㎡
             </div>
@@ -135,311 +85,158 @@
         </div>
         <div class="inputArea fl">
             <div class="inputLeft fl">
-                <span>断面编号</span>
+                <span class="importent">宅基地面积</span>
             </div>
-            <div class="inputRight fl">
-                <input type="text" value="王友群">
+            <div class="inputRight fl" style="width:calc(100% - 140px )">
+                <input type="text"  [(ngModel)]="name_active_data.zjdmj" name="zjdmj">
             </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>调查流水号</span>
-            </div>
-            <div class="inputRight fl">
-                <input type="text" value="王友群">
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>门牌号</span>
-            </div>
-            <div class="inputRight fl">
-                <input type="text" value="王友群">
-            </div>
-        </div>
-        <div class="inputArea fl">
-            <div class="inputLeft fl">
-                <span>竣工日期</span>
-            </div>
-            <div class="inputRight fl">
-                <p-calendar styleClass="timeInput" placeholder="请填入时间"  disabledDates yearNavigator="true"  monthNavigator="true"
-                            dateFormat="yy-mm-dd"  yearRange="19002030"    [inline]="false"  [locale]="ch" [(ngModel)]="hcy.qrrq" name="qrrq"></p-calendar>
 
+            <div class="fl mianji">
+                ㎡
+            </div>
+
+        </div>
+
+        <div >
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>是否有无房产</span>
+                </div>
+            <div class="inputRight fl">
+                <p-selectButton [options]="types2" [(ngModel)]="name_active_data.sfywfc"
+                                (click)="sfywfc($event)" name="sfywfc"></p-selectButton>
             </div>
         </div>
-        <div class="clearfix beizhu ">
-            <div class="textareaBeizhu">
-                <span>备注 </span>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>土地使用证</span>
+                </div>
+                <div class="inputRight fl">
+                    <input type="text"[(ngModel)]="name_active_data.tdsyz" placeholder="请输入内容" name="tdzh">
+                </div>
             </div>
-            <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>房屋性质</span>
+                </div>
+                <div class="inputRight fl">
+                    <app-select-list [width]="0" [values]="fwxz_list"
+                                     (SelectModel)="eventFwxz($event)" [selectValue]="name_active_data.fwxzdm" ></app-select-list>
+                </div>
+            </div>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>房屋主要用途</span>
+                </div>
+                <div class="inputRight fl">
+                    <app-select-list [width]="0" [values]="fwzyyt_list"
+                                     (SelectModel)="eventFwzyyt($event)" [selectValue]="name_active_data.fwzyytdm"></app-select-list>
+                </div>
+            </div>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>房产证号</span>
+                </div>
+                <div class="inputRight fl">
+                    <input type="text" [(ngModel)]="name_active_data.fczh" placeholder="请输入房产证号" name="fczh">
+                </div>
+            </div>
+
+
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>断面编号</span>
+                </div>
+                <div class="inputRight fl">
+                    <input type="text" [(ngModel)]="name_active_data.dmbh" name="dmbh">
+                </div>
+            </div>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>调查流水号</span>
+                </div>
+                <div class="inputRight fl">
+                    <input type="text" [(ngModel)]="name_active_data.dclsh" name="dclsh">
+                </div>
+            </div>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>门牌号</span>
+                </div>
+                <div class="inputRight fl">
+                    <input type="text" [(ngModel)]="name_active_data.mph" name="mph">
+                </div>
+            </div>
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>竣工日期</span>
+                </div>
+                <div class="inputRight fl">
+                    <app-p-calendar [value]="name_active_data.jgrq" (SelectModel)="eventJgrq($event)"></app-p-calendar>
+
+                </div>
+            </div>
+            <div class="clearfix beizhu ">
+                <div class="textareaBeizhu">
+                    <span>备注 </span>
+                </div>
+                <textarea name="bz" id="" cols="30" rows="10" class="textarea" name="bz" [(ngModel)]="name_active_data.bz"></textarea>
+            </div>
         </div>
     </div>
+
 </div>
-<div class="home_title clearfix">房屋分类信息</div>
 
-<div>
-    <div>
-        <p-selectButton [options]="types3" [(ngModel)]="selectedType3"
-                        (click)="selectedTypea3()"></p-selectButton>
-    </div>
-    <div class="tab_box">
-        <div *ngIf="showTable==1">
-            <div class="table_left fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>主房</td>
-                        <td><input type="text" class="tdInput" [(ngModel)]="num1" (change)="calc(num1)"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.1</td>
-                        <td style="padding-left 20px">框架结构</td>
-                        <td><input type="text" class="tdInput" [(ngModel)]="num2" (change)="calc(num2)"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.2</td>
-                        <td style="padding-left 20px">砖混结构</td>
-                        <td><input type="text" class="tdInput" [(ngModel)]="num3" (change)="calc(num3)"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1.3</td>
-                        <td style="padding-left 20px">砖混结构</td>
-                        <td><input type="text" class="tdInput" [(ngModel)]="num3" (change)="calc(num3)"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
+</form>
+<div *ngIf="name_active_base">
+    <div class="home_title">房屋分类信息</div>
 
-                    </tbody>
-                </table>
-            </div>
-            <div class="table_right fl">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>序号</td>
-                        <td>类别</td>
-                        <td>建筑面积</td>
-                        <td>单位</td>
-                        <td>备注</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td>其他房屋</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1</td>
-                        <td style="padding-left 20px">蚕房</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1.1</td>
-                        <td style="padding-left 30px">砖混</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3.1.2</td>
-                        <td style="padding-left 20px">砖木</td>
-                        <td><input type="text" class="tdInput"></td>
-                        <td>㎡</td>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+
+    <div class="tab_box clearfix" >
+
+        <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl" >
+
+            <p-treeTable   ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="xh"  header="序号">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="zdxmc" header="类别">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="jzmj" header="面积" >
+                    <ng-template let-col let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;"  [(ngModel)]="node.data.jzmj" [disabled]="node.children != null" (keyup)="Tree_update(TreeTable,node,i)"   >
+                    </ng-template>
+                </p-column>
+                <p-column field="dwmc" header="单位">
+                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--</ng-template>-->
+                </p-column>
+
+                <p-column field="bz" header="备注" >
+                    <ng-template let-col let-node="rowData" pTemplate="body">
+                        <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (keyup)="Tree_update(TreeTable,node,node.data,i)">
+                    </ng-template>
+                </p-column>
+            </p-treeTable>
+
+
         </div>
-        <div *ngIf="showTable==2">
-            <div class="btnGrop">
-                <ul>
-                    <li class="fl">
-                        <span><img src="assets/img/icon/jiahao.png" alt=""></span>
-                        新增
-                    </li>
-                    <li class="fl">
-                        <span><img src="assets/img/icon/x.png" alt=""></span>
-                        删除
-                    </li>
-                </ul>
-            </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <td>序号</td>
-                    <td>房屋用途及结构</td>
-                    <td>层数</td>
-                    <td>层高系数</td>
-                    <td>屋面材料</td>
-                    <td>丈量尺寸</td>
-                    <td>建筑面积</td>
-                    <td>单位</td>
-                    <td>备注</td>
-
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>杂房-砖混</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>8.8*2.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>主房-框混</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.1*2.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>杂房-砖混</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*2.1</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>杂房-砖混</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*1.2</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>杂房-砖混</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td></td>
-                    <td>7.8*1.3</td>
-                    <td>17.16</td>
-                    <td>㎡</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>合计</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-                </tbody>
-            </table>
-            <div class="clearfix modalInput">
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span class="importent">房屋用途及结构</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>层数</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>层高系数</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>屋面材料</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>丈量尺寸</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text">
-                    </div>
-                </div>
 
 
-                <div class="fl group group-4 danwei">
-                    <span>建筑面积</span>
-                    <input type="text">
-                    <div class="fl mianji">
-                        ㎡
-                    </div>
 
-                </div>
-                <!--<div class="inputArea fl">-->
-                    <!--<div class="inputLeft fl">-->
-                        <!--<span>备注</span>-->
-                    <!--</div>-->
-                    <!--<div class="inputRight fl ">-->
-                        <!--<input type="text">-->
-                    <!--</div>-->
-
-                <!--</div>-->
-                <div class="clearfix beizhu ">
-                    <div class="textareaBeizhu">
-                        <span>备注 </span>
-                    </div>
-                    <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-                </div>
-            </div>
-        </div>
 
 
     </div>
 
 </div>
+
+
+
+<p-growl [(value)]="msgs"></p-growl>
+

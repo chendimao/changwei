@@ -29,6 +29,7 @@ import {ValuChangeService} from "../../../service/valuChange.service";
 import {CardReformPipe} from "../../../pipe/card-reform.pipe";
 import {UserCommonModule} from '../../../common/UserCommon.module';
 import {HttpService} from "../../../service/http-service";
+import {SelectListHttpService} from "../../../service/select-list-http.service";
 import {JmhComponent} from "./jmh.component";
 import {DataProcessingService} from "../../../service/dataProcessing.service";
 
@@ -73,6 +74,7 @@ import {KczyjbxxComponent} from './children/list/kczyjbxx/kczyjbxx.component';
 import {WwgjjbxxComponent} from './children/list/wwgjjbxx/wwgjjbxx.component';
 import {SwqxzjbxxComponent} from './children/list/swqxzjbxx/swqxzjbxx.component';
 import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
+import {InputChangeService} from "../../../service/input-change.service";
 
 
 @NgModule({
@@ -154,7 +156,7 @@ import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
         QtzxjbxxComponent,
 
     ],
-    providers: [HttpService, ValuChangeService, DataProcessingService],
+    providers: [SelectListHttpService, HttpService, ValuChangeService, DataProcessingService,InputChangeService],
 })
 export class SwzbModule {
 }

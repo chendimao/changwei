@@ -134,7 +134,7 @@
 </div>
 <div *ngIf="selectedType==2">
     <div style="width:100%;overflow: auto">
-        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true"
+        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true" [emptyMessage]="'查询数据为空'"
                      frozenWidth="300px" unfrozenWidth="calc(100% - 300px)"   [style]="{'margin-top':'30px'}" bodyStyle="{'text-align':'center'}">
             <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
             <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>

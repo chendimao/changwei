@@ -10,26 +10,50 @@ import {HttpService} from "../../service/http-service";
 })
 export class SelectListComponent implements OnInit {
     @Input() values = new Array;
+    @Input() selectValue;
     @Input() isEdit;
     @Input() width;
     @Input() search;
     @Input() placeholderValue;
     @Input() disabled;
     @Output() SelectModel = new EventEmitter;
-    private reswidth;
-    private selected;
-    private isdisabled: boolean = false;
+    public reswidth;
+    public selected;
+    public isdisabled: boolean = false;
 
     constructor(private HttpService: HttpService) {
 
     }
 
     ngOnInit() {
+
+
+        // if(this.values){
+        //     console.log(this.values[0]);
+        //
+        //     this.values.forEach((value,index,arr)=>{
+        //
+        //         if(value['value']['id'] == this.selectValue){
+        //             this.selected = value['value']['id'];
+        //         }
+        //
+        //     });
+        //
+        //
+        //
+        // }else{
+        //
+        //
+        // }
+        this.selected = this.selectValue;
+        console.log(this.values);
+        console.log(this.selectValue);
+
         this.reswidth = `calc(100% - ${this.width}px)`;
     }
 
     ngOnChanges() {
-        console.log(this.values);
+
         if (this.values != undefined) {
             if (this.disabled) {
                 this.isdisabled = true;
@@ -40,6 +64,10 @@ export class SelectListComponent implements OnInit {
                     this.selected = this.values[0].value;
                 } else {
                     this.isdisabled = false;
+                    this.selected = this.selectValue;
+                  //  this.selected = 'HHR-07';
+                    console.log(this.selected);
+
                 }
             }
 

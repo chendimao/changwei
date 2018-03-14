@@ -35,7 +35,7 @@
 .selectArea {
     padding: 9.5px 0;
 }
-.top_class>span {
+.top_class span {
     width: 100px;
     display: inline-block;
     text-align: right;
@@ -51,11 +51,6 @@
     box-sizing: border-box;
 }
 
-:host
-/deep/
-.ui-growl-message p{
-    background: #f54c40;
-}
 
 
 
@@ -206,21 +201,24 @@ nav{
     margin-top: 25px;
     overflow: hidden;
 }
-nav li.fl {
+nav li span {
+    display: inline-block;
     padding: 10px 15px;
 }
-nav ul li{
+nav ul li span{
+    display: inline-block;
     border-bottom: 1px solid #ccc;
     outline: none;
 }
-nav ul li.active1{
+nav ul li .active1{
     position: relative;
+    display: inline-block;
     border-bottom: 0;
     border-top: 2px solid #0099cb;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
-nav ul li.active1:after{
+nav ul li .active1:after{
     content: "";
     width: 1500px;
     height: 1px;
@@ -262,6 +260,7 @@ nav ul li.active1:after{
     border: 1px solid #cccccc;
     background: #FFFFFF;
     margin: 0 10px;
+    cursor: pointer;
 }
 
 @media (max-width: 1140px) {
