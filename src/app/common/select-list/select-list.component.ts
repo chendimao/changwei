@@ -66,12 +66,11 @@ export class SelectListComponent implements OnInit {
                     this.isdisabled = false;
                     this.selected = this.selectValue;
                   //  this.selected = 'HHR-07';
-                    console.log(this.selected);
+
 
                 }
             }
 
-            console.log(this.SelectModel);
         }
 
     }

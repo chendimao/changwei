@@ -60,6 +60,7 @@ export class SwzbPersonComponent implements OnInit {
     private showBoottom: boolean = false;
     private showTOP: boolean = false;
     private childrenModel: any;
+    private sfxw: string;
     msgs: Message[] = [];
     Breadcrumb: MenuItem[];
     types1: SelectItem[];
@@ -134,6 +135,28 @@ export class SwzbPersonComponent implements OnInit {
     public update_person_data;
     public update_decor_data;
 
+    //子组件中修改过的分类信息数据
+    public update_trees_flxx_data;
+    public update_water_flxx_data;
+    public update_houses_flxx_data;
+    public update_grave_flxx_data;
+    public update_fsss_flxx_data;
+    public update_land_flxx_data;
+    public update_land_flxx_other_data;
+    public update_person_flxx_data;
+    public update_decor_flxx_data;
+
+    //子组件中修改过的规格明细数据
+    public update_trees_ggmx_data;
+    public update_water_ggmx_data;
+    public update_houses_ggmx_data;
+    public update_grave_ggmx_data;
+    public update_fsss_ggmx_data;
+    public update_land_ggmx_data;
+    public update_land_ggmx_other_data;
+    public update_person_ggmx_data;
+    public update_decor_ggmx_data;
+
 
     //  子组件中准备删除的真实数据
     public del_trees_data;
@@ -146,6 +169,29 @@ export class SwzbPersonComponent implements OnInit {
     public del_person_data;
     public del_decor_data;
 
+    //子组件中准备删除的分类信息数据
+    public del_trees_flxx_data;
+    public del_water_flxx_data;
+    public del_houses_flxx_data;
+    public del_grave_flxx_data;
+    public del_fsss_flxx_data;
+    public del_land_flxx_data;
+    public del_land_flxx_other_data;
+    public del_person_flxx_data;
+    public del_decor_flxx_data;
+
+    //子组件中准备删除的规格明细数据
+    public del_trees_ggmx_data;
+    public del_water_ggmx_data;
+    public del_houses_ggmx_data;
+    public del_grave_ggmx_data;
+    public del_fsss_ggmx_data;
+    public del_land_ggmx_data;
+    public del_land_ggmx_other_data;
+    public del_person_ggmx_data;
+    public del_decor_ggmx_data;
+
+
     // 子组件中准备新增的真实数据
     public add_trees_data;
     public add_water_data;
@@ -156,6 +202,30 @@ export class SwzbPersonComponent implements OnInit {
     public add_land_other_data;
     public add_person_data;
     public add_decor_data;
+
+
+    //子组件中准备删除的分类信息数据
+    public add_trees_flxx_data;
+    public add_water_flxx_data;
+    public add_houses_flxx_data;
+    public add_grave_flxx_data;
+    public add_fsss_flxx_data;
+    public add_land_flxx_data;
+    public add_land_flxx_other_data;
+    public add_person_flxx_data;
+    public add_decor_flxx_data;
+
+    //子组件中准备删除的规格明细数据
+    public add_trees_ggmx_data;
+    public add_water_ggmx_data;
+    public add_houses_ggmx_data;
+    public add_grave_ggmx_data;
+    public add_fsss_ggmx_data;
+    public add_land_ggmx_data;
+    public add_land_ggmx_other_data;
+    public add_person_ggmx_data;
+    public add_decor_ggmx_data;
+
 
     private gzjd = new Array;
     private zydlList: any;
@@ -177,7 +247,8 @@ export class SwzbPersonComponent implements OnInit {
     //  房屋分类
     private listFwflmxAdd: any;
     private listFwflmxDel: any;
-    private listFwflmxEdit: any;
+    private listFwflmxEdit = new Array();
+    public flxx_houses_update = new Array();
     //   房屋规格明细
     private listFwggmxAdd: any;
     private listFwggmxDel: any;
@@ -321,6 +392,7 @@ export class SwzbPersonComponent implements OnInit {
                     .then(res => {
                         console.log(res);
                         this.hjbxx = res['returnObject']['bHjbxx'];
+                        this.sfxw = this.hjbxx.sfxw;
                         this.hcylb = res['returnObject']['listHcy'];
                     });
                 break;
@@ -335,9 +407,9 @@ export class SwzbPersonComponent implements OnInit {
                         person2.instance.qshflId = this.qshflId;
                         person2.instance.type = this.type;
 
-                        this.update_person_data = person2.instance.update_data;
-                        this.del_person_data = person2.instance.del_data;
-                        this.add_person_data = person2.instance.add_data;
+                        this.update_person_data = person2.instance.update_person_data;
+                        this.del_person_data = person2.instance.del_person_data;
+                        this.add_person_data = person2.instance.add_person_data;
                     });
                 //   专业大类列表
                 // this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.qshflId.ssgcdm}&xzqhdm=${this.qshflId.ssxzqhdm}`)
@@ -348,7 +420,7 @@ export class SwzbPersonComponent implements OnInit {
                 //  所属系统代码后期使用
                 this.postObject['bHjbxx'] = {};
 
-                this.hjbxx.ssxtdm = "X000001";
+                this.hjbxx.ssxtdm = this.hjbxx.ssxtdm;
                 this.hjbxx.ssgcdm = this.qshflId.ssgcdm;
                 this.hjbxx.jddm = this.qshflId.jddm;
                 this.hjbxx.ssxzqhdm = this.qshflId.ssxzqhdm;
@@ -373,21 +445,22 @@ export class SwzbPersonComponent implements OnInit {
                         console.log(this.init_hjbxx_data);
                         this.hjbxx = res['returnObject']['bHjbxx'];
                         this.hcylb = res['returnObject']['listHcy'];
+                        this.sfxw = this.hjbxx.sfxw;
 
                         const alert = this.AlertModel.resolveComponentFactory(PersonComponent);
                         const alert2 = this.ModelRoom.createComponent(alert);
                         alert2.instance.childInfo = this.hjbxx;
                         alert2.instance.childInfo2 = this.hcylb;
                         alert2.instance.type = this.type;
-                        alert2.instance.update_data = Array();
+                        alert2.instance.update_person_data = Array();
                         alert2.instance.qshflId = this.hjbxx;
-                        alert2.instance.del_data = Array();
+                        alert2.instance.del_person_data = Array();
 
                         alert2.instance.init_person_data = this.init_person_data;
 
-                        this.update_person_data = alert2.instance.update_data;
-                        this.del_person_data = alert2.instance.del_data;
-                        this.add_person_data = alert2.instance.add_data;
+                        this.update_person_data = alert2.instance.update_person_data;
+                        this.del_person_data = alert2.instance.del_person_data;
+                        this.add_person_data = alert2.instance.add_person_data;
 
                     });
                 break;
@@ -411,7 +484,16 @@ export class SwzbPersonComponent implements OnInit {
 
     //  是否线外
     selectedTypea2(e): void {
-        console.log(e);
+        console.log(this.sfxw);
+        // if(!this.sfxw==null){
+        if (this.sfxw == this.hjbxx.sfxw) {
+            this.sfxw = null;
+        } else {
+            this.hjbxx.sfxw = this.sfxw;
+            this.sfxw = this.sfxw;
+        }
+        // }
+
     }
 
 
@@ -438,11 +520,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.dcfwList = res['returnObject'];
                 });
         }
-        if (this.isShowDcfw) {
-            this.isShowDcfw = false;
-        } else {
-            this.isShowDcfw = true;
-        }
+        this.isShowDcfw = this.isShowDcfw ? false : true;
     }
 
     closeBottom() {
@@ -464,12 +542,10 @@ export class SwzbPersonComponent implements OnInit {
     }
 
     save() {
-        console.log(this.update_person_data);
-        console.log(this.update_person_data);
-        console.log(this.del_person_data);
-        console.log(this.add_person_data);
-        console.log(this.hjbxx);
-        console.log(this.postObject);
+        console.log(this.add_houses_data);
+
+        console.log(this.flxx_houses_update);
+
         //  1:如果有为新增的话
         if (this.type === 'add') {
             let hjbxxRew = this.hjbxx;
@@ -543,7 +619,7 @@ export class SwzbPersonComponent implements OnInit {
                 this.add_person_data.forEach((item, key, arr) => {
                     if (Object.keys(item).length > 1) {
                         console.log(item);
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         this.postObject['listHcyAdd'].push(item);
@@ -580,7 +656,7 @@ export class SwzbPersonComponent implements OnInit {
                     console.log(this.add_houses_data);
                     this.postObject['listFwAdd'] = [];
                     this.add_houses_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -588,10 +664,8 @@ export class SwzbPersonComponent implements OnInit {
                         console.log(item);
                         let ls = {};
                         for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+                             ls[i] = item[i];
+                            
 
 
                         }
@@ -612,6 +686,29 @@ export class SwzbPersonComponent implements OnInit {
                 }
             }
 
+            // 如果房屋分类信息新增的话
+            if (this.flxx_houses_update) {
+                for (let item in this.flxx_houses_update) {
+                    console.log(item);
+                    let lsObj = {};
+                    lsObj['ssxtdm'] = this.hjbxx.ssxtdm;
+                    lsObj['ssgcdm'] = this.hjbxx.ssgcdm;
+                    for (let item2 in this.flxx_houses_update[item]) {
+                        console.log(item2);
+                        console.log(this.flxx_houses_update[item]);
+                        lsObj[item2] = this.flxx_houses_update[item][item2];
+
+                    }
+                    delete this.flxx_houses_update[item]
+                    console.log(lsObj);
+
+                    this.listFwflmxEdit.push(lsObj);
+                    console.log(this.listFwflmxEdit);
+                    this.postObject['listFwflmxAdd'] = this.listFwflmxEdit;
+                }
+            }
+
+
             //  如果装修有修改的话
             if (this.update_decor_data) {
                 if (Object.keys(this.update_decor_data).length !== 0) {
@@ -631,7 +728,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listFwzxAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_decor_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -647,7 +744,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -687,7 +784,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listXxzxAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_water_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -705,7 +802,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -745,7 +842,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listFsssAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_fsss_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -761,7 +858,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -801,7 +898,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listTdAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_land_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -817,7 +914,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -857,7 +954,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listTdfzwAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_land_other_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -873,7 +970,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -895,7 +992,6 @@ export class SwzbPersonComponent implements OnInit {
             }
 
 
-
             //  如果零星树木有修改的话
             if (this.update_trees_data) {
                 if (Object.keys(this.update_trees_data).length !== 0) {
@@ -915,7 +1011,7 @@ export class SwzbPersonComponent implements OnInit {
                     this.postObject['listLxgmAdd'] = [];
                     this.postObject['listFwzxflmxAdd'] = [];
                     this.add_trees_data.forEach((item, key, arr) => {
-                        item.ssxtdm = "X000001";
+                        item.ssxtdm = this.hjbxx.ssxtdm;
                         item.ssgcdm = this.qshflId.ssgcdm;
                         item.jddm = this.qshflId.jddm;
                         delete item.list;
@@ -931,7 +1027,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
                         }
                         // let flmxAdd={};
-                        // flmxAdd['ssxtdm']="X000001";
+                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
                         // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
                         // flmxAdd['ssfwjbxxId']= item['id'];
                         // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
@@ -965,7 +1061,7 @@ export class SwzbPersonComponent implements OnInit {
 
                 // console.log(JSON.stringify(this.postObject));
 
-                console.log(this.TjpdValue);
+                console.log(this.postObject);
                 if (this.TjpdValue) {
                     console.log("必填值全部都有了");
                     this.HttpService.post('/jmh/save', this.postObject)
@@ -976,7 +1072,7 @@ export class SwzbPersonComponent implements OnInit {
                                 this.msgs.push({severity: 'success', summary: '填入提醒', detail: '数据保存成功'});
                             } else {
                                 this.msgs = [];
-                                this.msgs.push({severity: 'error', summary: '保存失败', detail: '数据保存成功'});
+                                this.msgs.push({severity: 'error', summary: '保存失败', detail: '数据保存失败'});
                             }
                         })
                 }
@@ -1009,6 +1105,16 @@ export class SwzbPersonComponent implements OnInit {
                 person2.instance.type = this.type;
                 person2.instance.init_person_data = this.init_person_data;
 
+                person2.instance.update_person_data = Array();
+                person2.instance.qshflId = this.hjbxx;
+                person2.instance.del_person_data = Array();
+                person2.instance.add_person_data = Array();
+
+                this.update_person_data = person2.instance.update_person_data;
+                this.del_person_data = person2.instance.del_person_data;
+                this.add_person_data = person2.instance.add_person_data;
+
+
                 if (this.type == 'add') {
                     person2.instance.qshflId = this.qshflId;
                 } else if (this.type == 'rew') {
@@ -1017,7 +1123,8 @@ export class SwzbPersonComponent implements OnInit {
 
                 break;
             case 'houses':
-                console.log(this.houses_data);
+                console.log(this.hjbxx);
+                console.log(this.hcylb);
                 if (this.houses_data == null) {
                     let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id
 
@@ -1034,9 +1141,13 @@ export class SwzbPersonComponent implements OnInit {
                         houses2.instance.childInfo2 = this.hcylb;
                         houses2.instance.init_houses_data = this.init_houses_data;
                         houses2.instance.type = this.type;
+                        houses2.instance.flxx_houses_update = this.flxx_houses_update;
+
                         this.update_houses_data = houses2.instance.update_houses_data;
                         this.del_houses_data = houses2.instance.del_houses_data;
                         this.add_houses_data = houses2.instance.add_houses_data;
+                        this.flxx_houses_update = houses2.instance.flxx_houses_update;
+
 
                         houses2.instance.bj_houses_data = this.bj_houses_data;
 
@@ -1064,9 +1175,11 @@ export class SwzbPersonComponent implements OnInit {
                     this.del_houses_data = houses2.instance.del_houses_data;
                     this.add_houses_data = houses2.instance.add_houses_data;
                     this.bj_houses_data = houses2.instance.bj_houses_data;
+                    this.flxx_houses_update = houses2.instance.flxx_houses_update;
                     houses2.instance.childInfo = this.hjbxx;
                     houses2.instance.childInfo2 = this.hcylb;
                     houses2.instance.data = this.houses_data;
+                    houses2.instance.flxx_houses_update = this.flxx_houses_update;
 
                     if (this.type == 'add') {
                         houses2.instance.qshflId = this.qshflId;
@@ -1490,15 +1603,14 @@ export class SwzbPersonComponent implements OnInit {
                 const fyss = this.AlertModel.resolveComponentFactory(FyssComponent);
                 const fyss2 = this.ModelRoom.createComponent(fyss);
                 break;
-            case
-            'dwqbqk'
-            :
-                const dwqbqk = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
-                const dwqbqk2 = this.ModelRoom.createComponent(dwqbqk);
+            case'dwjbqk':
+                const dwqbqk1 = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
+                const dwqbqk2 = this.ModelRoom.createComponent(dwqbqk1);
                 break;
-            //   case 'gykqyxq':
-            //       this.childrenModel = this.AlertModel.resolveComponentFactory(GykqyxqComponent);
-            //       break;
+            case 'gykqyxq':
+                const gykqyxq = this.AlertModel.resolveComponentFactory(GykqyxqComponent);
+                const gykqyxq2 = this.ModelRoom.createComponent(gykqyxq);
+                break;
             case
             'tljbxx'
             :
@@ -1615,10 +1727,16 @@ export class SwzbPersonComponent implements OnInit {
     close() {
         this.showqqq = false;
     }
-    getZdlsh(i){
+
+    getZdlsh(i) {
         // this.HttpService.get(`jmh/generateOrderNum?code=${}`)
-        this.hjbxx.dabh=i;
+        this.HttpService.get(`jmh/generateOrderNum?code=${this.hjbxx.ssxzqhdm}`)
+            .then((data) => {
+                this.hjbxx.dabh = `${this.hjbxx.ssxzqhdm}${data['returnObject']}`;
+            })
+
     }
+
     //   HJBXX储存变量
     saveHjbxxChange(arr, initArr) {
         var lsArr = {};

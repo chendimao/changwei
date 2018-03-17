@@ -6,6 +6,7 @@ import {HttpService} from "../../../../../../service/http-service";
 import {ActivatedRoute, Params} from "@angular/router";
 import {DataProcessingService} from "../../../../../../service/dataProcessing.service";
 import {SelectListHttpService} from "../../../../../../service/select-list-http.service";
+import {InputChangeService} from "../../../../../../service/input-change.service";
 
 
 @Component({
@@ -33,10 +34,10 @@ export class PersonComponent implements OnInit {
     public hcy_count: number = 0; //  总共多少人
     public isShowArea: boolean = false;
     public name_active_key; //  当前选中的下标
-    public del_data; //  删除的数据
+    public del_person_data; //  删除的数据
     public init_person_data; //  初始化的数据
-    public update_data = new Array(); //  对比后修改的数据
-    public add_data = new Array(); //  新增的数据
+    public update_person_data = new Array(); //  对比后修改的数据
+    public add_person_data = new Array(); //  新增的数据
 
     public yhzgx_list: any; //  与户主关系下拉列表
     public mz_list: any; //  民族下拉列表
@@ -62,7 +63,7 @@ export class PersonComponent implements OnInit {
     @ViewChildren('defaultPerson') defaultPerson: QueryList<ElementRef>;
 
 
-    constructor(public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, private ValuChangeService: ValuChangeService, private HttpService: HttpService, private route: ActivatedRoute) {
+    constructor(public InputChange:InputChangeService,public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, private ValuChangeService: ValuChangeService, private HttpService: HttpService, private route: ActivatedRoute) {
 
 
         this.types = [];
@@ -83,44 +84,50 @@ export class PersonComponent implements OnInit {
 
         //   订阅表单值改变事件
         this.person.valueChanges.subscribe(data => {
+            console.log(234);
+            let res =  this.InputChange.get_value_change(this.hcy,this.name_active_key,this.init_person_data,this.update_person_data,this.add_person_data);
+
+            this.add_person_data = res.add_data;
+            this.update_person_data = res.update_data;
 
 
-                if (this.hcy.id != undefined) {
-                    let linshiPerson = this.init_person_data['listHcy'];
-                    linshiPerson.forEach((value, index, arr) => {
-                        console.log(value);
-                        if (this.hcy['id'] == value['id']) {
-                            console.log(this.hcy['id']);
-                            this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                            console.log(this.ValuChangeService.changeDate(value, this.hcy));
-                            this.update_data[index]['id'] = this.hcy.id;
+                //
+                // if (this.hcy.id != undefined) {
+                //     let linshiPerson = this.init_person_data['listHcy'];
+                //     linshiPerson.forEach((value, index, arr) => {
+                //         console.log(value);
+                //         if (this.hcy['id'] == value['id']) {
+                //             console.log(this.hcy['id']);
+                //             this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                //             console.log(this.ValuChangeService.changeDate(value, this.hcy));
+                //             this.update_person_data[index]['id'] = this.hcy.id;
+                //
+                //         }
+                //
+                //     });
+                //
+                //
+                // } else {
+                //
+                //     if (this.add_person_data[this.name_active_key] == undefined) {
+                //
+                //         this.add_person_data[this.name_active_key] = new Object();
+                //     }
+                //
+                //
+                //     for (var i in this.hcy) {
+                //
+                //         if (this.hcy[i] != null) {
+                //             this.add_person_data[this.name_active_key][i] = this.hcy[i];
+                //         }
+                //
+                //     }
+                //
+                //
+                // }
 
-                        }
-
-                    });
-
-
-                } else {
-
-                    if (this.add_data[this.name_active_key] == undefined) {
-
-                        this.add_data[this.name_active_key] = new Object();
-                    }
-
-
-                    for (var i in this.hcy) {
-
-                        if (this.hcy[i] != null) {
-                            this.add_data[this.name_active_key][i] = this.hcy[i];
-                        }
-
-                    }
-
-
-                }
-
-                console.log(this.update_data)
-                console.log(this.add_data);
+                console.log(this.update_person_data);
+                console.log(this.add_person_data);
 
 
             }
@@ -129,6 +136,7 @@ export class PersonComponent implements OnInit {
     }
 
     ngOnInit() {
+
         console.log(this.qshflId);
         this.selectedType = 1;
         this.area = '福建省泉州市安溪县白濑乡长基村';
@@ -297,23 +305,85 @@ export class PersonComponent implements OnInit {
             'hkszd': "",
             'rs': "",
             'bz': "",
+            'id':new Date().getTime()
+
         });
 
 
         let that = this.defaultPerson;
 
         setTimeout(function () {
+            console.log(that);
+            console.log(that.last);
+            console.log(that.last.nativeElement);
             that.last.nativeElement.click();
         }, 0);
 
         this.hcy_count = this.tableList.length;
 
-        //   this.add_data.push(this.tableList[this.hcy_count-1]);
+        //   this.add_person_data.push(this.tableList[this.hcy_count-1]);
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
 
     }
+
+
+
+    //  删除成员
+    delPerson() {
+
+
+        if(this.tableList.length>0){
+            //  记录删除id
+            if (this.hcy['id'] != undefined && this.hcy['id'].toString().length == 32) {
+                console.log(this.hcy['id']);
+                this.del_person_data.push({'id': this.hcy['id']});
+
+                //  如果删除的户成员在修改列表中存在，则从修改列表中删除
+                this.tableList.forEach((value, index, arr) => {
+                    if (value['id'] == this.hcy['id']) {
+                        delete this.update_person_data[index];
+                    }
+                });
+                console.log(this.update_person_data);
+                console.log(this.del_person_data);
+            } else {
+
+                this.add_person_data.splice(this.name_active_key, 1);
+                console.log(this.add_person_data);
+
+
+            }
+
+
+            this.tableList.splice(this.name_active_key, 1);
+            if (this.tableList[0] != undefined && this.name_active_key > 0) {
+                this.selectPerson(this.tableList[this.name_active_key - 1], this.name_active_key - 1);
+                this.hcy_count = this.hcy_count - 1;
+
+            } else if (this.tableList[0] != undefined && this.name_active_key == 0) {
+
+                this.selectPerson(this.tableList[this.name_active_key], this.name_active_key);
+                this.hcy_count = this.hcy_count - 1;
+
+            } else {
+
+
+                this.hcy_count = 0;
+
+            }
+
+        }
+
+        if(this.tableList.length == 0){
+
+        }
+
+
+    }
+
+
 
 
     //  上一条
@@ -334,46 +404,7 @@ export class PersonComponent implements OnInit {
 
     }
 
-    //  删除成员
-    delPerson() {
 
-        //  记录删除id
-        if (this.hcy['id'] != undefined) {
-            this.del_data.push({'id': this.hcy['id']});
-
-            //  如果删除的户成员在修改列表中存在，则从修改列表中删除
-            this.tableList.forEach((value, index, arr) => {
-                if (value['id'] == this.hcy['id']) {
-                    delete this.update_data[index];
-                }
-            });
-
-        } else {
-
-            this.add_data.splice(this.name_active_key, 1);
-            console.log(this.add_data);
-
-
-        }
-
-
-        this.tableList.splice(this.name_active_key, 1);
-        if (this.tableList[0] != undefined && this.name_active_key > 0) {
-            this.selectPerson(this.tableList[this.name_active_key - 1], this.name_active_key - 1);
-            this.hcy_count = this.hcy_count - 1;
-
-        } else if (this.tableList[0] != undefined && this.name_active_key == 0) {
-
-            this.selectPerson(this.tableList[this.name_active_key], this.name_active_key)
-            this.hcy_count = this.hcy_count - 1;
-
-        } else {
-            this.hcy_count = 0;
-
-        }
-
-
-    }
 
     showAreaBlock(): void {
 
@@ -397,8 +428,8 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
@@ -407,21 +438,21 @@ export class PersonComponent implements OnInit {
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
     }
 
@@ -436,32 +467,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
     }
 
@@ -477,32 +508,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
     }
     getChildEvent(index) {
@@ -537,32 +568,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
 
     }
@@ -579,8 +610,8 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
@@ -589,21 +620,21 @@ export class PersonComponent implements OnInit {
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
 
 
     }
@@ -620,32 +651,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  调查范围
@@ -660,32 +691,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  专业大类
@@ -700,32 +731,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  婚姻状况
@@ -740,32 +771,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  从业情况
@@ -780,32 +811,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  民族
@@ -820,32 +851,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  性别
@@ -917,32 +948,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  与户主关系
@@ -959,32 +990,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  户别
@@ -999,8 +1030,8 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
@@ -1009,21 +1040,21 @@ export class PersonComponent implements OnInit {
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  是否劳动力
@@ -1038,32 +1069,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
     //  备注
@@ -1078,32 +1109,32 @@ export class PersonComponent implements OnInit {
 
                 if (this.hcy['id'] == value['id']) {
 
-                    this.update_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_data[index]['id'] = this.hcy.id;
+                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
+                    this.update_person_data[index]['id'] = this.hcy.id;
 
                 }
 
             });
 
-            console.log(this.update_data);
+            console.log(this.update_person_data);
 
         } else {
 
-            if (this.add_data[this.name_active_key] == undefined) {
+            if (this.add_person_data[this.name_active_key] == undefined) {
 
-                this.add_data[this.name_active_key] = new Object();
+                this.add_person_data[this.name_active_key] = new Object();
             }
 
 
             for (var i in this.hcy) {
-                this.add_data[this.name_active_key][i] = this.hcy[i];
+                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
             }
 
 
         }
 
-        console.log(this.add_data);
+        console.log(this.add_person_data);
     }
 
 

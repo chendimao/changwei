@@ -25,7 +25,7 @@ export class SelectListHttpService {
             this.HttpService.get(this.url).then((data) => {
                 let res = this.DataProcessing.replaceChildlValue(data['returnObject'], 'mc', 'label', 'dm', 'value')
 
-                console.log(res);
+               // console.log(res);
                 resolve(res);
 
             }, err => {

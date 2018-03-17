@@ -10,8 +10,8 @@ export class ValuChangeService {
 
     changeDate(begin, change) {
 
-        console.log(begin);
-        console.log(change);
+       // console.log(begin);
+       // console.log(change);
 
             if(change['qcrq'] != undefined && change['qrrq'] != undefined){
 
@@ -36,6 +36,9 @@ export class ValuChangeService {
             for(var i in begin){
 
                 if(i != 'list'){
+                    if(change[i] === ""){
+                        change[i] = null;
+                    }
                     if(begin[i] !== change[i]){
 
                         if(begin[i] !== undefined && change[i] !== undefined){

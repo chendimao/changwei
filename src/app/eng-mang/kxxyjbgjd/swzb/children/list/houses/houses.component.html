@@ -1,7 +1,7 @@
 <header class="clearfix">
 
     <div class="fl"  >
-        <div class="fl" *ngFor="let houses of houesList;let i = index;"  (click)="selectNmae(houses,i)" [ngClass]="{'active':houses == name_active_data}" [innerHTML]="houses.qsrmc"></div>
+        <div class="fl" *ngFor="let houses of houesList;let i = index;"  (click)="selectName(houses,i)" [ngClass]="{'active':houses == name_active_data}" [innerHTML]="houses.qsrmc"></div>
         <app-select-list class="fr" *ngIf="displaySelectPserson" [width]="0"  [values]="selectPersonList"
                          (SelectModel)="addHouses($event)"></app-select-list>
     </div>
@@ -32,7 +32,7 @@
                 <span class="importent">所在行政区划</span>
             </div>
             <div class="inputRight fl">
-                <input type="text" class="inputH" [(ngModel)]="name_active_data.swszxzqhdm" name="szxzqhdm">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.swszxzqhmc" name="szxzqhmc">
                 <span class="xiala" (click)="showAreaBlock()"></span>
                 <app-area-select class="areaCommpont" [display]="isShowArea"
                                  (childEvent)="getChildEvent($event)"></app-area-select>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="inputRight fl">
-                <input type="text" class="inputH" [(ngModel)]="name_active_data.dcfw_mc" name="dcfw">
+                <input type="text" class="inputH" [(ngModel)]="name_active_data.dcfwmc" name="dcfw">
                 <i class="xiala" (click)="dcfw_show()"></i>
                 <app-surver-area [values]="dcfw_list" [isShow]="dcfw_list_is_show" (childEvent)="dcfw_data($event)"></app-surver-area>
              </div>
@@ -180,7 +180,7 @@
                 <div class="textareaBeizhu">
                     <span>备注 </span>
                 </div>
-                <textarea name="bz" id="" cols="30" rows="10" class="textarea" name="bz" [(ngModel)]="name_active_data.bz"></textarea>
+                <textarea name="bz" id="bz" cols="30" rows="10" class="textarea" name="bz" [(ngModel)]="name_active_data.bz"></textarea>
             </div>
         </div>
     </div>
@@ -191,44 +191,254 @@
 <div *ngIf="name_active_base">
     <div class="home_title">房屋分类信息</div>
 
+    <div>
+        <p-selectButton [options]="types3" [(ngModel)]="selectedType3"
+                        (click)="selectedTypea3()"></p-selectButton>
+    </div>
 
     <div class="tab_box clearfix" >
 
-        <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl" >
+        <div *ngIf="showTable==1">
+            <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl" >
 
-            <p-treeTable   ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
-                <p-column field="xh"  header="序号">
-                    <!--<ng-template let-node="rowData" pTemplate="body">-->
-                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                    <!--</ng-template>-->
-                </p-column>
-                <p-column field="zdxmc" header="类别">
-                    <!--<ng-template let-node="rowData" pTemplate="body">-->
-                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                    <!--</ng-template>-->
-                </p-column>
-                <p-column field="jzmj" header="面积" >
-                    <ng-template let-col let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;"  [(ngModel)]="node.data.jzmj" [disabled]="node.children != null" (keyup)="Tree_update(TreeTable,node,i)"   >
-                    </ng-template>
-                </p-column>
-                <p-column field="dwmc" header="单位">
-                    <!--<ng-template let-node="rowData" pTemplate="body">-->
-                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                    <!--</ng-template>-->
-                </p-column>
+                <p-treeTable   ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable" (onNodeSelect)="TreeTableClick($event)"  selectionMode="single" [(selection)]="selectedFile" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                    <p-column field="xh"  header="序号">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
+                    <p-column field="zdxmc" header="类别">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
+                    <p-column field="jzmj" header="面积" >
+                        <ng-template let-col let-node="rowData" pTemplate="body">
+                            <input type="number"  style="width:100%;"  [(ngModel)]="node.data.jzmj" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )' [disabled]="node.children != null" (keyup)="Tree_update(TreeTable,node,i)"   >
+                        </ng-template>
+                    </p-column>
+                    <p-column field="dwmc" header="单位">
+                        <!--<ng-template let-node="rowData" pTemplate="body">-->
+                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                        <!--</ng-template>-->
+                    </p-column>
 
-                <p-column field="bz" header="备注" >
-                    <ng-template let-col let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (keyup)="Tree_update(TreeTable,node,node.data,i)">
-                    </ng-template>
-                </p-column>
-            </p-treeTable>
+                    <p-column field="bz" header="备注" >
+                        <ng-template let-col let-node="rowData" pTemplate="body">
+                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (input)="Tree_update_bz(TreeTable,node,node.data,i)">
+                        </ng-template>
+                    </p-column>
+                </p-treeTable>
 
 
+            </div>
         </div>
 
+        <form #ggmxlist="ngForm">
 
+            <div *ngIf="showTable==2" class="clearfix">
+                <div class="btnGrop">
+                    <ul>
+                        <li class="fl" (click)="addGgmx()">
+                            <span><img src="assets/img/icon/jiahao.png" alt=""></span>
+                            新增
+                        </li>
+                        <li class="fl" (click)="delGgmx()">
+                            <span><img src="assets/img/icon/x.png" alt=""></span>
+                            删除
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix" >
+                    <p-dataTable resizableColumns="true" [value]="Car" class="table" dataKey="xh" (onRowClick)="DatatableClick($event)"  responsive="true" selectionMode="single" >
+                        <p-column field="xh"  title="mc" header="序号" [bodyStyle]="{'text-align':'left'}">
+                            <ng-template  let-col let-i="rowIndex" let-car="rowData" pTemplate="body">
+                                <span #defaultPerson>{{i+1}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="fwjg" header="房屋结构代码">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="cs" header="层数">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="cgxs" header="层高系数">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="ggcc" header="屋面材料">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="zlcc" header="丈量尺寸">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="jzmj" header="建筑面积">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="dw" header="单位">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="bz" header="备注">
+                            <ng-template let-col let-car="rowData" pTemplate="body">
+                                <span>{{car[col.field]}}</span>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+
+                </div>
+
+
+                <div class="clearfix modalInput" *ngIf="Car[GgmxIndex]">
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span class="importent">房屋用途及结构</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="fwjgdm" [(ngModel)]="Car[GgmxIndex]['fwjg']">
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>层数</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="cs" [(ngModel)]="Car[GgmxIndex]['cs']">
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>层高系数</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="cgxs" [(ngModel)]="Car[GgmxIndex]['cgxs']">
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>屋面材料</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="ggcc" [(ngModel)]="Car[GgmxIndex]['ggcc']">
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>丈量尺寸</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="zlcc" [(ngModel)]="Car[GgmxIndex]['zlcc']">
+                        </div>
+                    </div>
+
+
+                    <div class="fl group group-4 danwei">
+                        <span>建筑面积</span>
+                        <input type="text" name="jzmj" [(ngModel)]="Car[GgmxIndex]['jzmj']">
+                        <div class="fl mianji">
+                            ㎡
+                        </div>
+
+                    </div>
+                    <!--<div class="inputArea fl">-->
+                    <!--<div class="inputLeft fl">-->
+                    <!--<span>备注</span>-->
+                    <!--</div>-->
+                    <!--<div class="inputRight fl ">-->
+                    <!--<input type="text">-->
+                    <!--</div>-->
+
+                    <!--</div>-->
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea name="bz"  cols="30" rows="10" class="textarea" [(ngModel)]="Car[GgmxIndex]['bz']"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix modalInput" *ngIf="!Car[GgmxIndex]">
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span class="importent">房屋用途及结构</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="fwjgdm2" >
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>层数</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="cs2" >
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>层高系数</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="cgxs2">
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>屋面材料</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="ggcc2" >
+                        </div>
+                    </div>
+                    <div class="inputArea fl">
+                        <div class="inputLeft fl">
+                            <span>丈量尺寸</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input type="text" name="zlcc2" >
+                        </div>
+                    </div>
+
+
+                    <div class="fl group group-4 danwei">
+                        <span>建筑面积</span>
+                        <input type="text" name="jzmj2" >
+                        <div class="fl mianji">
+                            ㎡
+                        </div>
+
+                    </div>
+                    <!--<div class="inputArea fl">-->
+                    <!--<div class="inputLeft fl">-->
+                    <!--<span>备注</span>-->
+                    <!--</div>-->
+                    <!--<div class="inputRight fl ">-->
+                    <!--<input type="text">-->
+                    <!--</div>-->
+
+                    <!--</div>-->
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea name="bz2"  cols="30" rows="10" class="textarea"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </form>
 
 
 

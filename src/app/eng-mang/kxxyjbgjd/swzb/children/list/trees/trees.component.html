@@ -169,7 +169,7 @@
                     </p-column>
                     <p-column field="sl" header="数量" >
                         <ng-template let-node="rowData" pTemplate="body">
-                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.sl" (keyup)="Tree_update(TreeTable,node.data,i)"   >
+                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.jzmj"  [disabled]="node.children != null" (keyup)="Tree_update(TreeTable,node,i)"   >
                         </ng-template>
                     </p-column>
                     <p-column field="dwmc" header="单位">
@@ -180,7 +180,7 @@
 
                     <p-column field="bz" header="备注" >
                         <ng-template let-node="rowData" pTemplate="body">
-                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (keyup)="Tree_update(TreeTable,node.data,i)">
+                            <input type="text"  style="width:100%;" [(ngModel)]="node.data.bz"  (keyup)="Tree_update(TreeTable,node,i)">
                         </ng-template>
                     </p-column>
                 </p-treeTable>

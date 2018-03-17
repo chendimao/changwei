@@ -172,16 +172,21 @@ export class TreesComponent implements OnInit {
                 this.name_active_base = this.data['returnObject']['baselist'];
             }
 
+
             //转换数据格式
 
+
             if(this.bj_trees_data == 1) {
-                this.bj_trees_data = 0;
-                this.name_active_base.forEach((value, index, arr) => {
-                    this.name_active_base[index] = this.DataProcessing.returnTreeTable(this.DataProcessing.replaceChildlValue(value, 'childList', 'children', '', ''));
+                this.bj_trees_data= 0;
+                this.treesList.forEach((value,index,arr)=>{
+                    console.log(value);
+                    value.list.forEach((val, i, ar) => {
+                        ar[i] = this.DataProcessing.returnTreeTable(this.DataProcessing.replaceChildlValue(val, 'childList', 'children', '', ''));
 
-                });
+                    });
+
+                })
             }
-
 
 
 
@@ -400,11 +405,36 @@ export class TreesComponent implements OnInit {
     displaySlect(){        if(this.displaySelectPserson == true){            this.displaySelectPserson = false;        }else{            this.displaySelectPserson = true;        }    }
 
 
+    get_data(now_data){
+
+        now_data.data.jzmj = 0;
+        now_data.children.forEach((value,index,arr)=>{
+            console.log(value);
+            if(value['data'] != undefined && value['data'].jzmj == null){
+
+
+            }else{
+
+                now_data.data.jzmj += parseInt(value['data'].jzmj);
+            }
+
+        });
+        if(now_data.parent != undefined){
+            this.get_data(now_data.parent);
+        }
+        console.log(now_data);
+        return now_data;
+    }
+
 
     Tree_update(data,now_data,i){
 
-
         console.log(this.name_active_base[i]);
+
+        if(now_data.parent != undefined){
+
+            this.get_data(now_data.parent);
+        }
 
 
         console.log(data);
@@ -412,8 +442,8 @@ export class TreesComponent implements OnInit {
         this.name_active_base[i] = data;
 
         if(this.name_active_data.id != undefined && this.name_active_data.id != ""){
-            this.flxx_update[now_data['zbflId']] = new Array();
-            this.flxx_update[now_data['zbflId']] = {'sl':now_data['sl'],'bz':now_data['bz'],'fwjgdm':now_data['fwjgdm'],'zbflId':now_data['zbflId'],'id':this.name_active_data.id};
+            this.flxx_update[now_data['data']['zbflId']] = new Array();
+            this.flxx_update[now_data['data']['zbflId']] = {'jzmj':now_data['data']['jzmj'],'bz':now_data['data']['bz'],'fwjgdm':now_data['data']['fwjgdm'],'zbflId':now_data['data']['zbflId'],'id':this.name_active_data.id};
 
 
         }else{
@@ -421,19 +451,14 @@ export class TreesComponent implements OnInit {
             if(this.name_active_data['listfwAdd'] == undefined){
                 this.name_active_data['listfwAdd'] = new Array();
             }
-            this.name_active_data['listfwAdd'][now_data['zbflId']] = {'sl':now_data['sl'],'bz':now_data['bz'],'fwjgdm':now_data['fwjgdm'],'zbflId':now_data['zbflId']};
+            this.name_active_data['listfwAdd'][now_data['zbflId']] = {'jzmj':now_data['data']['jzmj'],'bz':now_data['data']['bz'],'fwjgdm':now_data['data']['fwjgdm'],'zbflId':now_data['data']['zbflId']};
 
-            //this.flxx_add[now_data['zbflId']] = new Array();
-            //this.flxx_add[now_data['zbflId']] = {'sl':now_data['sl'],'bz':now_data['bz'],'fwjgdm':now_data['fwjgdm'],'zbflId':now_data['zbflId']};
 
 
         }
         console.log(this.flxx_update);
         console.log(this.name_active_data);
-        // let  parent_data = this.get_data(parent);
-        //  delete parent_data['expanded'];
-        // delete parent_data['parent'];
-        //  console.log(parent_data);
+
 
 
     }
