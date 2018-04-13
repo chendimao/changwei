@@ -36,13 +36,16 @@ export class ValuChangeService {
             for(var i in begin){
 
                 if(i != 'list'){
-                    if(change[i] === ""){
-                        change[i] = null;
-                    }
+
                     if(begin[i] !== change[i]){
 
+
+
                         if(begin[i] !== undefined && change[i] !== undefined){
-                            this.obj[i] = change[i];
+                            console.log(typeof change[i],change[i]);
+
+                                this.obj[i] = change[i];
+
                         }
                     }
 

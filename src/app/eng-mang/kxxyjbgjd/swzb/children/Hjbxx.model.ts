@@ -4,6 +4,7 @@ export class HjbxxModel {
     ssgcdm: string;        //所属工程代码';
     jddm: string;        //阶段代码';
     ssxzqhdm: string;        //所属行政区划代码';
+    xzqhmc: string;        //所属行政区划代码';
     zydldm: string;        //专业大类代码';
     dcfwdm: string;        //调查范围代码';
     dcfwmc: string;

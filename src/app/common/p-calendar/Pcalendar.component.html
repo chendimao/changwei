@@ -1,5 +1,5 @@
 <p-calendar styleClass="timeInput" placeholder="请填入时间" disabledDates yearNavigator="true"
-            monthNavigator="true" dateFormat="yy-mm-dd" [(ngModel)]="dateValue" (onSelect)="clickTime(dateValue)"
+             [disabled]="disabled"    monthNavigator="true" dateFormat="yy-mm-dd" [(ngModel)]="dateValue" (onSelect)="clickTime(dateValue)"
             yearRange="1900:2030" [inline]="false" [locale]="ch"
 >
 </p-calendar>

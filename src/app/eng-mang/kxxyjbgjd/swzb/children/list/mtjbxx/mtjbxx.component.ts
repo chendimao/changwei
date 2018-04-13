@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+
+import {HttpService} from "../../../../../../service/http-service";
+import {InputChangeService} from "../../../../../../service/input-change.service";
+import {DataProcessingService} from "../../../../../../service/dataProcessing.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-mtjbxx',
@@ -6,10 +11,613 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['../children.css']
 })
 export class MtjbxxComponent implements OnInit {
+    public qshflId; //  权属户信息
+    public type: string; //  类型：查看、新增、修改
+    public childInfo: any;
+    public childInfo2: any;
+    public isShowArea: boolean = false;
+    public name_active_key; //  当前选中的下标
+    public del_mtjbxx_data; //  删除的数据
+    public init_mtjbxx_data; //  初始化的数据
+    public update_mtjbxx_data; //  对比后修改的数据
+    public add_mtjbxx_data ; //  新增的数据
+    public mtList:any ;
+    public  zydlLeft: any;
+    public  zydlTop: any;
+    public dcfw_list: any;// 调查范围
+    public dcfw_list_is_show = 0;// 调查范围显示
+    public dcfw_mc;
+    public hbdm_list: any;// 户别代码 列表
+    public ssxzqhdm: any; //  所属行政区划代码
+    public ssgcdm: any; //  所属行政区划代码
+    public  isShowZydl: any;
+    public  isShowDcfw: any;
+    public mtjbxx_data:any;
+    public  dcfwTableList: any;
+    public  dcfwTreeList: any;
+    public  zydlTableList: any;
+    public  zydlTreeList: any;
+    public isDisabled = false;
+    public listHcyAdd;
+    private isShowsj;
 
-  constructor() { }
+    public szxzqugldm: any;
+    public zzcModel: boolean;
+    public selectedType: number;
+    public tableSelecValue: any;
+    public isShowmt: boolean;
+    public mtTableList: null;
+    public mtTreeList: string;
+    public selectPersonList = new Array();
 
-  ngOnInit() {
+
+    @ViewChild('forms') forms: NgForm;
+    private isShowyt;
+    private ytTreeList;
+    private ytTableList;
+    private isShowxs;
+    private xsTreeList;
+    private xsTableList;
+    private isShowjgcl;
+    private jgclTreeList;
+    private jgclTableList;
+    private isShowym;
+    private ymTreeList;
+    private ymTableList;
+    private sjTreeList;
+    private sjTableList;
+
+    constructor(public HttpService:HttpService,public DataProcessing:DataProcessingService,public InputChange: InputChangeService) { }
+
+    ngAfterViewInit(): void {
+
+        if(this.mtList[0].length>0){
+            // 订阅表单值改变事件
+            this.forms.valueChanges.subscribe( data => {
+                console.log('test');
+                let res = this.InputChange.get_select_change(this.mtList[0],0,this.init_mtjbxx_data,this.update_mtjbxx_data,this.add_mtjbxx_data,);
+
+                this.update_mtjbxx_data = res['update_data'];
+
+                console.log(this.update_mtjbxx_data);
+            });
+
+        }
+
+    }
+
+
+    ngOnInit() {
+
+        console.log(this.szxzqugldm);
+
+
+        //  所属行政区划代码和工程代码
+        if (this.type == 'add') {
+            this.ssgcdm = this.qshflId.ssgcdm;
+            this.ssxzqhdm = this.qshflId.ssxzqhdm;
+
+        } else if (this.type == 'rew') {
+
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+        }else{
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+            this.isDisabled = true;
+        }
+
+        console.log(this.mtjbxx_data['returnObject']);
+        this.mtList = this.mtjbxx_data['returnObject'];
+        console.log(this.childInfo);
+        if(this.mtList.length<=0){
+            this.mtList[0] = (new mt(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
+
+
+        }
+
+        this.selectPersonList.push({label:'选择户成员',value:-1});
+
+        if(this.childInfo2.length>0){
+
+            this.childInfo2.forEach((value,index,arr)=>{
+
+                this.selectPersonList.push({label:value['mc'],value:value['id']});
+
+            });
+        }
+
+        console.log(this.mtList[0]);
+
+        console.log(this.mtjbxx_data);
+
+    }
+
+// 所在行政区域
+    showAreaBlock(): void {
+        console.log(this.type);
+        if (this.type != "view") {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
+    }
+
+    getChildSzxzqh(e) {
+        console.log(e);
+        if (e) {
+            this.zzcModel = false;
+
+            this.mtList[0].localitydesc = e.qc;
+            this.mtList[0].swszxzqhdm = e.dm;
+            this.isShowArea = false;
+        } else {
+            this.isShowArea = false;
+            this.zzcModel = false;
+        }
+    }
+
+
+// 专业大类展示
+    showZydlBlock(index) {
+        let test = document.getElementById("zydl");
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowZydl = this.isShowZydl ? false : true;
+            if (!this.zydlTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.zydlTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.zydlTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildZydl(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowZydl = false;
+
+        console.log(this.selectedType);
+        this.mtList[0].zydldm = event.dm;
+        this.mtList[0].zydlmc = event.mc;
+
+
+    }
+
+//删除
+    deleteSlect(){
+
+        if(this.mtList[0].qsrId.toString().length == 32){
+
+
+            if(this.mtList[0].id.toString().length == 32){
+                this.del_mtjbxx_data.push({id:this.mtList[0].id});
+
+                if(this.update_mtjbxx_data.length>0){
+                    this.update_mtjbxx_data.splice(0,1);
+                }
+
+            }else{
+                if(this.add_mtjbxx_data.length>0){
+                    this.add_mtjbxx_data.splice(0,1);
+                }
+            }
+        }else{
+            delete this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'];
+        }
+        this.mtList[0] = (new mt(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
+    }
+
+
+
+//  调查范围显示下拉
+    showDcfwBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowDcfw = this.isShowDcfw ? false : true;
+            if (!this.dcfwTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MTGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MTGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.dcfwTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildDcfw(event) {
+        console.log(event);
+        this.zzcModel = false;
+        console.log(this.name_active_key);
+        this.isShowDcfw = false;
+
+        console.log(this.selectedType);
+        this.mtList[0].dcfwdm = event.dm;
+        this.mtList[0].dcfwmc = event.mc;
+
+
+    }
+
+
+//  输变电工程
+    showmtBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowmt= this.isShowmt ? false : true;
+            if (!this.mtTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=MTLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.mtTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=MTLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.mtTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildmt(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowmt = false;
+        this.mtList[0].mtlbmc = event.qc;
+        this.mtList[0].mtlbdm = event.dm;
+
+    }
+
+
+        //  码头用途
+    showytBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowyt= this.isShowyt ? false : true;
+            if (!this.ytTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=MTYTDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.ytTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=MTYTDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.ytTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildyt(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowyt = false;
+        this.mtList[0].mtytmc = event.mc;
+        this.mtList[0].mtytdm = event.dm;
+
+    }
+
+
+    //  码头形式
+    showxsBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowxs= this.isShowxs? false : true;
+            if (!this.xsTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=XSDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.xsTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=XSDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.xsTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildxs(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowxs = false;
+        this.mtList[0].xsmc = event.qc;
+        this.mtList[0].xsdm = event.dm;
+
+    }
+
+
+
+    //  结构材料
+    showjgclBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowjgcl= this.isShowjgcl? false : true;
+            if (!this.jgclTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=JGCLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.jgclTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=JGCLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.jgclTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildjgcl(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowjgcl = false;
+        this.mtList[0].jgclmc = event.mc;
+        this.mtList[0].jgcldm = event.dm;
+
+    }
+
+
+    //  淹没程度
+    showymBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowym= this.isShowym? false : true;
+            if (!this.ymTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=YMYXCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.ymTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=YMYXCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.ymTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildym(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowym = false;
+        this.mtList[0].ymyxcdmc = event.mc;
+        this.mtList[0].ymyxcddm = event.dm;
+
+    }
+
+
+//权属人切换
+    eventQsr(e){
+
+        if(this.mtList[0].qsrId){
+            if(this.mtList[0].qsrId.toString().length == 32){
+                if(this.add_mtjbxx_data.length>0){
+                    this.add_mtjbxx_data.forEach((value,index,arr)=>{
+                        if(value['id'] == this.mtList[0].id){
+                            delete this.add_mtjbxx_data[index];
+                        }
+
+                    });
+                }
+
+                if(this.update_mtjbxx_data.length>0){
+                    this.update_mtjbxx_data.forEach((value,index,arr)=>{
+                        if(value['id'] == this.mtList[0].id){
+                            delete this.update_mtjbxx_data[index];
+                        }
+
+                    });
+                }
+
+
+                if(this.mtList[0].id.toString().length ==32){
+                    this.del_mtjbxx_data.push({id:this.mtList[0].id});
+                }
+
+
+            }else{
+                if(this.listHcyAdd[this.mtList[0].qsrId] != undefined){
+
+                    delete this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'];
+                }
+
+            }
+
+        }
+
+
+
+
+        this.mtList[0].qsrId = e;
+        console.log(this.mtList[0].id);
+
+        if(this.mtList[0].qsrId.toString().length ==32){
+            if(this.mtList[0].id.toString().length == 32){
+                this.update_mtjbxx_data.push(this.mtList[0]);
+            }else{
+                this.add_mtjbxx_data.push(this.mtList[0]);
+            }
+        }else{
+            this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'] = this.mtList[0];
+
+
+
+        }
+
+
+        //将户成员基本信息带到房屋基本信息中
+        this.childInfo2.forEach((value,index,arr)=>{
+
+            if(value['id'] == this.mtList[0]['qsrId']){
+                for(var i in value){
+                    for(var ii in this.mtList[0]){
+                        if(i == ii && (i == 'szxzqhdm'  || i == 'xzqhmc' || i == 'dcfwdm' || i == 'dcfwmc' || i == 'zydlmc' || i == 'zydldm')){
+
+                            this.mtList[0][ii] = value[i];
+                        }
+                    }
+                }
+                if(value['szxzqhdm'] !=null){
+                    this.mtList[0]['swszxzqhdm'] = value['szxzqhdm'];
+                    this.mtList[0]['localitydesc'] = value['xzqhmc'];
+                }
+
+            }
+
+
+        });
+
+
+
+
+        console.log(this.mtList[0]);
+        console.log(this.mtjbxx_data);
+
+
+        console.log(this.add_mtjbxx_data);
+        console.log(this.update_mtjbxx_data);
+        console.log(this.listHcyAdd);
+
+
+    }
+
+//建成日期
+    eventJgrq(e){
+
+        this.mtList[0].jcrq = e;
+
+    }
+
+
+    //  洪水设计标准
+    showsjBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowsj= this.isShowsj? false : true;
+            if (!this.sjTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=SJHSBZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.sjTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=SJHSBZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.sjTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildsj(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowsj = false;
+        this.mtList[0].sjhsbzmc = event.mc;
+        this.mtList[0].sjhsbzdm = event.dm;
+
+    }
+
+
+}
+
+
+export class mt{
+
+  constructor(
+
+        public id,
+        public  zgbm,
+          public mtytmc,
+          public tz,
+          public ssgcdm,
+        public zdswyxgc,
+        public jcrq,
+        public ljdldjdm,
+        public nttl,
+        public mtytdm,
+        public yxgldw,
+        public ydcd,
+        public mc,
+        public ydkd,
+        public dmbh,
+        public qsrId,
+        public mtlbmc,
+        public ssxtdm,
+        public zhgxsj,
+        public swszxzqhdm,
+        public mtlbdm,
+        public szgc,
+        public zxjx,
+        public ljdldjmc,
+        public szwz,
+        public gkmtdjmc,
+        public jgclmc,
+        public qsrmc,
+        public ljdlmc,
+        public cjsj,
+        public mthc,
+        public localitydesc,
+        public ymyxcdmc,
+        public jgcldm,
+        public zydldm,
+        public bz,
+        public zydlmc,
+        public dcfwdm,
+        public dcfwmc,
+        public ymyxcddm,
+        public gm,
+        public sjhsbzmc,
+        public kbnl,
+        public xsmc,
+        public jddm,
+        public sfzh,
+        public sjhsbzdm,
+        public gdzc,
+        public zgswyxgc,
+        public xsdm,
+        public gkmtdjdm,
+        public zdmj
+
+
+
+
+  ){
+
   }
 
 }

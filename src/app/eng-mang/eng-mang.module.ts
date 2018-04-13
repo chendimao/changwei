@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {CalcPipe} from "../pipe/calc.pipe";
-
 import {
     TreeTableModule,
     TabViewModule,

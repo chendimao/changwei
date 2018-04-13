@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {DataProcessingService} from "../../../../../../service/dataProcessing.service";
+import {InputChangeService} from "../../../../../../service/input-change.service";
+import {HttpService} from "../../../../../../service/http-service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-gljbxx',
@@ -6,10 +10,596 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['../children.css']
 })
 export class GljbxxComponent implements OnInit {
+    public qshflId; //  权属户信息
+    public type: string; //  类型：查看、新增、修改
+    public childInfo: any;
+    public childInfo2: any;
+    public isShowArea: boolean = false;
+    public name_active_key; //  当前选中的下标
+    public del_gljbxx_data; //  删除的数据
+    public init_gljbxx_data; //  初始化的数据
+    public update_gljbxx_data; //  对比后修改的数据
+    public add_gljbxx_data ; //  新增的数据
+    public glList:any ;
+    public  zydlLeft: any;
+    public  zydlTop: any;
+    public dcfw_list: any;// 调查范围
+    public dcfw_list_is_show = 0;// 调查范围显示
+    public dcfw_mc;
+    public hbdm_list: any;// 户别代码 列表
+    public ssxzqhdm: any; //  所属行政区划代码
+    public ssgcdm: any; //  所属行政区划代码
+    public  isShowZydl: any;
+    public  isShowDcfw: any;
+    public gljbxx2_data:any;
+    public  dcfwTableList: any;
+    public  dcfwTreeList: any;
+    public  zydlTableList: any;
+    public  zydlTreeList: any;
+    public isDisabled = false;
+    public listHcyAdd;
 
-  constructor() { }
+    public szxzqugldm: any;
+    public zzcModel: boolean;
+    public selectedType: number;
+    public tableSelecValue: any;
+    public selectPersonList = new Array();
 
-  ngOnInit() {
-  }
+
+    @ViewChild('forms') forms: NgForm;
+    public isShowgkdj;
+    public isShowlsgx;
+    public gkdjTreeList: any;
+    public gkdjTableList: any;
+    public sjTreeList;
+    public ymTreeList;
+    public isShowjg;
+    public jgTreeList;
+    public isShowym;
+    public ymTableList;
+    public sjTableList;
+    public isShowsj;
+    public jgTableList;
+    public isShowgl;
+    public glTreeList;
+    public glTableList;
+
+    public lsgxTableList;
+    public lsgxTreeList;
+
+
+    constructor(public HttpService:HttpService,public DataProcessing:DataProcessingService,public InputChange: InputChangeService) { }
+
+    ngAfterViewInit(): void {
+
+        //if(this.glList[0].length>0){
+        // 订阅表单值改变事件
+        this.forms.valueChanges.subscribe( data => {
+
+
+            let res = this.InputChange.get_select_change(this.glList[0],0,this.init_gljbxx_data,this.update_gljbxx_data,this.add_gljbxx_data );
+
+            this.update_gljbxx_data = res['update_data'];
+
+
+            console.log(this.update_gljbxx_data);
+            console.log(this.add_gljbxx_data);
+
+            for( let i in this.add_gljbxx_data){
+                if(i != '0'){
+                    delete this.add_gljbxx_data[i];
+                }
+            }
+        });
+
+        // }
+
+    }
+
+
+    ngOnInit() {
+
+
+
+        //  所属行政区划代码和工程代码
+        if (this.type == 'add') {
+            this.ssgcdm = this.qshflId.ssgcdm;
+            this.ssxzqhdm = this.qshflId.ssxzqhdm;
+
+        } else if (this.type == 'rew') {
+
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+        }else{
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+            this.isDisabled = true;
+        }
+        console.log(this.szxzqugldm);
+
+        console.log(this.gljbxx2_data['returnObject']);
+        this.glList = this.gljbxx2_data['returnObject'];
+        console.log(this.childInfo);
+        if(this.glList.length<=0){
+            this.glList[0] = (new gl(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
+
+        }
+
+        console.log(this.ssxzqhdm);
+
+        this.selectPersonList.push({label:'选择户成员',value:-1});
+
+        if(this.childInfo2.length>0){
+
+            this.childInfo2.forEach((value,index,arr)=>{
+
+                this.selectPersonList.push({label:value['mc'],value:value['id']});
+
+            });
+        }
+
+        console.log(this.glList[0].cd);
+
+        console.log(this.gljbxx2_data);
+
+    }
+
+    // 所在行政区域
+    showAreaBlock(): void {
+        console.log(this.type);
+        if (this.type != "view") {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
+    }
+
+    getChildSzxztl(e) {
+        console.log(e);
+        if (e) {
+            this.zzcModel = false;
+
+            this.glList[0].localitydesc = e.qc;
+            this.glList[0].swszxzqhdm = e.dm;
+            this.isShowArea = false;
+        } else {
+            this.isShowArea = false;
+            this.zzcModel = false;
+        }
+    }
+
+
+
+    //删除
+    deleteSlect(){
+
+        if(this.glList[0].qsrId.toString().length == 32){
+
+
+            if(this.glList[0].id.toString().length == 32){
+                this.del_gljbxx_data.push({id:this.glList[0].id});
+
+                if(this.update_gljbxx_data.length>0){
+                    this.update_gljbxx_data.splice(0,1);
+                }
+
+            }else{
+                if(this.add_gljbxx_data.length>0){
+                    this.add_gljbxx_data.splice(0,1);
+                }
+            }
+        }else{
+            if(this.listHcyAdd[this.glList[0].qsrId] != undefined) {
+
+                delete this.listHcyAdd[this.glList[0].qsrId]['listglAdd'];
+            }
+        }
+        this.glList[0] = (new gl(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
+    }
+
+
+
+    //  调查范围显示下拉
+    showDcfwBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowDcfw = this.isShowDcfw ? false : true;
+            if (!this.dcfwTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_GL&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.dcfwTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildDcfw(event) {
+        console.log(event);
+        this.zzcModel = false;
+        console.log(this.name_active_key);
+        this.isShowDcfw = false;
+
+        console.log(this.selectedType);
+        this.glList[0].dcfwdm = event.dm;
+        this.glList[0].dcfwmc = event.mc;
+
+
+    }
+
+
+    //  路面材料
+    showglBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowgl= this.isShowgl ? false : true;
+            if (!this.glTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=LMCLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.glTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_gl&column=LMCLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.glTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildgl(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowgl = false;
+        this.glList[0].lmclmc = event.mc;
+        this.glList[0].lmcldm = event.dm;
+
+    }
+
+
+    //  等级
+    showgkdjBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowgkdj= this.isShowgkdj ? false : true;
+            if (!this.gkdjTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=GLDJDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.gkdjTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=GLDJDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.gkdjTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+    getChildgllsgx(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowlsgx = false;
+        this.glList[0].gllsgxmc = event.mc;
+        this.glList[0].gllsgxdm= event.dm;
+
+    }
+
+    //  隶属关系
+    showlsgxBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowlsgx= this.isShowlsgx ? false : true;
+            if (!this.gkdjTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=GLLSGXDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.lsgxTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=GLLSGXDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.lsgxTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+    getChildgkdj(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowgkdj = false;
+        this.glList[0].gldjmc = event.mc;
+        this.glList[0].gldjdm= event.dm;
+
+    }
+
+    //权属人切换
+    eventQsr(e){
+
+        console.log(this.glList[0]);
+        if(this.glList[0].qsrId){
+            if(this.glList[0].qsrId.toString().length == 32){
+                if(this.add_gljbxx_data.length>0){
+                    this.add_gljbxx_data.forEach((value,index,arr)=>{
+                        if(value['id'] == this.glList[0].id){
+                            delete this.add_gljbxx_data[index];
+                        }
+
+                    });
+                }
+
+                if(this.update_gljbxx_data.length>0){
+                    this.update_gljbxx_data.forEach((value,index,arr)=>{
+                        if(value['id'] == this.glList[0].id){
+                            delete this.update_gljbxx_data[index];
+                        }
+
+                    });
+                }
+
+
+            }else{
+                if(this.listHcyAdd[this.glList[0].qsrId] != undefined){
+
+                    delete this.listHcyAdd[this.glList[0].qsrId]['listglAdd'];
+                }
+
+            }
+
+        }
+
+
+
+
+        this.glList[0].qsrId = e;
+        console.log(this.glList[0].id);
+
+        if(this.glList[0].qsrId.toString().length ==32){
+            if(this.glList[0].id.toString().length == 32){
+                this.update_gljbxx_data[0] = this.glList[0];
+            }else{
+                this.add_gljbxx_data[0] = this.glList[0];
+            }
+        }else{
+            this.listHcyAdd[this.glList[0].qsrId]['listglAdd'] = this.glList[0];
+
+
+
+        }
+
+
+        //将户成员基本信息带到房屋基本信息中
+        this.childInfo2.forEach((value,index,arr)=>{
+
+            if(value['id'] == this.glList[0]['qsrId']){
+                for(var i in value){
+                   // console.log(i);
+                    for(var ii in this.glList[0]){
+                        if(i == ii && (i == 'szxzqhdm'  || i == 'xzqhmc' || i == 'dcfwdm' || i == 'dcfwmc' || i == 'zydlmc' || i == 'zydldm')){
+                            this.glList[0][ii] = value[i];
+                          //  console.log(this.glList[0][ii]);
+                        }
+                    }
+                }
+                if(value['szxzqhdm'] !=null){
+                    this.glList[0]['swszxzqhdm'] = value['szxzqhdm'];
+                    this.glList[0]['localitydesc'] = value['xzqhmc'];
+                }
+
+            }
+
+            console.log(this.glList);
+        });
+
+
+
+
+        console.log(this.glList[0]);
+        console.log(this.gljbxx2_data);
+
+
+        console.log(this.add_gljbxx_data);
+        console.log(this.update_gljbxx_data);
+        console.log(this.listHcyAdd);
+
+
+    }
+
+    //建成日期
+    eventJgrq(e){
+
+        this.glList[0].jcrq = e;
+
+        let res = this.InputChange.get_select_change(this.glList[0],0,this.init_gljbxx_data,this.update_gljbxx_data,this.add_gljbxx_data );
+
+        this.update_gljbxx_data = res['update_data'];
+
+    }
+
+    //投建日期
+    eventTyrq(e){
+
+        this.glList[0].tyrq= e;
+
+        let res = this.InputChange.get_select_change(this.glList[0],0,this.init_gljbxx_data,this.update_gljbxx_data,this.add_gljbxx_data );
+
+        this.update_gljbxx_data = res['update_data'];
+
+    }
+
+    //  使用性质
+    showjgBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowjg= this.isShowjg? false : true;
+            if (!this.jgTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_gl&column=SYXZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.jgTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_gl&column=SYXZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.jgTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildjg(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowjg = false;
+        this.glList[0].syxzmc = event.mc;
+        this.glList[0].syxzdm = event.dm;
+
+    }
+
+
+
+
+
+
+    //  淹没程度
+    showymBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowym= this.isShowym? false : true;
+            if (!this.ymTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GL&column=YMYXCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.ymTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_GL&column=YMYXCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.ymTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildym(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowym = false;
+        this.glList[0].ymyxcdmc = event.mc;
+        this.glList[0].ymyxcddm = event.dm;
+
+    }
+
+    //  洪水设计标准
+    showsjBlock(index) {
+        this.zzcModel = true;
+
+        if (this.type != "view") {
+            this.isShowsj= this.isShowsj? false : true;
+            if (!this.sjTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GK&column=SJHSBZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.sjTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_GK&column=SJHSBZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.sjTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+
+
+    getChildsj(event) {
+        console.log(event);
+        this.zzcModel = false;
+        this.isShowsj = false;
+        this.glList[0].sjhsbzmc = event.mc;
+        this.glList[0].sjhsbzdm = event.dm;
+
+    }
+
+
+
+
+}
+
+export class gl{
+
+  constructor(
+    public id ,
+    public ssxtdm ,
+    public ssgcdm ,
+    public jddm,
+    public dcfwdm,
+    public zydldm,
+    public qsrId,
+    public swszxzqhdm,
+    public gldjdm,
+    public glbh,
+    public mc,
+    public cd,
+    public zdmj,
+    public gllsgxdm,
+    public zgbm,
+    public yxgldw,
+    public qsdd,
+    public jsdd,
+    public jcrq,
+    public mglzj,
+    public dmbh,
+    public ljzdgc,
+    public ljzggc,
+    public lmzdgc,
+    public lmzggc,
+    public lmkd,
+    public lmcldm,
+    public jtll,
+    public sjhsbzdm,
+    public ymyxcddm,
+    public ymqsdd,
+    public ymjsdd,
+    public ymljkd,
+    public ymlmkd,
+    public ymxlcd,
+    public ymsjqhzs,
+    public bz,
+    public cjsj,
+    public zhgxsj,
+    public qsrmc,
+    public localitydesc,
+    public zydlmc,
+    public dcfwmc,
+    public gldjmc,
+    public gllsgxmc,
+    public lmclmc,
+    public sjhsbzmc,
+    public ymyxcdmc
+
+  ){}
+
 
 }

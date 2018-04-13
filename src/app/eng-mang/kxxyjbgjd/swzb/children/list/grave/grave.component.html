@@ -1,48 +1,53 @@
 <header>
     <div>
-        <p-selectButton [options]="types" [(ngModel)]="selectedType"
-                        (click)="selectedTypea()"></p-selectButton>
-        <em>共 <span>3</span>人</em>
+        <p-selectButton [disabled]="isDisabled"  [options]="types" [(ngModel)]="selectedType"
+                        (click)="selectedTypea1()"></p-selectButton>
+        <em>共 <span>{{hcy_count}}</span>人</em>
     </div>
 </header>
 <div *ngIf="selectedType==1" class="clearfix">
-    <div class="grave_left fl">
+    <div class="left fl">
+
         <table class="table">
             <thead>
             <tr>
                 <td>序号</td>
-                <td>与墓主关系</td>
                 <td>墓主姓名</td>
+                <td>与墓主关系</td>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>父亲</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>母亲</td>
-                <td></td>
-            </tr>
+            <tr *ngFor="let graveSign of tableList;let i=index" (click)="selectgrave(graveSign,i)" #defaultgrave
+                [ngClass]="{'active':graveSign==hcy}">
+                <td>{{i+1}}</td>
+                <td>{{graveSign.mz}}</td>
+                <td>
+                    <span  *ngFor="let i of ymzgx_list;">
 
+                    {{i['value'] == graveSign.ymzgx?i['label']:''}}
+                    </span>
+                </td>
+            </tr>
             </tbody>
+
         </table>
     </div>
-    <div class="right grave_right fl">
+    <div class="right person_right fl">
         <div class="header clearfix rl">
             <div class="fl headerTitle">坟墓详情</div>
-            <ul class="fr  btnGrop">
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back.png"
-                                                                       alt=""></span>上一条
+            <ul class="fr  btnGrop" *ngIf="!isDisabled">
+                <li class="fl" (click)="up()"><span class="img"><img src="assets/img/icon/arrow-back.png"
+                                                                     alt=""></span>上一条
                 </li>
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back .png"
+                <li class="fl" (click)="down()"><span class="img"><img src="assets/img/icon/arrow-back .png"
                                                                        alt=""></span>下一条
                 </li>
-                <li class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>增加</li>
-                <li class="fl" (click)="delEng()"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                         alt=""></span>修改
+
+                <li class="fl" (click)="addgrave()"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                            alt=""></span>增加
+                </li>
+                <li class="fl" (click)="delgrave()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                            alt=""></span>删除
                 </li>
                 <li class="fl">
                     <div class="selectLi rl">
@@ -56,25 +61,35 @@
                 </li>
             </ul>
         </div>
-        <div class="box_botton clearfix">
+        <form #person="ngForm">
+        <div *ngIf="tableList.length>0 && tableList[0]"  class="box_botton clearfix">
+
             <div class="inputBox  rl fl">
                 <div class="input_left fl importent">
-                    产权人
+                    权属人
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <app-select-list [disabled]="isDisabled"  [width]="0" [values]="selectPersonList"
+                                     (SelectModel)="eventQsr($event)" [selectValue]="hcy.qsrId"
+                                     ngDefaultControl></app-select-list>
+
                 </div>
 
+
             </div>
-            <div class="inputBox  rl fl areaBox rl">
+
+            <div class="inputBox  rl fl areaBox">
                 <div class="input_left fl importent">
                     所在行政区划
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" [(ngModel)]="area">
-                    <span class="xiala" (click)="showAreaBlock()"></span>
-                    <app-area-select class="areaCommpont" [display]="isShowArea"
-                                     (childEvent)="getChildEvent($event)"></app-area-select>
+                    <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.localitydesc" name="szxzqhdm"
+                           (click)="showAreaBlock()" readonly="readonly">
+                    <i class="xiala" (click)="showAreaBlock()"></i>
+                    <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                                     [display]="isShowArea"
+                                     (childEvent)="getChildSzxzqh($event)"></app-area-select>
+
                 </div>
 
             </div>
@@ -83,8 +98,13 @@
                     专业大类
                 </div>
                 <div class="input_right fl">
-                    <app-select-list [width]="0" [values]="selectListHzgx"
-                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
+                    <!--<app-select-list [width]="0" [values]="zydl_list"-->
+                    <!--(SelectModel)="eventZydl($event)" [selectValue]="hcy.zydldm"></app-select-list>-->
+                    <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.zydlmc" name="zydldm"
+                           (click)="showZydlBlock()" readonly="readonly">
+                    <i class="xiala" (click)="showZydlBlock()"></i>
+                    <app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"
+                                       [treeList]="zydlTreeList" [tableList]="zydlTableList"></app-sec-type-list>
                 </div>
 
             </div>
@@ -93,9 +113,15 @@
                     调查范围
                 </div>
                 <div class="input_right fl">
-                    <app-select-list [width]="0" [values]="selectListHzgx"
-                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
+                    <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.dcfwmc" name="dcfwdm"
+                           (click)="showDcfwBlock()" readonly="readonly">
+                    <i class="xiala" (click)="showDcfwBlock()"></i>
+                    <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                                       [isShow]="isShowDcfw"
+                                       [tableList]="dcfwTableList"></app-sec-type-list>
+
                 </div>
+
 
             </div>
             <div class="inputBox  rl fl">
@@ -103,18 +129,41 @@
                     数量
                 </div>
                 <div class="input_right fl">
-                    <app-select-list [width]="0" [values]="selectListHzgx"
-                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
+                    <input type="number" class="inputH" name="sl" [(ngModel)]="hcy.sl" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
+
+            <div class="inputBox  rl fl">
+                <div class="input_left fl">
+                    墓主姓名
+                </div>
+                <div class="input_right fl">
+                    <input type="text" class="inputH" name="mc" [(ngModel)]="hcy.mz" (ngModelChange)="tableChange()">
+
+                </div>
+
+            </div>
+
+
             <div class="inputBox  rl fl">
                 <div class="input_left fl">
                     与墓主关系
                 </div>
                 <div class="input_right fl">
-                    <app-select-list [width]="0" [values]="selectListHzgx"
-                                     (SelectModel)="getChildEvent1($event)"></app-select-list>
+                    <app-select-list [width]="0"  [selectValue]="hcy.ymzgx" [values]="ymzgx_list"
+                                     (SelectModel)="eventYmzgx($event)"></app-select-list>
+                </div>
+
+            </div>
+
+            <div class="inputBox  rl fl">
+                <div class="input_left fl">
+                    坟墓类别
+                </div>
+                <div class="input_right fl">
+                    <app-select-list [width]="0"  [selectValue]="hcy.fmlbdm" [values]="fmlb_list"
+                                     (SelectModel)="eventFmlb($event)"></app-select-list>
                 </div>
 
             </div>
@@ -123,7 +172,7 @@
                     坟墓编号
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="fmbh" [(ngModel)]="hcy.fmbh" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -132,16 +181,16 @@
                     所在位置
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="szwz" [(ngModel)]="hcy.szwz" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
             <div class="inputBox  rl fl">
                 <div class="input_left fl ">
-                    图幅号
+                    所在图幅
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" [(ngModel)]="hcy.sztf" name="sztf" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -150,7 +199,7 @@
                     图斑号
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" [(ngModel)]="hcy.sztb" name="sztb" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -159,7 +208,7 @@
                     所在高程
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="szgc" [(ngModel)]="hcy.szgc" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -168,7 +217,7 @@
                     断面编号
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="dmbh" [(ngModel)]="hcy.dmbh" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -178,7 +227,7 @@
                     建成日期
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="jcrq" [(ngModel)]="hcy.jcrq" value="">
                 </div>
 
             </div>
@@ -187,7 +236,7 @@
                     规格尺寸
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" name="ggcc" [(ngModel)]="hcy.ggcc" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -196,7 +245,7 @@
                     调查流水号
                 </div>
                 <div class="input_right fl">
-                    <input type="text" class="inputH" value="">
+                    <input type="text" class="inputH" value="" name="dclsh" [(ngModel)]="hcy.dclsh" (ngModelChange)="tableChange()">
                 </div>
 
             </div>
@@ -209,77 +258,343 @@
                 <div class="textareaBeizhu">
                     <span>备注 </span>
                 </div>
-                <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
+                <textarea name="bz" id="" cols="30" rows="10" [(ngModel)]="hcy.bz" class="textarea" (ngModelChange)="tableChange()"></textarea>
             </div>
+
+        </div>
+
+        </form>
+
+    </div>
+</div>
+<div *ngIf="selectedType==2" (scroll)="onScroll($event)">
+    <div style="width:100%;height: 100%;margin-top: 15px">
+        <p-dataTable [value]="tableList" scrollable="true" [(selection)]="tableSelecValue"
+                     selectionMode="single" scrollHeight="500px" [editable]="true" (onNodeSelect)="nodeSelect($event)"
+
+                     class="table" frozenWidth="400px" unfrozenWidth="calc(100% - 400px)" [frozenValue]="frozenCars"
+                     bodyStyle="{'text-align':'center'}">
+            <p-column field="fmbh" header="坟墓编号" frozen="true" [editable]="true"  [style]="{'width':'200px','height':'44px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.fmbh" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.fmbh}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.fmbh}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="mz" header="墓主姓名" frozen="true" [editable]="true">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.mz" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.mz}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.mz}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="qsrmc" header="权属人" [style]="{'width':'150px','height':'44px'}" >
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <app-select-list [width]="0" [values]="selectPersonList" [selectValue]="node.qsrId"
+                                             (SelectModel)="getChildSelect($event,'qsrId')"></app-select-list>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.qsrmc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.qsrmc}}
+                    </div>
+                  </ng-template>
+            </p-column>
+            <!--<p-column field="cym" header="曾用名"-->
+                      <!--[editable]="true">-->
+                <!--<ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">-->
+                    <!--<div *ngIf="tableSelecValue">-->
+                        <!--<div *ngIf="tableSelecValue.id==node.id">-->
+                            <!--<app-select-list [width]="0" [values]="hbdm_list" [selectValue]="node.hbdm"-->
+                                             <!--(SelectModel)="getChildSelect($event,'hbdm')"></app-select-list>-->
+                        <!--</div>-->
+                        <!--<div *ngIf="tableSelecValue.id!=node.id">-->
+                            <!--{{node.cym}}-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div *ngIf="!tableSelecValue">-->
+                        <!--{{node.cym}}-->
+                    <!--</div>-->
+
+                <!--</ng-template>-->
+            <!--</p-column>-->
+
+            <p-column field="localitydesc" [style]="{'width':'150px','height':'44px','overflow':'hidden'}">
+                <ng-template pTemplate="header">
+                    <span class="importent">所在行政区划</span>
+                </ng-template>
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <div class="tableClass"
+                                 (click)="showSzxzqhBlock(i)" id="szxzqh" title="{{node.xzqhmc}}">{{node.localitydesc}}&nbsp;
+                            </div>
+
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+
+                            {{node.localitydesc}}
+                        </div>
+                    </div>
+
+                    <div *ngIf="!tableSelecValue">
+                        {{node.localitydesc}}
+                    </div>
+
+
+                </ng-template>
+            </p-column>
+
+            <p-column field="zydlmc" header="专业大类" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div (click)="showZydlBlock(i)" class="tableClass"
+                         id="zydl" title="{{node.zydlmc}}">{{node.zydlmc}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="dcfwmc" header="调查范围" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div (click)="showDcfwBlock(i)" class="tableClass"
+                         id="dcfw" title="{{node.dcfwmc}}">{{node.dcfwmc}}
+                    </div>
+                </ng-template>
+
+            </p-column>
+            <p-column field="sl" header=" 数量" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sl" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.sl}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.sl}}
+                    </div>
+                </ng-template>
+            </p-column>
+
+
+            <p-column field="ymzgxmc" header="与墓主关系" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <app-select-list [width]="0" [values]="ymzgx_list" [selectValue]="node.ymzgxmc"
+                                             (SelectModel)="getChildSelect($event,'ymzgxmc')"></app-select-list>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.ymzgxmc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.ymzgxmc}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="fmlbmc" header="坟墓类别" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <app-select-list [width]="0" [values]="fmlb_list" [selectValue]="node.fmlbdm"
+                                             (SelectModel)="getChildSelect($event,'fmlbdm')"></app-select-list>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.fmlbmc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.fmlbmc}}
+                    </div>
+                </ng-template>
+            </p-column>
+
+
+            <p-column field="szwz" header="所在位置" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.szwz" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.szwz}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.szwz}}
+                    </div>
+                </ng-template>
+            </p-column>
+
+            <p-column field="sztf" header="所在图幅" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sztf" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.sztf}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.sztf}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="sztb" header="图斑号" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sztb" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.sztb}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.sztb}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="szgc" header="所在高程" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.szgc" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.szgc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.szgc}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="dmbh" header="断面编号" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.dmbh" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.dmbh}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.dmbh}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="jcrq" header="建成日期" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <div class="tableClass" (click)="showJcrqBlock(i)"
+                                 id="jcrq" title="{{node.csrq | date:'yyyy-MM-dd'}}">{{node.jcrq | date:"yyyy-MM-dd"}}&nbsp;
+                            </div>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.jcrq | date:"yyyy-MM-dd"}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.jcrq | date:"yyyy-MM-dd"}}
+                    </div>
+                </ng-template>
+
+            </p-column>
+
+            <p-column field="ggcc" header="规格尺寸" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.ggcc" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.ggcc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.ggcc}}
+                    </div>
+                </ng-template>
+            </p-column>
+
+            <p-column field="dclsh" header="调查流水号" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.dclsh" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.dclsh}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.dclsh}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="bz" header="备注" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.bz" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.bz}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.bz}}
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+
+        <div *ngIf="zzcModel" (click)="closeZzc()" class="ui-widget-overlay ui-dialog-mask"></div>
+        <app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="zydlTableList" [treeList]="zydlTreeList">
+        </app-sec-type-list>
+        <app-sec-type-list (SelectModel)="getChildDcfw($event)" [isShow]="isShowDcfw"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="dcfwTableList" [treeList]="dcfwTreeList">
+        </app-sec-type-list>
+
+
+        <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                         [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                         [display]="isShowArea" (childEvent)="getChildSzxzqh($event)"></app-area-select>
+
+        <div *ngIf="isShowJcrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
+            <!--建成日期-->
+            <!--<p-calendar [inline]="true" [locale]="ch" (onSelect)="jcrqClickTime(value)"-->
+                        <!--[(ngModel)]="value"></p-calendar>-->
+
         </div>
     </div>
-</div>
-<div *ngIf="selectedType==2">
-    <div style="width100%;overflow auto">
-
-        <table class="table table1">
-            <thead>
-            <tr>
-                <td>名称</td>
-                <td>产权人</td>
-                <td>身份证号码</td>
-                <td>所在行政区划分</td>
-                <td>户别</td>
-                <td>专业大类</td>
-                <td>调查范围</td>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
 
 </div>
-

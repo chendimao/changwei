@@ -1,11 +1,13 @@
-<div [@flyIn] style="height: 100%;" >
+<div [@flyIn] style="height: 100%;">
     <app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
     <div class="showBox fl">
         <div *ngIf="isShowRight">
             <header>
                 <div class="title">
                     <ul class="clearfix">
-                        <li class="fl active">   <app-breadcrumb [items]="breadcrumb"></app-breadcrumb></li>
+                        <li class="fl active">
+                            <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+                        </li>
                         <!--<li class="fl">非专项部分</li>-->
                     </ul>
                 </div>
@@ -34,12 +36,13 @@
             <!--</div>-->
             <div class="swzb">
                 <div class="header">
-                   可行性阶段报告表
+                    可行性阶段报告表
                 </div>
                 <div class="tableCom">
                     <div class="searchAll clearfix">
                         <div class="fl rl input1">
-                            <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput" placeholder="户主名称，家庭成员名称，编号">
+                            <input type="text" (keydown)="searchList($event,key)" [(ngModel)]="key" class="searchInput"
+                                   placeholder="户主名称，家庭成员名称，编号">
                             <span class="btnClick" (click)="searchList('click',key)"></span>
                         </div>
                         <div class="fl moreSearch" (click)="openModal('query')">
@@ -56,11 +59,17 @@
                                     src="assets/img/icon/browse_fill.png"
                                     alt=""></span>查看
                             </li>
-                            <li class="fl" (click)="openModal('add')"><span class="img"><img src="assets/img/icon/jiahao.png"
-                                                                                    alt=""></span>增加
+                            <li class="fl" (click)="openModal('add')"><span class="img"><img
+                                    src="assets/img/icon/jiahao.png"
+                                    alt=""></span>增加
                             </li>
-                            <li class="fl" (click)="openModal('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                                    alt=""></span>修改
+                            <li class="fl" (click)="openModal('rew')"><span class="img"><img
+                                    src="assets/img/icon/brush_fill.png"
+                                    alt=""></span>修改
+                            </li>
+                            <li class="fl" (click)="delSelect()"><span class="img"><img
+                                    src="assets/img/icon/clear.png"
+                                    alt=""></span>删除
                             </li>
                             <li class=" rl selectLi">
                                 <div>
@@ -75,16 +84,17 @@
                         </ul>
                     </div>
                     <div class="tableBox">
-                        <p-dataTable [value]="persionList" class="table"  responsive="true" [rows]="10" (onRowClick)="onRowSelect($event)"
-                                     [emptyMessage]="'查询数据为空'"     scrollable="true"    resizableColumns="true" selectionMode="single">
-                            <p-column field="dabh" header="编号" sortable="true"></p-column>
-                            <p-column field="hzxm" header="户主名称" ></p-column>
+                        <p-dataTable [value]="persionList" class="table" (onRowClick)="onRowSelect($event)"
+                                     [emptyMessage]="'查询数据为空'" scrollable="true" resizableColumns="true"
+                                     selectionMode="single">
+                            <p-column field="hzxm" header="户主名称" [style]="{'width':'75px'}"></p-column>
+                            <p-column field="dabh" header="编号" sortable="true" [style]="{'width':'75px'}"></p-column>
                             <p-column field="xzqhmc" header="所在行政区域">
                                 <ng-template let-col let-car="rowData" pTemplate="body">
                                     <span title="{{car[col.field]}}">{{car[col.field]}}</span>
                                 </ng-template>
                             </p-column>
-                            <p-column field="zydlmc" header="专业大类"></p-column>
+                            <p-column field="zydlmc" header="专业大类" [style]="{'width':'75px'}"></p-column>
                             <p-column field="dcfwmc" header="调查范围"></p-column>
                             <p-column field="sfkgh" header="是否为空挂户">
                                 <ng-template let-col let-car="rowData" pTemplate="body">
@@ -97,17 +107,16 @@
                                 </ng-template>
                             </p-column>
                             <p-column field="bz" header="备注"></p-column>
-                    </p-dataTable>
+                        </p-dataTable>
                         <div class="foot">
-                            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" (pageSelect)="queryList($event)"></app-paginator>
+                            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage"
+                                           (pageSelect)="queryList($event)"></app-paginator>
                         </div>
                     </div>
                 </div>
 
 
             </div>
-
-
 
 
             <!--附件查看-->
@@ -118,7 +127,7 @@
         </div>
 
         <div *ngIf="defaultShow">
-            <app-waring [msg]="'waring'"></app-waring>
+            <app-waring [msg]="'请选择行政区划'"></app-waring>
         </div>
     </div>
 </div>

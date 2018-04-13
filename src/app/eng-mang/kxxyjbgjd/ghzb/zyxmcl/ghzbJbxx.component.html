@@ -1,0 +1,63 @@
+<div class="containerEng">
+
+    <header>
+        <div class="title">
+            <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+        </div>
+    </header>
+    <div class="engBody">
+        <div class="tableEng">
+            可行性研究报告阶段专业项目公路迁复建信息
+        </div>
+        <div class="clearfix">
+            <div class="fl searchDiv">
+                <input type="text" class="searchInput" placeholder="名称，等级">
+            </div>
+            <div class="btnGrop fr">
+                <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
+                <div class="fl" (click)="openModal()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                             alt=""></span>编辑
+                </div>
+                <div class="fl"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
+                <div class="fl"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</div>
+            </div>
+        </div>
+        <div class="body clearfix">
+            <p-treeTable [value]="sourceTreeTable" [(selection)]="selectedFiles2"
+                         (onNodeSelect)="nodeSelect($event)"
+                         [style]="{'margin-top':'15px','border':'1px solid #cccccc'}" #pTree>
+                <p-column field="zdxmc" header="名称">
+                    <ng-template let-col let-node="rowData" pTemplate="body">
+                                <span [ngStyle]="{'display':node.isDisplayCheck?'inline':'none'}">
+                                    <p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"
+                                                [(ngModel)]="node.select" [disabled]="disabled==='view'"
+                                                (onChange)="checkbox(node,node.select)">
+                                    </p-checkbox>
+                                </span>
+                        <span [ngStyle]="{'display':node.isDisplayCheck?'none':'inline'}">{{node.data.zdxmc}}</span>
+
+                    </ng-template>
+                </p-column>
+                <p-column field="ssxtdm" header="代码">
+                    <!--<ng-template let-col let-car="rowData" pTemplate="body" >-->
+                    <!--<span title="标题">{{car[col.field]}}</span>-->
+                    <!--</ng-template>-->
+                </p-column>
+                <p-column field="jldwId" header="计量单位">
+                    <ng-template let-col let-node="rowData" pTemplate="body">
+                        <div *ngFor="let i of jldwList">
+                            <div *ngIf="i.id==node.data.jldwId">{{i.mc}}</div>
+                        </div>
+                    </ng-template>
+                </p-column>
+                <p-column field="xh" header="序号"></p-column>
+            </p-treeTable>
+        </div>
+        <div class="tableEng footer">
+            <p-paginator rows="10" totalRecords="100" pageLinkSize="1" templateRight></p-paginator>
+        </div>
+    </div>
+
+</div>
+
+

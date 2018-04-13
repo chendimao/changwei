@@ -1,11 +1,11 @@
-<app-treeList (childEvent)="getEvent($event)" [value]="treelist"></app-treeList>
 <div class="containerEng">
-  <div *ngIf="isShowRight">
+
 
     <header>
       <div class="title">
         <ul class="clearfix">
-          <li class="fl active">   <app-breadcrumb [items]="breadcrumb"></app-breadcrumb></li>
+          <li class="fl active">
+            <app-breadcrumb [items]="breadcrumb"></app-breadcrumb></li>
           <!--<li class="fl">非专项部分</li>-->
         </ul>
       </div>
@@ -117,11 +117,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="defaultShow">
 
-    <app-waring [msg]="waring"></app-waring>
 
-  </div>
 
 </div>

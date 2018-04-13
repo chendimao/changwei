@@ -360,11 +360,7 @@ export class EngBaseComponent implements OnInit {
 
 
     showAll(){
-        if (this.isShow1) {
-            this.isShow1 = false;
-        } else {
-            this.isShow1 = true;
-        }
+        this.isShow1=this.isShow1?false:true;
     }
 
     showMore(i) {

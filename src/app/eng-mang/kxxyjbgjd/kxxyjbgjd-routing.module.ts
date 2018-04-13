@@ -1,5 +1,3 @@
-import { ScazrkComponent } from "./ghzb/ncymaz/scazrk/scazrk.component";
-import {RoadComponent} from "./ghzb/zyxmcl/road/road.component";
 import { TzgsComponent } from "./tzgs/tzgs.component";
 
 export const KxxyjbgjdRoutingModule = [
@@ -8,17 +6,14 @@ export const KxxyjbgjdRoutingModule = [
         loadChildren: './swzb/swzb.module#SwzbModule',
     },
     {
-        path: 'ghzb/ncymaz/scazrk',
-        component: ScazrkComponent,
+        path: 'ghzb/:item/:qshflId',
+        loadChildren: './ghzb/ghzb.module#GhzbModule',
     },
     {
-        path: 'ghzb/zyxmcl/road',
-        component: RoadComponent,
+        path: 'tzgs/:item/:qshflId',
+        component: TzgsComponent
     },
-    {
-        path: 'tzgs/tzgs',
-        component: RoadComponent,
-    },
+
 
 
 ]

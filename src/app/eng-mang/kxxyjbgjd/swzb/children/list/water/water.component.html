@@ -1,156 +1,421 @@
 <div>
     <header class="clearfix">
         <div class="fl">
-            <div class="fl" *ngFor="let names of waterList" (click)="selectNmae(names)"
+            <div class="fl" *ngFor="let names of waterList;let i = index;" (click)="selectName(names,i)"
                  [ngClass]="{'active':names == name_active_data}" [innerHTML]="names.qsrmc"></div>
             <app-select-list class="fr" *ngIf="displaySelectPserson" [values]="selectPersonList"
-                             (SelectModel)="getChildEvent1($event)"></app-select-list>
+                             (SelectModel)="addwater($event)"></app-select-list>
         </div>
-        <div class="fr">
-            <div class="fl" (click)="displaySlect()"><span class="img"><img src="assets/img/icon/jiahao.png" class="img"
-                                                                            alt=""></span>新增水利水电设施
+        <div class="fr button_10" *ngIf="!isDisabled">
+            <div class="fl " (click)="displaySlect()"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                             class="img"
+                                                                             alt=""></span>{{displaySelectPserson?'取消新增':'新增水利水电设施'}}
             </div>
             <div class="fl" (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt=""
                                                                class="img"></span>删除水利水电设施
             </div>
         </div>
     </header>
-    <form #person="ngForm">
-        <div *ngIf="name_active_data">
-            <div class="home_title ">水利水电设施基本信息</div>
-            <div class="all_box clearfix">
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span class="importent">权属人</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <app-select-list [width]="0"  [values]="selectPersonList"
-                                         (SelectModel)="eventQsr($event)"    [selectValue]="name_active_data.qsrId" ngDefaultControl></app-select-list>
 
-                    </div>
-                </div>
-                <div class="inputArea rl fl langest">
-                    <div class="inputLeftSelect fl ">
-                        <span class="importent">所在行政区划</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text" class="inputH" [(ngModel)]="name_active_data.swszxzqhdm" name="szxzqhdm">
-                        <span class="xiala" (click)="showAreaBlock()"></span>
-                        <app-area-select class="areaCommpont" [display]="isShowArea"
-                                         (childEvent)="getChildEvent($event)"></app-area-select>
-                        <!--<input type="text" value="王友群">-->
-                    </div>
-                </div>
-                <!--下拉框-->
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span class="importent">专业大类</span>
-                    </div>
-                    <div class="inputRight fl">
-                        <app-select-list [width]="0" [values]="zydl_list"
-                                         (SelectModel)="eventZydl($event)" [(ngModel)]="name_active_data.zydldm"
-                                         name="zydl" [selectValue]="name_active_data.mc"
-                                         ngDefaultControl></app-select-list>
-                    </div>
-
-                </div>
-
-                <div class="inputArea  rl fl">
-                    <div class="inputLeft fl importent">
-                        调查范围
-                    </div>
-                    <div class="inputRight fl">
-                        <input type="text" class="inputH" [(ngModel)]="name_active_data.dcfwmc" name="dcfw">
-                        <i class="xiala" (click)="dcfw_show()"></i>
-                        <app-surver-area [values]="dcfw_list" [isShow]="dcfw_list_is_show"
-                                         (childEvent)="dcfw_data($event)"></app-surver-area>
-                    </div>
+    <p-panel toggleable="true" *ngIf="name_active_data" expandIcon="fa-angle-double-up"
+             collapseIcon="fa-angle-double-down">
 
 
-                </div>
-                <div class="fl group group-4 danwei">
-                    <span>总数量</span>
-                    <input type="number" name="zsl" [(ngModel)]="name_active_data.zsl">
-                    <div class="fl mianji">
-                        ㎡
-                    </div>
+        <p-header class="header_bg">
+            <div class="title" style="padding: 0;border: none;">
+                水利水电设施基本信息
+            </div>
+        </p-header>
 
-                </div>
-                <div>
+        <form #person="ngForm">
+            <div *ngIf="name_active_data">
+                <div class="all_box clearfix">
                     <div class="inputArea fl">
                         <div class="inputLeft fl">
-                            <span>是否线外</span>
+                            <span class="importent">权属人</span>
                         </div>
                         <div class="inputRight fl">
-                            <p-selectButton [options]="types" name="sfxw" [(ngModel)]="name_active_data.sfxw"
-                            ></p-selectButton>
+                            <app-select-list [disabled]="isDisabled"  [width]="0" [values]="selectPersonList"
+                                             (SelectModel)="eventQsr($event)" [selectValue]="name_active_data.qsrId"
+                                             ngDefaultControl></app-select-list>
+
                         </div>
                     </div>
-                </div>
-
-
-                <div class="clearfix beizhu ">
-                    <div class="textareaBeizhu">
-                        <span>备注 </span>
+                    <div class="inputArea rl fl langest">
+                        <div class="inputLeftSelect fl ">
+                            <span class="importent">所在行政区划</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="name_active_data.localitydesc"
+                                   name="swszxzqhdm" readonly="readonly" (click)="showAreaBlock()">
+                            <span class="xiala" (click)="showAreaBlock()"></span>
+                            <app-area-select class="areaCommpont" [display]="isShowArea" [localityCode]="szxzqugldm"
+                                             (childEvent)="getChildSzxzqh($event)"></app-area-select>
+                            <!--<input [disabled]="isDisabled" type="text" value="王友群">-->
+                        </div>
                     </div>
-                    <textarea name="bz" id="" cols="30" rows="10" class="textarea"
-                              [(ngModel)]="name_active_data.bz"></textarea>
+                    <!--下拉框-->
+                    <div class="fl inputArea  rl zydl">
+
+
+                        <div class="inputLeft fl">
+                            <span>专业大类</span>
+                        </div>
+                        <div class="inputRight fl">
+                            <input [disabled]="isDisabled"  class='inputH' type="text"
+                                   [(ngModel)]="name_active_data.zydlmc" name="zydldm" (click)="showZydlBlock()"
+                                   readonly="readonly"/>
+                            <i class="xiala" (click)="showZydlBlock()"></i>
+                            <app-sec-type-list (SelectModel)="getChildZydl($event)" [treeList]="zydlTreeList"
+                                               [isShow]="isShowZydl"
+                                               [tableList]="zydlTableList"></app-sec-type-list>
+                        </div>
+
+
+                    </div>
+                    <div class="inputArea rl fl langest">
+                        <div class="inputLeftSelect fl">
+                            <span class="importent">调查范围</span>
+                        </div>
+
+                        <div class="inputRight fl">
+                            <input [disabled]="isDisabled"  class='inputH' type="text"
+                                   [(ngModel)]="name_active_data.dcfwmc" name="dcfwmc" (click)="showDcfwBlock()"
+                                   readonly="readonly"/>
+                            <i class="xiala" (click)="showDcfwBlock()"></i>
+                            <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                                               [isShow]="isShowDcfw"
+                                               [tableList]="dcfwTableList"></app-sec-type-list>
+
+                        </div>
+
+
+                    </div>
+                    <div class="fl group group-4 danwei">
+                        <span>总数量</span>
+                        <input disabled="true" type="number" name="zsl" [(ngModel)]="jzzmj">
+                        <div class="fl mianji">
+                            ㎡
+                        </div>
+
+                    </div>
+                    <div>
+                        <div class="inputArea fl">
+                            <div class="inputLeft fl">
+                                <span>是否线外</span>
+                            </div>
+                            <div class="inputRight fl">
+                                <p-selectButton [options]="types2" [disabled]="isDisabled"
+                                                [(ngModel)]="sfxw" name="sfxwValue"
+                                                (click)="selectedTypea2(sfxw)"></p-selectButton>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix beizhu ">
+                        <div class="textareaBeizhu">
+                            <span>备注 </span>
+                        </div>
+                        <textarea  [disabled]="isDisabled" name="bz" id="" cols="30" rows="10" class="textarea"
+                                  [(ngModel)]="name_active_data.bz"></textarea>
+                    </div>
                 </div>
-            </div>
-
-
-        </div>
-    </form>
-    <div *ngIf="name_active_base">
-        <div class="home_title">房屋分类信息</div>
-
-
-        <div class="tab_box clearfix">
-
-            <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl">
-
-                <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
-                             [(selection)]="selectedFiles2"
-                             [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
-                    <p-column field="xh" header="序号">
-                        <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                        <!--</ng-template>-->
-                    </p-column>
-                    <p-column field="zdxmc" header="类别">
-                        <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                        <!--</ng-template>-->
-                    </p-column>
-                    <p-column field="sl" header="数量">
-                        <ng-template let-node="rowData" pTemplate="body">
-                            <input type="text" style="width:100%;" [(ngModel)]="node.data.sl"
-                                   (keyup)="Tree_update(TreeTable,node.data,i)">
-                        </ng-template>
-                    </p-column>
-                    <p-column field="dwmc" header="单位">
-                        <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
-                        <!--</ng-template>-->
-                    </p-column>
-
-                    <p-column field="bz" header="备注">
-                        <ng-template let-node="rowData" pTemplate="body">
-                            <input type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                   (keyup)="Tree_update(TreeTable,node.data,i)">
-                        </ng-template>
-                    </p-column>
-                </p-treeTable>
 
 
             </div>
+        </form>
+
+    </p-panel>
+    <div class="clearfix mar_top">
+        <p-panel toggleable="true" *ngIf="name_active_data" expandIcon="fa-angle-double-up"
+                 collapseIcon="fa-angle-double-down">
 
 
-        </div>
+            <p-header class="header_bg">
+                <div class="title" style="padding: 0;border: none;">
+                    水利水电设施分类信息
+                </div>
+            </p-header>
 
+            <div *ngIf="name_active_base">
+
+                <div>
+                    <p-selectButton [options]="types3" [(ngModel)]="selectedType3"
+                                    (click)="selectedTypea3()"
+                    ></p-selectButton>
+                </div>
+
+                <div class="tab_box clearfix">
+
+                    <div class="form clearfix" *ngIf="showTable==1">
+
+                        <div class="fl rl">
+                            <input  type="text" [(ngModel)]="searchKeyword"
+                                   (ngModelChange)="searchList($event,searchKeyword)"
+                                   class="searchInput" placeholder="类别名称">
+                        </div>
+
+
+                        <div class="btnGrop fr">
+                            <ul>
+                                <li class="fl" (click)="showAll(true)" *ngIf="isShow">
+                                    <span class="img icon fa fa-square-o"></span>
+                                    显示非空项
+                                </li>
+                                <li class="fl" (click)="showAll(false)" *ngIf="!isShow">
+                                    <span class="img icon fa fa-check-square"></span>
+                                    显示所有项
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div *ngIf="showTable==1" class="clearfix boxShadow foot_boxShadow">
+                        <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl fl foot_box"
+                             [ngClass]="{'group-4':name_active_base?.length==4,'group-3':name_active_base?.length==3,'group-2':name_active_base?.length==2,'group-1':name_active_base?.length==1}">
+
+                            <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
+                                         (onNodeSelect)="TreeTableClick($event,TreeTable,$event.node,i)"
+                                         selectionMode="single" [(selection)]="selectedFile"
+                                         [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                                <p-column field="zdxxh" header="序号">
+                                    <!--<ng-template let-node="rowData" pTemplate="body">-->
+                                    <!--<input [disabled]="isDisabled" type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                                    <!--</ng-template>-->
+                                </p-column>
+                                <p-column field="zdxmc" header="类别">
+                                    <ng-template let-node="rowData" pTemplate="body">
+                                        <span style="width:100%;border-width:0px 0px 1px 0px"
+                                              [ngClass]="{'search_bg':node.data.searchRsut}">{{node.data.zdxmc}}</span>
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="sl" header="数量">
+                                    <ng-template let-col let-node="rowData" pTemplate="body">
+                                        <input  type="number" style="width:100%;" [(ngModel)]="node.data.sl"
+                                               (keydown)="calc($event,node)"
+                                               [disabled]="node.children != null  || is_disabled"
+                                               (click)="Tree_update(TreeTable,node,i)"
+                                               (keyup)="Tree_update(TreeTable,node,i)">
+                                    </ng-template>
+                                </p-column>
+
+                                <p-column field="bz" header="备注">
+                                    <ng-template let-col let-node="rowData" pTemplate="body">
+                                        <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
+                                               (click)="Tree_update(TreeTable,node,i)"
+                                               (input)="Tree_update(TreeTable,node,i)">
+                                    </ng-template>
+                                </p-column>
+                            </p-treeTable>
+
+
+                        </div>
+                    </div>
+
+                    <form #ggmxlist="ngForm">
+
+                        <div *ngIf="showTable==2" class="clearfix">
+                            <div class="btnGrop">
+                                <ul *ngIf="!isDisabled">
+                                    <li class="fl" (click)="addGgmx()">
+                                        <span><img src="assets/img/icon/jiahao.png" alt=""></span>
+                                        新增
+                                    </li>
+                                    <li class="fl" (click)="delGgmx()">
+                                        <span><img src="assets/img/icon/x.png" alt=""></span>
+                                        删除
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="clearfix">
+                                <p-dataTable resizableColumns="true" [value]="ggmx" class="table" dataKey="xh"
+                                             (onRowClick)="DatatableClick($event)" [emptyMessage]="'查询数据为空'"
+                                             responsive="true" selectionMode="single">
+                                    <p-column field="xh" title="mc" header="序号" [bodyStyle]="{'text-align':'left'}">
+                                        <ng-template let-col let-i="rowIndex" let-car="rowData" pTemplate="body">
+                                            <span #defaultPerson>{{i+1}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="xxzxlbdm" header="设施类别">
+                                        <ng-template let-col let-node="rowData" pTemplate="body">
+                                            <!--<div>{{node.fwjgdm}}</div>-->
+                                            <div *ngFor="let item of tableList;">
+
+                                                <span *ngIf="item.sslb==node.xxzxlbdm">{{item.zdxmc}}</span>
+                                            </div>
+
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="mc" header="名称"></p-column>
+                                    <p-column field="jsgm" header="建设规模"></p-column>
+                                    <p-column field="jsgm" header="工程效益"></p-column>
+                                    <p-column field="sl" header="数量">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="dw" header="单位"></p-column>
+                                    <p-column field="ggcc" header="规格尺寸"></p-column>
+                                    <p-column field="jcrq" header="建成日期">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]  | date:'yyyy-MM-dd'}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="sfkbq" header="是否可搬迁">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]?'是':'否'}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="gdzctz" header="固定资产投资">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="cqdjr" header="产权登记人">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="bz" header="备注">
+                                        <ng-template let-col let-car="rowData" pTemplate="body">
+                                            <span>{{car[col.field]}}</span>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-footerColumnGroup>
+                                        <p-row>
+                                            <p-column footer="数量合计:" colspan="5"></p-column>
+                                            <p-column footer={{ggmxTotals}} colspan="1"></p-column>
+                                            <p-column footer="" colspan="7"></p-column>
+                                        </p-row>
+                                    </p-footerColumnGroup>
+                                </p-dataTable>
+
+                            </div>
+
+
+                            <div class="clearfix modalInput" *ngIf="ggmx != undefined && ggmx[GgmxIndex]">
+
+                                <div class="inputArea fl rl zydl">
+                                    <div class="inputLeft fl">
+                                        <span class="importent">设施类别</span>
+                                    </div>
+
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled"  class='inputH' type="text"
+                                               [(ngModel)]="ggmx[GgmxIndex]['zdxmc']" name="zdxmc"
+                                               (click)="showytjjgBlock()"
+                                               readonly="readonly"/>
+
+                                        <i class="xiala" (click)="showytjjgBlock()"></i>
+                                        <p-tree *ngIf="isShowytjjg" [value]="ytjjgTreeList" name='label'
+                                                expanded selectionMode="single"
+                                                [(selection)]="selectedFile"
+                                                (onNodeSelect)="getChildytjjg($event)"
+                                                (onNodeUnselect)="nodeUnselect($event)" ngDefaultControl>
+                                        </p-tree>
+
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span class="importent">名称</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="text" name="mc" [(ngModel)]="ggmx[GgmxIndex]['mc']">
+                                    </div>
+                                </div>
+
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span class="importent">建设规模</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="text" name="jsgm" [(ngModel)]="ggmx[GgmxIndex]['jsgm']">
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span class="importent">工程效益</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="text" name="gcxy" [(ngModel)]="ggmx[GgmxIndex]['gcxy']">
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span>数量</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="number" name="sl" [(ngModel)]="ggmx[GgmxIndex]['sl']">
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span class="importent">规格尺寸</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['ggcc']">
+                                    </div>
+                                </div>
+
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span>建成日期</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled"  [value]="ggmx[GgmxIndex]['jcrq']"
+                                                        (SelectModel)="eventJgrq($event)" readonly="readonly"></app-p-calendar>
+
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span>是否可搬迁</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <p-selectButton [options]="types2" [disabled]="isDisabled"
+                                                        [(ngModel)]="sfkbq" name="sfkbqValue"
+                                                        (click)="selectedTypea4(sfkbq)"></p-selectButton>
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span>固定资产投资</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="number" name="gdzctz" [(ngModel)]="ggmx[GgmxIndex]['gdzctz']">
+                                    </div>
+                                </div>
+                                <div class="inputArea fl">
+                                    <div class="inputLeft fl">
+                                        <span>产权登记人</span>
+                                    </div>
+                                    <div class="inputRight fl">
+                                        <input [disabled]="isDisabled" type="text" name="cqdjr" [(ngModel)]="ggmx[GgmxIndex]['cqdjr']">
+                                    </div>
+                                </div>
+
+                                <div class="clearfix beizhu ">
+                                    <div class="textareaBeizhu">
+                                        <span>备注 </span>
+                                    </div>
+                                    <textarea [disabled]="isDisabled" name="bz" cols="30" rows="10" class="textarea"
+                                              [(ngModel)]="ggmx[GgmxIndex]['bz']"></textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </p-panel>
     </div>
-
-
     <p-growl [(value)]="msgs"></p-growl>
 
 

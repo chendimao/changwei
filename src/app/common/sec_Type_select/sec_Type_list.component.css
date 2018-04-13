@@ -1,0 +1,81 @@
+.boxShadow {
+    z-index: 1111;
+    width: 360px;
+    padding: 15px;
+    padding-bottom: 50px;
+    color: #666666;
+    min-height: 380px;
+    max-height: 380px;
+    background: white;
+    position: absolute;
+    right: 0;
+    margin-bottom: 50px;
+}
+.boxShadow .group-2{
+    text-align: center;
+}
+.searchInput{
+    height: 30px;
+    width: 100%;
+    padding-left: 15px;
+    background: white;
+}
+.table {
+    max-height: 202px;
+}
+
+header {
+    font-weight: bold;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+ul:hover {
+    background: #0099cb;
+    color: white;
+}
+:host
+/deep/
+.styleClass .ui-tree-container{
+    height: 270px;
+}
+
+.active {
+    background: #CCCCCC;
+    color: white;
+}
+
+.list_content {
+    max-height: 350px;
+    overflow: auto;
+    padding-bottom: 40px;
+}
+
+.btn-group a {
+    display: inline-block;
+}
+
+.input_search_box input {
+    width: calc(100% - 10px);
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.btn-group {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 30px);
+}
+
+:host
+/deep/
+.list_content .nav .ui-widget-content {
+    color: #333333;
+}
+
+:host
+/deep/
+.list_content .nav {
+    padding: 0px;
+    width: 100%;
+    color: #333333;
+}

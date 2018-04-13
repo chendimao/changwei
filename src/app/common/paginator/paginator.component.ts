@@ -20,18 +20,23 @@ export class PaginatorUserComponent implements OnInit {
         console.log(this.url);
     }
 
+    ngOnchange() {
+        console.log(this.url);
+    }
+
     paginate(value) {
         let resUrl: string;
-        if (this.url == 'zdk/list') {
-            resUrl = `zdk/list?sjId=&start=${value.first + 1}&limit=${value.rows}`;
-        } else {
-            resUrl = `${this.url}?start=${value.first + 1}&limit=${value.rows}`;
-    }
+        resUrl = `${this.url}&start=${value.first + 1}&limit=${value.rows}`;
         console.log(value);
         console.log(resUrl);
+
         this.HttpService.get(resUrl)
             .then(res => {
-                this.pageSelect.emit(res);
+                let obj={
+                    "value":value,
+                    "data":res,
+                }
+                this.pageSelect.emit(obj);
             });
     }
 

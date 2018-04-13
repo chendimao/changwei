@@ -27,37 +27,14 @@ import {ValuChangeService} from "../../service/valuChange.service";
 import {UserCommonModule} from '../../common/UserCommon.module';
 import {HttpService} from "../../service/http-service";
 import {KxxyjbgjdRoutingModule} from './kxxyjbgjd-routing.module';
-import {KxxyjbgjdComponent} from './kxxyjbgjd.component';
-
-import {NcymazComponent} from './ghzb/ncymaz/ncymaz.component';
-import {GhzbComponent} from './ghzb/ghzb.component';
-import {ScazrkComponent} from './ghzb/ncymaz/scazrk/scazrk.component';
-import {GyqyclComponent} from './ghzb/gyqycl/gyqycl.component';
-import {RoadComponent} from './ghzb/zyxmcl/road/road.component';
-
 import {TzgsComponent} from "./tzgs/tzgs.component";
-
-
 import {DataProcessingService} from "../../service/dataProcessing.service";
-import {SelectListHttpService} from "../../service/select-list-http.service";
-
-
 @NgModule({
     declarations: [
         TzgsComponent,
-        NcymazComponent,
-        GhzbComponent,
-        ScazrkComponent,
-        KxxyjbgjdComponent,
-        GyqyclComponent,
-        RoadComponent,
-
-
     ],
 
     imports: [
-
-
         BreadcrumbModule,
         PanelModule,
         DropdownModule,
@@ -81,7 +58,7 @@ import {SelectListHttpService} from "../../service/select-list-http.service";
         RouterModule.forChild(KxxyjbgjdRoutingModule)
     ],
     entryComponents: [],
-    providers: [HttpService, ValuChangeService, DataProcessingService, SelectListHttpService],
+    providers: [HttpService, ValuChangeService, DataProcessingService],
 })
 export class KxxyjbgjdModule {
 }

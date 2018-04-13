@@ -20,11 +20,13 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/_primeng@4.3.0@primeng/resources/primeng.min.css",
-        "../node_modules/_primeng@4.3.0@primeng/resources/themes/omega/theme.css",
-        "../node_modules/_font-awesome@4.7.0@font-awesome/css/font-awesome.min.css"
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

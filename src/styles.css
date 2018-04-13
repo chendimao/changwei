@@ -454,7 +454,7 @@ li {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /*font-family: 'Microsoft YaHei', 'STHeiti', '宋体', 'arial';*/
+    font-family: 'Microsoft YaHei', 'STHeiti', '宋体', 'arial';
 }
 
 .page-wrapper {
@@ -1107,7 +1107,7 @@ input.disabledInput {
     width: 20px;
 }
 
-input:focus , textarea:focus {
+input:focus, textarea:focus {
     box-shadow: 0px 0px 5px #1f89ce;
     transition: all .33s;
 }
@@ -1172,6 +1172,7 @@ input:focus , textarea:focus {
 .bianhao {
     position: absolute;
     right: 0;
+    cursor: pointer;
     background: #0099cb;
     text-align: center;
     color: white;
@@ -1210,6 +1211,10 @@ i.xiala:after {
     right: -15px;
     top: -20px;
     content: "";
+}
+
+.moduleAlert {
+    height: 100%;
 }
 
 .moduleAlert .group select {
@@ -1259,7 +1264,9 @@ app-eng-mang:after, app-eng-mang-nav:after {
 .boxShadow {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.35);
 }
-
+.topPanel .ui-panel-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-all{
+    border-width: 1px 0;
+}
 input {
     border: 1px solid #cccccc;
 }
@@ -1537,10 +1544,6 @@ p-paginator .ui-widget-header {
     padding: 8px 6px;
 }
 
-.beizhu {
-    margin-top: 20px;
-}
-
 .wj_box {
     width: 25%;
     max-width: 250px;
@@ -1612,12 +1615,7 @@ li.check {
     background: #0088cc;
 }
 
-@media (max-width: 1024px) {
-    .wj_box {
-        width: 50%;
-        max-width: inherit;
-    }
-}
+
 
 .textarea.textarea {
     width: calc(100% - 100px);
@@ -1634,6 +1632,10 @@ li.check {
     background: #0099cc;
     color: white;
     padding: 9px 10px;
+}
+
+.zdbuttonDis {
+    background: #999999;
 }
 
 .spinner {
@@ -1780,6 +1782,10 @@ p-treetable td select {
     padding: 5px 26px 5px 0px;
 }
 
+li {
+    cursor: pointer;
+}
+
 .img.icon.fa {
     font-size: 15px;
 }
@@ -1787,5 +1793,71 @@ p-treetable td select {
 p-confirmDialog .ng-trigger-dialogState {
     left: 50% !important;
     top: 50% !important;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+}
+
+.mar_top {
+
+    margin-top: 15px;
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.letfNav:hover .samll_btn_1 {
+    display: block !important;
+}
+.sec_nav:hover .samll_btn_2 {
+    display: block !important;
+}
+
+.samll_btn_1 {
+    box-shadow: rgb(187, 187, 187) 0px 0px 5px;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 37%;
+    background: #ffffff;
+    padding: 18px 0px 18px 5px;
+}
+
+.samll_btn_1 span {
+    height: 10px;
+    width: 10px;
+    color: #42485b;
+    background: #ffffff;
+}
+
+.samll_btn_2 {
+    box-shadow: rgb(187, 187, 187) 0px 0px 5px;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 37%;
+    padding: 18px 0px 18px 5px;
+    background: #fbfbfb
+}
+
+.samll_btn_2 span {
+    height: 10px;
+    width: 10px;
+    color: #999999;;
+}
+
+@media (max-width: 1024px) {
+    .wj_box {
+        width: 50%;
+        max-width: inherit;
+    }
+    .samll_btn_2 {
+        display: block !important;
+    }
+    .samll_btn_1 {
+        display: block !important;
+    }
+
+}
+
+th.ui-state-default.ui-unselectable-text{
+    height: 44px;
 }

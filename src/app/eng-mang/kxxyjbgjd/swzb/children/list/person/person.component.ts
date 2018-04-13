@@ -7,7 +7,10 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {DataProcessingService} from "../../../../../../service/dataProcessing.service";
 import {SelectListHttpService} from "../../../../../../service/select-list-http.service";
 import {InputChangeService} from "../../../../../../service/input-change.service";
+import * as $ from 'jquery';
+import * as _ from 'lodash';
 
+import {DOCUMENT} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-person',
@@ -27,6 +30,10 @@ export class PersonComponent implements OnInit {
     types4: SelectItem[];
     types5: SelectItem[];
 
+    public test: any;
+    public test2: any;
+
+
     public qshflId; //  权属户信息
     public type: string; //  类型：查看、新增、修改
     public childInfo: any;
@@ -43,11 +50,13 @@ export class PersonComponent implements OnInit {
     public mz_list: any; //  民族下拉列表
     public whcd_list: any; //  文化程度下拉列表
     public cyzk_list: any; //  从业状况下拉列表
+    public sfsldl_list: any; // 是否是劳动力
+    public sfkgr_list: any; //是否空挂人
     public xb_list: any; //  性别选择
     public xb_list_copy: any; //  性别选择
     public sfkgr: number = 0; //  是否空挂人
     public sfldl: number = 0; //  是否劳动力
-    public zydl_list: any; //  专业大类
+    public update_person_data2;
     public hkqk_list: any; //  户口情况列表
     public hyzk_list: any;// 婚姻状况下拉列表
     public dcfw_list: any;// 调查范围
@@ -56,16 +65,46 @@ export class PersonComponent implements OnInit {
     public hbdm_list: any;// 户别代码 列表
     public ssxzqhdm: any; //  所属行政区划代码
     public ssgcdm: any; //  所属行政区划代码
+    public  isShowZydl: any;
+    public  isShowDcfw: any;
+    public  isShowHkqk: any;
+    public  isShowWhcd: any;
+    public  isShowQcrq: any;
+    public  isShowQrrq: any;
+    public  isShowCsrq:any;
+    public  whcdTableList: any;
+    public  whcdTreeList: any;
+    public  dcfwTableList: any;
+    public  dcfwTreeList: any;
+    public  zydlTableList: any;
+    public  zydlTreeList: any;
+    public  hkqkTableList: any;
+    public  hkqkTreeList: any;
+    public isDisabled = false;
+    public  tableSelecValue: any;
+    public  zydlLeft: any;
+    public  zydlTop: any;
+    public szxzqugldm: any;
+    public xb;
+    public sfldldm;
+
+
+    public  zzcModel: boolean = false;
+    public  ch:any;
 
 
     area: string;
     @ViewChild('person') person: NgForm;
     @ViewChildren('defaultPerson') defaultPerson: QueryList<ElementRef>;
+    public hyzk: any;
+    public hb:any;
 
 
-    constructor(public InputChange:InputChangeService,public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, private ValuChangeService: ValuChangeService, private HttpService: HttpService, private route: ActivatedRoute) {
+    constructor(public InputChange: InputChangeService, public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, public  ValuChangeService: ValuChangeService, public  HttpService: HttpService, public  route: ActivatedRoute) {
 
-
+        this.types2 = [];
+        this.types2.push({label: '是', value: '1'});
+        this.types2.push({label: '否', value: '0'});
         this.types = [];
         this.types.push({label: '详情视图', value: '1'});
         this.types.push({label: '列表视图', value: '2'});
@@ -73,103 +112,90 @@ export class PersonComponent implements OnInit {
         this.types4.push({label: '是', value: 1});
         this.types4.push({label: '否', value: 0});
         this.types5 = [];
-        this.types5.push({label: '是', value: 1});
-        this.types5.push({label: '否', value: 0});
+        this.types5.push({label: '男', value: 1});
+        this.types5.push({label: '女', value: 0});
+        this.sfsldl_list = [
+            {label: '是', value: 1},
+            {label: '否', value: 0},
+            {label: '空', value: ""}
+        ];
+        this.sfkgr_list = [
+            {label: '是', value: 1},
+            {label: '否', value: 0},
+            {label: '空', value: ""}
+        ];
 
 
     }
 
     ngAfterViewInit(): void {
+        console.log(this.isShowArea);
+        console.log(this.isShowZydl);
+
+        if (this.tableList.length > 0) {
+            //   订阅表单值改变事件
+            this.person.valueChanges.subscribe(data => {
 
 
-        //   订阅表单值改变事件
-        this.person.valueChanges.subscribe(data => {
-            console.log(234);
-            let res =  this.InputChange.get_value_change(this.hcy,this.name_active_key,this.init_person_data,this.update_person_data,this.add_person_data);
+                    if (this.tableList && this.tableList.length > 0) {
 
-            this.add_person_data = res.add_data;
-            this.update_person_data = res.update_data;
+                        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
 
+                        this.add_person_data = res.add_data;
+                        this.update_person_data = res.update_data;
+                        console.log(this.update_person_data);
+                        console.log(this.add_person_data);
 
-                //
-                // if (this.hcy.id != undefined) {
-                //     let linshiPerson = this.init_person_data['listHcy'];
-                //     linshiPerson.forEach((value, index, arr) => {
-                //         console.log(value);
-                //         if (this.hcy['id'] == value['id']) {
-                //             console.log(this.hcy['id']);
-                //             this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                //             console.log(this.ValuChangeService.changeDate(value, this.hcy));
-                //             this.update_person_data[index]['id'] = this.hcy.id;
-                //
-                //         }
-                //
-                //     });
-                //
-                //
-                // } else {
-                //
-                //     if (this.add_person_data[this.name_active_key] == undefined) {
-                //
-                //         this.add_person_data[this.name_active_key] = new Object();
-                //     }
-                //
-                //
-                //     for (var i in this.hcy) {
-                //
-                //         if (this.hcy[i] != null) {
-                //             this.add_person_data[this.name_active_key][i] = this.hcy[i];
-                //         }
-                //
-                //     }
-                //
-                //
-                // }
-
-                console.log(this.update_person_data);
-                console.log(this.add_person_data);
+                    }
 
 
-            }
-        );
+                }
+            );
+        }
+
 
     }
 
     ngOnInit() {
 
+
+        this.ch = {
+            firstDayOfWeek: 0,
+            dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['天', '一', '二', '三', '四', '五', '六'],
+            dayNamesMin: ['天', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+            today: '今天',
+            clear: '清除',
+        };
+
+        console.log(this.childInfo2);
+        console.log(this.childInfo);
         console.log(this.qshflId);
         this.selectedType = 1;
-        this.area = '福建省泉州市安溪县白濑乡长基村';
+        this.tableList = this.childInfo2;
+                //
+                // if(this.childInfo2 && this.childInfo2.length>0){
+                //     this.tableList = this.childInfo2;
+                //
+                // }else{
+                //     this.tableList = this.childInfo2;
+                //     this.add_person_data = this.tableList;
+                // }
 
-        if (this.childInfo2 != undefined) {
-            this.tableList = this.childInfo2;
 
-        } else {
-            this.tableList.push({
-                "mc": "",
-                'sfzh': '',
-                'szxzqhdm': "",
-                'zydldm': "",
-                'dcfwdm': "",
-                'xbdm': "",
-                'mzdm': "",
-                'yhzgxdm': "",
-                'csrq': "",
-                'whcddm': "",
-                'hydm': "",
-                'sfsldl': "",
-                'qrrq': '',
-                'qcrq': '',
-                'hkszd': "",
-                'rs': "",
-                'bz': "",
-            })
-        }
+                this.hcy_count = this.tableList != undefined && this.tableList.length ? this.tableList.length : 0;
 
-        this.hcy_count = this.tableList.length ? this.tableList.length : 0;
-        this.hcy = this.tableList[0];
-        this.name_active_key = 0;
+                if(this.tableList && this.tableList.length){
+                    this.hcy = this.tableList[0];
+                    this.name_active_key = 0;
 
+                    this.hyzk = this.hcy.hydm;
+                    this.xb = this.hcy.xbdm;
+                    this.sfldldm = this.hcy.sfsldl;
+                    this.hb = this.hcy.hbdm;
+                }
 
 
 
@@ -183,41 +209,68 @@ export class PersonComponent implements OnInit {
 
         } else if (this.type == 'rew') {
 
-            this.ssgcdm = this.qshflId.ssgcdm;
-            this.ssxzqhdm = this.qshflId.ssxzqhdm;
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+        }else{
+            this.ssgcdm = this.childInfo.ssgcdm;
+            this.ssxzqhdm = this.childInfo.ssxzqhdm;
+            this.isDisabled = true;
         }
+
+
         console.log(this.ssgcdm);
 
 
         //  与户主关系 下拉列表
         this.selectList.getSelectList('B_HYHCYGX', 'YHZGXDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.yhzgx_list = data;
+            let lsObj = [];
+            for (let item in data) {
+                console.log(data[item])
+                lsObj.push(data[item])
+            }
+            lsObj.push({label: "空", value: ""});
+
+            this.yhzgx_list = lsObj;
         });
         //  民族 下拉列表
         this.selectList.getSelectList('B_HCY', 'MZDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.mz_list = data;
+            let lsObj = [];
+            for (let item in data) {
+                console.log(data[item])
+                lsObj.push(data[item])
+            }
+            lsObj.push({label: "空", value: ""});
+
+            this.mz_list = lsObj;
         });
         //  文化程度 下拉列表
         this.selectList.getSelectList('B_HCY', 'WHCDDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.whcd_list = data;
+            let lsObj = [];
+            for (let item in data) {
+                console.log(data[item])
+                lsObj.push(data[item])
+            }
+            lsObj.push({label: "空", value: ""});
+            this.whcd_list = lsObj;
         });
         //  从业状况 下拉列表
         this.selectList.getSelectList('B_HCY', 'CYZKDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.cyzk_list = data;
+            // data.push({label: "kong", value: null});
+            let lsObj = [];
+            for (let item in data) {
+                console.log(data[item])
+                lsObj.push(data[item])
+            }
+            lsObj.push({label: "空", value: ""});
+            this.cyzk_list = lsObj;
         });
         //  性别 下拉列表
         this.selectList.getSelectList('B_HCY', 'XBDM', this.ssgcdm, this.ssxzqhdm).then(data => {
             this.xb_list = data;
             this.xb_list_copy = JSON.parse(JSON.stringify(this.xb_list));
         });
-        //  专业大类 下拉列表
-        this.selectList.getSelectList('B_HCY', 'ZYDLDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.zydl_list = data;
-        });
-        //  户口情况 下拉列表
-        this.selectList.getSelectList('B_HCY', 'HKQKDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.hkqk_list = data;
-        });
+
+
         //  婚姻状况 下拉列表
         this.selectList.getSelectList('B_HCY', 'HYDM', this.ssgcdm, this.ssxzqhdm).then(data => {
             this.hyzk_list = data;
@@ -228,84 +281,368 @@ export class PersonComponent implements OnInit {
         });
 
 
-        this.selectListHzgx = [
-            {label: '户主', name: '户主', value: '1'},
-            {label: '父子', name: '户主', value: '2'},
-            {label: '父女', name: '户主', value: '3'},
-            {label: '姐', name: '户主', value: '4'},
-            {label: '哥', name: '户主', value: '5'},
-            {label: '弟', name: '户主', value: '6'},
-            {label: '弟媳', name: '户主', value: '7'}
-
-        ];
-
-
     }
 
 
-    //  调查范围显示下拉
-    dcfw_show() {
-
-
-        if (this.dcfw_list_is_show == 0) {
-
-            this.dcfw_list_is_show = 1;
-
-            //  调查范围 下拉列表
-
-
-
-            this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HCY&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
-                .then((res) => {
-                    console.log(res['returnObject']);
-                    this.dcfw_list = res['returnObject'];
-                });
-
-
-        } else {
-            this.dcfw_list_is_show = 0;
-
+    // 所属行政区划
+    showSzxzqhBlock(index) {
+        this.zzcModel = true;
+        let szxzqh = document.getElementById("szxzqh");
+        if (szxzqh) {
+            let top = $('#szxzqh').offset().top;
+            let left = $('#szxzqh').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
         }
-    }
-
-    //  调查范围选中数据
-    dcfw_data(e) {
-
-        this.hcy.dcfwdm = e.dm;
-        this.dcfw_mc = e.mc;
-        this.dcfw_list_is_show = 0;
+        if (this.type != 'view') {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
     }
 
     //   选择人
     selectPerson(person, i) {
         this.hcy = person;
-
         this.name_active_key = i;
 
+        this.hyzk = this.hcy.hydm;
+        this.xb = this.hcy.xbdm;
+        this.sfldldm = this.hcy.sfldl;
+        this.hb = this.hcy.hbdm;
+    }
 
+    // 文化程度
+    showWhcdBlock(index) {
+        let dcfw = document.getElementById("whcd");
+        if (dcfw) {
+            let top = $('#whcd').offset().top;
+            let left = $('#whcd').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+        }
+        if (this.type != "view") {
+            this.isShowWhcd = this.isShowWhcd ? false : true;
+            if (!this.whcdTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HCY&column=WHCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        this.whcdTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HCY&column=WHCDDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        this.whcdTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    //  文化程度选中数据
+    getChildWhcd(event) {
+        console.log(event)
+        this.zzcModel = false;
+        this.isShowWhcd = false;
+        if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.whcddm = event.dm;
+                this.hcy.whcdmc = event.mc;
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+
+            } else {
+                this.tableSelecValue['whcdmc'] = event.mc;
+                this.tableSelecValue['whcddm'] = event.dm;
+                let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            }
+        }
+    }
+
+    //  户口情况显示下拉
+    showHkqkBlock(index) {
+        let dcfw = document.getElementById("Hkqk");
+        if (dcfw) {
+            let top = $('#Hkqk').offset().top;
+            let left = $('#Hkqk').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+        }
+        if (this.type != "view") {
+            this.isShowHkqk = this.isShowHkqk ? false : true;
+            if (!this.hkqkTreeList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HCY&column=HKQKDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.hkqkTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HCY&column=HKQKDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.hkqkTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    //  户口情况选中数据
+    getChildHkqk(event) {
+        this.zzcModel = false;
+        this.isShowHkqk = false;
+        if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.hkqkdm = event.dm;
+                this.hcy.hkqkmc = event.mc;
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+
+            } else {
+                this.tableSelecValue['hkqkmc'] = event.mc;
+                this.tableSelecValue['hkqkdm'] = event.dm;
+                let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            }
+        }
+
+    }
+
+    // 专业大类展示
+    showZydlBlock(index) {
+        let test = document.getElementById("zydl");
+        this.zzcModel = true;
+        if (test) {
+            let top = $('#zydl').offset().top;
+            let left = $('#zydl').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 44 - 20 + "px";
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+        if (this.type != "view") {
+            this.isShowZydl = this.isShowZydl ? false : true;
+            if (!this.zydlTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.zydlTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.zydlTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildZydl(event) {
+        console.log(event)
+        this.zzcModel = false;
+        this.isShowZydl = false;
+        if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.zydldm = event.dm;
+                this.hcy.zydlmc = event.mc;
+                let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            } else {
+                this.tableSelecValue['zydlmc'] = event.mc;
+                this.tableSelecValue['zydldm'] = event.dm;
+                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            }
+        }
+    }
+
+    //  调查范围显示下拉
+    showDcfwBlock(index) {
+        this.zzcModel = true;
+        let dcfw = document.getElementById("dcfw");
+        if (dcfw) {
+            let top = $('#dcfw').offset().top;
+            let left = $('#dcfw').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+        if (this.type != "view") {
+            this.isShowDcfw = this.isShowDcfw ? false : true;
+            if (!this.dcfwTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.dcfwTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildDcfw(event) {
+        console.log(event);
+        this.zzcModel = false;
+        console.log(this.name_active_key);
+        this.isShowDcfw = false;
+        if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.dcfwdm = event.dm;
+                this.hcy.dcfwmc = event.mc;
+                let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            } else {
+                this.tableSelecValue['dcfwmc'] = event.mc;
+                this.tableSelecValue['dcfwdm'] = event.dm;
+                console.log(this.name_active_key);
+                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            }
+        }
+        console.log(this.update_person_data);
+    }
+
+    showQrrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowQrrq = this.isShowQrrq ? false : true;
+        let dcfw = document.getElementById("qrrq");
+        if (dcfw) {
+            let top = $('#qrrq').offset().top;
+            let left = $('#qrrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+    }
+
+    qrrqClickTime(event) {
+        this.tableSelecValue.qrrq = event;
+        let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        this.isShowQrrq=false;
+        this.zzcModel = false;
+      }
+
+    showQcrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowQcrq = this.isShowQcrq ? false : true;
+        let dcfw = document.getElementById("qcrq");
+        if (dcfw) {
+            let top = $('#qcrq').offset().top;
+            let left = $('#qcrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+    }
+    qcrqClickTime(event) {
+        this.tableSelecValue.qcrq= event;
+        let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        this.isShowQcrq=false;
+        this.zzcModel = false;
+    }
+
+    showCsrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowCsrq = this.isShowCsrq ? false : true;
+        let dcfw = document.getElementById("csrq");
+        if (dcfw) {
+            let top = $('#csrq').offset().top;
+            let left = $('#csrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+    }
+    csrqClickTime(event) {
+        this.tableSelecValue.csrq= event;
+        let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        this.isShowCsrq=false;
+        this.zzcModel = false;
+    }
+    // 为每个select绑定事件
+    getChildSelect(e, zd) {
+        console.log(e);
+        console.log(zd)
+        this.tableSelecValue[zd] = e;
+        console.log(this.tableSelecValue);
+        let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+    }
+
+    nodeSelect(e) {
+        console.log(e);
+
+        console.log(this.tableSelecValue);
+    }
+
+    //关闭遮罩层
+    closeZzc() {
+        this.isShowZydl = false;
+        this.isShowDcfw = false;
+        this.isShowArea = false;
+        this.isShowQcrq=false;
+        this.isShowCsrq=false;
+        this.isShowQrrq=false;
+        this.isShowHkqk=false;
+        this.isShowWhcd=false;
+        this.zzcModel = false;
     }
 
 
     addPerson(): void {
+        console.log(this.childInfo)
+
         this.tableList.push({
             "mc": "",
             'sfzh': '',
-            'szxzqhdm': "",
-            'zydldm': "",
-            'dcfwdm': "",
+            'szxzqhdm': this.childInfo?this.childInfo.ssxzqhdm:"",
+            'xzqhmc': this.childInfo?this.childInfo.xzqhmc:"",
+            'zydldm': this.childInfo?this.childInfo.zydldm:"",
+            'zydlmc': this.childInfo?this.childInfo.zydlmc:"",
+            'dcfwdm': this.childInfo?this.childInfo.dcfwdm:"",
+            'dcfwmc': this.childInfo?this.childInfo.dcfwmc:"",
             'xbdm': "",
             'mzdm': "",
             'yhzgxdm': "",
             'csrq': "",
             'whcddm': "",
             'hydm': "",
+            "sfkgr":null,
             'sfsldl': "",
             'qrrq': '',
             'qcrq': '',
             'hkszd': "",
             'rs': "",
             'bz': "",
-            'id':new Date().getTime()
+            'id': new Date().getTime()
 
         });
 
@@ -320,21 +657,33 @@ export class PersonComponent implements OnInit {
         }, 0);
 
         this.hcy_count = this.tableList.length;
+        this.hcy = this.tableList[this.tableList.length-1];
+        console.log(this.hcy);
+
+
+
+
+
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+
+         //this.add_person_data[this.hcy['id']]=this.hcy;
+        this.update_person_data = res.update_data;
+       // this.add_person_data = res.add_data;
 
         //   this.add_person_data.push(this.tableList[this.hcy_count-1]);
 
         console.log(this.add_person_data);
-
+        console.log(this.tableList);
+        console.log(this.person);
 
     }
-
 
 
     //  删除成员
     delPerson() {
 
 
-        if(this.tableList.length>0){
+        if (this.tableList.length > 0) {
             //  记录删除id
             if (this.hcy['id'] != undefined && this.hcy['id'].toString().length == 32) {
                 console.log(this.hcy['id']);
@@ -350,7 +699,7 @@ export class PersonComponent implements OnInit {
                 console.log(this.del_person_data);
             } else {
 
-                this.add_person_data.splice(this.name_active_key, 1);
+                delete this.add_person_data[this.hcy['id']];
                 console.log(this.add_person_data);
 
 
@@ -376,14 +725,12 @@ export class PersonComponent implements OnInit {
 
         }
 
-        if(this.tableList.length == 0){
+        if (this.tableList.length == 0) {
 
         }
 
 
     }
-
-
 
 
     //  上一条
@@ -404,93 +751,60 @@ export class PersonComponent implements OnInit {
 
     }
 
-
-
+    // 所在行政区域
     showAreaBlock(): void {
-
-        if (this.isShowArea) {
-            this.isShowArea = false;
-            console.log(this.isShowArea);
-        } else {
-            this.isShowArea = true;
-            console.log(this.isShowArea);
+        console.log(this.type);
+        if (this.type != "view") {
+            this.isShowArea = this.isShowArea ? false : true;
         }
-
     }
 
-    getQrrqDate(event) {
-        this.hcy.qrrq = event;
+    getChildSzxzqh(e) {
+        console.log(e);
+        if (e) {
+            this.zzcModel = false;
+            if (this.tableSelecValue) {
+                this.tableSelecValue.xzqhmc = e.qc;
+                this.tableSelecValue.szxzqhdm = e.dm;
+            }
 
 
-        if (this.hcy.id != undefined) {
-            let linshiPerson = this.init_person_data['listHcy'];
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-
+            this.hcy.xzqhmc = e.qc;
+            this.hcy.szxzqhdm = e.dm;
+            this.isShowArea = false;
         } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
+            this.isShowArea = false;
+            this.zzcModel = false;
         }
+    }
 
-        console.log(this.add_person_data);
 
+    getQrrqDate(event) {
+        console.log(event);
+        console.log(this.tableSelecValue)
+        if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.qrrq = event;
+                let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            } else {
+                this.tableSelecValue['qrrq'] = event;
+                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+                this.add_person_data = res.add_data;
+                this.update_person_data = res.update_data;
+            }
+        }
     }
 
     getQcrqDate(event) {
         this.hcy.qcrq = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
 
         console.log(this.add_person_data);
 
@@ -499,43 +813,13 @@ export class PersonComponent implements OnInit {
 
     getCsrqDate(event) {
         this.hcy.csrq = event;
-
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
 
     }
+
     getChildEvent(index) {
         this.area = index;
     }
@@ -549,50 +833,16 @@ export class PersonComponent implements OnInit {
     }
 
 
-    getChildEvent1(e) {
-        console.log(e);
-    }
-
-
     //  每个Input绑定事件
 
     //  文化程度
     eventWhcd(event) {
         this.hcy.whcddm = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
 
 
@@ -602,38 +852,10 @@ export class PersonComponent implements OnInit {
     eventHkqk(event) {
         this.hcy.hkqkdm = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
 
 
@@ -641,41 +863,13 @@ export class PersonComponent implements OnInit {
 
     //  是否空挂人
     eventSfkgr(event) {
-        this.hcy.sfkgr = event;
-
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
+        console.log(event);
+        this.hcy.sfkgr = event.option.value;
 
 
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
     }
 
@@ -683,38 +877,10 @@ export class PersonComponent implements OnInit {
     eventDcfw(event) {
         this.hcy.dcfwdm = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
 
         console.log(this.add_person_data);
     }
@@ -723,257 +889,77 @@ export class PersonComponent implements OnInit {
     eventZydl(event) {
         this.hcy.zydldm = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
 
         console.log(this.add_person_data);
     }
 
     //  婚姻状况
     eventHyzt(event) {
-        this.hcy.hydm = event;
 
-        if (this.hcy.id != undefined) {
+        this.hcy.hydm= event;
+        console.log(this.hcy.hydm);
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
     }
 
     //  从业情况
     eventCyqk(event) {
-        this.hcy.cyqkdm = event;
-
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
+        this.hcy.cyzkdm = event;
 
 
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
 
-            }
-
-
-        }
 
         console.log(this.add_person_data);
+        console.log(this.update_person_data);
     }
 
     //  民族
     eventMz(event) {
         this.hcy.mzdm = event;
 
-        if (this.hcy.id != undefined) {
 
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        console.log(this.update_person_data);
 
         console.log(this.add_person_data);
+    }
+
+    tableChange(e) {
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        console.log('1111111')
     }
 
     //  性别
     eventXb(event) {
 
 
-
-        console.log(event.option.value);
-        console.log(this.hcy.xbdm);
-        console.log(this.xb_list);
-
-
-
-
-            if( this.hcy.xbdm != null  &&  this.hcy.xbdm == event.option.value){
-                event.option.value = null;
-                this.hcy.xbdm = null;
-
-            }else{
-
-                if(event.option.value == null && this.hcy.xbdm == null){
-
-
-                    this.xb_list_copy.forEach((value,index,arr)=>{
-                        if(value.label == event.option.label){
-                            event.option.value = value.value;
-                        }
-                    });
-
-                    console.log(event.option.value);
-                    console.log(this.hcy.xbdm);
-
-                }else if(event.option.value != null && this.hcy.xbdm == null){
-                    this.hcy.xbdm = event.option.value;
-
-
-                    console.log(event.option.value);
-                    console.log(this.hcy.xbdm);
-                }else if(event.option.value == null && this.hcy.xbdm != null){
-
-                    this.xb_list_copy.forEach((value,index,arr)=>{
-                        console.log(event.option.label);
-                        if(value.label == event.option.label){
-                            event.option.value = value.value;
-                        }
-                    });
-
-                     event.option.value = this.hcy.xbdm ;
-
-
-                    console.log(event.option.value);
-                    console.log(this.hcy.xbdm);
-                }
-
-
-            }
-
-
-        console.log(event.option.value);
-        console.log(this.hcy.xbdm);
-
-
-
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
+        if (this.xb == this.hcy.xbdm) {
+            this.xb= null;
+            this.hcy.xbdm= null;
         } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
+            this.hcy.xbdm = this.xb;
+            this.xb= this.xb;
         }
 
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
+
     }
 
     //  与户主关系
@@ -982,159 +968,98 @@ export class PersonComponent implements OnInit {
         this.hcy.yhzgxdm = event;
         console.log(this.hcy.yhzgxdm);
 
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+        console.log(this.update_person_data);
 
         console.log(this.add_person_data);
     }
 
     //  户别
-    eventHbdm(event) {
-        this.hcy.hbdm = event;
-        console.log(this.hcy.hbdm);
 
-        if (this.hcy.id != undefined) {
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
+    eventHb(event) {
 
 
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
-        }
-
+      this.hcy.hbdm = event;
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
+
     }
+
 
     //  是否劳动力
     eventSFLDL(event) {
-        this.hcy.hbdm = event;
 
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
+        if (this.sfldldm == this.hcy.sfsldl) {
+            this.sfldldm= null;
+            this.hcy.sfsldl= null;
         } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
-
-
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
-
-            }
-
-
+            this.hcy.sfsldl = this.sfldldm;
+            this.sfldldm= this.sfldldm;
         }
 
+        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
         console.log(this.add_person_data);
+        console.log(this.update_person_data);
+
     }
 
     //  备注
     eventBz(event) {
-        this.hcy.bz = event;
-
-        if (this.hcy.id != undefined) {
-
-            let linshiPerson = this.init_person_data['listHcy'];
-
-            linshiPerson.forEach((value, index, arr) => {
-
-                if (this.hcy['id'] == value['id']) {
-
-                    this.update_person_data[index] = this.ValuChangeService.changeDate(value, this.hcy);
-                    this.update_person_data[index]['id'] = this.hcy.id;
-
-                }
-
-            });
-
-            console.log(this.update_person_data);
-
-        } else {
-
-            if (this.add_person_data[this.name_active_key] == undefined) {
-
-                this.add_person_data[this.name_active_key] = new Object();
-            }
 
 
-            for (var i in this.hcy) {
-                this.add_person_data[this.name_active_key][i] = this.hcy[i];
 
-            }
-
-
-        }
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
 
         console.log(this.add_person_data);
+        console.log(this.update_person_data);
+
+    }
+
+
+    eventXm(){
+
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+
+        console.log(this.add_person_data);
+        console.log(this.update_person_data);
+    }
+
+    eventSzzdgc(){
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+
+        console.log(this.add_person_data);
+        console.log(this.update_person_data);
+    }
+
+
+    eventSzzggc(){
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+
+        console.log(this.add_person_data);
+        console.log(this.update_person_data);
+    }
+
+    eventCym(){
+        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
+        this.add_person_data = res.add_data;
+        this.update_person_data = res.update_data;
+
+        console.log(this.add_person_data);
+        console.log(this.update_person_data);
     }
 
 
@@ -1156,17 +1081,19 @@ const hcy = {
     hkqkdm: "户口情况代码",
     sfzh: "身份证号",
     mzdm: "民族代码",
-    csrq: "",
+    csrq: "出生日期",
     whcddm: "文化程度代码",
     cyzkdm: "从业状况代码",
     jn: "技能",
     hydm: "婚姻代码",
     qrrq: "",
     qcrq: "",
+
     hbdm: "户别代码",
     hkszd: "户口所在地",
     sfkgr: "是否空挂人",
     sfsldl: "是否是劳动力",
+    qrsj: '迁入时间',
     rs: "人数",
     bz: "备注",
     cjsj: "创建时间",

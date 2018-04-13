@@ -1,32 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../../../../../service/http-service";
 import {DataProcessingService} from "../../../../../service/dataProcessing.service";
-import {MenuItem} from "../../../../../../assets/_primeng@4.2.1@primeng/components/common/menuitem";
-
 
 @Component({
-    selector: 'app-scanrk',
-    templateUrl: './scazrk.component.html',
-    styleUrls: ['./scazrk.component.css']
+    selector: 'app-ghzbJbxxChild',
+    templateUrl: './ghzbJbxxChild.component.html',
+    styleUrls: ['../ghzbJbxx.component.css']
 })
-export class ScazrkComponent implements OnInit {
+export class  GhzbJbxxChildComponent implements OnInit {
+    // 加的加载
     isShowRight: boolean = false;
     defaultShow: boolean = true;
-    private breadcrumb: MenuItem[];
+
+    display1: boolean = false;
     private treelist: any;
 
     constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
     }
 
-    ngOnInit() {
-        this.breadcrumb = [
-            {label: '首页', routerLink: '/engmang'},
-            {label: "可行性研究报告阶段"},
-            {label: '规划指标'},
-            {label: '农村移民安置'},
-            {label: '生产安置人口'}
+    openModal() {
+        this.display1 = true;
+    }
 
-        ];
+    closeModal() {
+        this.display1 = false;
+    }
+
+    ngOnInit() {
+
         this.HttpService.get(`locality/listTree`)
             .then(res => {
                 this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
@@ -38,5 +39,4 @@ export class ScazrkComponent implements OnInit {
         this.isShowRight = event;
         this.defaultShow = false;
     }
-
 }

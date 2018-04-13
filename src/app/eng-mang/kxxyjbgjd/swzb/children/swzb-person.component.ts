@@ -1,10 +1,11 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import {NgForm} from "@angular/forms";
 import {HttpService} from "../../../../service/http-service";
 import {MenuItem, Message, SelectItem} from 'primeng/primeng';
 import {flyIn} from "../../../../animations/fly-in";
 import {HjbxxModel} from "./Hjbxx.model";
-import {alertModelInfo} from "../alertModelInfo";
+import {ShareService} from "../../../../systemSetting/service/share.service";
 import {SelectListHttpService} from "../../../../service/select-list-http.service";
 
 import {PersonComponent} from "./list/person/person.component";
@@ -45,6 +46,9 @@ import {DataProcessingService} from "../../../../service/dataProcessing.service"
 import {SearchService} from "../../../../service/search.service";
 
 
+import * as _ from 'lodash';
+
+
 @Component({
     selector: 'app-swzb-person',
     templateUrl: './swzb-person.component.html',
@@ -53,6 +57,7 @@ import {SearchService} from "../../../../service/search.service";
     providers: [SearchService]
 })
 export class SwzbPersonComponent implements OnInit {
+
     private selectList = new Array;
     public hjbxx = new HjbxxModel;
     public info: any;
@@ -65,24 +70,36 @@ export class SwzbPersonComponent implements OnInit {
     Breadcrumb: MenuItem[];
     types1: SelectItem[];
     types2: SelectItem[];
-    navList = new Array;
+    private navList = new Array();
+    private navListUrl = new Array();
     public showqqq: boolean = true;
     isShowDcfw: boolean = false;
+    isShowZydl: boolean = false;
     moreInput: boolean = false;
     moreText: string = "显示更多内容";
-    private whetherDisabled: boolean;
-    private avtiveName: any;
+    private activeTabName: any;
+    private activeTabId: any;
+    private bj_have_tab: boolean = false;
+
+    private tabHttpUrl: any;
     public selectedType1: string;
     public selectedType2: string;
     public isShowArea: boolean = false;
 
-    public isDisabled: boolean = true;
-    private alertModelInfo: alertModelInfo = new alertModelInfo;
-    public hcylb;
+    public isDisabled: boolean = false;
+
+    public hcylb = new Array();
+    public sblb = new Array();
+    public mzlb = new Array();
+    public sslb = new Array();
     public qshflId;
 
     private ssgcdm: string;
     private ssxzqhdm: string;
+
+    private showFooterBtn: boolean = false;
+    public jmhListUrl: any;
+    private jmhList: any;
 
 
     //  初始化的HJBXX
@@ -93,244 +110,326 @@ export class SwzbPersonComponent implements OnInit {
 
     //  子组件初始化的值
 
-    public init_trees_data;
-    public init_water_data;
-    public init_houses_data;
-    public init_fsss_data;
-    public init_land_data;
-    public init_land_other_data;
+    public init_lxgm_data;
+    public init_xxzx_data;
+    public init_fwjbxx_data = new Array();
+    public init_fsssjbxx_data;
+    public init_tdjbxx_data;
+    public init_tdfzwjbxx_other_data;
     public init_person_data;
-    public init_decor_data;
+    public init_fwzxjbxx_data;
     public init_grave_data;
+    public init_sbdgcjbxx2_data;
+    public init_gbdsgc_data;
+    public init_gdgcjbxx2_data: any;
+    public init_gkjbxx_data: any;
+    public init_mtjbxx_data: any;
+    public init_wwgj_data: any;
+    public init_swqxz_data: any;
+    public init_kczy_data: any;
+    public init_slsd_data: any;
+    public init_fyssjbxx_data;
+    public init_shebei_data: any;
+    public init_sheshi_data: any;
+    public init_hdjbxx2_data: any;
+    public init_qhjbxx2_data: any;
+    public init_tljbxx2_data: any;
+    public init_gtgsjbxx2_data: any;
+    public init_nfyjbxx2_data: any;
+    public init_dxgcjbxx2_data: any;
+    public init_qtzxjbxx2_data: any;
+    public init_gljbxx2_data: any;
+    public init_dwjbxx2_data: any;
+
 
     //  保存子组件data数据
-    public trees_data;
-    public water_data;
-    public houses_data;
-    public grave_data;
-    public fsss_data;
-    public land_data;
-    public land_other_data;
-    public decor_data;
+    public trees_data: any;
+    public water_data: any;
+    public fwjbxx_data: any;
+    public grave_data: any;
+    public fsss_data: any;
+    public land_data: any;
+    public land_other_data: any;
+    public decor_data: any;
+    public sbdgcjbxx2_data: any;
+    public gbdsgc_data: any;
+    public gdgcjbxx2_data: any;
+    public gkjbxx_data: any;
+    public mtjbxx_data: any;
+    public wwgj_data: any;
+    public swqxz_data: any;
+    public kczy_date: any;
+    public slsd_data: any;
+    public fyss_data: any;
+    public shebei_data: any;
+    public sheshi_data: any;
+    public hdjbxx2_data: any;
+    public qhjbxx2_data: any;
+    public tljbxx2_data: any;
+
+    public qtzxjbxx2_data: any;
+    public dxgcjbxx2_data: any;
+    public gljbxx2_data: any;
+    public nfyjbxx2_data: any;
+    public dwjbxx2_data: any;
+    public gtgsjbxx_data:any;
+
 
     //标记第一次加载
-    public bj_houses_data = 1;
-    public bj_decor_data = 1;
-    public bj_water_data = 1;
-    public bj_fsss_data = 1;
-    public bj_land_data = 1;
-    public bj_trees_data = 1;
-    public bj_land_other_data = 1;
-
-
-    //  子组件中修改过的真实数据
-
-    public update_trees_data;
-    public update_water_data;
-    public update_houses_data;
-    public update_grave_data;
-    public update_fsss_data;
-    public update_land_data;
-    public update_land_other_data;
-    public update_person_data;
-    public update_decor_data;
-
-    //子组件中修改过的分类信息数据
-    public update_trees_flxx_data;
-    public update_water_flxx_data;
-    public update_houses_flxx_data;
-    public update_grave_flxx_data;
-    public update_fsss_flxx_data;
-    public update_land_flxx_data;
-    public update_land_flxx_other_data;
-    public update_person_flxx_data;
-    public update_decor_flxx_data;
-
-    //子组件中修改过的规格明细数据
-    public update_trees_ggmx_data;
-    public update_water_ggmx_data;
-    public update_houses_ggmx_data;
-    public update_grave_ggmx_data;
-    public update_fsss_ggmx_data;
-    public update_land_ggmx_data;
-    public update_land_ggmx_other_data;
-    public update_person_ggmx_data;
-    public update_decor_ggmx_data;
-
-
-    //  子组件中准备删除的真实数据
-    public del_trees_data;
-    public del_water_data;
-    public del_houses_data;
-    public del_grave_data;
-    public del_fsss_data;
-    public del_land_data;
-    public del_land_other_data;
-    public del_person_data;
-    public del_decor_data;
-
-    //子组件中准备删除的分类信息数据
-    public del_trees_flxx_data;
-    public del_water_flxx_data;
-    public del_houses_flxx_data;
-    public del_grave_flxx_data;
-    public del_fsss_flxx_data;
-    public del_land_flxx_data;
-    public del_land_flxx_other_data;
-    public del_person_flxx_data;
-    public del_decor_flxx_data;
-
-    //子组件中准备删除的规格明细数据
-    public del_trees_ggmx_data;
-    public del_water_ggmx_data;
-    public del_houses_ggmx_data;
-    public del_grave_ggmx_data;
-    public del_fsss_ggmx_data;
-    public del_land_ggmx_data;
-    public del_land_ggmx_other_data;
-    public del_person_ggmx_data;
-    public del_decor_ggmx_data;
+    public bj_fwjbxx_data = 1;
+    public bj_fwzxjbxx_data = 1;
+    public bj_xxzx_data = 1;
+    public bj_fsssjbxx_data = 1;
+    public bj_tdjbxx_data = 1;
+    public bj_lxgm_data = 1;
+    public bj_tdfzwjbxx_other_data = 1;
+    public bj_fyssjbxx_data = 1;
 
 
     // 子组件中准备新增的真实数据
-    public add_trees_data;
-    public add_water_data;
-    public add_houses_data;
-    public add_grave_data;
-    public add_fsss_data;
-    public add_land_data;
-    public add_land_other_data;
-    public add_person_data;
-    public add_decor_data;
+    public add_lxgm_data = new Array();
+    public add_xxzx_data = new Array();
+    public add_fwjbxx_data = new Array();
+    public add_grave_data = new Array();
+    public add_fsssjbxx_data = new Array();
+    public add_tdjbxx_data = new Array();
+    public add_tdfzwjbxx_other_data = new Array();
+    public add_fwzxjbxx_data = new Array();
+    public add_sbdgcjbxx_data = new Array();
+    public add_gbdsjbxx_data = new Array();
+    public add_gdgcjbxx_data = new Array();
+    public add_gkjbxx_data = new Array();
+    public add_mtjbxx_data = new Array();
+    public add_wwgj_data = new Array();
+    public add_swqxz_data = new Array();
+    public add_kczy_data = new Array();
+    public add_slsd_data = new Array();
+    public add_fyssjbxx_data = new Array();
+    public add_shebei_data = new Array();
+    public add_sheshi_data = new Array();
+    public add_hdjbxx_data = new Array();
+    public add_tljbxx_data = new Array();
+    public add_qhjbxx_data = new Array();
+
+    public add_qtzxjbxx_data = new Array();
+    public add_dxgcjbxx_data = new Array();
+    public add_nfyjbxx_data = new Array();
+    public add_gljbxx_data = new Array();
+    public add_dwjbxx_data = new Array();
+    public add_gtgsjbxx_data = new Array();
 
 
-    //子组件中准备删除的分类信息数据
-    public add_trees_flxx_data;
-    public add_water_flxx_data;
-    public add_houses_flxx_data;
-    public add_grave_flxx_data;
-    public add_fsss_flxx_data;
-    public add_land_flxx_data;
-    public add_land_flxx_other_data;
-    public add_person_flxx_data;
-    public add_decor_flxx_data;
+    //  子组件中修改过的真实数据
+    public update_lxgm_data = new Array();
+    public update_xxzx_data = new Array();
+    public update_fwjbxx_data = new Array();
+    public update_grave_data = new Array();
+    public update_fsssjbxx_data = new Array();
+    public update_tdjbxx_data = new Array();
+    public update_tdfzwjbxx_other_data = new Array();
+    public update_person_data = new Array();
+    public update_fwzxjbxx_data = new Array();
+    public update_sbdgcjbxx_data = new Array();
+    public update_gbdsjbxx_data = new Array();
+    public update_gdgcjbxx_data = new Array();
+    public update_gkjbxx_data = new Array();
+    public update_mtjbxx_data = new Array();
+    public update_wwgj_data = new Array();
+    public update_swqxz_data = new Array();
+    public update_kczy_data = new Array();
+    public update_slsd_data = new Array();
+    public update_fyssjbxx_data = new Array();
+    public update_shebei_data = new Array();
+    public update_sheshi_data = new Array();
+    public update_hdjbxx_data = new Array();
+
+    public update_dwjbxx_data = new Array();
+    public update_dxgcjbxx_data = new Array();
+    public update_nfyjbxx_data = new Array();
+    public update_gljbxx_data = new Array();
+    public update_qtzxjbxx_data = new Array();
+
+
+    public update_tljbxx_data = new Array();
+    public update_qhjbxx_data = new Array();
+    public update_gtgsjbxx_data = new Array();
+
+
+    //  子组件中准备删除的真实数据
+    public del_lxgm_data = new Array();
+    public del_xxzx_data = new Array();
+    public del_fwjbxx_data = new Array();
+    public del_grave_data = new Array();
+    public del_fsssjbxx_data = new Array();
+    public del_tdjbxx_data = new Array();
+    public del_tdfzwjbxx_other_data = new Array();
+    public del_person_data = new Array();
+    public del_fwzxjbxx_data = new Array();
+    public del_sbdgcjbxx_data = new Array();
+    public del_gbdsjbxx_data = new Array();
+    public del_gdgcjbxx_data = new Array();
+    public del_gkjbxx_data = new Array();
+    public del_mtjbxx_data = new Array();
+    public del_wwgj_data = new Array();
+    public del_swqxz_data = new Array();
+    public del_kczy_data = new Array();
+    public del_slsd_data = new Array();
+    public del_fyssjbxx_data = new Array();
+    public del_shebei_data = new Array();
+    public del_sheshi_data = new Array();
+    public del_hdjbxx_data = new Array();
+    public del_tljbxx_data = new Array();
+    public del_qhjbxx_data = new Array();
+
+    public del_qtzxjbxx_data = new Array();
+    public del_dxgcjbxx_data = new Array();
+    public del_gljbxx_data = new Array();
+    public del_dwjbxx_data = new Array();
+    public del_nfyjbxx_data = new Array();
+    public del_gtgsjbxx_data = new Array();
+
+
+    //子组件中修改过的新增分类信息数据
+    public flxx_fwjbxx_add = new Array();
+    public flxx_fwzxjbxx_add = new Array();
+    public flxx_fsssjbxx_add = new Array();
+    public flxx_tdjbxx_add = new Array();
+    public flxx_lxgm_add = new Array();
+    public flxx_xxzx_add = new Array();
+    public flxx_tdfzwjbxx_other_add = new Array();
+    public flxx_fyssjbxx_add = new Array();
+
+
+    //子组件中修改过的分类信息数据
+    public flxx_tdjbxx_update = new Array();
+    public flxx_fwjbxx_update = new Array();
+    public flxx_lxgm_update = new Array();
+    public flxx_tdfzwjbxx_other_update = new Array();
+    public flxx_fwzxjbxx_update = new Array();
+    public flxx_fsssjbxx_update = new Array();
+    public flxx_xxzx_update = new Array();
+    public flxx_fyssjbxx_update = new Array();
+
+
+    //子组件中修改过的删除信息数据
+    public flxx_fwjbxx_del = new Array();
+    public flxx_fwzxjbxx_del = new Array();
+    public flxx_tdjbxx_del = new Array();
+    public flxx_fsssjbxx_del = new Array();
+    public flxx_lxgm_del = new Array();
+    public flxx_xxzx_del = new Array();
+    public flxx_tdfzwjbxx_other_del = new Array();
+    public flxx_fyssjbxx_del = new Array();
+
+
+    //子组件中准备新增的规格明细数据
+    public add_lxgm_ggmx_data = new Array();
+    public add_xxzx_ggmx_data = new Array();
+    public add_fwjbxx_ggmx_data = new Array();
+    public add_fsssjbxx_ggmx_data = new Array();
+    public add_tdjbxx_ggmx_data = new Array();
+    public add_tdjbxx_ggmx_other_data = new Array();
+    public add_fwzxjbxx_ggmx_data = new Array();
+    public add_fyssjbxx_ggmx_data = new Array();
+
+
+    //子组件中修改过的规格明细数据
+    public update_lxgm_ggmx_data = new Array();
+    public update_xxzx_ggmx_data = new Array();
+    public update_fwjbxx_ggmx_data = new Array();
+    public update_fsssjbxx_ggmx_data = new Array();
+    public update_tdjbxx_ggmx_data = new Array();
+    public update_tdjbxx_other_ggmx_data = new Array();
+    public update_fwzxjbxx_ggmx_data = new Array();
+    public update_fyssjbxx_ggmx_data = new Array();
+
 
     //子组件中准备删除的规格明细数据
-    public add_trees_ggmx_data;
-    public add_water_ggmx_data;
-    public add_houses_ggmx_data;
-    public add_grave_ggmx_data;
-    public add_fsss_ggmx_data;
-    public add_land_ggmx_data;
-    public add_land_ggmx_other_data;
-    public add_person_ggmx_data;
-    public add_decor_ggmx_data;
+    public del_lxgm_ggmx_data = new Array();
+    public del_xxzx_ggmx_data = new Array();
+    public del_fwjbxx_ggmx_data = new Array();
+    public del_fsssjbxx_ggmx_data = new Array();
+    public del_tdjbxx_ggmx_data = new Array();
+    public del_tdjbxx_ggmx_other_data = new Array();
+    public del_fwzxjbxx_ggmx_data = new Array();
+    public del_fyssjbxx_ggmx_data = new Array();
+
+
+    public mzjbxx = new Array();
+    public houses_name_active_base_copy = [0];
+    public decor_name_active_base_copy = [0];
+    public water_name_active_base_copy = [0];
+    public fsss_name_active_base_copy = [0];
+    public trees_name_active_base_copy = [0];
+    public land_name_active_base_copy = [0];
+    public land_other_name_active_base_copy = [0];
+    public fyss_name_active_base_copy = [0];
+
+
+    private fw2: any;
+    private gkjbxx2: any;
+    private person2: any;
+    private fwzxjbxx: any;
+    private fsssjbxx: any;
+    private tdjbxx: any;
+    private tdfzwjbxx: any;
+    private lxgm: any;
+    private xxzx: any;
+    private fmjbxx: any;
+    private sbdgcjbxx2: any;
+    private gbdsgc2: any;
+    private gdgcjbxx2: any;
+    private mtjbxx2: any;
+    private wwgj: any;
+    private swqxz2: any;
+    private kczy2: any;
+    private slsd2: any;
+    private fyssjbxx: any;
+    private shebeijbxx: any;
+    private sheshijbxx: any;
+    private hdjbxx2: any;
+    private tljbxx2: any;
+    private qhjbxx2: any;
+    private gtgsjbxx2:any;
+    private nfyjbxx2: any;
+    private dwjbxx2: any;
+    private gljbxx2: any;
+    private dxgcjbxx2: any;
+    private qtzxjbxx2: any;
 
 
     private gzjd = new Array;
-    private zydlList: any;
-    private dcfwList: any;
+    private zydlTableList: any;
+    private zydlTreeList: any;
+    private dcfwTreeList: any;
+    private dcfwTableList: any;
+
+    private getNewHuList: boolean = false;
+
+
     private def_jddm: string;//  默认阶段代码
 
-    private TjpdValue: boolean = true;   // 提交的时候的提醒
+    private BtpdValue: boolean = true;   // 提交的时候的提醒
     private TjHjbxxValue: boolean = true;// 提交的对户基本信息判断
 
     //  做记录储存最终需要提交的结果
     //  人口
-    private listHcyAdd: any;
+    private listHcyAdd = new Array();
     private listHcyDel: any;
     private listHcyEdit: any;
-    //  房屋
-    private listFwAdd: any;
-    private listFwDel: any;
-    private listFwEdit: any;
-    //  房屋分类
-    private listFwflmxAdd: any;
-    private listFwflmxDel: any;
-    private listFwflmxEdit = new Array();
-    public flxx_houses_update = new Array();
-    //   房屋规格明细
-    private listFwggmxAdd: any;
-    private listFwggmxDel: any;
-    private listFwggmxEdit: any;
-    // 房屋装修
-    private listFwzxAdd: any;
-    private listFwzxDel: any;
-    private listFwzxEdit: any;
-    //  房屋装修分类明细
-    private listFwzxflmxAdd: any;
-    private listFwzxflmxDel: any;
-    private listFwzxflmxEdit: any;
-    //  房屋装修规格明细
-    private listFwzxggmxAdd: any;
-    private listFwzxggmxDel: any;
-    private listFwzxggmxEdit: any;
-    // 附属设施
-    private listFsssAdd: any;
-    private listFsssDel: any;
-    private listFsssEdit: any;
-    //  附属设施分类明细
-    private listFsssflmxAdd: any;
-    private listFsssflmxDel: any;
-    private listFsssflmxEdit: any;
-    // 附属设施规格明细
-    private listFsssggmxAdd: any;
-    private listFsssggmxDel: any;
-    private listFsssggmxEdit: any;
-    //  土地
-    private listTdAdd: any;
-    private listTdDel: any;
-    private listTdEdit: any;
-    //  土地分类明细
-    private listTdflmxAdd: any;
-    private listTdflmxDel: any;
-    private listTdflmxEdit: any;
 
-    private listTdggmxAdd; // 土地规格明细-新增
-    private listTdggmxDel; // 土地规格明细-删除
-    private listTdggmxEdit; // 土地规格明细-修改
-
-    private listTdfzwAdd; // 土地附着物-新增
-    private listTdfzwDel; // 土地附着物-删除
-    private listTdfzwEdit; // 土地附着物-修改
-
-    private listTdfzwflmxAdd; // 土地附着物分类明细-新增
-    private listTdfzwflmxDel; // 土地附着物分类明细-删除
-    private listTdfzwflmxEdit; // 土地附着物分类明细-修改
-
-    private listTdfzwggmxAdd; // 土地附着物规格明细-新增
-    private listTdfzwggmxDel; // 土地附着物规格明细-删除
-    private listTdfzwggmxEdit; // 土地附着物规格明细-修改
-
-    private listLxgmAdd; // 零星果木-新增
-    private listLxgmDel; // 零星果木-删除
-    private listLxgmEdit; // 零星果木-修改
-
-    private listLxgmflmxAdd; // 零星果木分类明细-新增
-    private listLxgmflmxDel; // 零星果木分类明细-删除
-    private listLxgmflmxEdit; // 零星果木分类明细-修改
-
-    private listFmAdd; // 坟墓-新增
-    private listFmDel; // 坟墓-删除
-    private listFmEdit; // 坟墓-修改
-
-    private listXxzxAdd; // 小型水利水电（小型专项）-新增
-    private listXxzxDel; // 小型水利水电（小型专项）-删除
-    private listXxzxEdit; // 小型水利水电（小型专项）-修改
-
-    private listXxzxflmxAdd; // 小型水利水电（小型专项）分类明细-新增
-    private listXxzxflmxDel; // 小型水利水电（小型专项）分类明细-删除
-    private listXxzxflmxEdit; // 小型水利水电（小型专项）分类明细-修改
-
-    private listXxzxggmxAdd; // 小型水利水电（小型专项）规格明细-新增
-    private listXxzxggmxDel; // 小型水利水电（小型专项）规格明细-删除
-    private listXxzxggmxEdit; // 小型水利水电（小型专项）规格明细-修改
+    private def_hjbxx_info: any;
+    private def_hcylb_info: any;
+    private tabName = "string";
 
 
     @ViewChild('room', {read: ViewContainerRef}) ModelRoom: ViewContainerRef;
+    @ViewChild('ngModel') hjbxxForm: NgForm;
 
 
-    constructor(private selectListSevice: SelectListHttpService, private searchService: SearchService, private dataProcesing: DataProcessingService, private HttpService: HttpService, private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private router: Router) {
+    constructor(private ShareService: ShareService, private selectListSevice: SelectListHttpService, private searchService: SearchService, private dataProcesing: DataProcessingService, private HttpService: HttpService, private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private router: Router) {
+
+
         this.types1 = [];
         this.types1.push({label: '是', value: '1'});
         this.types1.push({label: '否', value: '0'});
@@ -339,22 +438,55 @@ export class SwzbPersonComponent implements OnInit {
         this.types2.push({label: '否', value: '0'});
     }
 
+    ngAfterViewInit(): void {
+        console.log(this.isShowArea);
+        console.log(this.isShowZydl);
+
+
+        //   订阅表单值改变事件
+        this.hjbxxForm.valueChanges.subscribe(data => {
+                console.log(this.hjbxx);
+                console.log(this.ModelRoom);
+                if (this.hjbxx['hzxm'] && this.hjbxx['dabh']) {
+                    console.log(this.bj_have_tab);
+                    if (!this.bj_have_tab) {
+                        console.log(this.ModelRoom);
+                        this.saveRouter(this.activeTabName, this.activeTabId);
+                    }
+
+                }
+            }
+        );
+
+
+    }
+
+
     ngOnInit() {
-        console.log(this.type);
-        console.log(this.info);
-        console.log(this.qshflId);
+        console.log(this.tabHttpUrl);
+        console.log(this.fwjbxx_data);
         //  所属行政区划代码和工程代码
         if (this.type == 'add') {
+            this.info = new Object();
             this.ssgcdm = this.qshflId.ssgcdm;
             this.ssxzqhdm = this.qshflId.ssxzqhdm;
-
+            this.hjbxx.xzqhmc = this.qshflId.ssxzqhmc;
+            this.hjbxx.dabh = "";
+            this.hjbxx.sfkgh = "";
+            this.hjbxx.zydldm = "";
+            this.hjbxx.dcfwdm = "";
         } else if (this.type == 'rew') {
             this.ssgcdm = this.info.ssgcdm;
             this.ssxzqhdm = this.info.ssxzqhdm;
+
         } else {
             this.ssgcdm = this.info.ssgcdm;
             this.ssxzqhdm = this.info.ssxzqhdm;
+            this.showFooterBtn = true;
+            this.isDisabled = true;
+
         }
+
 
         //  获取户类别代码
         this.HttpService.get(`qsrsjswzb/listQsrlb`)
@@ -372,12 +504,7 @@ export class SwzbPersonComponent implements OnInit {
             });
         // 默认阶段代码
         this.def_jddm = this.qshflId.jddm;
-        this.avtiveName = 'person';
 
-        // 获取专业大类
-        this.selectListSevice.getSelectList('B_HJBXX', 'ZYDLDM', this.ssgcdm, this.ssxzqhdm).then(data => {
-            this.zydlList = data;
-        });
 
         console.log(this.ssxzqhdm, this.ssgcdm);
         switch (this.type) {
@@ -385,42 +512,55 @@ export class SwzbPersonComponent implements OnInit {
                 //  循环出来导航栏,
                 this.HttpService.get(`qsrsjswzb/listQsrsjzb?ssgcdm=${this.ssgcdm}&ssxzqhdm=${this.ssxzqhdm}&qsrlxzdxId=${this.qshflId.id}`)
                     .then((res) => {
-                        console.log(res['returnObject']);
-                        this.navList = res['returnObject'];
+                        let lsArr = this.delNav(res['returnObject']);
+                        this.navList = lsArr.sort(this.delSort('pxh'));
+                        this.activeTabName = this.navList[0].url;
+                        this.getUrlList(this.navList);
+
+                        this.HttpService.get(`/jmh/show?id=${this.info.id}`)
+                            .then(res => {
+                                console.log(res);
+                                this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
+                                this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
+                                console.log(this.init_hjbxx_data);
+                                this.hjbxx = res['returnObject']['bHjbxx'];
+                                this.hcylb = res['returnObject']['listHcy'];
+                                this.def_hcylb_info = JSON.parse(JSON.stringify(this.hcylb));
+                                this.sfxw = this.hjbxx.sfxw;
+                                this.saveRouter(this.activeTabName, this.activeTabId);
+                            });
                     });
-                this.HttpService.get(`/jmh/show?id=${this.info.id}`)
-                    .then(res => {
-                        console.log(res);
-                        this.hjbxx = res['returnObject']['bHjbxx'];
-                        this.sfxw = this.hjbxx.sfxw;
-                        this.hcylb = res['returnObject']['listHcy'];
+                console.log(this.jmhListUrl);
+                this.HttpService.get(this.jmhListUrl)
+                    .then((data) => {
+                        this.jmhList = data['returnObject'];
                     });
+
                 break;
             case 'add':
                 //  循环出来导航栏,
                 this.HttpService.get(`qsrsjswzb/listQsrsjzb?ssgcdm=${this.ssgcdm}&ssxzqhdm=${this.ssxzqhdm}&qsrlxzdxId=${this.qshflId.id}`)
                     .then((res) => {
                         console.log(res['returnObject']);
-                        this.navList = res['returnObject'];
-                        const person = this.AlertModel.resolveComponentFactory(PersonComponent);
-                        const person2 = this.ModelRoom.createComponent(person);
-                        person2.instance.qshflId = this.qshflId;
-                        person2.instance.type = this.type;
 
-                        this.update_person_data = person2.instance.update_person_data;
-                        this.del_person_data = person2.instance.del_person_data;
-                        this.add_person_data = person2.instance.add_person_data;
+                        let lsArr = this.delNav(res['returnObject']);
+                        this.navList = lsArr.sort(this.delSort('pxh'));
+                        console.log(this.navList);
+                        if (this.navList[0]) {
+                            this.activeTabName = this.navList[0].url;
+
+                            this.getUrlList(this.navList);
+
+                        } else {
+                            this.msgs = [];
+                            this.msgs.push({severity: 'error', summary: '填入提醒', detail: '该行政区划没有进行配置'});
+                        }
                     });
-                //   专业大类列表
-                // this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.qshflId.ssgcdm}&xzqhdm=${this.qshflId.ssxzqhdm}`)
-                //     .then((res) => {
-                //         console.log(res['returnObject']);
-                //         this.zydlList = this.dataProcesing.replaceChildlValue(res['returnObject'], 'mc', 'label', 'dm', 'value')
-                //     });
+
                 //  所属系统代码后期使用
                 this.postObject['bHjbxx'] = {};
 
-                this.hjbxx.ssxtdm = this.hjbxx.ssxtdm;
+                this.hjbxx.ssxtdm = 'X000001';
                 this.hjbxx.ssgcdm = this.qshflId.ssgcdm;
                 this.hjbxx.jddm = this.qshflId.jddm;
                 this.hjbxx.ssxzqhdm = this.qshflId.ssxzqhdm;
@@ -430,51 +570,50 @@ export class SwzbPersonComponent implements OnInit {
             case 'rew':
                 //  循环出来导航栏,
 
+
                 this.HttpService.get(`qsrsjswzb/listQsrsjzb?ssgcdm=${this.ssgcdm}&ssxzqhdm=${this.ssxzqhdm}&qsrlxzdxId=${this.qshflId.id}`)
                     .then((res) => {
                         console.log(res['returnObject']);
-                        this.navList = res['returnObject'];
+                        let lsArr = this.delNav(res['returnObject']);
+                        this.navList = lsArr.sort(this.delSort('pxh'));
+                        this.activeTabName = this.navList[0].url;
+                        this.activeTabId = this.navList[0].swzblbId;
+                        console.log(this.activeTabName);
+                        // this.getUrlList(this.navList);
+
+
+                        this.HttpService.get(`/jmh/show?id=${this.info.id}`)
+                            .then(res => {
+                                console.log(res);
+                                this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
+                                this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
+                                console.log(this.init_hjbxx_data);
+                                this.hjbxx = res['returnObject']['bHjbxx'];
+                                this.hcylb = res['returnObject']['listHcy'];
+                                this.def_hcylb_info = JSON.parse(JSON.stringify(this.hcylb));
+                                this.sfxw = this.hjbxx.sfxw;
+                                this.saveRouter(this.activeTabName, this.activeTabId);
+                                // const person = this.AlertModel.resolveComponentFactory(PersonComponent);
+                                // this.person2 = this.ModelRoom.createComponent(person);
+                                // this.person2.instance.childInfo = this.hjbxx;
+                                // this.person2.instance.childInfo2 = this.hcylb;
+                                // this.person2.instance.type = this.type;
+                                // this.person2.instance.qshflId = this.qshflId;
+                                // this.person2.instance.init_person_data = this.init_person_data;
+                                //
+                                // this.person2.instance.add_person_data = this.listHcyAdd;
+                                // this.person2.instance.del_person_data = this.del_person_data;
+                                // this.person2.instance.update_person_data = this.update_person_data;
+
+                            });
+
+
                     });
-                //   专业大类列表
 
 
-                this.HttpService.get(`/jmh/show?id=${this.info.id}`)
-                    .then(res => {
-                        this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
-                        this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
-                        console.log(this.init_hjbxx_data);
-                        this.hjbxx = res['returnObject']['bHjbxx'];
-                        this.hcylb = res['returnObject']['listHcy'];
-                        this.sfxw = this.hjbxx.sfxw;
-
-                        const alert = this.AlertModel.resolveComponentFactory(PersonComponent);
-                        const alert2 = this.ModelRoom.createComponent(alert);
-                        alert2.instance.childInfo = this.hjbxx;
-                        alert2.instance.childInfo2 = this.hcylb;
-                        alert2.instance.type = this.type;
-                        alert2.instance.update_person_data = Array();
-                        alert2.instance.qshflId = this.hjbxx;
-                        alert2.instance.del_person_data = Array();
-
-                        alert2.instance.init_person_data = this.init_person_data;
-
-                        this.update_person_data = alert2.instance.update_person_data;
-                        this.del_person_data = alert2.instance.del_person_data;
-                        this.add_person_data = alert2.instance.add_person_data;
-
-                    });
                 break;
         }
-        this.selectList = [
-            {label: '农村部分', name: '农村部分', value: '0'},
-            {label: '县城部分', name: '县城部分', value: '1'},
-            {label: '集镇部分', name: '集镇部分', value: '2'},
-        ];
-
-
-    }
-
-    ngAfterViewInit() {
+        this.qshflId.ssxzqhSearchDm = this.qshflId.ssxzqhdmMin ? this.qshflId.ssxzqhdmMin : this.qshflId.ssxzqhdm;
     }
 
     //  是否空挂户
@@ -483,45 +622,25 @@ export class SwzbPersonComponent implements OnInit {
     }
 
     //  是否线外
-    selectedTypea2(e): void {
+    selectedTypea2(event): void {
+        console.log(this.hjbxx.sfxw);
         console.log(this.sfxw);
-        // if(!this.sfxw==null){
+        // if(this.hjbxx.sfxw == event.option.value){
+        //     this.hjbxx.sfxw = null;
+        //     event.option.value=null
+        // }else{
+        //     this.hjbxx.sfxw=event.option.value;
+        // }
+
+
         if (this.sfxw == this.hjbxx.sfxw) {
             this.sfxw = null;
         } else {
             this.hjbxx.sfxw = this.sfxw;
             this.sfxw = this.sfxw;
         }
-        // }
-
     }
 
-
-    showAreaBlock(): void {
-        if (this.isShowArea) {
-            this.isShowArea = false;
-        } else {
-            this.isShowArea = true;
-        }
-    }
-
-    getZydl(index) {
-        console.log(index);
-        this.hjbxx.zydldm = index;
-    }
-
-    showTypeBlock() {
-
-        if (!this.dcfwList) {
-
-            this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
-                .then((res) => {
-                    console.log(res['returnObject']);
-                    this.dcfwList = res['returnObject'];
-                });
-        }
-        this.isShowDcfw = this.isShowDcfw ? false : true;
-    }
 
     closeBottom() {
         if (this.showTOP == false) {
@@ -531,6 +650,27 @@ export class SwzbPersonComponent implements OnInit {
 
 
     showMoreInput() {
+        console.log(this.add_nfyjbxx_data);
+
+
+
+        console.log(this.update_shebei_data);
+        console.log(this.add_shebei_data);
+        console.log(this.del_shebei_data);
+
+        console.log(this.flxx_fyssjbxx_add);
+        console.log(this.flxx_fyssjbxx_update);
+        console.log(this.flxx_fyssjbxx_del);
+
+        console.log(this.add_fyssjbxx_ggmx_data);
+        console.log(this.update_fyssjbxx_ggmx_data);
+        console.log(this.del_fyssjbxx_ggmx_data);
+
+        console.log(this.add_fwjbxx_data);
+        console.log(this.update_fwjbxx_data);
+        console.log(this.flxx_fwjbxx_update);
+        console.log(this.flxx_fwjbxx_add);
+        console.log(this.flxx_fwjbxx_del);
 
         if (this.moreInput) {
             this.moreInput = false;
@@ -541,547 +681,1414 @@ export class SwzbPersonComponent implements OnInit {
         }
     }
 
-    save() {
-        console.log(this.add_houses_data);
+    save(i) {
+        this.def_hjbxx_info = JSON.parse(JSON.stringify(this.hjbxx));
 
-        console.log(this.flxx_houses_update);
+        console.log(this.def_hjbxx_info);
+        console.log(this.del_person_data);
 
-        //  1:如果有为新增的话
-        if (this.type === 'add') {
-            let hjbxxRew = this.hjbxx;
-            //判断 add_person_data里面是否有信息，如果没有的话，则把父信息默认到子组件
-            this.add_person_data.forEach((item, key, arr) => {
-                console.log(item);
-                for (let i in item) {
-                    console.log(i)
-                    if (item.mc == "") {
-                        item.mc = this.hjbxx.hzxm;
-                    }
-                    if (item.yhzgxdm == "") {
-                        item.yhzgxdm = "HHR-01"
-                    }
-                    item.ssxtdm = this.hjbxx.ssxtdm;
-                    item.ssgcdm = this.hjbxx.ssgcdm;
-                    item.zydldm = this.hjbxx.zydldm;
-                    item.dcfwdm = this.hjbxx.dcfwdm;
-                    item.jddm = this.hjbxx.jddm;
-                    item.szxzqhdm = this.hjbxx.ssxzqhdm;
-                    item.sfkgr = this.hjbxx.sfkgh;
+
+        // 户基本信息处理
+        let hjbxxRew = {};
+        let lsHjbxxRew = JSON.parse(JSON.stringify(this.hjbxx))
+
+        if (this.type == "add") {
+            console.log(lsHjbxxRew);
+            for (let item in lsHjbxxRew) {
+                delete lsHjbxxRew.dcfwmc;
+                delete lsHjbxxRew.zydlmc;
+                delete lsHjbxxRew.hlbmc;
+                delete lsHjbxxRew.xzqhmc;
+            }
+            if (!this.bhjbxxBtpd(lsHjbxxRew)) {
+                return false;
+            }
+            console.log("1");
+            hjbxxRew = lsHjbxxRew;
+        } else {
+            hjbxxRew = this.saveHjbxxChange(lsHjbxxRew, this.init_hjbxx_data);
+            hjbxxRew['id'] = lsHjbxxRew['id'];
+        }
+        console.log("1");
+
+        // 户成员处理
+        let listHcyAdd = this.changeTable(this.listHcyAdd);
+        console.log(listHcyAdd);
+        if (listHcyAdd.length != 0) {
+            // console.log(this.Btpd(listHcyAdd, hcyBtpd, "户成员信息"));
+            if (this.activeTabName == 'person') {
+                if (!this.Btpd(listHcyAdd, hcyBtpd, "户成员信息")) {
+                    return false;
                 }
-            });
-            console.log(this.add_person_data);
-            console.log(hjbxxRew);
-            this.postObject['bHjbxx'] = hjbxxRew;
-            this.postObject['listHcyAdd'] = this.add_person_data;
-            this.bhjbxxBT(hjbxxRew);
-            if (this.TjHjbxxValue) {
-                this.HttpService.post('/jmh/save', this.postObject)
-                    .then((data) => {
-
-                        if (data['success'] === true) {
-                            this.msgs = [];
-                            this.msgs.push({severity: 'success', summary: '填入提醒', detail: '数据保存成功'});
-
-                        } else {
-                            this.msgs = [];
-                            this.msgs.push({severity: 'error', summary: '保存失败', detail: '请联系管理员'});
-
-                        }
-                    })
+            } else {
+                if (!this.Btpd(listHcyAdd, qsrBtpd, "权属人信息")) {
+                    return false;
+                }
             }
 
         }
 
-        //  2:如果为修改的话
-        if (this.type === 'rew') {
 
-
-            let hjbxxRew = this.saveHjbxxChange(this.hjbxx, this.init_hjbxx_data);
-            console.log(hjbxxRew);
-            if (Object.keys(hjbxxRew).length !== 0) {
-                this.postObject['bHjbxx'] = hjbxxRew;
+        console.log("3");
+        if (this.add_fwjbxx_data.length != 0) {
+            console.log(this.add_fwjbxx_data);
+            if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
+                return false;
             }
+        }
 
-            //  去除中间空项
+
+        console.log("4");
+
+        if (this.add_fsssjbxx_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_fsssjbxx_data), comBtpd, "附属设施信息")) {
+                return false;
+            }
+        }
+        console.log("5");
+        if (this.add_tdjbxx_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_tdjbxx_data), comBtpd, "土地信息")) {
+                return false;
+            }
+        }
+        console.log("6");
+        if (this.add_tdfzwjbxx_other_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_tdfzwjbxx_other_data), comBtpd, "土地附着物信息")) {
+                return false;
+            }
+        }
+        if (this.add_lxgm_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_lxgm_data), comBtpd, "零星果木信息")) {
+                return false;
+            }
+        }
+        if (this.add_grave_data.length != 0) {
+            if (!this.Btpd(this.add_grave_data, comBtpd, "坟墓信息")) {
+                return false;
+            }
+        }
+        if (this.add_xxzx_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_xxzx_data), comBtpd, "小型水利水电信息")) {
+                return false;
+            }
+        }
+        // if (this.add_fwjbxx_data) {
+        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
+        //         return false;
+        //     }
+        // }
+        // if (this.add_fwjbxx_data) {
+        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
+        //         return false;
+        //     }
+        // }
+        // if (this.add_fwjbxx_data) {
+        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
+        //         return false;
+        //     }
+        // }
+
+        // 规格信息新增，结构代码为必填项
+        if (this.changeTable(this.add_fwjbxx_ggmx_data).length != 0) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_fwjbxx_ggmx_data), 'fwjgdm', "房屋规格信息结构代码")) {
+                return false;
+            }
+        }
+        if (this.changeTable(this.add_fwzxjbxx_ggmx_data)) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_fwzxjbxx_ggmx_data), 'zxlbdm', "房屋装修规格信息结构代码")) {
+                return false;
+            }
+        }
+        if (this.changeTable(this.add_fsssjbxx_ggmx_data)) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_fsssjbxx_ggmx_data), 'fssslbdm', "附属设施类别代码")) {
+                return false;
+            }
+        }
+        if (this.changeTable(this.add_tdjbxx_ggmx_data)) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_tdjbxx_ggmx_data), 'tdlbdm', "土地类别代码")) {
+                return false;
+            }
+        }
+        if (this.changeTable(this.add_tdjbxx_ggmx_other_data)) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_tdjbxx_ggmx_other_data), 'tdlbdm', "土地附着物类别代码")) {
+                return false;
+            }
+        }
+        if (this.changeTable(this.add_xxzx_ggmx_data)) {
+            if (!this.ggxxBtpd(this.changeTable(this.add_xxzx_ggmx_data), 'xxzxlbdm', "小型专项类别代码")) {
+                return false;
+            }
+        }
+
+        console.log("走到这里来了")
+
+
+        console.log(hjbxxRew);
+        if (Object.keys(hjbxxRew).length !== 0) {
+            this.postObject['bHjbxx'] = hjbxxRew;
+        }
+
+        //  户成员的修改
+        // let update_person_data = this.update_person_data;
+        if (this.update_person_data) {
             this.update_person_data.forEach((item, key, arr) => {
                 console.log(item);
 
-                if (Object.keys(item).length > 1) {
+                if (item) {
+                    delete item['whcdmc'];
+                    delete item['hkqkmc'];
+                    delete item['zydlmc'];
+                    delete item['dcfwmc'];
+                    delete item['xzqhmc'];
                     this.postObject['listHcyEdit'] = [];
                     this.postObject['listHcyEdit'].push(item);
                 }
             });
+        }
 
-            //  如果存在add的话
-            if (Object.keys(this.add_person_data).length !== 0) {
-                console.log(this.add_person_data);
-                this.postObject['listHcyAdd'] = [];
-                this.add_person_data.forEach((item, key, arr) => {
-                    if (Object.keys(item).length > 1) {
-                        console.log(item);
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        this.postObject['listHcyAdd'].push(item);
+
+        // 新增户成员
+
+
+        console.log(listHcyAdd)
+        if (listHcyAdd.length != 0) {
+
+
+            console.log(listHcyAdd);
+            this.postObject['listHcyAdd'] = [];
+
+            console.log(listHcyAdd);
+            for (let item in listHcyAdd) {
+                console.log(item);
+                listHcyAdd[item]["ssxtdm"] = this.hjbxx.ssxtdm;
+                listHcyAdd[item]["ssgcdm"] = this.qshflId.ssgcdm;
+                listHcyAdd[item]["jddm"] = this.qshflId.jddm;
+                console.log(listHcyAdd[item]);
+
+                if (listHcyAdd[item]['listFwAdd']) {
+                    console.log(listHcyAdd[item]['listFwAdd']);
+                    this.add_hcy_tab(item, listHcyAdd[item]['listFwAdd'], listHcyAdd, 'listFwAdd');
+                    console.log(listHcyAdd);
+                }
+                if (listHcyAdd[item]['listFwzxAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listFwzxAdd'], listHcyAdd, 'listFwzxAdd');
+                    console.log(this.postObject);
+                }
+                if (listHcyAdd[item]['listFsssAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listFsssAdd'], listHcyAdd, 'listFsssAdd');
+                }
+
+                if (listHcyAdd[item]['listTdAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listTdAdd'], listHcyAdd, 'listTdAdd');
+                }
+                if (listHcyAdd[item]['listTdfzwAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listTdfzwAdd'], listHcyAdd, 'listTdfzwAdd');
+                }
+
+                if (listHcyAdd[item]['listLxgmAdd']) {
+                    this.add_hcy_nnGGmx_tab(item, listHcyAdd[item]['listLxgmAdd'], listHcyAdd, 'listLxgmAdd');
+                }
+
+                if (listHcyAdd[item]['listFyssAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listFyssAdd'], listHcyAdd, 'listFyssAdd');
+                }
+                if (listHcyAdd[item]['listXxzxAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listXxzxAdd'], listHcyAdd, 'listXxzxAdd');
+                }
+                if (listHcyAdd[item]['listFmAdd']) {
+                    this.add_hcy_noAll_tab(item, listHcyAdd[item]['listFmAdd'], listHcyAdd, 'listFmAdd');
+                }
+                if (listHcyAdd[item]['listSbdgcAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listSbdgcAdd');
+                }
+                if (listHcyAdd[item]['listGbdsgcAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listGbdsgcAdd');
+                }
+                if (listHcyAdd[item]['listGdgcAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listGdgcAdd');
+                }
+
+                if (listHcyAdd[item]['listGkAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listGkAdd');
+                }
+
+                if (listHcyAdd[item]['listMtAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listMtAdd');
+                }
+
+
+                if (listHcyAdd[item]['listSwqxzAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listSwqxzAdd');
+                }
+                if (listHcyAdd[item]['listKczyAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listKczyAdd');
+                }
+                if (listHcyAdd[item]['listSlsdgcAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listSlsdgcAdd');
+                }
+                if (listHcyAdd[item]['listWwgjAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listWwgjAdd');
+                }
+
+
+                for (let item2 in listHcyAdd[item]) {
+                    delete listHcyAdd[item].id;
+                    delete listHcyAdd[item].dcfwmc;
+                    delete listHcyAdd[item].zydlmc;
+                    delete listHcyAdd[item].whcdmc;
+                    delete listHcyAdd[item].hkqkmc;
+
+                    delete listHcyAdd[item].xzqhmc;
+                    if (listHcyAdd[item][item2] === "") {
+                        delete listHcyAdd[item][item2]
                     }
-                })
-            }
-
-            //  如果有删除功能的话
-            if (Object.keys(this.del_person_data).length !== 0) {
-                console.log(this.del_person_data);
-                this.postObject['listHcyDel'] = [];
-                this.del_person_data.forEach((item, key, arr) => {
-
-                    this.postObject['listHcyDel'].push(item);
-
-                })
-            }
-
-            //  如果房屋有修改的话
-            if (this.update_houses_data) {
-                if (Object.keys(this.update_houses_data).length !== 0) {
-                    console.log(this.update_houses_data);
-                    this.postObject['listFwEdit'] = [];
-                    this.update_houses_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listFwEdit'].push(item);
-                    })
                 }
+                console.log(listHcyAdd[item]);
+                this.postObject['listHcyAdd'].push(listHcyAdd[item]);
+
             }
-
-            //  如果房屋有增长的话
-            if (this.add_houses_data) {
-                if (Object.keys(this.add_houses_data).length !== 0) {
-                    console.log(this.add_houses_data);
-                    this.postObject['listFwAdd'] = [];
-                    this.add_houses_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfw_mc;
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                             ls[i] = item[i];
-                            
+        } else {
+            console.log("没有户成员增加")
+        }
 
 
+        //  如果有删除功能
+        console.log(this.del_person_data);
+        if (this.del_person_data) {
+            this.postObject['listHcyDel'] = [];
+            this.del_person_data.forEach((item, key, arr) => {
+                this.postObject['listHcyDel'].push(item);
+            })
+
+        }
+
+        //  如果房屋有增长
+        if (this.add_fwjbxx_data) {
+            if (Object.keys(this.add_fwjbxx_data).length !== 0) {
+                this.postObject['listFwAdd'] = [];
+                console.log(this.add_data_fn(this.add_fwjbxx_data, this.postObject['listFwAdd']));
+            }
+        }
+        //  如果房屋有修改
+        let update_fwjbxx_data = JSON.parse(JSON.stringify(this.update_fwjbxx_data));
+        console.log(update_fwjbxx_data);
+        if (update_fwjbxx_data.length != 0) {
+            this.postObject['listFwEdit'] = [];
+            update_fwjbxx_data.forEach((item, key, arr) => {
+                if (item) {
+                    console.log(arr[key]==null);
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        this.postObject['listFwAdd'].push(ls);
-                    })
+                    }
+                    delete item.ggmxxxList;
+                    this.postObject['listFwEdit'].push(item);
                 }
+
+            })
+
+        }
+        //  如果房屋有删除
+        if (this.del_fwjbxx_data) {
+            if (Object.keys(this.del_fwjbxx_data).length !== 0) {
+                console.log(this.del_fwjbxx_data);
+                this.postObject['listFwDel'] = [];
+                this.del_fwjbxx_data.forEach((item, key, arr) => {
+                    this.postObject['listFwDel'].push(item);
+                })
             }
+        }
+        // 如果房屋分类信息有修改
+        if (this.flxx_fwjbxx_update) {
+            this.postObject['listFwflmxEdit'] = this.updata_flxx_data(this.flxx_fwjbxx_update);
+        }
+        // 如果房屋分类信息有新增
+        if (this.flxx_fwjbxx_add) {
+            console.log(this.flxx_fwjbxx_add)
+            this.postObject['listFwflmxAdd'] = this.add_flxx_data(this.flxx_fwjbxx_add);
+        }
+        // 如果房屋分类信息删除
+        if (this.flxx_fwjbxx_del) {
+            this.postObject['listFwflmxDel'] = this.del_flxx_data(this.flxx_fwjbxx_del);
 
+        }
+        // 如果房屋规格信息有修改
+        if (this.update_fwjbxx_ggmx_data) {
+            this.postObject['listFwggmxEdit'] = this.updata_ggxx_data(this.update_fwjbxx_ggmx_data);
+            console.log(this.postObject['listFwggmxEdit']);
 
-            //  如果房屋有删除的话
-            if (this.del_houses_data) {
-                if (Object.keys(this.del_houses_data).length !== 0) {
-                    console.log(this.del_houses_data);
-                    this.postObject['listFwDel'] = [];
-                    this.del_houses_data.forEach((item, key, arr) => {
-                        this.postObject['listFwDel'].push(item);
-                    })
+        }
+        // 如果房屋规格信息新增
+        if (this.add_fwjbxx_ggmx_data) {
+            this.postObject['listFwggmxAdd'] = this.add_ggxx_data(this.add_fwjbxx_ggmx_data);
+        }
+        // 如果房屋规格信息删除
+        if (this.del_fwjbxx_ggmx_data) {
+            this.postObject['listFwggmxDel'] = this.del_ggxx_data(this.del_fwjbxx_ggmx_data);
+        }
+
+        //  如果装修有增长
+        if (this.add_fwzxjbxx_data) {
+            if (Object.keys(this.add_fwzxjbxx_data).length !== 0) {
+                this.postObject['listFwzxAdd'] = [];
+                console.log(this.add_data_fn(this.add_fwzxjbxx_data, this.postObject['listFwzxAdd']));
+            }
+        }
+
+        //  如果装修有修改
+        let update_fwzxjbxx_data = JSON.parse(JSON.stringify(this.update_fwzxjbxx_data));
+        console.log(update_fwzxjbxx_data);
+        if (update_fwzxjbxx_data.length != 0) {
+            this.postObject['listFwzxEdit'] = [];
+            update_fwzxjbxx_data.forEach((item, key, arr) => {
+                if (item) {
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
+                        }
+                    }
+                    delete item.ggmxxxList;
+                    this.postObject['listFwzxEdit'].push(item);
                 }
-            }
 
-            // 如果房屋分类信息新增的话
-            if (this.flxx_houses_update) {
-                for (let item in this.flxx_houses_update) {
+            })
+
+        }
+        //  如果装修有删除
+        if (this.del_fwzxjbxx_data) {
+            if (Object.keys(this.del_fwzxjbxx_data).length !== 0) {
+                console.log(this.del_fwzxjbxx_data);
+                this.postObject['listFwzxDel'] = [];
+                this.del_fwzxjbxx_data.forEach((item, key, arr) => {
+                    this.postObject['listFwzxDel'].push(item);
+                })
+            }
+        }
+        // 如果房屋装修分类信息有修改
+        if (this.flxx_fwzxjbxx_update) {
+            this.postObject['listFwzxflmxEdit'] = this.updata_flxx_data(this.flxx_fwzxjbxx_update);
+        }
+        // 如果房屋装修分类信息有新增
+        if (this.flxx_fwzxjbxx_add) {
+            this.postObject['listFwzxflmxAdd'] = this.add_flxx_data(this.flxx_fwzxjbxx_add);
+        }
+
+        // 如果房屋装修分类信息删除
+        if (this.flxx_fwzxjbxx_del) {
+            this.postObject['listFwzxflmxDel'] = this.del_flxx_data(this.flxx_fwzxjbxx_del);
+        }
+        // 如果房屋装修规格信息有修改
+        if (this.update_fwzxjbxx_ggmx_data) {
+            this.postObject['listFwzxggmxEdit'] = this.updata_ggxx_data(this.update_fwzxjbxx_ggmx_data);
+        }
+        // 如果房屋装修规格信息新增
+        if (this.add_fwzxjbxx_ggmx_data) {
+            this.postObject['listFwzxggmxAdd'] = this.add_ggxx_data(this.add_fwzxjbxx_ggmx_data);
+        }
+
+        // 如果房屋装修规格信息删除
+        if (this.del_fwzxjbxx_ggmx_data) {
+            this.postObject['listFwzxggmxDel'] = this.del_ggxx_data(this.del_fwzxjbxx_ggmx_data);
+        }
+
+
+        // 附属设施有增长
+        if (this.add_fsssjbxx_data) {
+            if (Object.keys(this.add_fsssjbxx_data).length !== 0) {
+                this.postObject['listFsssAdd'] = [];
+                this.add_data_fn(this.add_fsssjbxx_data, this.postObject['listFsssAdd'])
+            }
+        }
+        // 附属设施有修改
+        let update_fsssjbxx_data = JSON.parse(JSON.stringify(this.update_fsssjbxx_data));
+        console.log(update_fsssjbxx_data);
+        if (update_fsssjbxx_data.length != 0) {
+            this.postObject['listFsssEdit'] = [];
+            update_fsssjbxx_data.forEach((item, key, arr) => {
+                if (item) {
+                    delete item.ggmxxxList;
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
+                        }
+                    }
+                    this.postObject['listFsssEdit'].push(item);
+                }
+
+            })
+
+        }
+
+        // 附属设施有删除
+        if (this.del_fsssjbxx_data) {
+            if (Object.keys(this.del_fsssjbxx_data).length !== 0) {
+                console.log(this.del_fsssjbxx_data);
+                this.postObject['listFsssDel'] = [];
+                this.del_fsssjbxx_data.forEach((item, key, arr) => {
+                    this.postObject['listFsssDel'].push(item);
+                })
+            }
+        }
+        // 附属设施分类信息有修改
+        if (this.flxx_fsssjbxx_update) {
+            this.postObject['listFsssflmxEdit'] = this.updata_flxx_data(this.flxx_fsssjbxx_update);
+        }
+        // 附属设施分类信息有新增
+        if (this.flxx_fsssjbxx_add) {
+            this.postObject['listFsssflmxAdd'] = this.add_flxx_data(this.flxx_fsssjbxx_add);
+        }
+
+        // 如果附属设施分类信息删除
+        if (this.flxx_fsssjbxx_del) {
+            this.postObject['listFsssflmxDel'] = this.del_flxx_data(this.flxx_fsssjbxx_del);
+        }
+        // 附属设施规格信息有修改
+        if (this.update_fsssjbxx_ggmx_data) {
+            this.postObject['listFsssggmxEdit'] = this.updata_ggxx_data(this.update_fsssjbxx_ggmx_data);
+        }
+        // 附属设施规格信息新增
+        if (this.add_fsssjbxx_ggmx_data) {
+            this.postObject['listFsssggmxAdd'] = this.add_ggxx_data(this.add_fsssjbxx_ggmx_data);
+        }
+
+        // 附属设施规格信息删除
+        if (this.del_fsssjbxx_ggmx_data) {
+            this.postObject['listFsssggmxDel'] = this.del_ggxx_data(this.del_fsssjbxx_ggmx_data);
+        }
+
+
+        //  小型专项有增长
+        if (this.add_xxzx_data) {
+            if (Object.keys(this.add_xxzx_data).length !== 0) {
+                this.postObject['listXxzxAdd'] = [];
+                this.add_data_fn(this.add_xxzx_data, this.postObject['listXxzxAdd'])
+            }
+        }
+        //  小型专项有修改
+        let update_xxzx_data = JSON.parse(JSON.stringify(this.update_xxzx_data));
+        console.log(update_xxzx_data);
+        if (update_xxzx_data.length != 0) {
+            this.postObject['listXxzxEdit'] = [];
+            update_xxzx_data.forEach((item, key, arr) => {
+                if (item) {
+                    delete item.ggmxxxList;
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
+                        }
+                    }
+                    this.postObject['listXxzxEdit'].push(item);
+                }
+
+            })
+
+        }
+        //  小型专项有删除
+        if (this.del_xxzx_data) {
+            if (Object.keys(this.del_xxzx_data).length !== 0) {
+                console.log(this.del_xxzx_data);
+                this.postObject['listXxzxDel'] = [];
+                this.del_xxzx_data.forEach((item, key, arr) => {
                     console.log(item);
-                    let lsObj = {};
-                    lsObj['ssxtdm'] = this.hjbxx.ssxtdm;
-                    lsObj['ssgcdm'] = this.hjbxx.ssgcdm;
-                    for (let item2 in this.flxx_houses_update[item]) {
-                        console.log(item2);
-                        console.log(this.flxx_houses_update[item]);
-                        lsObj[item2] = this.flxx_houses_update[item][item2];
+                    this.postObject['listXxzxDel'].push(item);
+                })
+            }
+            console.log(this.postObject['listXxzxDel'])
+        }
+        // 小型专项分类信息有修改
+        if (this.flxx_xxzx_update) {
+            this.postObject['listXxzxflmxEdit'] = this.updata_flxx_data(this.flxx_xxzx_update);
+        }
+        // 小型专项分类信息有新增
+        if (this.flxx_xxzx_add) {
+            this.postObject['listXxzxflmxAdd'] = this.add_flxx_data(this.flxx_xxzx_add);
+        }
 
+        // 小型专项分类信息删除
+        if (this.flxx_xxzx_del) {
+            this.postObject['listXxzxflmxDe l'] = this.del_flxx_data(this.flxx_xxzx_del);
+        }
+        // 小型专项规格信息有修改
+        if (this.update_xxzx_ggmx_data) {
+            this.postObject['listXxzxggmxEdit'] = this.updata_ggxx_data(this.update_xxzx_ggmx_data);
+        }
+        // 小型专项规格信息新增
+        if (this.add_xxzx_ggmx_data) {
+            this.postObject['listXxzxggmxAdd'] = this.add_ggxx_data(this.add_xxzx_ggmx_data);
+        }
+        // 小型专项规格信息删除
+        if (this.del_xxzx_ggmx_data) {
+            this.postObject['listXxzxggmxDel'] = this.del_ggxx_data(this.del_xxzx_ggmx_data);
+        }
+
+
+        //  土地有增长
+        if (this.add_tdjbxx_data) {
+            if (Object.keys(this.add_tdjbxx_data).length !== 0) {
+                this.postObject['listTdAdd'] = [];
+                this.add_data_fn(this.add_tdjbxx_data, this.postObject['listTdAdd'])
+            }
+        }
+        //  土地有修改
+        let update_tdjbxx_data = JSON.parse(JSON.stringify(this.update_tdjbxx_data));
+        console.log(update_tdjbxx_data);
+        if (update_tdjbxx_data.length != 0) {
+            this.postObject['listTdEdit'] = [];
+            update_tdjbxx_data.forEach((item, key, arr) => {
+                if (item) {
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
+                        }
                     }
-                    delete this.flxx_houses_update[item]
-                    console.log(lsObj);
-
-                    this.listFwflmxEdit.push(lsObj);
-                    console.log(this.listFwflmxEdit);
-                    this.postObject['listFwflmxAdd'] = this.listFwflmxEdit;
+                    delete item.ggmxxxList;
+                    this.postObject['listTdEdit'].push(item);
                 }
+
+            })
+
+        }
+
+        //  土地有删除
+        if (this.del_tdjbxx_data) {
+            if (Object.keys(this.del_tdjbxx_data).length !== 0) {
+                console.log(this.del_tdjbxx_data);
+                this.postObject['listTdDel'] = [];
+                this.del_tdjbxx_data.forEach((item, key, arr) => {
+                    this.postObject['listTdDel'].push(item);
+                })
             }
+        }
+        // 土地分类信息有修改
+        if (this.flxx_tdjbxx_update) {
+            this.postObject['listTdflmxEdit'] = this.updata_flxx_data(this.flxx_tdjbxx_update);
+        }
+        // 土地分类信息有新增
+        if (this.flxx_tdjbxx_add) {
+            this.postObject['listTdflmxAdd'] = this.add_flxx_data(this.flxx_tdjbxx_add);
+        }
+        // 土地分类信息删除
+        if (this.flxx_tdjbxx_del) {
+            this.postObject['listTdflmxDel'] = this.del_flxx_data(this.flxx_tdjbxx_del);
+        }
+        // 土地规格信息有修改
+        if (this.update_tdjbxx_ggmx_data) {
+            this.postObject['listTdggmxEdit'] = this.updata_ggxx_data(this.update_tdjbxx_ggmx_data);
+        }
+        // 土地规格信息新增
+        if (this.add_tdjbxx_ggmx_data) {
+            this.postObject['listTdggmxAdd'] = this.add_ggxx_data(this.add_tdjbxx_ggmx_data);
+        }
+
+        // 土地规格信息删除
+        if (this.del_tdjbxx_ggmx_data) {
+            this.postObject['listTdggmxDel'] = this.del_ggxx_data(this.del_tdjbxx_ggmx_data);
+        }
 
 
-            //  如果装修有修改的话
-            if (this.update_decor_data) {
-                if (Object.keys(this.update_decor_data).length !== 0) {
-                    console.log(this.update_decor_data);
-                    this.postObject['listFwzxEdit'] = [];
-                    this.update_decor_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listFwzxEdit'].push(item);
-                    })
-                }
+        //  土地附着物有增长
+        if (this.add_tdfzwjbxx_other_data) {
+            if (Object.keys(this.add_tdfzwjbxx_other_data).length !== 0) {
+                this.postObject['listTdfzwAdd'] = [];
+                this.add_data_fn(this.add_tdfzwjbxx_other_data, this.postObject['listTdfzwAdd'])
             }
-
-            //  如果装修有增长的话
-            if (this.add_decor_data) {
-                if (Object.keys(this.add_decor_data).length !== 0) {
-                    console.log(this.add_decor_data);
-                    this.postObject['listFwzxAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_decor_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.jzzmj;
-
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+        }
+        //  土地附着物有修改
+        let update_tdfzwjbxx_other_data = JSON.parse(JSON.stringify(this.update_tdfzwjbxx_other_data));
+        console.log(update_tdfzwjbxx_other_data);
+        if (update_tdfzwjbxx_other_data.length != 0) {
+            this.postObject['listTdfzwEdit'] = [];
+            update_tdfzwjbxx_other_data.forEach((item, key, arr) => {
+                if (item) {
+                    delete item.ggmxxxList;
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listFwzxAdd'].push(ls);
-                    })
+                    }
+                    this.postObject['listTdfzwEdit'].push(item);
                 }
+
+            })
+
+        }
+        //  土地附着物有删除
+        if (this.del_tdfzwjbxx_other_data) {
+            if (Object.keys(this.del_tdfzwjbxx_other_data).length !== 0) {
+                console.log(this.del_tdfzwjbxx_other_data);
+                this.postObject['listTdfzwDel'] = [];
+                this.del_tdfzwjbxx_other_data.forEach((item, key, arr) => {
+                    this.postObject['listTdfzwDel'].push(item);
+                })
             }
+        }
+        // 土地附着物分类信息有修改
+        if (this.flxx_tdfzwjbxx_other_update) {
+            this.postObject['listTdfzwflmxEdit'] = this.updata_flxx_data(this.flxx_tdfzwjbxx_other_update);
+        }
+        // 土地附着物分类信息有新增
+        if (this.flxx_tdfzwjbxx_other_add) {
+            this.postObject['listTdfzwflmxAdd'] = this.add_flxx_data(this.flxx_tdfzwjbxx_other_add);
+        }
 
+        // 土地附着物分类信息删除
+        if (this.flxx_tdfzwjbxx_other_del) {
+            this.postObject['listTdfzwflmxDel'] = this.del_flxx_data(this.flxx_tdfzwjbxx_other_del);
+        }
+        // 土地附着物规格信息有修改
+        if (this.update_tdjbxx_other_ggmx_data) {
+            this.postObject['listTdfzwggmxEdit'] = this.updata_ggxx_data(this.update_tdjbxx_other_ggmx_data);
+        }
+        // 土地附着物规格信息新增
+        if (this.add_tdjbxx_ggmx_other_data) {
+            this.postObject['listTdfzwggmxAdd'] = this.add_ggxx_data(this.add_tdjbxx_ggmx_other_data);
+        }
 
-            //  如果装修有删除的话
-            if (this.del_decor_data) {
-                if (Object.keys(this.del_decor_data).length !== 0) {
-                    console.log(this.del_decor_data);
-                    this.postObject['listFwzxDel'] = [];
-                    this.del_decor_data.forEach((item, key, arr) => {
-                        this.postObject['listFwzxDel'].push(item);
-                    })
-                }
+        // 土地附着物规格信息删除
+        if (this.del_tdjbxx_ggmx_other_data) {
+            this.postObject['listTdfzwggmxDel'] = this.del_ggxx_data(this.del_tdjbxx_ggmx_other_data);
+        }
+
+        //  副业设施有增长
+        if (this.add_fyssjbxx_data) {
+            if (Object.keys(this.add_fyssjbxx_data).length !== 0) {
+                this.postObject['listFyssAdd'] = [];
+                this.add_data_fn(this.add_fyssjbxx_data, this.postObject['listFyssAdd'])
             }
-
-            //  如果water有修改的话
-            if (this.update_water_data) {
-                if (Object.keys(this.update_water_data).length !== 0) {
-                    console.log(this.update_water_data);
-                    this.postObject['listXxzxEdit'] = [];
-                    this.update_water_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listXxzxEdit'].push(item);
-                    })
-                }
-            }
-
-            //  如果water有增长的话
-            if (this.add_water_data) {
-                if (Object.keys(this.add_water_data).length !== 0) {
-                    console.log(this.add_water_data);
-                    this.postObject['listXxzxAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_water_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.zsl;
-                        delete item.qsrmc;
-                        delete item.jzzmj;
-
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+        }
+        //  副业设施有修改
+        let update_fyssjbxx_data = JSON.parse(JSON.stringify(this.update_fyssjbxx_data));
+        console.log(update_fyssjbxx_data);
+        if (update_fyssjbxx_data.length != 0) {
+            this.postObject['listFyssEdit'] = [];
+            update_fyssjbxx_data.forEach((item, key, arr) => {
+                if (item) {
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listXxzxAdd'].push(ls);
-                    })
+                    }
+                    delete item.ggmxxxList;
+                    this.postObject['listFyssEdit'].push(item);
                 }
+
+            })
+
+        }
+        //  副业设施有删除
+        if (this.del_fyssjbxx_data) {
+            if (Object.keys(this.del_fyssjbxx_data).length !== 0) {
+                console.log(this.del_fyssjbxx_data);
+                this.postObject['listFyssDel'] = [];
+                this.del_fyssjbxx_data.forEach((item, key, arr) => {
+                    this.postObject['listFyssDel'].push(item);
+                })
             }
+        }
+        // 副业设施分类信息有修改
+        if (this.flxx_fyssjbxx_update) {
+            this.postObject['listFyssflmxEdit'] = this.updata_flxx_data(this.flxx_fyssjbxx_update);
+        }
+        // 副业设施分类信息有新增
+        if (this.flxx_fyssjbxx_add) {
+            this.postObject['listFyssflmxAdd'] = this.add_flxx_data(this.flxx_fyssjbxx_add);
+        }
+
+        // 副业设施分类信息删除
+        if (this.flxx_fyssjbxx_del) {
+            this.postObject['listFyssflmxDel'] = this.del_flxx_data(this.flxx_fyssjbxx_del);
+        }
+        // 副业设施规格信息有修改
+        if (this.update_fyssjbxx_ggmx_data) {
+            this.postObject['listFyssggmxEdit'] = this.updata_ggxx_data(this.update_fyssjbxx_ggmx_data);
+        }
+        // 副业设施规格信息新增
+        if (this.add_fyssjbxx_ggmx_data) {
+            this.postObject['listFyssggmxAdd'] = this.add_ggxx_data(this.add_fyssjbxx_ggmx_data);
+        }
+
+        // 副业设施规格信息删除
+        if (this.del_fyssjbxx_ggmx_data) {
+            this.postObject['listFyssggmxDel'] = this.del_ggxx_data(this.del_fyssjbxx_ggmx_data);
+        }
 
 
-            //  如果water有删除的话
-            if (this.del_water_data) {
-                if (Object.keys(this.del_water_data).length !== 0) {
-                    console.log(this.del_water_data);
-                    this.postObject['listXxzxDel'] = [];
-                    this.del_water_data.forEach((item, key, arr) => {
-                        this.postObject['listXxzxDel'].push(item);
-                    })
-                }
+        //  零星果木有增长
+        if (this.add_lxgm_data) {
+            if (Object.keys(this.add_lxgm_data).length !== 0) {
+                this.postObject['listLxgmAdd'] = [];
+                this.add_data_noGGmx_fn(this.add_lxgm_data, this.postObject['listLxgmAdd'])
             }
-
-            //  如果附属设施有修改的话
-            if (this.update_fsss_data) {
-                if (Object.keys(this.update_fsss_data).length !== 0) {
-                    console.log(this.update_fsss_data);
-                    this.postObject['listFsssEdit'] = [];
-                    this.update_fsss_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listFsssEdit'].push(item);
-                    })
-                }
-            }
-
-            //  如果附属设施有增长的话
-            if (this.add_fsss_data) {
-                if (Object.keys(this.add_fsss_data).length !== 0) {
-                    console.log(this.add_fsss_data);
-                    this.postObject['listFsssAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_fsss_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.jzzmj;
-
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+        }
+        //  零星果木有修改
+        let update_lxgm_data = JSON.parse(JSON.stringify(this.update_lxgm_data));
+        console.log(update_lxgm_data);
+        if (update_lxgm_data.length != 0) {
+            this.postObject['listLxgmEdit'] = [];
+            update_lxgm_data.forEach((item, key, arr) => {
+                if (item) {
+                    delete item.ggmxxxList;
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listFsssAdd'].push(ls);
-                    })
+                    }
+                    this.postObject['listLxgmEdit'].push(item);
                 }
+
+            })
+
+        }
+        //  零星果木有删除
+        if (this.del_lxgm_data) {
+            if (Object.keys(this.del_lxgm_data).length !== 0) {
+                console.log(this.del_lxgm_data);
+                this.postObject['listLxgmDel'] = [];
+                this.del_lxgm_data.forEach((item, key, arr) => {
+                    this.postObject['listLxgmDel'].push(item);
+                })
             }
+        }
+        // 零星果木分类信息有修改
+        if (this.flxx_lxgm_update) {
+            this.postObject['listLxgmflmxEdit'] = this.updata_flxx_data(this.flxx_lxgm_update);
+        }
+        // 零星果木分类信息有新增
+        if (this.flxx_lxgm_add) {
+            this.postObject['listLxgmflmxAdd'] = this.add_flxx_data(this.flxx_lxgm_add);
+        }
+        // 零星果木分类信息删除
+        if (this.flxx_lxgm_del) {
+            this.postObject['listLxgmflmxDel'] = this.del_flxx_data(this.flxx_lxgm_del);
+        }
 
 
-            //  如果附属设施有删除的话
-            if (this.del_fsss_data) {
-                if (Object.keys(this.del_fsss_data).length !== 0) {
-                    console.log(this.del_fsss_data);
-                    this.postObject['listFsssDel'] = [];
-                    this.del_fsss_data.forEach((item, key, arr) => {
-                        this.postObject['listFsssDel'].push(item);
-                    })
-                }
-            }
+        // 坟墓有新增
+        if (this.add_grave_data) {
+            this.postObject['listFmAdd'] = [];
+            this.add_data_noAll_fn(this.changeTable(this.add_grave_data), this.postObject['listFmAdd'])
+        }
 
-            //  如果土地有修改的话
-            if (this.update_land_data) {
-                if (Object.keys(this.update_land_data).length !== 0) {
-                    console.log(this.update_land_data);
-                    this.postObject['listTdEdit'] = [];
-                    this.update_land_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listTdEdit'].push(item);
-                    })
-                }
-            }
+        // 坟墓有删除
+        if (this.del_grave_data) {
+            console.log(this.del_grave_data);
+            this.postObject['listFmDel'] = [];
+            this.del_grave_data.forEach((item, key, arr) => {
+                this.postObject['listFmDel'].push(item);
+            })
 
-            //  如果土地有增长的话
-            if (this.add_land_data) {
-                if (Object.keys(this.add_land_data).length !== 0) {
-                    console.log(this.add_land_data);
-                    this.postObject['listTdAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_land_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.jzzmj;
+        }
 
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+
+        //  坟墓有修改
+        let update_grave_data = this.update_grave_data;
+        console.log(update_grave_data);
+        if (update_grave_data.length != 0) {
+            this.postObject['listFmEdit'] = [];
+            update_grave_data.forEach((item, key, arr) => {
+                if (item) {
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listTdAdd'].push(ls);
-                    })
+                    }
+                    delete item.ggmxxxList;
+                    this.postObject['listFmEdit'].push(item);
                 }
-            }
+
+            })
+
+        }
+
+        // 设施有新增
+        if (this.add_sheshi_data) {
+            this.postObject['listSsxxAdd'] = [];
+            this.add_data_noAll_fn(this.changeTable(this.add_sheshi_data), this.postObject['listSsxxAdd'])
+        }
+
+        // 设施有删除
+        if (this.del_sheshi_data) {
+            console.log(this.del_sheshi_data);
+            this.postObject['listSsxxDel'] = [];
+            this.del_grave_data.forEach((item, key, arr) => {
+                this.postObject['listSsxxDel'].push(item);
+            })
+
+        }
 
 
-            //  如果土地有删除的话
-            if (this.del_land_data) {
-                if (Object.keys(this.del_land_data).length !== 0) {
-                    console.log(this.del_land_data);
-                    this.postObject['listTdDel'] = [];
-                    this.del_land_data.forEach((item, key, arr) => {
-                        this.postObject['listTdDel'].push(item);
-                    })
-                }
-            }
-
-            //  如果土地附着物有修改的话
-            if (this.update_land_other_data) {
-                if (Object.keys(this.update_land_other_data).length !== 0) {
-                    console.log(this.update_land_other_data);
-                    this.postObject['listTdfzwEdit'] = [];
-                    this.update_land_other_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listTdfzwEdit'].push(item);
-                    })
-                }
-            }
-
-            //  如果土地附着物有增长的话
-            if (this.add_land_other_data) {
-                if (Object.keys(this.add_land_other_data).length !== 0) {
-                    console.log(this.add_land_other_data);
-                    this.postObject['listTdfzwAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_land_other_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.jzzmj;
-
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+        //  设施有修改
+        let update_sheshi_data = this.update_sheshi_data;
+        console.log(update_sheshi_data);
+        if (update_sheshi_data.length != 0) {
+            this.postObject['listSsxxEdit'] = [];
+            update_sheshi_data.forEach((item, key, arr) => {
+                if (item) {
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listTdfzwAdd'].push(ls);
-                    })
+                    }
+                    delete item.ggmxxxList;
+                    this.postObject['listSsxxEdit'].push(item);
                 }
-            }
+
+            })
+
+        }
+
+        // 设备有新增
+        if (this.add_shebei_data) {
+            console.log(this.add_shebei_data);
+            this.postObject['listSbxxAdd'] = [];
+            this.add_data_noAll_fn(this.changeTable(this.add_shebei_data), this.postObject['listSbxxAdd'])
+        }
+
+        //  设备有删除
+        if (this.del_shebei_data) {
+            console.log(this.del_shebei_data);
+            this.postObject['listSbxxDel'] = [];
+            this.del_shebei_data.forEach((item, key, arr) => {
+                this.postObject['listSbxxDel'].push(item);
+            })
+
+        }
 
 
-            //  如果土地附着物有删除的话
-            if (this.del_land_other_data) {
-                if (Object.keys(this.del_land_other_data).length !== 0) {
-                    console.log(this.del_land_other_data);
-                    this.postObject['listTdfzwDel'] = [];
-                    this.del_land_other_data.forEach((item, key, arr) => {
-                        this.postObject['listTdfzwDel'].push(item);
-                    })
-                }
-            }
-
-
-            //  如果零星树木有修改的话
-            if (this.update_trees_data) {
-                if (Object.keys(this.update_trees_data).length !== 0) {
-                    console.log(this.update_trees_data);
-                    this.postObject['listLxgmEdit'] = [];
-                    this.update_trees_data.forEach((item, key, arr) => {
-                        delete item.list;
-                        this.postObject['listLxgmEdit'].push(item);
-                    })
-                }
-            }
-
-            //  如果零星树木有增长的话
-            if (this.add_trees_data) {
-                if (Object.keys(this.add_trees_data).length !== 0) {
-                    console.log(this.add_trees_data);
-                    this.postObject['listLxgmAdd'] = [];
-                    this.postObject['listFwzxflmxAdd'] = [];
-                    this.add_trees_data.forEach((item, key, arr) => {
-                        item.ssxtdm = this.hjbxx.ssxtdm;
-                        item.ssgcdm = this.qshflId.ssgcdm;
-                        item.jddm = this.qshflId.jddm;
-                        delete item.list;
-                        delete item.dcfwmc;
-                        delete item.jzzmj;
-
-                        console.log(item);
-                        let ls = {};
-                        for (let i in item) {
-                            ls['qsrId'] = item['id'];
-                            if (i != 'id') {
-                                ls[i] = item[i];
-                            }
+        //   设备有修改
+        let update_shebei_data = this.update_shebei_data;
+        console.log(update_shebei_data);
+        if (update_shebei_data.length != 0) {
+            this.postObject['listSbxxEdit'] = [];
+            update_shebei_data.forEach((item, key, arr) => {
+                if (item) {
+                    delete item.ggmxxxList;
+                    for(let key2 in item){
+                        if(!item[key2]){
+                            item[key2]="";
                         }
-                        // let flmxAdd={};
-                        // flmxAdd['ssxtdm']=this.hjbxx.ssxtdm;
-                        // flmxAdd['ssgcdm']= this.qshflId.ssgcdm;
-                        // flmxAdd['ssfwjbxxId']= item['id'];
-                        // this.postObject['listFwzxflmxAdd'].push(flmxAdd);
-                        this.postObject['listLxgmAdd'].push(ls);
-                    })
+                    }
+                    this.postObject['listSbxxEdit'].push(item);
+                }
+
+            })
+
+        }
+        // 输变电工程基本信息
+        if (this.add_sbdgcjbxx_data.length != 0) {
+            this.postObject['listSbdgcAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_sbdgcjbxx_data), this.postObject['listSbdgcAdd'])
+        }
+        if (this.update_sbdgcjbxx_data.length != 0) {
+            this.postObject['listSbdgcEdit'] = [];
+            this.postObject['listSbdgcEdit'].push(this.update_sbdgcjbxx_data[0])
+        }
+        if (this.del_sbdgcjbxx_data.length != 0) {
+
+            this.postObject['listSbdgcDel'] = [];
+            this.postObject['listSbdgcDel'].push(this.del_sbdgcjbxx_data[0])
+        }
+
+        // 广播电视工程
+        if (this.add_gbdsjbxx_data.length != 0) {
+            this.postObject['listGbdsgcAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_gbdsjbxx_data), this.postObject['listGbdsgcAdd'])
+        }
+        if (this.update_gbdsjbxx_data.length != 0) {
+            this.postObject['listGbdsgcEdit'] = [];
+            this.postObject['listGbdsgcEdit'].push(this.update_gbdsjbxx_data[0])
+        }
+        if (this.del_gbdsjbxx_data.length != 0) {
+
+            this.postObject['listGbdsgcDel'] = [];
+            this.postObject['listGbdsgcDel'].push(this.del_gbdsjbxx_data[0])
+        }
+
+        // 管道工程基本信息
+        if (this.add_gdgcjbxx_data.length != 0) {
+            this.postObject['listGdgcAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_gdgcjbxx_data), this.postObject['listGdgcAdd'])
+        }
+        if (this.update_gdgcjbxx_data.length != 0) {
+            this.postObject['listGdgcEdit'] = [];
+            this.postObject['listGdgcEdit'].push(this.update_gdgcjbxx_data[0])
+        }
+        if (this.del_gdgcjbxx_data.length != 0) {
+            this.postObject['listGdgcDel'] = [];
+            this.postObject['listGdgcDel'].push(this.del_gdgcjbxx_data[0])
+        }
+
+        // 港口基本信息
+        if (this.add_gkjbxx_data.length != 0) {
+            this.postObject['listGkAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_gkjbxx_data), this.postObject['listGkAdd'])
+        }
+        console.log(this.update_gkjbxx_data)
+        if (this.update_gkjbxx_data.length != 0) {
+            this.postObject['listGkEdit'] = [];
+            this.postObject['listGkEdit'].push(this.update_gkjbxx_data[0])
+        }
+        if (this.del_gkjbxx_data.length != 0) {
+            this.postObject['listGkDel'] = [];
+            this.postObject['listGkDel'].push(this.del_gkjbxx_data[0])
+        }
+
+        // 码头基本信息
+        if (this.add_mtjbxx_data.length != 0) {
+            this.postObject['listMtAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_mtjbxx_data), this.postObject['listMtAdd'])
+        }
+        if (this.update_mtjbxx_data.length != 0) {
+            this.postObject['listMtEdit'] = [];
+            this.postObject['listMtEdit'].push(this.update_mtjbxx_data[0])
+        }
+        if (this.del_mtjbxx_data.length != 0) {
+            this.postObject['listMtDel'] = [];
+            this.postObject['listMtDel'].push(this.del_mtjbxx_data[0])
+        }
+
+        // 文物古迹基本信息
+        if (this.add_wwgj_data.length != 0) {
+            this.postObject['listWwgjAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_wwgj_data), this.postObject['listWwgjAdd'])
+        }
+        if (this.update_wwgj_data.length != 0) {
+            this.postObject['listWwgjEdit'] = [];
+            this.postObject['listWwgjEdit'].push(this.update_wwgj_data[0])
+        }
+        if (this.del_wwgj_data.length != 0) {
+            this.postObject['listWwgjDel'] = [];
+            this.postObject['listWwgjDel'].push(this.del_wwgj_data[0])
+        }
+        // 水文气象站
+        if (this.add_swqxz_data.length != 0) {
+            this.postObject['listSwqxzAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_swqxz_data), this.postObject['listSwqxzAdd'])
+        }
+        if (this.update_swqxz_data.length != 0) {
+            this.postObject['listSwqxzEdit'] = [];
+            this.postObject['listSwqxzEdit'].push(this.update_swqxz_data[0])
+        }
+        if (this.del_swqxz_data.length != 0) {
+            this.postObject['listSwqxzDel'] = [];
+            this.postObject['listSwqxzDel'].push(this.del_swqxz_data[0])
+        }
+        // 矿产资源基本信息
+        if (this.add_kczy_data.length != 0) {
+            this.postObject['listKczyAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_kczy_data), this.postObject['listKczyAdd'])
+        }
+        if (this.update_kczy_data.length != 0) {
+            this.postObject['listKczyEdit'] = [];
+            this.postObject['listKczyEdit'].push(this.update_kczy_data[0])
+        }
+        if (this.del_kczy_data.length != 0) {
+            this.postObject['listKczyDel'] = [];
+            this.postObject['listKczyDel'].push(this.del_kczy_data[0])
+        }
+        // 水利水电基本信息
+        if (this.add_slsd_data.length != 0) {
+            this.postObject['listSlsdgcAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_slsd_data), this.postObject['listSlsdgcAdd'])
+        }
+        if (this.update_slsd_data.length != 0) {
+            this.postObject['listSlsdgcEdit'] = [];
+            this.postObject['listSlsdgcEdit'].push(this.update_slsd_data[0])
+        }
+        if (this.del_slsd_data.length != 0) {
+            this.postObject['listSlsdgcDel'] = [];
+            this.postObject['listSlsdgcDel'].push(this.del_slsd_data[0])
+        }
+
+        // 航道基本信息
+        if (this.add_hdjbxx_data.length != 0) {
+            this.postObject['listHdAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_hdjbxx_data), this.postObject['listHdAdd'])
+        }
+        if (this.update_hdjbxx_data.length != 0) {
+            this.postObject['listHdEdit'] = [];
+            this.postObject['listHdEdit'].push(this.update_hdjbxx_data[0])
+        }
+        if (this.del_hdjbxx_data.length != 0) {
+            this.postObject['listHdAdd'] = [];
+            this.postObject['listHdDel'].push(this.del_hdjbxx_data[0])
+        }
+
+        // 铁路基本信息
+        if (this.add_tljbxx_data.length != 0) {
+            this.postObject['listTlAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_tljbxx_data), this.postObject['listTlAdd'])
+        }
+        if (this.update_tljbxx_data.length != 0) {
+            this.postObject['listTlEdit'] = [];
+            this.postObject['listTlEdit'].push(this.update_tljbxx_data[0])
+        }
+        if (this.del_tljbxx_data.length != 0) {
+            this.postObject['listTlAdd'] = [];
+            this.postObject['listTlDel'].push(this.del_tljbxx_data[0])
+        }
+
+        // 桥涵基本信息
+        if (this.add_qhjbxx_data.length != 0) {
+            this.postObject['listQhAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_qhjbxx_data), this.postObject['listQhAdd'])
+        }
+        if (this.update_qhjbxx_data.length != 0) {
+            this.postObject['listQhEdit'] = [];
+            this.postObject['listQhEdit'].push(this.update_qhjbxx_data[0])
+        }
+        if (this.del_qhjbxx_data.length != 0) {
+            this.postObject['listQhAdd'] = [];
+            this.postObject['listQhDel'].push(this.del_qhjbxx_data[0])
+        }
+        // 公路基本信息
+        if (this.add_gljbxx_data.length != 0) {
+            this.postObject['listGlAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_gljbxx_data), this.postObject['listGlAdd'])
+        }
+        if (this.update_gljbxx_data.length != 0) {
+            this.postObject['listGlEdit'] = [];
+            this.postObject['listGlEdit'].push(this.update_gljbxx_data[0])
+        }
+        if (this.del_gljbxx_data.length != 0) {
+            this.postObject['listGlDel'] = [];
+            this.postObject['listGlDel'].push(this.del_gljbxx_data[0])
+        }
+        // 其他专项基本信息
+        if (this.add_qtzxjbxx_data.length != 0) {
+            this.postObject['listQtzxAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_qtzxjbxx_data), this.postObject['listQtzxAdd'])
+        }
+        if (this.update_qtzxjbxx_data.length != 0) {
+            this.postObject['listQtzxEdit'] = [];
+            this.postObject['listQtzxEdit'].push(this.update_qtzxjbxx_data[0])
+        }
+        if (this.del_qtzxjbxx_data.length != 0) {
+            this.postObject['listQtzxDel'] = [];
+            this.postObject['listQtzxDel'].push(this.del_qtzxjbxx_data[0])
+        }
+        // 电信工程基本信息
+        if (this.add_dxgcjbxx_data.length != 0) {
+            this.postObject['listDxgcAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_dxgcjbxx_data), this.postObject['listDxgcAdd'])
+        }
+        if (this.update_dxgcjbxx_data.length != 0) {
+            this.postObject['listDxgcEdit'] = [];
+            this.postObject['listDxgcEdit'].push(this.update_dxgcjbxx_data[0])
+        }
+        if (this.del_dxgcjbxx_data.length != 0) {
+            this.postObject['listDxgcDel'] = [];
+            this.postObject['listDxgcDel'].push(this.del_dxgcjbxx_data[0])
+        }
+        // 农副业基本信息
+        if (this.add_nfyjbxx_data) {
+            this.postObject['listNfyAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_nfyjbxx_data), this.postObject['listNfyhAdd'])
+        }
+        if (this.update_nfyjbxx_data.length != 0) {
+            this.postObject['listNfyhEdit'] = [];
+            this.postObject['listNfyhEdit'].push(this.update_nfyjbxx_data[0])
+        }
+        if (this.del_nfyjbxx_data.length != 0) {
+            this.postObject['listNfyhDel'] = [];
+            this.postObject['listNfyhDel'].push(this.del_nfyjbxx_data[0])
+        }
+        // 个体工商基本信息
+        if (this.add_gtgsjbxx_data) {
+            this.postObject['listGtgshAdd'] = [];
+             this.add_data_only_item(this.changeTable(this.add_gtgsjbxx_data), this.postObject['listGtAdd'])
+        }
+        if (this.update_gtgsjbxx_data.length != 0) {
+            this.postObject['listGtgshEdit'] = [];
+            this.postObject['listGtgshEdit'].push(this.update_gtgsjbxx_data[0])
+        }
+        if (this.del_gtgsjbxx_data.length != 0) {
+            this.postObject['listGtgshDel'] = [];
+            this.postObject['listGtgshDel'].push(this.del_gtgsjbxx_data[0])
+        }
+        // 单位基本信息
+        if (this.add_dwjbxx_data) {
+            this.postObject['listDwAdd'] = [];
+            this.add_data_only_item(this.changeTable(this.add_dwjbxx_data), this.postObject['listDwAdd'])
+        }
+        if (this.update_dwjbxx_data.length != 0) {
+            this.postObject['listDwEdit'] = [];
+            this.postObject['listDwEdit'].push(this.update_dwjbxx_data[0])
+        }
+        if (this.del_dwjbxx_data.length != 0) {
+            this.postObject['listDwDel'] = [];
+            this.postObject['listDwDel'].push(this.del_dwjbxx_data[0])
+        }
+        if (Object.keys(this.postObject).length !== 0) {
+            hjbxxRew['id'] = this.hjbxx.id;
+
+            this.postObject['bHjbxx'] = hjbxxRew;
+
+            console.log(this.postObject);
+            for (let key in this.postObject) {
+                if (JSON.stringify(this.postObject[key]) == '[]' || this.postObject[key] == undefined) {
+                    delete this.postObject[key];
                 }
             }
+            console.log(this.postObject);
 
+            console.log(this.postObject['listHcyAdd']);
+            // console.log(this.Btpd(this.postObject['listHcyAdd'], hcyBtpd, "户成员信息"));
+            if (this.BtpdValue) {
+                console.log("必填值全部都有了");
 
-            //  如果零星树木有删除的话
-            if (this.del_trees_data) {
-                if (Object.keys(this.del_trees_data).length !== 0) {
-                    console.log(this.del_trees_data);
-                    this.postObject['listLxgmDel'] = [];
-                    this.del_trees_data.forEach((item, key, arr) => {
-                        this.postObject['listLxgmDel'].push(item);
-                    })
-                }
-            }
+                this.HttpService.post('/jmh/save', this.postObject)
+                    .then((data) => {
 
-
-            if (Object.keys(this.postObject).length !== 0) {
-                hjbxxRew['id'] = this.hjbxx.id;
-                this.postObject['bHjbxx'] = hjbxxRew;
-
-                if (this.postObject['listHcyAdd']) {
-                    console.log(this.Tjpd(this.postObject['listHcyAdd']));
-                }
-                console.log(this.postObject);
-                console.log(this.postObject['listHcyAdd']);
-
-                // console.log(JSON.stringify(this.postObject));
-
-                console.log(this.postObject);
-                if (this.TjpdValue) {
-                    console.log("必填值全部都有了");
-                    this.HttpService.post('/jmh/save', this.postObject)
-                        .then((data) => {
-
-                            if (data['success'] === true) {
-                                this.msgs = [];
-                                this.msgs.push({severity: 'success', summary: '填入提醒', detail: '数据保存成功'});
+                        if (data['success'] === true) {
+                            this.ModelRoom.clear();
+                            console.log("保存成功");
+                            // 保存并新增的时候
+                            if (this.type == 'add') {
+                                this.getNewHuList = true;
+                                // 新增的时候点击保存并新增
+                                if (i == 'add') {
+                                    this.activeTabName = this.navList[0].url;
+                                    console.log(this.def_hjbxx_info);
+                                    this.hjbxx = new HjbxxModel;
+                                    this.hjbxx.hlbdm = this.def_hjbxx_info.hlbdm;
+                                    this.hjbxx.hlbmc = this.def_hjbxx_info.hlbmc;
+                                    this.hjbxx.ssxzqhdm = this.def_hjbxx_info.ssxzqhdm;
+                                    this.hjbxx.xzqhmc = this.def_hjbxx_info.xzqhmc;
+                                    this.hjbxx.jddm = this.def_hjbxx_info.jddm;
+                                    this.hjbxx.ssxtdm = this.def_hjbxx_info.ssxtdm;
+                                    this.hjbxx.ssgcdm = this.def_hjbxx_info.ssgcdm;
+                                } else {
+                                    console.log("新增人时候，新增成员");
+                                    this.type = 'rew';
+                                    this.saveRouter(this.activeTabName, this.activeTabId);
+                                    this.info['id'] = data['returnObject'];
+                                }
                             } else {
-                                this.msgs = [];
-                                this.msgs.push({severity: 'error', summary: '保存失败', detail: '数据保存失败'});
+                                // 新增的时候点击保存并新增
+                                if (i == 'add') {
+                                    this.type = 'add';
+                                    this.activeTabName = this.navList[0].url;
+                                    this.hjbxx = new HjbxxModel;
+                                    this.hjbxx.hlbdm = this.def_hjbxx_info.hlbdm;
+                                    this.hjbxx.hlbmc = this.def_hjbxx_info.hlbmc;
+                                    this.hjbxx.ssxzqhdm = this.def_hjbxx_info.ssxzqhdm;
+                                    this.hjbxx.xzqhmc = this.def_hjbxx_info.xzqhmc;
+                                    this.hjbxx.jddm = this.def_hjbxx_info.jddm;
+                                    this.hjbxx.ssxtdm = this.def_hjbxx_info.ssxtdm;
+                                    this.hjbxx.ssgcdm = this.def_hjbxx_info.ssgcdm;
+                                    console.log(this.hjbxx);
+                                }
+
+                                console.log("这是修改接口");
                             }
-                        })
-                }
+
+                            if (i != 'add') {
+                                this.HttpService.get(`/jmh/show?id=${this.info.id}`)
+                                    .then((res) => {
+                                        this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
+                                        this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
+                                        console.log(this.init_hjbxx_data);
+                                        this.hjbxx = res['returnObject']['bHjbxx'];
+                                        this.hcylb = res['returnObject']['listHcy'];
+                                        this.def_hcylb_info = JSON.parse(JSON.stringify(this.hcylb));
+                                        console.log(22);
+                                        this.saveRouter(this.activeTabName, this.activeTabId);
+                                    });
+
+                                this.tabHttpUrl = this.getTabUrl(this.activeTabName, this.activeTabId, this.info.id);
+
+                            }
 
 
-            } else {
-                this.msgs = [];
-                this.msgs.push({severity: 'error', summary: '填入提醒', detail: '没有任何数据修改'});
+                            this.del_person_data = [];
+                            // this.hcylb=[];
+                            this.init_person_data = [];
+                            this.listHcyAdd = [];
+                            this.update_person_data = [];
+                            this.del_person_data = [];
+                            this.fwjbxx_data = null;
+                            this.decor_data = null;
+                            this.fsss_data = null;
+                            this.land_data = null;
+                            this.land_other_data = null;
+                            this.trees_data = null;
+                            this.water_data = null;
+                            this.grave_data = null;
+                            this.sbdgcjbxx2_data = null;
+                            this.gdgcjbxx2_data = null;
+                            this.gbdsgc_data = null;
+                            this.gkjbxx_data = null;
+                            this.mtjbxx_data = null;
+                            this.fyss_data = null;
+
+
+                            this.postObject = new Object();
+
+                            this.add_lxgm_data = [];
+                            this.add_xxzx_data = [];
+                            this.add_fwjbxx_data = [];
+                            this.add_grave_data = [];
+                            this.add_fsssjbxx_data = [];
+                            this.add_tdjbxx_data = [];
+                            this.add_tdfzwjbxx_other_data = [];
+                            this.add_fwzxjbxx_data = [];
+                            this.add_sbdgcjbxx_data = [];
+                            this.add_gbdsjbxx_data = [];
+                            this.add_gdgcjbxx_data = [];
+                            this.add_gkjbxx_data = [];
+                            this.add_mtjbxx_data = [];
+                            this.add_fyssjbxx_data = [];
+
+
+                            this.update_lxgm_data = [];
+                            this.update_xxzx_data = [];
+                            this.update_fwjbxx_data = [];
+                            this.update_grave_data = [];
+                            this.update_fsssjbxx_data = [];
+                            this.update_tdjbxx_data = [];
+                            this.update_tdfzwjbxx_other_data = [];
+                            this.update_person_data = [];
+                            this.update_fwzxjbxx_data = [];
+                            this.update_sbdgcjbxx_data = [];
+                            this.update_gbdsjbxx_data = [];
+                            this.update_gdgcjbxx_data = [];
+                            this.update_gkjbxx_data = [];
+                            this.update_mtjbxx_data = [];
+                            this.update_fyssjbxx_data = [];
+
+                            //  子组件中准备删除的真实数据
+                            this.del_lxgm_data = [];
+                            this.del_xxzx_data = [];
+                            this.del_fwjbxx_data = [];
+                            this.del_grave_data = [];
+                            this.del_fsssjbxx_data = [];
+                            this.del_tdjbxx_data = [];
+                            this.del_tdfzwjbxx_other_data = [];
+                            this.del_person_data = [];
+                            this.del_fwzxjbxx_data = [];
+                            this.del_sbdgcjbxx_data = [];
+                            this.del_gbdsjbxx_data = [];
+                            this.del_gdgcjbxx_data = [];
+                            this.del_gkjbxx_data = [];
+                            this.del_mtjbxx_data = [];
+                            this.del_fyssjbxx_data = [];
+
+                            //子组件中修改过的分类新增信息数据
+                            this.flxx_fwjbxx_add = [];
+                            this.flxx_fwzxjbxx_add = [];
+                            this.flxx_fsssjbxx_add = [];
+                            this.flxx_tdjbxx_add = [];
+                            this.flxx_lxgm_add = [];
+                            this.flxx_xxzx_add = [];
+                            this.flxx_tdfzwjbxx_other_add = [];
+                            this.flxx_fyssjbxx_add = [];
+
+                            //子组件中修改过的分类信息数据
+                            this.flxx_tdjbxx_update = [];
+                            this.flxx_fwjbxx_update = [];
+                            this.flxx_lxgm_update = [];
+                            this.flxx_tdfzwjbxx_other_update = [];
+                            this.flxx_fwzxjbxx_update = [];
+                            this.flxx_fsssjbxx_update = [];
+                            this.flxx_xxzx_update = [];
+                            this.flxx_fyssjbxx_update = [];
+
+                            //子组件中修改过的删除信息数据
+                            this.flxx_fwjbxx_del = [];
+                            this.flxx_fwzxjbxx_del = [];
+                            this.flxx_tdjbxx_del = [];
+                            this.flxx_fsssjbxx_del = [];
+                            this.flxx_lxgm_del = [];
+                            this.flxx_xxzx_del = [];
+                            this.flxx_tdfzwjbxx_other_del = [];
+                            this.flxx_fyssjbxx_del = [];
+
+                            //子组件中准备新增的规格明细数据
+                            this.add_lxgm_ggmx_data = [];
+                            this.add_xxzx_ggmx_data = [];
+                            this.add_fwjbxx_ggmx_data = [];
+                            this.add_fsssjbxx_ggmx_data = [];
+                            this.add_tdjbxx_ggmx_data = [];
+                            this.add_tdjbxx_ggmx_other_data = [];
+                            this.add_fwzxjbxx_ggmx_data = [];
+                            this.add_fyssjbxx_ggmx_data = [];
+
+                            //子组件中修改过的规格明细数据
+                            this.update_lxgm_ggmx_data = [];
+                            this.update_xxzx_ggmx_data = [];
+                            this.update_fwjbxx_ggmx_data = [];
+                            this.update_fsssjbxx_ggmx_data = [];
+                            this.update_tdjbxx_ggmx_data = [];
+                            this.update_tdjbxx_other_ggmx_data = [];
+                            this.update_fwzxjbxx_ggmx_data = [];
+                            this.update_fyssjbxx_ggmx_data = [];
+                            //子组件中准备删除的规格明细数据
+                            this.del_lxgm_ggmx_data = [];
+                            this.del_xxzx_ggmx_data = [];
+                            this.del_fwjbxx_ggmx_data = [];
+                            this.del_fsssjbxx_ggmx_data = [];
+                            this.del_tdjbxx_ggmx_data = [];
+                            this.del_tdjbxx_ggmx_other_data = [];
+                            this.del_fwzxjbxx_ggmx_data = [];
+                            this.del_fyssjbxx_ggmx_data = [];
+                            //清空分类明细复制
+                            this.houses_name_active_base_copy[0] = 0;
+                            this.decor_name_active_base_copy[0] = 0;
+                            this.fsss_name_active_base_copy[0] = 0;
+                            this.fyss_name_active_base_copy[0] = 0;
+                            this.land_name_active_base_copy[0] = 0;
+                            this.land_other_name_active_base_copy[0] = 0;
+                            this.trees_name_active_base_copy[0] = 0;
+                            this.water_name_active_base_copy[0] = 0;
+
+
+                            //清空初始化数据
+
+                            this.init_lxgm_data = [];
+                            this.init_xxzx_data = [];
+                            this.init_fwjbxx_data = [];
+                            this.init_fsssjbxx_data = [];
+                            this.init_tdjbxx_data = [];
+                            this.init_tdfzwjbxx_other_data = [];
+                            this.init_person_data = [];
+                            this.init_fwzxjbxx_data = [];
+                            this.init_grave_data = [];
+                            this.init_sbdgcjbxx2_data = [];
+                            this.init_gbdsgc_data = [];
+                            this.init_gdgcjbxx2_data = [];
+                            this.init_gkjbxx_data = [];
+                            this.init_mtjbxx_data = [];
+                            this.init_wwgj_data = [];
+                            this.init_swqxz_data = [];
+                            this.init_kczy_data = [];
+                            this.init_slsd_data = [];
+
+
+                            this.msgs = [];
+                            this.msgs.push({severity: 'success', summary: '填入提醒', detail: '数据保存成功'});
+
+                        } else {
+                            this.hcylb = this.def_hcylb_info;
+                            this.person2.instance.childInfo2 = this.hcylb;
+                            this.person2.instance.tableList = this.hcylb;
+                            console.log(this.person2.instance.childInfo2);
+                            this.del_person_data = [];
+                            this.person2.instance.del_person_data = [];
+                            this.person2.instance.del_person_data = this.del_person_data;
+                            this.msgs = [];
+                            this.msgs.push({severity: 'error', summary: '保存失败', detail: data['errorMessage']});
+
+                        }
+
+                    })
             }
+
+
+        } else {
+            this.msgs = [];
+            this.msgs.push({severity: 'error', summary: '填入提醒', detail: '没有任何数据修改'});
         }
 
 
@@ -1089,624 +2096,2142 @@ export class SwzbPersonComponent implements OnInit {
 
 
     saveRouter(url, id) {
-        this.avtiveName = url;
-        const zblId = id;
-        console.log(url, zblId);
-
-        console.log(this.ModelRoom);
         this.ModelRoom.clear();
-        this.childrenModel = this.AlertModel.resolveComponentFactory(PersonComponent);
-        switch (url) {
-            case 'person':
-                const person = this.AlertModel.resolveComponentFactory(PersonComponent);
-                const person2 = this.ModelRoom.createComponent(person);
-                person2.instance.childInfo = this.hjbxx;
-                person2.instance.childInfo2 = this.hcylb;
-                person2.instance.type = this.type;
-                person2.instance.init_person_data = this.init_person_data;
-
-                person2.instance.update_person_data = Array();
-                person2.instance.qshflId = this.hjbxx;
-                person2.instance.del_person_data = Array();
-                person2.instance.add_person_data = Array();
-
-                this.update_person_data = person2.instance.update_person_data;
-                this.del_person_data = person2.instance.del_person_data;
-                this.add_person_data = person2.instance.add_person_data;
-
-
-                if (this.type == 'add') {
-                    person2.instance.qshflId = this.qshflId;
-                } else if (this.type == 'rew') {
-                    person2.instance.qshflId = this.hjbxx;
-                }
-
-                break;
-            case 'houses':
-                console.log(this.hjbxx);
-                console.log(this.hcylb);
-                if (this.houses_data == null) {
-                    let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id
-
-                        }&zblId=${zblId}`;
-
-
-                    this.HttpService.get('fwjbxx/list?' + params).then((data) => {
-
-                        this.init_houses_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const houses = this.AlertModel.resolveComponentFactory(HousesComponent);
-                        const houses2 = this.ModelRoom.createComponent(houses);
-
-                        houses2.instance.childInfo = this.hjbxx;
-                        houses2.instance.childInfo2 = this.hcylb;
-                        houses2.instance.init_houses_data = this.init_houses_data;
-                        houses2.instance.type = this.type;
-                        houses2.instance.flxx_houses_update = this.flxx_houses_update;
-
-                        this.update_houses_data = houses2.instance.update_houses_data;
-                        this.del_houses_data = houses2.instance.del_houses_data;
-                        this.add_houses_data = houses2.instance.add_houses_data;
-                        this.flxx_houses_update = houses2.instance.flxx_houses_update;
-
-
-                        houses2.instance.bj_houses_data = this.bj_houses_data;
-
-                        this.houses_data = data;
-                        houses2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            houses2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            houses2.instance.qshflId = this.hjbxx;
-                        }
-
-
-                    });
-                } else {
-
-                    const houses = this.AlertModel.resolveComponentFactory(HousesComponent);
-                    const houses2 = this.ModelRoom.createComponent(houses);
-
-                    houses2.instance.init_houses_data = this.init_houses_data;
-                    houses2.instance.type = this.type;
-
-                    this.update_houses_data = houses2.instance.update_houses_data;
-                    this.del_houses_data = houses2.instance.del_houses_data;
-                    this.add_houses_data = houses2.instance.add_houses_data;
-                    this.bj_houses_data = houses2.instance.bj_houses_data;
-                    this.flxx_houses_update = houses2.instance.flxx_houses_update;
-                    houses2.instance.childInfo = this.hjbxx;
-                    houses2.instance.childInfo2 = this.hcylb;
-                    houses2.instance.data = this.houses_data;
-                    houses2.instance.flxx_houses_update = this.flxx_houses_update;
-
-                    if (this.type == 'add') {
-                        houses2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        houses2.instance.qshflId = this.hjbxx;
-                    }
-                }
-                break;
-            case 'decoration':
-                if (this.decor_data == null) {
-                    // const params = 'jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=S000001&xzqhdm=350526000000000&jmhId=7BCD3BE587394F4D969D3B0CC6225E95&zblId=2F0E8D93C2B74B2AA569A961F951741D';
-                    let params: string;
-
-                    params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-
-                    this.HttpService.get('fwzxjbxx/list?' + params).then((data) => {
-                        this.init_decor_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const decor = this.AlertModel.resolveComponentFactory(DecorationComponent);
-                        const decor2 = this.ModelRoom.createComponent(decor);
-
-                        decor2.instance.childInfo = this.hjbxx;
-                        decor2.instance.childInfo2 = this.hcylb;
-                        decor2.instance.init_decor_data = this.init_decor_data;
-                        decor2.instance.type = this.type;
-                        this.update_decor_data = decor2.instance.update_decor_data;
-                        this.del_decor_data = decor2.instance.del_decor_data;
-                        this.add_decor_data = decor2.instance.add_decor_data;
-
-                        decor2.instance.bj_decor_data = this.bj_decor_data;
-
-                        this.decor_data = data;
-                        decor2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            decor2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            decor2.instance.qshflId = this.hjbxx;
-                        }
-
-                    });
-                } else {
-                    const decor = this.AlertModel.resolveComponentFactory(DecorationComponent);
-                    const decor2 = this.ModelRoom.createComponent(decor);
-
-                    decor2.instance.init_decor_data = this.init_decor_data;
-                    decor2.instance.type = this.type;
-
-                    this.update_decor_data = decor2.instance.update_decor_data;
-                    this.del_decor_data = decor2.instance.del_decor_data;
-                    this.add_decor_data = decor2.instance.add_decor_data;
-                    this.bj_decor_data = decor2.instance.bj_decor_data;
-                    decor2.instance.childInfo = this.hjbxx;
-                    decor2.instance.childInfo2 = this.hcylb;
-                    decor2.instance.data = this.decor_data;
-
-                    if (this.type == 'add') {
-                        decor2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        decor2.instance.qshflId = this.hjbxx;
-                    }
-                }
-
-
-                break;
-            case'fsss':
-                if (this.fsss_data == null) {
-                    let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-
-                    this.HttpService.get('fsssjbxx/list?' + params).then((data) => {
-                        console.log(data);
-                        this.init_fsss_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const fsss = this.AlertModel.resolveComponentFactory(FsssComponent);
-                        const fsss2 = this.ModelRoom.createComponent(fsss);
-
-                        fsss2.instance.childInfo = this.hjbxx;
-                        fsss2.instance.childInfo2 = this.hcylb;
-                        fsss2.instance.init_fsss_data = this.init_fsss_data;
-                        fsss2.instance.type = this.type;
-                        this.update_fsss_data = fsss2.instance.update_fsss_data;
-                        this.del_fsss_data = fsss2.instance.del_fsss_data;
-                        this.add_fsss_data = fsss2.instance.add_fsss_data;
-
-                        fsss2.instance.bj_fsss_data = this.bj_fsss_data;
-
-                        this.fsss_data = data;
-                        fsss2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            fsss2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            fsss2.instance.qshflId = this.hjbxx;
-                        }
-
-
-                    });
-                } else {
-
-                    const fsss = this.AlertModel.resolveComponentFactory(FsssComponent);
-                    const fsss2 = this.ModelRoom.createComponent(fsss);
-
-                    fsss2.instance.init_fsss_data = this.init_fsss_data;
-                    fsss2.instance.type = this.type;
-
-                    this.update_fsss_data = fsss2.instance.update_fsss_data;
-                    this.del_fsss_data = fsss2.instance.del_fsss_data;
-                    this.add_fsss_data = fsss2.instance.add_fsss_data;
-                    this.bj_fsss_data = fsss2.instance.bj_fsss_data;
-                    fsss2.instance.childInfo = this.hjbxx;
-                    fsss2.instance.childInfo2 = this.hcylb;
-                    fsss2.instance.data = this.fsss_data;
-
-                    if (this.type == 'add') {
-                        fsss2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        fsss2.instance.qshflId = this.hjbxx;
-                    }
-                }
-                break;
-            case'land':
-                if (this.land_data == null) {
-                    let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-
-                    this.HttpService.get('tdjbxx/list?' + params).then((data) => {
-                        console.log(data);
-                        this.init_land_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const land = this.AlertModel.resolveComponentFactory(LandComponent);
-                        const land2 = this.ModelRoom.createComponent(land);
-
-                        land2.instance.childInfo = this.hjbxx;
-                        land2.instance.childInfo2 = this.hcylb;
-                        land2.instance.init_land_data = this.init_land_data;
-                        land2.instance.type = this.type;
-                        this.update_land_data = land2.instance.update_land_data;
-                        this.del_land_data = land2.instance.del_land_data;
-                        this.add_land_data = land2.instance.add_land_data;
-
-                        land2.instance.bj_land_data = this.bj_land_data;
-
-                        this.land_data = data;
-                        land2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            land2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            land2.instance.qshflId = this.hjbxx;
-                        }
-
-
-                    });
-                } else {
-
-                    const land = this.AlertModel.resolveComponentFactory(LandComponent);
-                    const land2 = this.ModelRoom.createComponent(land);
-
-                    land2.instance.init_land_data = this.init_land_data;
-                    land2.instance.type = this.type;
-
-                    this.update_land_data = land2.instance.update_land_data;
-                    this.del_land_data = land2.instance.del_land_data;
-                    this.add_land_data = land2.instance.add_land_data;
-                    this.bj_land_data = land2.instance.bj_land_data;
-                    land2.instance.childInfo = this.hjbxx;
-                    land2.instance.childInfo2 = this.hcylb;
-                    land2.instance.data = this.land_data;
-
-                    if (this.type == 'add') {
-                        land2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        land2.instance.qshflId = this.hjbxx;
-                    }
-                }
-
-                break;
-            case'landother':
-                if (this.land_other_data == null) {
-                    let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-                    this.HttpService.get('tdfzwjbxx/list?' + params).then((data) => {
-                        console.log(data);
-                        this.init_land_other_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const land_other = this.AlertModel.resolveComponentFactory(LandOtherComponent);
-                        const land_other2 = this.ModelRoom.createComponent(land_other);
-
-                        land_other2.instance.childInfo = this.hjbxx;
-                        land_other2.instance.childInfo2 = this.hcylb;
-                        land_other2.instance.init_land_other_data = this.init_land_other_data;
-                        land_other2.instance.type = this.type;
-                        this.update_land_other_data = land_other2.instance.update_land_other_data;
-                        this.del_land_other_data = land_other2.instance.del_land_other_data;
-                        this.add_land_other_data = land_other2.instance.add_land_other_data;
-
-                        land_other2.instance.bj_land_other_data = this.bj_land_other_data;
-
-                        this.land_other_data = data;
-                        land_other2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            land_other2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            land_other2.instance.qshflId = this.hjbxx;
-                        }
-
-
-                    });
-                } else {
-
-                    const land_other = this.AlertModel.resolveComponentFactory(LandOtherComponent);
-                    const land_other2 = this.ModelRoom.createComponent(land_other);
-
-                    land_other2.instance.init_land_other_data = this.init_land_other_data;
-                    land_other2.instance.type = this.type;
-
-                    this.update_land_other_data = land_other2.instance.update_land_other_data;
-                    this.del_land_other_data = land_other2.instance.del_land_other_data;
-                    this.add_land_other_data = land_other2.instance.add_land_other_data;
-                    this.bj_land_other_data = land_other2.instance.bj_land_other_data;
-                    land_other2.instance.childInfo = this.hjbxx;
-                    land_other2.instance.childInfo2 = this.hcylb;
-                    land_other2.instance.data = this.land_other_data;
-
-                    if (this.type == 'add') {
-                        land_other2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        land_other2.instance.qshflId = this.hjbxx;
-                    }
-                }
-                break;
-            case'trees':
-                if (this.trees_data == null) {
-                    // const params = 'jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=S000001&xzqhdm=350526000000000&jmhId=7BCD3BE587394F4D969D3B0CC6225E95&zblId=2F0E8D93C2B74B2AA569A961F951741D';
-                    let params: string;
-
-                    params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-
-                    this.HttpService.get('fwzxjbxx/list?' + params).then((data) => {
-                        this.init_trees_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
-                        const trees2 = this.ModelRoom.createComponent(trees);
-
-                        trees2.instance.childInfo = this.hjbxx;
-                        trees2.instance.childInfo2 = this.hcylb;
-                        trees2.instance.init_trees_data = this.init_trees_data;
-                        trees2.instance.type = this.type;
-                        this.update_trees_data = trees2.instance.update_trees_data;
-                        this.del_trees_data = trees2.instance.del_trees_data;
-                        this.add_trees_data = trees2.instance.add_trees_data;
-
-                        trees2.instance.bj_trees_data = this.bj_trees_data;
-
-                        this.trees_data = data;
-                        trees2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            trees2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            trees2.instance.qshflId = this.hjbxx;
-                        }
-
-                    });
-                } else {
-                    const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
-                    const trees2 = this.ModelRoom.createComponent(trees);
-
-                    trees2.instance.init_trees_data = this.init_trees_data;
-                    trees2.instance.type = this.type;
-
-                    this.update_trees_data = trees2.instance.update_trees_data;
-                    this.del_trees_data = trees2.instance.del_trees_data;
-                    this.add_trees_data = trees2.instance.add_trees_data;
-                    this.bj_trees_data = trees2.instance.bj_trees_data;
-                    trees2.instance.childInfo = this.hjbxx;
-                    trees2.instance.childInfo2 = this.hcylb;
-                    trees2.instance.data = this.trees_data;
-
-                    if (this.type == 'add') {
-                        trees2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        trees2.instance.qshflId = this.hjbxx;
-                    }
-                }
-
-                break;
-            case'water':
-                if (this.water_data == null) {
-                    let params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id
-
-                        }&zblId=${zblId}`;
-
-
-                    this.HttpService.get('xxzx/list?' + params).then((data) => {
-
-                        this.init_water_data = JSON.parse(JSON.stringify(data['returnObject']));
-                        const water = this.AlertModel.resolveComponentFactory(WaterComponent);
-                        const water2 = this.ModelRoom.createComponent(water);
-
-                        water2.instance.childInfo = this.hjbxx;
-                        water2.instance.childInfo2 = this.hcylb;
-                        water2.instance.init_water_data = this.init_water_data;
-                        water2.instance.type = this.type;
-                        this.update_water_data = water2.instance.update_water_data;
-                        this.del_water_data = water2.instance.del_water_data;
-                        this.add_water_data = water2.instance.add_water_data;
-
-                        water2.instance.bj_water_data = this.bj_water_data;
-
-                        this.water_data = data;
-                        water2.instance.data = data;
-
-
-                        if (this.type == 'add') {
-                            water2.instance.qshflId = this.qshflId;
-                        } else if (this.type == 'rew') {
-                            water2.instance.qshflId = this.hjbxx;
-                        }
-
-                    });
-                } else {
-                    const water = this.AlertModel.resolveComponentFactory(WaterComponent);
-                    const water2 = this.ModelRoom.createComponent(water);
-
-                    water2.instance.init_water_data = this.init_water_data;
-                    water2.instance.type = this.type;
-
-                    this.update_water_data = water2.instance.update_water_data;
-                    this.del_water_data = water2.instance.del_water_data;
-                    this.add_water_data = water2.instance.add_water_data;
-                    this.bj_water_data = water2.instance.bj_water_data;
-                    water2.instance.childInfo = this.hjbxx;
-                    water2.instance.childInfo2 = this.hcylb;
-                    water2.instance.data = this.water_data;
-
-                    if (this.type == 'add') {
-                        water2.instance.qshflId = this.qshflId;
-                    } else if (this.type == 'rew') {
-                        water2.instance.qshflId = this.hjbxx;
-                    }
-                }
-
-                break;
-            case'grave':
-
-                if (this.grave_data == null) {
-                    let params: string;
-
-                    params = `jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${this.info.id}&zblId=${zblId}`;
-
-
-                    this.HttpService.get('fm/list?' + params).then((data) => {
-                        const init_grave_data = JSON.parse(JSON.stringify(data));
-                        console.log(init_grave_data);
-                        const Grave = this.AlertModel.resolveComponentFactory(GraveComponent);
-                        const Grave2 = this.ModelRoom.createComponent(Grave);
-                        Grave2.instance.childInfo = this.hjbxx;
-                        Grave2.instance.childInfo2 = this.hcylb;
-                        Grave2.instance.qshflId = this.qshflId;
-                        Grave2.instance.init_grave_data = init_grave_data;
-                        Grave2.instance.grave_data = data;
-                        Grave2.instance.type = this.type;
-                        this.update_grave_data = Grave2.instance.update_grave_data;
-                        this.del_grave_data = Grave2.instance.del_grave_data;
-                        this.add_grave_data = Grave2.instance.add_grave_data;
-
-                        this.trees_data = data;
-
-                    });
-                } else {
-                    const Grave = this.AlertModel.resolveComponentFactory(GraveComponent);
-                    const Grave2 = this.ModelRoom.createComponent(Grave);
-
-                    Grave2.instance.childInfo = this.hjbxx;
-                    Grave2.instance.childInfo2 = this.hcylb;
-                    Grave2.instance.grave_data = this.grave_data;
-                    this.update_grave_data = Grave2.instance.update_grave_data;
-                    this.del_grave_data = Grave2.instance.del_grave_data;
-                    this.add_grave_data = Grave2.instance.add_grave_data;
-                }
-                break;
-            case
-            'qsr'
-            :
-                const qsr = this.AlertModel.resolveComponentFactory(QsrComponent);
-                const qsr2 = this.ModelRoom.createComponent(qsr);
-                break;
-
-            case
-            'gtgsjbqk'
-            :
-                const gtgsjbqk = this.AlertModel.resolveComponentFactory(JtgsjbxqComponent);
-                const gtgsjbqk2 = this.ModelRoom.createComponent(gtgsjbqk);
-                break;
-            case
-            'shebei'
-            :
-                const shebei = this.AlertModel.resolveComponentFactory(ShebeiComponent);
-                const shebei2 = this.ModelRoom.createComponent(shebei);
-                break;
-            case
-            'sheshi'
-            :
-                const sheshi = this.AlertModel.resolveComponentFactory(SheshiComponent);
-                const sheshi2 = this.ModelRoom.createComponent(sheshi);
-                break;
-            case
-            'nfyssjbqk'
-            :
-                const nfyssjbqk = this.AlertModel.resolveComponentFactory(NfyssjbqkComponent);
-                const nfyssjbqk2 = this.ModelRoom.createComponent(nfyssjbqk);
-                break;
-            case
-            'fyss'
-            :
-                const fyss = this.AlertModel.resolveComponentFactory(FyssComponent);
-                const fyss2 = this.ModelRoom.createComponent(fyss);
-                break;
-            case'dwjbqk':
-                const dwqbqk1 = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
-                const dwqbqk2 = this.ModelRoom.createComponent(dwqbqk1);
-                break;
-            case 'gykqyxq':
-                const gykqyxq = this.AlertModel.resolveComponentFactory(GykqyxqComponent);
-                const gykqyxq2 = this.ModelRoom.createComponent(gykqyxq);
-                break;
-            case
-            'tljbxx'
-            :
-                const tljbxx = this.AlertModel.resolveComponentFactory(TljbxxComponent);
-                const tljbxx2 = this.ModelRoom.createComponent(tljbxx);
-                break;
-            case
-            'gljbxx'
-            :
-                const gljbxx = this.AlertModel.resolveComponentFactory(GljbxxComponent);
-                const gljbxx2 = this.ModelRoom.createComponent(gljbxx);
-                break;
-            case
-            'qhjbxx'
-            :
-                const qhjbxx = this.AlertModel.resolveComponentFactory(QhjbxxComponent);
-                const qhjbxx2 = this.ModelRoom.createComponent(qhjbxx);
-                break;
-
-            case
-            'hdjbxx'
-            :
-                const hdjbxx = this.AlertModel.resolveComponentFactory(HdjbxxComponent);
-                const hbjbxx2 = this.ModelRoom.createComponent(hdjbxx);
-                break;
-            case
-            'gkjbxx'
-            :
-
-                const gkjbxx = this.AlertModel.resolveComponentFactory(GkjbxxComponent);
-                const gkjbxx2 = this.ModelRoom.createComponent(gkjbxx);
-                break;
-            case
-            'mtjbxx'
-            :
-
-                const mtjbxx = this.AlertModel.resolveComponentFactory(MtjbxxComponent);
-                const mtjbxx2 = this.ModelRoom.createComponent(mtjbxx);
-                break;
-            case
-            'sbdgcjbxx'
-            :
-                const sbdgcjbxx = this.AlertModel.resolveComponentFactory(SbdgcjbxxComponent);
-                const sbdgcjbxx2 = this.ModelRoom.createComponent(sbdgcjbxx);
-                break;
-            case
-            'dxgcjbxx'
-            :
-                const dxgcjbxx = this.AlertModel.resolveComponentFactory(DxgcjbxxComponent);
-                const dxgcjbxx2 = this.ModelRoom.createComponent(dxgcjbxx);
-                break;
-            case
-            'gbdsjbxx'
-            :
-                const gbdsjbxx = this.AlertModel.resolveComponentFactory(GbdsjbxxComponent);
-                const gbdsjbxx2 = this.ModelRoom.createComponent(gbdsjbxx);
-                break;
-            case
-            'gdgcjbxx'
-            :
-
-                const gdgcjbxx = this.AlertModel.resolveComponentFactory(GdgcjbxxComponent);
-                const gdgcjbxx2 = this.ModelRoom.createComponent(gdgcjbxx);
-                break;
-            case
-            'slsdgcjbxx'
-            :
-                const slsdgcjbxx = this.AlertModel.resolveComponentFactory(SlsdgcjbxxComponent);
-                const slsdgcjbxx2 = this.ModelRoom.createComponent(slsdgcjbxx);
-                break;
-            case
-            'kczyjbxx'
-            :
-                const kczyjbxx = this.AlertModel.resolveComponentFactory(KczyjbxxComponent);
-                const kczyjbxx2 = this.ModelRoom.createComponent(kczyjbxx);
-                break;
-            case
-            'wwgjjbxx'
-            :
-                const wwgjjbxx = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
-                const wwgjjbxx2 = this.ModelRoom.createComponent(wwgjjbxx);
-                break;
-
-            case
-            'swqxzjbxx'
-            :
-                const swqxzjbxx = this.AlertModel.resolveComponentFactory(SwqxzjbxxComponent);
-                const swqxzjbxx2 = this.ModelRoom.createComponent(swqxzjbxx);
-                break;
-            case
-            'qtzxjbxx'
-            :
-                const qtzxjbxx = this.AlertModel.resolveComponentFactory(QtzxjbxxComponent);
-                const qtzxjbxx2 = this.ModelRoom.createComponent(qtzxjbxx);
-                break;
+        this.bj_have_tab = true;
+
+        this.activeTabName = url;
+        this.activeTabId = id;
+        console.log(this.ModelRoom);
+        console.log(this.activeTabName);
+        if (this.type == 'add') {
+            this.tabHttpUrl = this.getTabUrl(url, id, null);
+        } else {
+            this.tabHttpUrl = this.getTabUrl(url, id, this.info.id);
         }
+
+        if (this.hjbxx['hzxm'] == "" || this.hjbxx['dabh'] == "" || this.hjbxx['dabh'] == undefined || this.hjbxx['hzxm'] == undefined) {
+            this.msgs = [];
+            this.msgs.push({severity: 'error', summary: '填入提醒', detail: "请填好户主姓名和档案编号"});
+
+        } else {
+            if (url == 'person') {
+
+
+                const person = this.AlertModel.resolveComponentFactory(PersonComponent);
+                this.person2 = this.ModelRoom.createComponent(person);
+                this.person2.instance.childInfo = this.hjbxx;
+                this.person2.instance.childInfo2 = this.hcylb;
+                this.person2.instance.type = this.type;
+                this.person2.instance.qshflId = this.qshflId;
+                this.person2.instance.init_person_data = this.init_person_data;
+
+                this.person2.instance.add_person_data = this.listHcyAdd;
+                this.person2.instance.del_person_data = this.del_person_data;
+                this.person2.instance.update_person_data = this.update_person_data;
+
+                this.person2.instance.ssxzqhSearchDm = this.qshflId.ssxzqhSearchDm;
+                if (this.type == 'add') {
+                    this.person2.instance.qshflId = this.qshflId;
+
+                } else if (this.type == 'rew') {
+                    this.person2.instance.qshflId = this.hjbxx;
+                }
+
+            } else if (url == 'qsr') {
+                console.log(this.hjbxx);
+                const qsr = this.AlertModel.resolveComponentFactory(QsrComponent);
+
+                this.person2 = this.ModelRoom.createComponent(qsr);
+
+
+                this.person2.instance.childInfo = this.hjbxx;
+                this.person2.instance.childInfo2 = this.hcylb;
+                this.person2.instance.type = this.type;
+                this.person2.instance.qshflId = this.qshflId;
+                this.person2.instance.init_person_data = this.init_person_data;
+
+                this.person2.instance.add_person_data = this.listHcyAdd;
+                this.person2.instance.del_person_data = this.del_person_data;
+                this.person2.instance.update_person_data = this.update_person_data;
+
+                this.person2.instance.ssxzqhSearchDm = this.qshflId.ssxzqhSearchDm;
+                if (this.type == 'add') {
+                    this.person2.instance.qshflId = this.qshflId;
+
+                } else if (this.type == 'rew') {
+                    this.person2.instance.qshflId = this.hjbxx;
+                }
+            } else {
+                if (this.hcylb.length > 0) {
+                    switch (url) {
+                        // case 'person':
+                        //
+                        //     const person = this.AlertModel.resolveComponentFactory(PersonComponent);
+                        //     this.person2 = this.ModelRoom.createComponent(person);
+                        //     this.person2.instance.childInfo = this.hjbxx;
+                        //     this.person2.instance.childInfo2 = this.hcylb;
+                        //     this.person2.instance.type = this.type;
+                        //     this.person2.instance.qshflId = this.qshflId;
+                        //     this.person2.instance.init_person_data = this.init_person_data;
+                        //
+                        //     this.person2.instance.add_person_data = this.listHcyAdd;
+                        //     this.person2.instance.del_person_data = this.del_person_data;
+                        //     this.person2.instance.update_person_data = this.update_person_data;
+                        //
+                        //     this.person2.instance.ssxzqhSearchDm = this.qshflId.ssxzqhSearchDm;
+                        //     if (this.type == 'add') {
+                        //         this.person2.instance.qshflId = this.qshflId;
+                        //
+                        //     } else if (this.type == 'rew') {
+                        //         this.person2.instance.qshflId = this.hjbxx;
+                        //     }
+                        //
+                        //
+                        //     break;
+                        case 'fwjbxx':
+                            if (this.fwjbxx_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+                                    this.init_fwjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const fw = this.AlertModel.resolveComponentFactory(HousesComponent);
+                                    this.fw2 = this.ModelRoom.createComponent(fw);
+                                    this.fw2.instance.houses_name_active_base_copy = this.houses_name_active_base_copy;
+                                    this.fw2.instance.childInfo = this.hjbxx;
+                                    this.fw2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.fw2.instance.childInfo2 = this.hcylb;
+                                    this.fw2.instance.type = this.type;
+                                    this.fw2.instance.init_houses_data = this.init_fwjbxx_data;
+
+
+                                    this.fw2.instance.flxx_houses_update = this.flxx_fwjbxx_update;
+                                    this.fw2.instance.flxx_houses_del = this.flxx_fwjbxx_del;
+                                    this.fw2.instance.flxx_houses_add = this.flxx_fwjbxx_add;
+
+
+                                    this.fw2.instance.update_houses_data = this.update_fwjbxx_data;
+                                    this.fw2.instance.add_houses_data = this.add_fwjbxx_data;
+                                    this.fw2.instance.del_houses_data = this.del_fwjbxx_data;
+
+                                    this.fw2.instance.add_ggmx_data = this.add_fwjbxx_ggmx_data;
+                                    this.fw2.instance.update_ggmx_data = this.update_fwjbxx_ggmx_data;
+                                    this.fw2.instance.del_ggmx_data = this.del_fwjbxx_ggmx_data;
+
+                                    this.fwjbxx_data = data;
+
+                                    this.fw2.instance.data = this.fwjbxx_data;
+                                    this.fw2.instance.bj_houses_data = this.bj_fwjbxx_data;
+                                    this.fw2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.fw2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+
+                                        this.fw2.instance.qshflId = this.hjbxx;
+                                    }
+
+
+                                });
+                            } else {
+                                console.log(this.fwjbxx_data);
+                                const fw = this.AlertModel.resolveComponentFactory(HousesComponent);
+                                this.fw2 = this.ModelRoom.createComponent(fw);
+                                this.fw2.instance.houses_name_active_base_copy = this.houses_name_active_base_copy;
+                                this.fw2.instance.childInfo = this.hjbxx;
+                                this.fw2.instance.listHcyAdd = this.listHcyAdd;
+                                this.fw2.instance.childInfo2 = this.hcylb;
+                                this.fw2.instance.type = this.type;
+                                this.fw2.instance.init_houses_data = this.init_fwjbxx_data;
+
+                                this.fw2.instance.add_houses_data = this.add_fwjbxx_data;
+                                this.fw2.instance.del_houses_data = this.del_fwjbxx_data;
+                                this.fw2.instance.update_houses_data = this.update_fwjbxx_data;
+
+                                this.fw2.instance.add_ggmx_data = this.add_fwjbxx_ggmx_data;
+                                this.fw2.instance.update_ggmx_data = this.update_fwjbxx_ggmx_data;
+                                this.fw2.instance.del_ggmx_data = this.del_fwjbxx_ggmx_data;
+
+
+                                this.fw2.instance.flxx_houses_update = this.flxx_fwjbxx_update;
+                                this.fw2.instance.flxx_houses_del = this.flxx_fwjbxx_del;
+                                this.fw2.instance.flxx_houses_add = this.flxx_fwjbxx_add;
+
+
+                                this.fw2.instance.data = this.fwjbxx_data;
+
+                                this.fw2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.fw2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.fw2.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case 'fwzxjbxx':
+                            if (this.decor_data == null) {
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    this.init_fwzxjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const decor = this.AlertModel.resolveComponentFactory(DecorationComponent);
+                                    this.fwzxjbxx = this.ModelRoom.createComponent(decor);
+
+                                    this.fwzxjbxx.instance.childInfo = this.hjbxx;
+                                    this.fwzxjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.fwzxjbxx.instance.childInfo2 = this.hcylb;
+                                    this.fwzxjbxx.instance.type = this.type;
+                                    this.fwzxjbxx.instance.init_decor_data = this.init_fwzxjbxx_data;
+                                    this.fwzxjbxx.instance.decor_name_active_base_copy = this.decor_name_active_base_copy;
+                                    this.fwzxjbxx.instance.flxx_decor_update = this.flxx_fwzxjbxx_update;
+                                    this.fwzxjbxx.instance.flxx_decor_add = this.flxx_fwzxjbxx_add;
+                                    this.fwzxjbxx.instance.flxx_decor_del = this.flxx_fwzxjbxx_del;
+
+                                    this.fwzxjbxx.instance.update_decor_data = this.update_fwzxjbxx_data;
+                                    this.fwzxjbxx.instance.add_decor_data = this.add_fwzxjbxx_data;
+                                    this.fwzxjbxx.instance.del_decor_data = this.del_fwzxjbxx_data;
+
+                                    this.fwzxjbxx.instance.add_ggmx_data = this.add_fwzxjbxx_ggmx_data;
+                                    this.fwzxjbxx.instance.update_ggmx_data = this.update_fwzxjbxx_ggmx_data;
+                                    this.fwzxjbxx.instance.del_ggmx_data = this.del_fwzxjbxx_ggmx_data;
+
+
+                                    this.fwzxjbxx.instance.bj_decor_data = this.bj_fwzxjbxx_data;
+
+                                    this.decor_data = data;
+                                    this.fwzxjbxx.instance.data = this.decor_data;
+
+                                    this.fwzxjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.fwzxjbxx.instance.qshflId = this.qshflId;
+
+                                    } else if (this.type == 'rew') {
+                                        this.fwzxjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+                                const decor = this.AlertModel.resolveComponentFactory(DecorationComponent);
+                                this.fwzxjbxx = this.ModelRoom.createComponent(decor);
+
+                                this.fwzxjbxx.instance.childInfo = this.hjbxx;
+                                this.fwzxjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.fwzxjbxx.instance.childInfo2 = this.hcylb;
+                                this.fwzxjbxx.instance.type = this.type;
+                                this.fwzxjbxx.instance.init_decor_data = this.init_fwzxjbxx_data;
+                                this.fwzxjbxx.instance.decor_name_active_base_copy = this.decor_name_active_base_copy;
+
+                                this.fwzxjbxx.instance.flxx_decor_update = this.flxx_fwzxjbxx_update;
+                                this.fwzxjbxx.instance.flxx_decor_add = this.flxx_fwzxjbxx_add;
+                                this.fwzxjbxx.instance.flxx_decor_del = this.flxx_fwzxjbxx_del;
+
+                                this.fwzxjbxx.instance.update_decor_data = this.update_fwzxjbxx_data;
+                                this.fwzxjbxx.instance.add_decor_data = this.add_fwzxjbxx_data;
+                                this.fwzxjbxx.instance.del_decor_data = this.del_fwzxjbxx_data;
+
+                                this.fwzxjbxx.instance.add_ggmx_data = this.add_fwzxjbxx_ggmx_data;
+                                this.fwzxjbxx.instance.update_ggmx_data = this.update_fwzxjbxx_ggmx_data;
+                                this.fwzxjbxx.instance.del_ggmx_data = this.del_fwzxjbxx_ggmx_data;
+
+                                this.fwzxjbxx.instance.data = this.decor_data;
+                                this.fwzxjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.fwzxjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.fwzxjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+
+                            break;
+                        case 'fsssjbxx':
+                            if (this.fsss_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+                                    this.init_fsssjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const fsss = this.AlertModel.resolveComponentFactory(FsssComponent);
+                                    this.fsssjbxx = this.ModelRoom.createComponent(fsss);
+                                    this.fsssjbxx.instance.fsss_name_active_base_copy = this.fsss_name_active_base_copy;
+
+                                    this.fsssjbxx.instance.childInfo = this.hjbxx;
+                                    this.fsssjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.fsssjbxx.instance.childInfo2 = this.hcylb;
+                                    this.fsssjbxx.instance.type = this.type;
+                                    this.fsssjbxx.instance.init_fsss_data = this.init_fsssjbxx_data;
+
+                                    this.fsssjbxx.instance.flxx_fsss_update = this.flxx_fsssjbxx_update;
+                                    this.fsssjbxx.instance.flxx_fsss_add = this.flxx_fsssjbxx_add;
+                                    this.fsssjbxx.instance.flxx_fsss_del = this.flxx_fsssjbxx_del;
+
+
+                                    this.fsssjbxx.instance.update_fsss_data = this.update_fsssjbxx_data;
+                                    this.fsssjbxx.instance.add_fsss_data = this.add_fsssjbxx_data;
+                                    this.fsssjbxx.instance.del_fsss_data = this.del_fsssjbxx_data;
+
+                                    this.fsssjbxx.instance.add_ggmx_data = this.add_fsssjbxx_ggmx_data;
+                                    this.fsssjbxx.instance.update_ggmx_data = this.update_fsssjbxx_ggmx_data;
+                                    this.fsssjbxx.instance.del_ggmx_data = this.del_fsssjbxx_ggmx_data;
+
+
+                                    this.fsssjbxx.instance.bj_fsss_data = this.bj_fsssjbxx_data;
+
+                                    this.fsss_data = data;
+                                    this.fsssjbxx.instance.data = this.fsss_data;
+
+                                    this.fsssjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.fsssjbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.fsssjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+
+                                });
+                            } else {
+
+                                const fsss = this.AlertModel.resolveComponentFactory(FsssComponent);
+                                this.fsssjbxx = this.ModelRoom.createComponent(fsss);
+                                this.fsssjbxx.instance.fsss_name_active_base_copy = this.fsss_name_active_base_copy;
+
+                                this.fsssjbxx.instance.childInfo = this.hjbxx;
+                                this.fsssjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.fsssjbxx.instance.childInfo2 = this.hcylb;
+                                this.fsssjbxx.instance.type = this.type;
+                                this.fsssjbxx.instance.init_fsss_data = this.init_fsssjbxx_data;
+
+                                this.fsssjbxx.instance.flxx_fsss_update = this.flxx_fsssjbxx_update;
+                                this.fsssjbxx.instance.flxx_fsss_add = this.flxx_fsssjbxx_add;
+                                this.fsssjbxx.instance.flxx_fsss_del = this.flxx_fsssjbxx_del;
+
+
+                                this.fsssjbxx.instance.update_fsss_data = this.update_fsssjbxx_data;
+                                this.fsssjbxx.instance.add_fsss_data = this.add_fsssjbxx_data;
+                                this.fsssjbxx.instance.del_fsss_data = this.del_fsssjbxx_data;
+
+                                this.fsssjbxx.instance.add_ggmx_data = this.add_fsssjbxx_ggmx_data;
+                                this.fsssjbxx.instance.update_ggmx_data = this.update_fsssjbxx_ggmx_data;
+                                this.fsssjbxx.instance.del_ggmx_data = this.del_fsssjbxx_ggmx_data;
+
+                                this.fsssjbxx.instance.data = this.fsss_data;
+                                this.fsssjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.fsssjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.fsssjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+                            break;
+                        case 'tdjbxx':
+                            if (this.land_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+                                    this.init_tdjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const land = this.AlertModel.resolveComponentFactory(LandComponent);
+                                    this.tdjbxx = this.ModelRoom.createComponent(land);
+                                    this.tdjbxx.instance.land_name_active_base_copy = this.land_name_active_base_copy;
+
+                                    this.tdjbxx.instance.childInfo = this.hjbxx;
+                                    this.tdjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.tdjbxx.instance.childInfo2 = this.hcylb;
+                                    this.tdjbxx.instance.type = this.type;
+                                    this.tdjbxx.instance.init_land_data = this.init_tdjbxx_data;
+
+                                    this.tdjbxx.instance.flxx_land_update = this.flxx_tdjbxx_update;
+                                    this.tdjbxx.instance.flxx_land_add = this.flxx_tdjbxx_add;
+                                    this.tdjbxx.instance.flxx_land_del = this.flxx_tdjbxx_del;
+
+
+                                    this.tdjbxx.instance.add_land_data = this.add_tdjbxx_data;
+                                    this.tdjbxx.instance.update_land_data = this.update_tdjbxx_data;
+                                    this.tdjbxx.instance.del_land_data = this.del_tdjbxx_data;
+
+                                    this.tdjbxx.instance.add_ggmx_data = this.add_tdjbxx_ggmx_data;
+                                    this.tdjbxx.instance.update_ggmx_data = this.update_tdjbxx_ggmx_data;
+                                    this.tdjbxx.instance.del_ggmx_data = this.del_tdjbxx_ggmx_data;
+
+                                    this.tdjbxx.instance.bj_land_data = this.bj_tdjbxx_data;
+
+                                    this.land_data = data;
+                                    this.tdjbxx.instance.data = this.land_data;
+
+                                    this.tdjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.tdjbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.tdjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+
+                                });
+                            } else {
+
+                                const land = this.AlertModel.resolveComponentFactory(LandComponent);
+                                this.tdjbxx = this.ModelRoom.createComponent(land);
+
+                                this.tdjbxx.instance.land_name_active_base_copy = this.land_name_active_base_copy;
+
+                                this.tdjbxx.instance.childInfo = this.hjbxx;
+                                this.tdjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.tdjbxx.instance.childInfo2 = this.hcylb;
+                                this.tdjbxx.instance.type = this.type;
+                                this.tdjbxx.instance.init_land_data = this.init_tdjbxx_data;
+
+                                this.tdjbxx.instance.flxx_land_update = this.flxx_tdjbxx_update;
+                                this.tdjbxx.instance.flxx_land_add = this.flxx_tdjbxx_add;
+                                this.tdjbxx.instance.flxx_land_del = this.flxx_tdjbxx_del;
+
+
+                                this.tdjbxx.instance.add_land_data = this.add_tdjbxx_data;
+                                this.tdjbxx.instance.update_land_data = this.update_tdjbxx_data;
+                                this.tdjbxx.instance.del_land_data = this.del_tdjbxx_data;
+
+                                this.tdjbxx.instance.add_ggmx_data = this.add_fwjbxx_ggmx_data;
+                                this.tdjbxx.instance.update_ggmx_data = this.update_tdjbxx_ggmx_data;
+                                this.tdjbxx.instance.del_ggmx_data = this.del_tdjbxx_ggmx_data;
+
+                                this.tdjbxx.instance.data = this.land_data;
+
+                                this.tdjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.tdjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.tdjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case 'tdfzwjbxx':
+                            if (this.land_other_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+                                    this.init_tdfzwjbxx_other_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const land_other = this.AlertModel.resolveComponentFactory(LandOtherComponent);
+                                    this.tdfzwjbxx = this.ModelRoom.createComponent(land_other);
+                                    this.tdfzwjbxx.instance.land_other_name_active_base_copy = this.land_other_name_active_base_copy;
+
+                                    this.tdfzwjbxx.instance.childInfo = this.hjbxx;
+                                    this.tdfzwjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.tdfzwjbxx.instance.childInfo2 = this.hcylb;
+                                    this.tdfzwjbxx.instance.type = this.type;
+                                    this.tdfzwjbxx.instance.init_land_other_data = this.init_tdfzwjbxx_other_data;
+
+                                    this.tdfzwjbxx.instance.flxx_land_other_update = this.flxx_tdfzwjbxx_other_update;
+                                    this.tdfzwjbxx.instance.flxx_land_other_add = this.flxx_tdfzwjbxx_other_add;
+                                    this.tdfzwjbxx.instance.flxx_land_other_del = this.flxx_tdfzwjbxx_other_del;
+
+                                    this.tdfzwjbxx.instance.update_land_other_data = this.update_tdfzwjbxx_other_data;
+                                    this.tdfzwjbxx.instance.add_land_other_data = this.add_tdfzwjbxx_other_data;
+                                    this.tdfzwjbxx.instance.del_land_other_data = this.del_tdfzwjbxx_other_data;
+
+                                    this.tdfzwjbxx.instance.add_ggmx_data = this.add_tdjbxx_ggmx_other_data;
+                                    this.tdfzwjbxx.instance.update_ggmx_data = this.update_tdjbxx_other_ggmx_data;
+                                    this.tdfzwjbxx.instance.del_ggmx_data = this.del_tdjbxx_ggmx_other_data;
+
+
+                                    this.tdfzwjbxx.instance.bj_land_other_data = this.bj_tdfzwjbxx_other_data;
+
+                                    this.land_other_data = data;
+                                    this.tdfzwjbxx.instance.data = this.land_other_data;
+
+                                    this.tdfzwjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.tdfzwjbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.tdfzwjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+
+                                });
+                            } else {
+
+                                const land_other = this.AlertModel.resolveComponentFactory(LandOtherComponent);
+                                this.tdfzwjbxx = this.ModelRoom.createComponent(land_other);
+
+                                this.tdfzwjbxx.instance.childInfo = this.hjbxx;
+                                this.tdfzwjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.tdfzwjbxx.instance.childInfo2 = this.hcylb;
+                                this.tdfzwjbxx.instance.type = this.type;
+                                this.tdfzwjbxx.instance.init_land_other_data = this.init_tdfzwjbxx_other_data;
+                                this.tdfzwjbxx.instance.land_other_name_active_base_copy = this.land_other_name_active_base_copy;
+
+                                this.tdfzwjbxx.instance.flxx_land_other_update = this.flxx_tdfzwjbxx_other_update;
+                                this.tdfzwjbxx.instance.flxx_land_other_add = this.flxx_tdfzwjbxx_other_add;
+                                this.tdfzwjbxx.instance.flxx_land_other_del = this.flxx_tdfzwjbxx_other_del;
+
+                                this.tdfzwjbxx.instance.update_land_other_data = this.update_tdfzwjbxx_other_data;
+                                this.tdfzwjbxx.instance.add_land_other_data = this.add_tdfzwjbxx_other_data;
+                                this.tdfzwjbxx.instance.del_land_other_data = this.del_tdfzwjbxx_other_data;
+
+                                this.tdfzwjbxx.instance.add_ggmx_data = this.add_tdjbxx_ggmx_other_data;
+                                this.tdfzwjbxx.instance.update_ggmx_data = this.update_tdjbxx_other_ggmx_data;
+                                this.tdfzwjbxx.instance.del_ggmx_data = this.del_tdjbxx_ggmx_other_data;
+                                this.tdfzwjbxx.instance.data = this.land_other_data;
+
+                                this.tdfzwjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.tdfzwjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.tdfzwjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+                            break;
+                        case 'lxgm':
+                            if (this.trees_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    this.init_lxgm_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
+                                    this.lxgm = this.ModelRoom.createComponent(trees);
+                                    this.lxgm.instance.trees_name_active_base_copy = this.trees_name_active_base_copy;
+                                    this.lxgm.instance.childInfo = this.hjbxx;
+                                    this.lxgm.instance.childInfo2 = this.hcylb;
+                                    this.lxgm.instance.listHcyAdd = this.listHcyAdd;
+                                    this.lxgm.instance.type = this.type;
+                                    this.lxgm.instance.init_trees_data = this.init_lxgm_data;
+
+                                    this.lxgm.instance.update_trees_data = this.update_lxgm_data;
+                                    this.lxgm.instance.add_trees_data = this.add_lxgm_data;
+                                    this.lxgm.instance.del_trees_data = this.del_lxgm_data;
+
+                                    this.lxgm.instance.add_ggmx_data = this.add_lxgm_ggmx_data;
+                                    this.lxgm.instance.update_ggmx_data = this.update_lxgm_ggmx_data;
+                                    this.lxgm.instance.del_ggmx_data = this.del_lxgm_ggmx_data;
+
+                                    this.lxgm.instance.flxx_trees_update = this.flxx_lxgm_update;
+                                    this.lxgm.instance.flxx_trees_add = this.flxx_lxgm_add;
+                                    this.lxgm.instance.flxx_trees_del = this.flxx_lxgm_del;
+
+                                    this.lxgm.instance.bj_trees_data = this.bj_lxgm_data;
+
+                                    this.trees_data = data;
+                                    this.lxgm.instance.data = data;
+
+                                    this.lxgm.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.lxgm.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.lxgm.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+                                const trees = this.AlertModel.resolveComponentFactory(TreesComponent);
+                                this.lxgm = this.ModelRoom.createComponent(trees);
+
+
+                                this.lxgm.instance.childInfo = this.hjbxx;
+                                this.lxgm.instance.childInfo2 = this.hcylb;
+                                this.lxgm.instance.listHcyAdd = this.listHcyAdd;
+                                this.lxgm.instance.type = this.type;
+                                this.lxgm.instance.init_trees_data = this.init_lxgm_data;
+                                this.lxgm.instance.trees_name_active_base_copy = this.trees_name_active_base_copy;
+
+
+                                this.lxgm.instance.update_trees_data = this.update_lxgm_data;
+                                this.lxgm.instance.add_trees_data = this.add_lxgm_data;
+                                this.lxgm.instance.del_trees_data = this.del_lxgm_data;
+
+
+                                this.lxgm.instance.add_ggmx_data = this.add_lxgm_ggmx_data;
+                                this.lxgm.instance.update_ggmx_data = this.update_lxgm_ggmx_data;
+                                this.lxgm.instance.del_ggmx_data = this.del_lxgm_ggmx_data;
+
+                                this.lxgm.instance.flxx_trees_update = this.flxx_lxgm_update;
+                                this.lxgm.instance.flxx_trees_add = this.flxx_lxgm_add;
+                                this.lxgm.instance.flxx_trees_del = this.flxx_lxgm_del;
+
+                                this.lxgm.instance.data = this.trees_data;
+
+                                this.lxgm.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.lxgm.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.lxgm.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case 'xxzx':
+                            if (this.water_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data)
+                                    this.init_xxzx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const water = this.AlertModel.resolveComponentFactory(WaterComponent);
+                                    this.xxzx = this.ModelRoom.createComponent(water);
+                                    this.xxzx.instance.water_name_active_base_copy = this.water_name_active_base_copy;
+                                    this.xxzx.instance.childInfo = this.hjbxx;
+                                    this.xxzx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.xxzx.instance.childInfo2 = this.hcylb;
+                                    this.xxzx.instance.type = this.type;
+                                    this.xxzx.instance.init_water_data = this.init_xxzx_data;
+
+                                    this.xxzx.instance.flxx_water_update = this.flxx_xxzx_update;
+                                    this.xxzx.instance.flxx_water_add = this.flxx_xxzx_add;
+                                    this.xxzx.instance.flxx_water_del = this.flxx_xxzx_del;
+
+                                    this.xxzx.instance.update_water_data = this.update_xxzx_data;
+                                    this.xxzx.instance.add_water_data = this.add_xxzx_data;
+                                    this.xxzx.instance.del_water_data = this.del_xxzx_data;
+
+                                    this.xxzx.instance.add_ggmx_data = this.add_xxzx_ggmx_data;
+                                    this.xxzx.instance.update_ggmx_data = this.update_xxzx_ggmx_data;
+                                    this.xxzx.instance.del_ggmx_data = this.del_xxzx_ggmx_data;
+
+                                    this.xxzx.instance.bj_water_data = this.bj_xxzx_data;
+
+                                    this.water_data = data;
+                                    this.xxzx.instance.data = data;
+
+                                    this.xxzx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.xxzx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.xxzx.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+                                const water = this.AlertModel.resolveComponentFactory(WaterComponent);
+                                this.xxzx = this.ModelRoom.createComponent(water);
+                                this.xxzx.instance.water_name_active_base_copy = this.water_name_active_base_copy;
+                                this.xxzx.instance.childInfo = this.hjbxx;
+                                this.xxzx.instance.listHcyAdd = this.listHcyAdd;
+                                this.xxzx.instance.childInfo2 = this.hcylb;
+                                this.xxzx.instance.type = this.type;
+                                this.xxzx.instance.init_water_data = this.init_xxzx_data;
+
+                                this.xxzx.instance.flxx_water_update = this.flxx_xxzx_update;
+                                this.xxzx.instance.flxx_water_add = this.flxx_xxzx_add;
+                                this.xxzx.instance.flxx_water_del = this.flxx_xxzx_del;
+
+                                this.xxzx.instance.update_water_data = this.update_xxzx_data;
+                                this.xxzx.instance.add_water_data = this.add_xxzx_data;
+                                this.xxzx.instance.del_water_data = this.del_xxzx_data;
+
+                                this.xxzx.instance.add_ggmx_data = this.add_xxzx_ggmx_data;
+                                this.xxzx.instance.update_ggmx_data = this.update_xxzx_ggmx_data;
+                                this.xxzx.instance.del_ggmx_data = this.del_xxzx_ggmx_data;
+
+                                this.xxzx.instance.data = this.water_data;
+                                this.xxzx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.xxzx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.xxzx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case 'fm':
+                            if (this.grave_data == null) {
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    this.init_grave_data = JSON.parse(JSON.stringify(data['returnObject']));
+
+
+                                    if (data['returnObject']) {
+
+                                        this.mzlb = data['returnObject'];
+                                    } else {
+                                        this.mzlb = new Array();
+                                    }
+
+
+                                    const Grave = this.AlertModel.resolveComponentFactory(GraveComponent);
+                                    this.fmjbxx = this.ModelRoom.createComponent(Grave);
+
+                                    this.fmjbxx.instance.childInfo = this.mzjbxx;
+                                    this.fmjbxx.instance.childInfo2 = this.mzlb;
+                                    this.fmjbxx.instance.childInfo3 = this.hcylb;
+                                    this.fmjbxx.instance.childInfo4 = this.hjbxx;
+
+                                    this.fmjbxx.instance.type = this.type;
+                                    this.fmjbxx.instance.qshflId = this.qshflId;
+                                    this.fmjbxx.instance.init_grave_data = this.init_grave_data;
+                                    this.fmjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.fmjbxx.instance.add_grave_data = this.add_grave_data;
+                                    this.fmjbxx.instance.del_grave_data = this.del_grave_data;
+                                    this.fmjbxx.instance.update_grave_data = this.update_grave_data;
+                                    this.grave_data = data;
+
+                                    this.fmjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.fmjbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.fmjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+
+
+                                const Grave = this.AlertModel.resolveComponentFactory(GraveComponent);
+                                this.fmjbxx = this.ModelRoom.createComponent(Grave);
+
+
+                                this.fmjbxx.instance.childInfo = this.mzjbxx;
+                                this.fmjbxx.instance.childInfo2 = this.mzlb;
+                                this.fmjbxx.instance.childInfo3 = this.hcylb;
+                                this.fmjbxx.instance.childInfo4 = this.hjbxx;
+                                this.fmjbxx.instance.type = this.type;
+                                this.fmjbxx.instance.qshflId = this.qshflId;
+                                this.fmjbxx.instance.init_grave_data = this.init_grave_data;
+                                this.fmjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.fmjbxx.instance.add_grave_data = this.add_grave_data;
+                                this.fmjbxx.instance.del_grave_data = this.del_grave_data;
+                                this.fmjbxx.instance.update_grave_data = this.update_grave_data;
+
+                                this.fmjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                if (this.type == 'add') {
+                                    this.fmjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.fmjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        // case 'qsr':
+                        //     console.log(this.hjbxx);
+                        //     const qsr = this.AlertModel.resolveComponentFactory(QsrComponent);
+                        //
+                        //     this.person2 = this.ModelRoom.createComponent(qsr);
+                        //
+                        //
+                        //     this.person2.instance.childInfo = this.hjbxx;
+                        //     this.person2.instance.childInfo2 = this.hcylb;
+                        //     this.person2.instance.type = this.type;
+                        //     this.person2.instance.qshflId = this.qshflId;
+                        //     this.person2.instance.init_person_data = this.init_person_data;
+                        //
+                        //     this.person2.instance.add_person_data = this.listHcyAdd;
+                        //     this.person2.instance.del_person_data = this.del_person_data;
+                        //     this.person2.instance.update_person_data = this.update_person_data;
+                        //
+                        //     this.person2.instance.ssxzqhSearchDm = this.qshflId.ssxzqhSearchDm;
+                        //     if (this.type == 'add') {
+                        //         this.person2.instance.qshflId = this.qshflId;
+                        //
+                        //     } else if (this.type == 'rew') {
+                        //         this.person2.instance.qshflId = this.hjbxx;
+                        //     }
+                        //
+                        //     break;
+                        case 'gtgsh':
+                            console.log(this.qshflId);
+                            if (this.gtgsjbxx_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const gtgsjbxx = this.AlertModel.resolveComponentFactory(JtgsjbxqComponent);
+                                    this.gtgsjbxx2 = this.ModelRoom.createComponent(gtgsjbxx);
+
+
+                                    this.init_gtgsjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.gtgsjbxx_data = data;
+                                    console.log(this.hjbxx);
+                                    this.gtgsjbxx2.instance.gtgsjbxx2_data = this.gtgsjbxx_data;
+                                    this.gtgsjbxx2.instance.childInfo = this.hjbxx;
+                                    this.gtgsjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.gtgsjbxx2.instance.type = this.type;
+                                    this.gtgsjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.gtgsjbxx2.instance.init_gtgsjbxx_data = this.init_gtgsjbxx2_data;
+
+
+                                    this.gtgsjbxx2.instance.update_gtgsjbxx_data = this.update_gtgsjbxx_data;
+                                    this.gtgsjbxx2.instance.add_gtgsjbxx_data = this.add_gtgsjbxx_data;
+                                    this.gtgsjbxx2.instance.del_gtgsjbxx_data = this.del_gtgsjbxx_data;
+
+
+                                    this.gtgsjbxx2.instance.szxzqugtgsdm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.gtgsjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.gtgsjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gtgsjbxx = this.AlertModel.resolveComponentFactory(JtgsjbxqComponent);
+                                this.gtgsjbxx2 = this.ModelRoom.createComponent(gtgsjbxx);
+
+                                this.gtgsjbxx2.instance.gtgsjbxx2_data = this.gtgsjbxx_data;
+                                this.gtgsjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.gtgsjbxx2.instance.type = this.type;
+                                this.gtgsjbxx2.instance.childInfo2 = this.hcylb;
+                                this.gtgsjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.gtgsjbxx2.instance.init_gtgsjbxx_data = this.init_gtgsjbxx2_data;
+
+
+                                this.gtgsjbxx2.instance.update_gtgsjbxx_data = this.update_gtgsjbxx_data;
+                                this.gtgsjbxx2.instance.add_gtgsjbxx_data = this.add_gtgsjbxx_data;
+                                this.gtgsjbxx2.instance.del_gtgsjbxx_data = this.del_gtgsjbxx_data;
+
+
+                                this.gtgsjbxx2.instance.szxzqugtgsdm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.gtgsjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.gtgsjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case'sbxx':
+                            if (this.shebei_data == null) {
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    this.init_shebei_data = JSON.parse(JSON.stringify(data['returnObject']));
+
+
+                                    if (data['returnObject']) {
+
+                                        this.sblb = data['returnObject'];
+                                    } else {
+                                        this.sblb = new Array();
+                                    }
+
+
+                                    const shebei = this.AlertModel.resolveComponentFactory(ShebeiComponent);
+                                    this.shebeijbxx = this.ModelRoom.createComponent(shebei);
+
+
+                                    this.shebeijbxx.instance.childInfo2 = this.sblb;
+                                    this.shebeijbxx.instance.childInfo3 = this.hcylb;
+                                    this.shebeijbxx.instance.childInfo4 = this.hjbxx;
+
+                                    this.shebeijbxx.instance.type = this.type;
+                                    this.shebeijbxx.instance.qshflId = this.qshflId;
+                                    this.shebeijbxx.instance.init_shebei_data = this.init_shebei_data;
+                                    this.shebeijbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.shebeijbxx.instance.add_shebei_data = this.add_shebei_data;
+                                    this.shebeijbxx.instance.del_shebei_data = this.del_shebei_data;
+                                    this.shebeijbxx.instance.update_shebei_data = this.update_shebei_data;
+                                    this.shebei_data = data;
+
+                                    this.shebeijbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.shebeijbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.shebeijbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+
+
+                                const shebei = this.AlertModel.resolveComponentFactory(ShebeiComponent);
+                                this.shebeijbxx = this.ModelRoom.createComponent(shebei);
+
+
+                                this.shebeijbxx.instance.childInfo2 = this.sblb;
+                                this.shebeijbxx.instance.childInfo3 = this.hcylb;
+                                this.shebeijbxx.instance.childInfo4 = this.hjbxx;
+                                this.shebeijbxx.instance.type = this.type;
+                                this.shebeijbxx.instance.qshflId = this.qshflId;
+                                this.shebeijbxx.instance.init_shebei_data = this.init_shebei_data;
+                                this.shebeijbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.shebeijbxx.instance.add_shebei_data = this.add_shebei_data;
+                                this.shebeijbxx.instance.del_shebei_data = this.del_shebei_data;
+                                this.shebeijbxx.instance.update_shebei_data = this.update_shebei_data;
+
+                                this.shebeijbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                if (this.type == 'add') {
+                                    this.shebeijbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.shebeijbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case'ssxx':
+                            if (this.sheshi_data == null) {
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    this.init_sheshi_data = JSON.parse(JSON.stringify(data['returnObject']));
+
+
+                                    if (data['returnObject']) {
+
+                                        this.sslb = data['returnObject'];
+                                    } else {
+                                        this.sslb = new Array();
+                                    }
+
+
+                                    const shebei = this.AlertModel.resolveComponentFactory(SheshiComponent);
+                                    this.sheshijbxx = this.ModelRoom.createComponent(shebei);
+
+
+                                    this.sheshijbxx.instance.childInfo2 = this.sslb;
+                                    this.sheshijbxx.instance.childInfo3 = this.hcylb;
+                                    this.sheshijbxx.instance.childInfo4 = this.hjbxx;
+
+                                    this.sheshijbxx.instance.type = this.type;
+                                    this.sheshijbxx.instance.qshflId = this.qshflId;
+                                    this.sheshijbxx.instance.init_sheshi_data = this.init_sheshi_data;
+                                    this.sheshijbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.sheshijbxx.instance.add_sheshi_data = this.add_sheshi_data;
+                                    this.sheshijbxx.instance.del_sheshi_data = this.del_sheshi_data;
+                                    this.sheshijbxx.instance.update_sheshi_data = this.update_sheshi_data;
+                                    this.sheshi_data = data;
+
+                                    this.sheshijbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.sheshijbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.sheshijbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+                            } else {
+
+
+                                const shebei = this.AlertModel.resolveComponentFactory(SheshiComponent);
+                                this.sheshijbxx = this.ModelRoom.createComponent(shebei);
+
+
+                                this.sheshijbxx.instance.childInfo2 = this.sslb;
+                                this.sheshijbxx.instance.childInfo3 = this.hcylb;
+                                this.sheshijbxx.instance.childInfo4 = this.hjbxx;
+                                this.sheshijbxx.instance.type = this.type;
+                                this.sheshijbxx.instance.qshflId = this.qshflId;
+                                this.sheshijbxx.instance.init_sheshi_data = this.init_sheshi_data;
+                                this.sheshijbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.sheshijbxx.instance.add_sheshi_data = this.add_sheshi_data;
+                                this.sheshijbxx.instance.del_sheshi_data = this.del_sheshi_data;
+                                this.sheshijbxx.instance.update_shebei_data = this.update_sheshi_data;
+
+                                this.sheshijbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                if (this.type == 'add') {
+                                    this.sheshijbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.sheshijbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case'nfyh':
+                            if (this.nfyjbxx2_data == null) {
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const nfyjbxx = this.AlertModel.resolveComponentFactory(NfyssjbqkComponent);
+                                    this.nfyjbxx2 = this.ModelRoom.createComponent(nfyjbxx);
+
+
+                                    this.init_nfyjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.nfyjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.nfyjbxx2.instance.nfyjbxx2_data = this.nfyjbxx2_data;
+                                    this.nfyjbxx2.instance.childInfo = this.hjbxx;
+                                    this.nfyjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.nfyjbxx2.instance.type = this.type;
+                                    this.nfyjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.nfyjbxx2.instance.init_nfyjbxx_data = this.init_nfyjbxx2_data;
+
+
+                                    this.nfyjbxx2.instance.update_nfyjbxx_data = this.update_nfyjbxx_data;
+                                    this.nfyjbxx2.instance.add_nfyjbxx_data = this.add_nfyjbxx_data;
+                                    this.nfyjbxx2.instance.del_nfyjbxx_data = this.del_nfyjbxx_data;
+
+
+                                    this.nfyjbxx2.instance.szxzqunfydm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.nfyjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.nfyjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const nfyjbxx = this.AlertModel.resolveComponentFactory(NfyssjbqkComponent);
+                                this.nfyjbxx2 = this.ModelRoom.createComponent(nfyjbxx);
+
+                                this.nfyjbxx2.instance.nfyjbxx2_data = this.nfyjbxx2_data;
+                                this.nfyjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.nfyjbxx2.instance.type = this.type;
+                                this.nfyjbxx2.instance.childInfo2 = this.hcylb;
+                                this.nfyjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.nfyjbxx2.instance.init_nfyjbxx_data = this.init_nfyjbxx2_data;
+
+
+                                this.nfyjbxx2.instance.update_nfyjbxx_data = this.update_nfyjbxx_data;
+                                this.nfyjbxx2.instance.add_nfyjbxx_data = this.add_nfyjbxx_data;
+                                this.nfyjbxx2.instance.del_nfyjbxx_data = this.del_nfyjbxx_data;
+
+
+                                this.nfyjbxx2.instance.szxzqunfydm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.nfyjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.nfyjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'fyssjbxx':
+
+                            if (this.fyss_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+                                    this.init_fyssjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    const fyss = this.AlertModel.resolveComponentFactory(FyssComponent);
+                                    this.fyssjbxx = this.ModelRoom.createComponent(fyss);
+                                    this.fyssjbxx.instance.fyss_name_active_base_copy = this.fyss_name_active_base_copy;
+
+                                    this.fyssjbxx.instance.childInfo = this.hjbxx;
+                                    this.fyssjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                    this.fyssjbxx.instance.childInfo2 = this.hcylb;
+                                    this.fyssjbxx.instance.type = this.type;
+                                    this.fyssjbxx.instance.init_fyss_data = this.init_fyssjbxx_data;
+
+                                    this.fyssjbxx.instance.flxx_fyss_update = this.flxx_fyssjbxx_update;
+                                    this.fyssjbxx.instance.flxx_fyss_add = this.flxx_fyssjbxx_add;
+                                    this.fyssjbxx.instance.flxx_fyss_del = this.flxx_fyssjbxx_del;
+
+
+                                    this.fyssjbxx.instance.update_fyss_data = this.update_fyssjbxx_data;
+                                    this.fyssjbxx.instance.add_fyss_data = this.add_fyssjbxx_data;
+                                    this.fyssjbxx.instance.del_fyss_data = this.del_fyssjbxx_data;
+
+                                    this.fyssjbxx.instance.add_ggmx_data = this.add_fyssjbxx_ggmx_data;
+                                    this.fyssjbxx.instance.update_ggmx_data = this.update_fyssjbxx_ggmx_data;
+                                    this.fyssjbxx.instance.del_ggmx_data = this.del_fyssjbxx_ggmx_data;
+
+
+                                    this.fyssjbxx.instance.bj_fyss_data = this.bj_fyssjbxx_data;
+
+                                    this.fyss_data = data;
+                                    this.fyssjbxx.instance.data = this.fyss_data;
+
+                                    this.fyssjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.fyssjbxx.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.fyssjbxx.instance.qshflId = this.hjbxx;
+                                    }
+
+
+                                });
+                            } else {
+
+                                const fyss = this.AlertModel.resolveComponentFactory(FyssComponent);
+                                this.fyssjbxx = this.ModelRoom.createComponent(fyss);
+                                this.fyssjbxx.instance.fyss_name_active_base_copy = this.fyss_name_active_base_copy;
+
+                                this.fyssjbxx.instance.childInfo = this.hjbxx;
+                                this.fyssjbxx.instance.listHcyAdd = this.listHcyAdd;
+                                this.fyssjbxx.instance.childInfo2 = this.hcylb;
+                                this.fyssjbxx.instance.type = this.type;
+                                this.fyssjbxx.instance.init_fyss_data = this.init_fyssjbxx_data;
+
+                                this.fyssjbxx.instance.flxx_fyss_update = this.flxx_fyssjbxx_update;
+                                this.fyssjbxx.instance.flxx_fyss_add = this.flxx_fyssjbxx_add;
+                                this.fyssjbxx.instance.flxx_fyss_del = this.flxx_fyssjbxx_del;
+
+
+                                this.fyssjbxx.instance.update_fyss_data = this.update_fyssjbxx_data;
+                                this.fyssjbxx.instance.add_fyss_data = this.add_fyssjbxx_data;
+                                this.fyssjbxx.instance.del_fyss_data = this.del_fyssjbxx_data;
+
+                                this.fyssjbxx.instance.add_ggmx_data = this.add_fyssjbxx_ggmx_data;
+                                this.fyssjbxx.instance.update_ggmx_data = this.update_fyssjbxx_ggmx_data;
+                                this.fyssjbxx.instance.del_ggmx_data = this.del_fyssjbxx_ggmx_data;
+
+                                this.fyssjbxx.instance.data = this.fyss_data;
+                                this.fyssjbxx.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.fyssjbxx.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.fyssjbxx.instance.qshflId = this.hjbxx;
+                                }
+                            }
+
+                            break;
+                        case 'dw' :
+                            if (this.dwjbxx2_data == null) {
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const dwjbxx = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
+                                    this.dwjbxx2 = this.ModelRoom.createComponent(dwjbxx);
+
+
+                                    this.init_dwjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.dwjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.dwjbxx2.instance.dwjbxx2_data = this.dwjbxx2_data;
+                                    this.dwjbxx2.instance.childInfo = this.hjbxx;
+                                    this.dwjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.dwjbxx2.instance.type = this.type;
+                                    this.dwjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.dwjbxx2.instance.init_dwjbxx_data = this.init_dwjbxx2_data;
+
+
+                                    this.dwjbxx2.instance.update_dwjbxx_data = this.update_dwjbxx_data;
+                                    this.dwjbxx2.instance.add_dwjbxx_data = this.add_dwjbxx_data;
+                                    this.dwjbxx2.instance.del_dwjbxx_data = this.del_dwjbxx_data;
+
+
+                                    this.dwjbxx2.instance.szxzqudwdm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.dwjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.dwjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const dwjbxx = this.AlertModel.resolveComponentFactory(DwqbqkComponent);
+                                this.dwjbxx2 = this.ModelRoom.createComponent(dwjbxx);
+
+                                this.dwjbxx2.instance.dwjbxx2_data = this.dwjbxx2_data;
+                                this.dwjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.dwjbxx2.instance.type = this.type;
+                                this.dwjbxx2.instance.childInfo2 = this.hcylb;
+                                this.dwjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.dwjbxx2.instance.init_dwjbxx_data = this.init_dwjbxx2_data;
+
+
+                                this.dwjbxx2.instance.update_dwjbxx_data = this.update_dwjbxx_data;
+                                this.dwjbxx2.instance.add_dwjbxx_data = this.add_dwjbxx_data;
+                                this.dwjbxx2.instance.del_dwjbxx_data = this.del_dwjbxx_data;
+
+
+                                this.dwjbxx2.instance.szxzqudwdm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.dwjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.dwjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'gykqyxq':
+                            const gykqyxq = this.AlertModel.resolveComponentFactory(GykqyxqComponent);
+                            const gykqyxq2 = this.ModelRoom.createComponent(gykqyxq);
+                            break;
+                        case 'tl':
+                            if (this.tljbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const tljbxx = this.AlertModel.resolveComponentFactory(TljbxxComponent);
+                                    this.tljbxx2 = this.ModelRoom.createComponent(tljbxx);
+
+
+                                    this.init_tljbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.tljbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.tljbxx2.instance.tljbxx2_data = this.tljbxx2_data;
+                                    this.tljbxx2.instance.childInfo = this.hjbxx;
+                                    this.tljbxx2.instance.childInfo2 = this.hcylb;
+                                    this.tljbxx2.instance.type = this.type;
+                                    this.tljbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.tljbxx2.instance.init_tljbxx_data = this.init_tljbxx2_data;
+
+
+                                    this.tljbxx2.instance.update_tljbxx_data = this.update_tljbxx_data;
+                                    this.tljbxx2.instance.add_tljbxx_data = this.add_tljbxx_data;
+                                    this.tljbxx2.instance.del_tljbxx_data = this.del_tljbxx_data;
+
+
+                                    this.tljbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.tljbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.tljbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const tljbxx = this.AlertModel.resolveComponentFactory(TljbxxComponent);
+                                this.tljbxx2 = this.ModelRoom.createComponent(tljbxx);
+
+                                this.tljbxx2.instance.tljbxx2_data = this.tljbxx2_data;
+                                this.tljbxx2.instance.childInfo = this.hjbxx;
+
+                                this.tljbxx2.instance.type = this.type;
+                                this.tljbxx2.instance.childInfo2 = this.hcylb;
+                                this.tljbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.tljbxx2.instance.init_tljbxx_data = this.init_tljbxx2_data;
+
+
+                                this.tljbxx2.instance.update_tljbxx_data = this.update_tljbxx_data;
+                                this.tljbxx2.instance.add_tljbxx_data = this.add_tljbxx_data;
+                                this.tljbxx2.instance.del_tljbxx_data = this.del_tljbxx_data;
+
+
+                                this.tljbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.tljbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.tljbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'gl':
+                            console.log(this.qshflId);
+                            if (this.gljbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const gljbxx = this.AlertModel.resolveComponentFactory(GljbxxComponent);
+                                    this.gljbxx2 = this.ModelRoom.createComponent(gljbxx);
+
+
+                                    this.init_gljbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.gljbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.gljbxx2.instance.gljbxx2_data = this.gljbxx2_data;
+                                    this.gljbxx2.instance.childInfo = this.hjbxx;
+                                    this.gljbxx2.instance.childInfo2 = this.hcylb;
+                                    this.gljbxx2.instance.type = this.type;
+                                    this.gljbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.gljbxx2.instance.init_gljbxx_data = this.init_gljbxx2_data;
+
+
+                                    this.gljbxx2.instance.update_gljbxx_data = this.update_gljbxx_data;
+                                    this.gljbxx2.instance.add_gljbxx_data = this.add_gljbxx_data;
+                                    this.gljbxx2.instance.del_gljbxx_data = this.del_gljbxx_data;
+
+
+                                    this.gljbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.gljbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.gljbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gljbxx = this.AlertModel.resolveComponentFactory(GljbxxComponent);
+                                this.gljbxx2 = this.ModelRoom.createComponent(gljbxx);
+
+                                this.gljbxx2.instance.gljbxx2_data = this.gljbxx2_data;
+                                this.gljbxx2.instance.childInfo = this.hjbxx;
+
+                                this.gljbxx2.instance.type = this.type;
+                                this.gljbxx2.instance.childInfo2 = this.hcylb;
+                                this.gljbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.gljbxx2.instance.init_gljbxx_data = this.init_gljbxx2_data;
+
+
+                                this.gljbxx2.instance.update_gljbxx_data = this.update_gljbxx_data;
+                                this.gljbxx2.instance.add_gljbxx_data = this.add_gljbxx_data;
+                                this.gljbxx2.instance.del_gljbxx_data = this.del_gljbxx_data;
+
+
+                                this.gljbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.gljbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.gljbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+
+                            break;
+                        case 'qh':
+                            if (this.qhjbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const qhjbxx = this.AlertModel.resolveComponentFactory(QhjbxxComponent);
+                                    this.qhjbxx2 = this.ModelRoom.createComponent(qhjbxx);
+
+
+                                    this.init_qhjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.qhjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.qhjbxx2.instance.qhjbxx2_data = this.qhjbxx2_data;
+                                    this.qhjbxx2.instance.childInfo = this.hjbxx;
+                                    this.qhjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.qhjbxx2.instance.type = this.type;
+                                    this.qhjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.qhjbxx2.instance.init_qhjbxx_data = this.init_qhjbxx2_data;
+
+
+                                    this.qhjbxx2.instance.update_qhjbxx_data = this.update_qhjbxx_data;
+                                    this.qhjbxx2.instance.add_qhjbxx_data = this.add_qhjbxx_data;
+                                    this.qhjbxx2.instance.del_qhjbxx_data = this.del_qhjbxx_data;
+
+
+                                    this.qhjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+
+                                    if (this.type == 'add') {
+                                        this.qhjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.qhjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const qhjbxx = this.AlertModel.resolveComponentFactory(QhjbxxComponent);
+                                this.qhjbxx2 = this.ModelRoom.createComponent(qhjbxx);
+
+                                this.qhjbxx2.instance.qhjbxx2_data = this.qhjbxx2_data;
+                                this.qhjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.qhjbxx2.instance.type = this.type;
+                                this.qhjbxx2.instance.childInfo2 = this.hcylb;
+                                this.qhjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.qhjbxx2.instance.init_qhjbxx_data = this.init_qhjbxx2_data;
+
+
+                                this.qhjbxx2.instance.update_qhjbxx_data = this.update_qhjbxx_data;
+                                this.qhjbxx2.instance.add_qhjbxx_data = this.add_qhjbxx_data;
+                                this.qhjbxx2.instance.del_qhjbxx_data = this.del_qhjbxx_data;
+                                console.log(this.qshflId.ssxzqhSearcqhm);
+
+                                this.qhjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearcqhm;
+                                if (this.type == 'add') {
+                                    this.qhjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.qhjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'hd':
+                            if (this.hdjbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const hdjbxx = this.AlertModel.resolveComponentFactory(HdjbxxComponent);
+                                    this.hdjbxx2 = this.ModelRoom.createComponent(hdjbxx);
+
+
+                                    this.init_hdjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.hdjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.hdjbxx2.instance.hdjbxx2_data = this.hdjbxx2_data;
+                                    this.hdjbxx2.instance.childInfo = this.hjbxx;
+                                    this.hdjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.hdjbxx2.instance.type = this.type;
+                                    this.hdjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.hdjbxx2.instance.init_hdjbxx_data = this.init_hdjbxx2_data;
+
+
+                                    this.hdjbxx2.instance.update_hdjbxx_data = this.update_hdjbxx_data;
+                                    this.hdjbxx2.instance.add_hdjbxx_data = this.add_hdjbxx_data;
+                                    this.hdjbxx2.instance.del_hdjbxx_data = this.del_hdjbxx_data;
+
+
+                                    this.hdjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.hdjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.hdjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const hdjbxx = this.AlertModel.resolveComponentFactory(HdjbxxComponent);
+                                this.hdjbxx2 = this.ModelRoom.createComponent(hdjbxx);
+
+                                this.hdjbxx2.instance.hdjbxx2_data = this.hdjbxx2_data;
+                                this.hdjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.hdjbxx2.instance.type = this.type;
+                                this.hdjbxx2.instance.childInfo2 = this.hcylb;
+                                this.hdjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.hdjbxx2.instance.init_hdjbxx_data = this.init_hdjbxx2_data;
+
+
+                                this.hdjbxx2.instance.update_hdjbxx_data = this.update_hdjbxx_data;
+                                this.hdjbxx2.instance.add_hdjbxx_data = this.add_hdjbxx_data;
+                                this.hdjbxx2.instance.del_hdjbxx_data = this.del_hdjbxx_data;
+
+                                this.hdjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.hdjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.hdjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+                            break;
+                        case 'gk':
+                            if (this.gkjbxx_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const gkjbxx = this.AlertModel.resolveComponentFactory(GkjbxxComponent);
+                                    this.gkjbxx2 = this.ModelRoom.createComponent(gkjbxx);
+
+
+                                    console.log(data);
+                                    this.init_gkjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.gkjbxx_data = data;
+                                    console.log(this.hjbxx);
+                                    this.gkjbxx2.instance.gkjbxx_data = this.gkjbxx_data;
+                                    this.gkjbxx2.instance.childInfo = this.hjbxx;
+                                    this.gkjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.gkjbxx2.instance.type = this.type;
+                                    this.gkjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.gkjbxx2.instance.update_gkjbxx_data = this.update_gkjbxx_data;
+                                    this.gkjbxx2.instance.add_gkjbxx_data = this.add_gkjbxx_data;
+                                    this.gkjbxx2.instance.del_gkjbxx_data = this.del_gkjbxx_data;
+                                    this.gkjbxx2.instance.init_gkjbxx_data = this.init_gkjbxx_data;
+
+
+                                    this.gkjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.gkjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.gkjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gkjbxx = this.AlertModel.resolveComponentFactory(GkjbxxComponent);
+                                this.gkjbxx2 = this.ModelRoom.createComponent(gkjbxx);
+
+                                this.gkjbxx2.instance.gkjbxx_data = this.gkjbxx_data;
+                                this.gkjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.gkjbxx2.instance.type = this.type;
+                                this.gkjbxx2.instance.childInfo2 = this.hcylb;
+                                this.gkjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.gkjbxx2.instance.init_gkjbxx_data = this.init_gkjbxx_data;
+                                this.gkjbxx2.instance.update_gkjbxx_data = this.update_gkjbxx_data;
+                                this.gkjbxx2.instance.add_gkjbxx_data = this.add_gkjbxx_data;
+                                this.gkjbxx2.instance.del_gkjbxx_data = this.del_gkjbxx_data;
+
+                                this.gkjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.gkjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.gkjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+                            break;
+                        case 'mt':
+                            if (this.mtjbxx_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const mtjbxx = this.AlertModel.resolveComponentFactory(MtjbxxComponent);
+                                    this.mtjbxx2 = this.ModelRoom.createComponent(mtjbxx);
+
+
+                                    console.log(data);
+                                    this.init_mtjbxx_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.mtjbxx_data = data;
+                                    console.log(this.hjbxx);
+                                    this.mtjbxx2.instance.mtjbxx_data = this.mtjbxx_data;
+                                    this.mtjbxx2.instance.childInfo = this.hjbxx;
+                                    this.mtjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.mtjbxx2.instance.type = this.type;
+                                    this.mtjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.mtjbxx2.instance.update_mtjbxx_data = this.update_mtjbxx_data;
+                                    this.mtjbxx2.instance.add_mtjbxx_data = this.add_mtjbxx_data;
+                                    this.mtjbxx2.instance.del_mtjbxx_data = this.del_mtjbxx_data;
+                                    this.mtjbxx2.instance.init_mtjbxx_data = this.init_mtjbxx_data;
+
+
+                                    this.mtjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.mtjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.mtjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const mtjbxx = this.AlertModel.resolveComponentFactory(MtjbxxComponent);
+                                this.mtjbxx2 = this.ModelRoom.createComponent(mtjbxx);
+
+                                this.mtjbxx2.instance.mtjbxx_data = this.mtjbxx_data;
+                                this.mtjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.mtjbxx2.instance.type = this.type;
+                                this.mtjbxx2.instance.childInfo2 = this.hcylb;
+                                this.mtjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.mtjbxx2.instance.init_mtjbxx_data = this.init_mtjbxx_data;
+                                this.mtjbxx2.instance.update_mtjbxx_data = this.update_mtjbxx_data;
+                                this.mtjbxx2.instance.add_mtjbxx_data = this.add_mtjbxx_data;
+                                this.mtjbxx2.instance.del_mtjbxx_data = this.del_mtjbxx_data;
+
+                                this.mtjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.mtjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.mtjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+                            break;
+                        case 'sbdgc':
+
+                            console.log(this.sbdgcjbxx2_data);
+                            if (this.sbdgcjbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const sbdgcjbxx = this.AlertModel.resolveComponentFactory(SbdgcjbxxComponent);
+                                    this.sbdgcjbxx2 = this.ModelRoom.createComponent(sbdgcjbxx);
+
+
+                                    this.init_sbdgcjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.sbdgcjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.sbdgcjbxx2.instance.sbdgcjbxx2_data = this.sbdgcjbxx2_data;
+                                    this.sbdgcjbxx2.instance.childInfo = this.hjbxx;
+                                    this.sbdgcjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.sbdgcjbxx2.instance.type = this.type;
+                                    this.sbdgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                    this.sbdgcjbxx2.instance.init_sbdgcjbxx_data = this.init_sbdgcjbxx2_data;
+
+
+                                    this.sbdgcjbxx2.instance.update_sbdgcjbxx_data = this.update_sbdgcjbxx_data;
+                                    this.sbdgcjbxx2.instance.add_sbdgcjbxx_data = this.add_sbdgcjbxx_data;
+                                    this.sbdgcjbxx2.instance.del_sbdgcjbxx_data = this.del_sbdgcjbxx_data;
+
+
+                                    this.sbdgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.sbdgcjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.sbdgcjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const sbdgcjbxx = this.AlertModel.resolveComponentFactory(SbdgcjbxxComponent);
+                                this.sbdgcjbxx2 = this.ModelRoom.createComponent(sbdgcjbxx);
+
+                                this.sbdgcjbxx2.instance.sbdgcjbxx2_data = this.sbdgcjbxx2_data;
+                                this.sbdgcjbxx2.instance.childInfo = this.hjbxx;
+
+                                this.sbdgcjbxx2.instance.type = this.type;
+                                this.sbdgcjbxx2.instance.childInfo2 = this.hcylb;
+                                this.sbdgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+                                this.sbdgcjbxx2.instance.init_sbdgcjbxx_data = this.init_sbdgcjbxx2_data;
+
+
+                                this.sbdgcjbxx2.instance.update_sbdgcjbxx_data = this.update_sbdgcjbxx_data;
+                                this.sbdgcjbxx2.instance.add_sbdgcjbxx_data = this.add_sbdgcjbxx_data;
+                                this.sbdgcjbxx2.instance.del_sbdgcjbxx_data = this.del_sbdgcjbxx_data;
+
+                                this.sbdgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.sbdgcjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.sbdgcjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+
+                            break;
+                        case'dxgc':
+                            if (this.dxgcjbxx2_data != null) {
+
+
+                                const dxgcjbxx = this.AlertModel.resolveComponentFactory(DxgcjbxxComponent);
+                                this.dxgcjbxx2 = this.ModelRoom.createComponent(dxgcjbxx);
+                                console.log(this.hjbxx);
+                                this.dxgcjbxx2.instance.dxgcjbxx2_data = this.dxgcjbxx2_data;
+                                this.dxgcjbxx2.instance.childInfo = this.hjbxx;
+                                this.dxgcjbxx2.instance.childInfo2 = this.hcylb;
+                                this.dxgcjbxx2.instance.type = this.type;
+                                this.dxgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.dxgcjbxx2.instance.update_dxgcjbxx_data = this.update_dxgcjbxx_data;
+                                this.dxgcjbxx2.instance.add_dxgcjbxx_data = this.add_dxgcjbxx_data;
+                                this.dxgcjbxx2.instance.del_dxgcjbxx_data = this.del_dxgcjbxx_data;
+
+
+                                this.dxgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.dxgcjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.dxgcjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            } else {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const dxgcjbxx = this.AlertModel.resolveComponentFactory(DxgcjbxxComponent);
+                                    this.dxgcjbxx2 = this.ModelRoom.createComponent(dxgcjbxx);
+
+
+                                    console.log(data);
+                                    this.init_dxgcjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.dxgcjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.dxgcjbxx2.instance.dxgcjbxx2_data = this.dxgcjbxx2_data;
+                                    this.dxgcjbxx2.instance.childInfo = this.hjbxx;
+                                    this.dxgcjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.dxgcjbxx2.instance.type = this.type;
+                                    this.dxgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.dxgcjbxx2.instance.update_dxgcjbxx_data = this.update_dxgcjbxx_data;
+                                    this.dxgcjbxx2.instance.add_dxgcjbxx_data = this.add_dxgcjbxx_data;
+                                    this.dxgcjbxx2.instance.del_dxgcjbxx_data = this.del_dxgcjbxx_data;
+                                    this.dxgcjbxx2.instance.init_dxgcjbxx_data = this.init_dxgcjbxx2_data;
+
+
+                                    this.dxgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.dxgcjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.dxgcjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            }
+                            break;
+                        case 'gbdsgc':
+
+                            console.log(this.gbdsgc_data);
+                            if (this.gbdsgc_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+                                    console.log(data);
+
+                                    const gbdsgcjbxx = this.AlertModel.resolveComponentFactory(GbdsjbxxComponent);
+                                    this.gbdsgc2 = this.ModelRoom.createComponent(gbdsgcjbxx);
+
+
+                                    this.init_gbdsgc_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.gbdsgc_data = data;
+                                    console.log(this.hjbxx);
+                                    this.gbdsgc2.instance.gbdsjbxx2_data = this.gbdsgc_data;
+                                    this.gbdsgc2.instance.childInfo = this.hjbxx;
+                                    this.gbdsgc2.instance.childInfo2 = this.hcylb;
+                                    this.gbdsgc2.instance.type = this.type;
+                                    this.gbdsgc2.instance.listHcyAdd = this.listHcyAdd;
+
+
+                                    this.gbdsgc2.instance.update_gbdsjbxx_data = this.update_gbdsjbxx_data;
+                                    this.gbdsgc2.instance.add_gbdsjbxx_data = this.add_gbdsjbxx_data;
+                                    this.gbdsgc2.instance.del_gbdsjbxx_data = this.del_gbdsjbxx_data;
+
+
+                                    this.gbdsgc2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.gbdsgc2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.gbdsgc2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gbdsgcjbxx = this.AlertModel.resolveComponentFactory(GbdsjbxxComponent);
+                                this.gbdsgc2 = this.ModelRoom.createComponent(gbdsgcjbxx);
+
+
+                                this.gbdsgc2.instance.gbdsjbxx2_data = this.gbdsgc_data;
+                                this.gbdsgc2.instance.childInfo = this.hjbxx;
+
+                                this.gbdsgc2.instance.type = this.type;
+                                this.gbdsgc2.instance.childInfo2 = this.hcylb;
+                                this.gbdsgc2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.gbdsgc2.instance.update_gbdsjbxx_data = this.update_gbdsjbxx_data;
+                                this.gbdsgc2.instance.add_gbdsjbxx_data = this.add_gbdsjbxx_data;
+                                this.gbdsgc2.instance.del_gbdsjbxx_data = this.del_gbdsjbxx_data;
+
+                                this.gbdsgc2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.gbdsgc2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.gbdsgc2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+
+                            break;
+                        case'gdgc':
+                            if (this.gdgcjbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const gdgcjbxx = this.AlertModel.resolveComponentFactory(GdgcjbxxComponent);
+                                    this.gdgcjbxx2 = this.ModelRoom.createComponent(gdgcjbxx);
+
+
+                                    console.log(data);
+                                    this.init_gdgcjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.gdgcjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.gdgcjbxx2.instance.gdgcjbxx2_data = this.gdgcjbxx2_data;
+                                    this.gdgcjbxx2.instance.childInfo = this.hjbxx;
+                                    this.gdgcjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.gdgcjbxx2.instance.type = this.type;
+                                    this.gdgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.gdgcjbxx2.instance.update_gdgcjbxx_data = this.update_gdgcjbxx_data;
+                                    this.gdgcjbxx2.instance.add_gdgcjbxx_data = this.add_gdgcjbxx_data;
+                                    this.gdgcjbxx2.instance.del_gdgcjbxx_data = this.del_gdgcjbxx_data;
+                                    this.gdgcjbxx2.instance.init_gdgcjbxx_data = this.init_gdgcjbxx2_data;
+
+
+                                    this.gdgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.gdgcjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.gdgcjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gdgcjbxx = this.AlertModel.resolveComponentFactory(GdgcjbxxComponent);
+                                this.gdgcjbxx2 = this.ModelRoom.createComponent(gdgcjbxx);
+                                console.log(this.hjbxx);
+                                this.gdgcjbxx2.instance.gdgcjbxx2_data = this.gdgcjbxx2_data;
+                                this.gdgcjbxx2.instance.childInfo = this.hjbxx;
+                                this.gdgcjbxx2.instance.childInfo2 = this.hcylb;
+                                this.gdgcjbxx2.instance.type = this.type;
+                                this.gdgcjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.gdgcjbxx2.instance.update_gdgcjbxx_data = this.update_gdgcjbxx_data;
+                                this.gdgcjbxx2.instance.add_gdgcjbxx_data = this.add_gdgcjbxx_data;
+                                this.gdgcjbxx2.instance.del_gdgcjbxx_data = this.del_gdgcjbxx_data;
+
+
+                                this.gdgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.gdgcjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.gdgcjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'slsdgc':
+                            if (this.slsd_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const gdgcjbxx = this.AlertModel.resolveComponentFactory(SlsdgcjbxxComponent);
+                                    this.slsd2 = this.ModelRoom.createComponent(gdgcjbxx);
+
+
+                                    console.log(data);
+                                    this.init_slsd_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.slsd_data = data;
+                                    console.log(this.hjbxx);
+                                    this.slsd2.instance.slsdjbxx2_data = this.slsd_data;
+                                    this.slsd2.instance.childInfo = this.hjbxx;
+                                    this.slsd2.instance.childInfo2 = this.hcylb;
+                                    this.slsd2.instance.type = this.type;
+                                    this.slsd2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.slsd2.instance.update_slsdjbxx_data = this.update_slsd_data;
+                                    this.slsd2.instance.add_slsdjbxx_data = this.add_slsd_data;
+                                    this.slsd2.instance.del_slsdjbxx_data = this.del_slsd_data;
+                                    this.slsd2.instance.init_slsdjbxx_data = this.init_slsd_data;
+
+
+                                    this.slsd2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.slsd2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.slsd2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+                                const gdgcjbxx = this.AlertModel.resolveComponentFactory(SlsdgcjbxxComponent);
+                                this.slsd2 = this.ModelRoom.createComponent(gdgcjbxx);
+
+
+                                this.slsd2.instance.slsdjbxx2_data = this.slsd_data;
+                                this.slsd2.instance.childInfo = this.hjbxx;
+                                this.slsd2.instance.childInfo2 = this.hcylb;
+                                this.slsd2.instance.type = this.type;
+                                this.slsd2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.slsd2.instance.update_slsdjbxx_data = this.update_slsd_data;
+                                this.slsd2.instance.add_slsdjbxx_data = this.add_slsd_data;
+                                this.slsd2.instance.del_slsdjbxx_data = this.del_slsd_data;
+                                this.slsd2.instance.init_slsdjbxx_data = this.init_slsd_data;
+
+
+                                this.slsd2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.slsd2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.slsd2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case  'kczy':
+                            if (this.gdgcjbxx2_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const gdgcjbxx = this.AlertModel.resolveComponentFactory(KczyjbxxComponent);
+                                    this.kczy2 = this.ModelRoom.createComponent(gdgcjbxx);
+
+
+                                    console.log(data);
+                                    this.init_kczy_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.kczy_date = data;
+                                    console.log(this.hjbxx);
+                                    this.kczy2.instance.kczyjbxx2_data = this.kczy_date;
+                                    this.kczy2.instance.childInfo = this.hjbxx;
+                                    this.kczy2.instance.childInfo2 = this.hcylb;
+                                    this.kczy2.instance.type = this.type;
+                                    this.kczy2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.kczy2.instance.update_kczyjbxx_data = this.update_kczy_data;
+                                    this.kczy2.instance.add_kczyjbxx_data = this.add_kczy_data;
+                                    this.kczy2.instance.del_kczyjbxx_data = this.del_kczy_data;
+                                    this.kczy2.instance.init_kczyjbxx_data = this.init_kczy_data;
+
+
+                                    this.kczy2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.kczy2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.kczy2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const gdgcjbxx = this.AlertModel.resolveComponentFactory(KczyjbxxComponent);
+                                this.kczy2 = this.ModelRoom.createComponent(gdgcjbxx);
+
+                                this.kczy2.instance.kczy2_date = this.kczy_date;
+                                this.kczy2.instance.childInfo = this.hjbxx;
+                                this.kczy2.instance.childInfo2 = this.hcylb;
+                                this.kczy2.instance.type = this.type;
+                                this.kczy2.instance.listHcyAdd = this.listHcyAdd;
+
+
+                                this.kczy2.instance.update_kczyjbxx_data = this.update_kczy_data;
+                                this.kczy2.instance.add_kczyjbxx_data = this.add_kczy_data;
+                                this.kczy2.instance.del_kczyjbxx_data = this.del_kczy_data;
+                                this.kczy2.instance.init_kczyjbxx_data = this.init_kczy_data;
+
+
+                                this.kczy2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.kczy2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.kczy2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'wwgj':
+                            if (this.wwgj_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const wwgjjbxx = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
+                                    this.wwgj = this.ModelRoom.createComponent(wwgjjbxx);
+
+
+                                    console.log(data);
+                                    this.init_wwgj_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.wwgj_data = data;
+                                    console.log(this.hjbxx);
+                                    this.wwgj.instance.wwgjjbxx2_data = this.wwgj_data;
+                                    this.wwgj.instance.childInfo = this.hjbxx;
+                                    this.wwgj.instance.childInfo2 = this.hcylb;
+                                    this.wwgj.instance.type = this.type;
+                                    this.wwgj.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.wwgj.instance.update_wwgjjbxx_data = this.update_wwgj_data;
+                                    this.wwgj.instance.add_wwgjjbxx_data = this.add_wwgj_data;
+                                    this.wwgj.instance.del_wwgjjbxx_data = this.del_wwgj_data;
+                                    this.wwgj.instance.init_wwgjjbxx_data = this.init_wwgj_data;
+
+
+                                    this.wwgj.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.wwgj.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.wwgj.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const wwgjjbxx = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
+                                this.wwgj = this.ModelRoom.createComponent(wwgjjbxx);
+
+                                this.wwgj.instance.wwgjjbxx2_data = this.wwgj_data;
+                                this.wwgj.instance.childInfo = this.hjbxx;
+                                this.wwgj.instance.childInfo2 = this.hcylb;
+                                this.wwgj.instance.type = this.type;
+                                this.wwgj.instance.listHcyAdd = this.listHcyAdd;
+                                this.wwgj.instance.update_wwgj_data = this.update_wwgj_data;
+                                this.wwgj.instance.add_wwgjjbxx_data = this.add_wwgj_data;
+                                this.wwgj.instance.add_wwgjjbxx_data = this.del_wwgj_data;
+                                this.wwgj.instance.add_wwgjjbxx_data = this.init_wwgj_data;
+                                this.wwgj.instance.init_wwgjjbxx_data = this.init_wwgj_data;
+
+
+                                this.wwgj.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.wwgj.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.wwgj.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            }
+                            break;
+                        case 'swqxz':
+                            if (this.swqxz_data == null) {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const wwgjjbxx = this.AlertModel.resolveComponentFactory(SwqxzjbxxComponent);
+                                    this.swqxz2 = this.ModelRoom.createComponent(wwgjjbxx);
+
+
+                                    console.log(data);
+                                    this.init_swqxz_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.swqxz_data = data;
+                                    console.log(this.hjbxx);
+                                    this.swqxz2.instance.swqxzjbxx2_data = this.swqxz_data;
+                                    this.swqxz2.instance.childInfo = this.hjbxx;
+                                    this.swqxz2.instance.childInfo2 = this.hcylb;
+                                    this.swqxz2.instance.type = this.type;
+                                    this.swqxz2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.swqxz2.instance.update_swqxzjbxx_data = this.update_swqxz_data;
+                                    this.swqxz2.instance.add_swqxzjbxx_data = this.add_swqxz_data;
+                                    this.swqxz2.instance.del_swqxzjbxx_data = this.del_swqxz_data;
+                                    this.swqxz2.instance.init_swqxzjbxx_data = this.init_swqxz_data;
+
+
+                                    this.swqxz2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.swqxz2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.swqxz2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            } else {
+
+
+                                const wwgjjbxx = this.AlertModel.resolveComponentFactory(SwqxzjbxxComponent);
+                                this.swqxz2 = this.ModelRoom.createComponent(wwgjjbxx);
+
+                                this.swqxz2.instance.swqxzjbxx2_data = this.swqxz_data;
+                                this.swqxz2.instance.childInfo = this.hjbxx;
+                                this.swqxz2.instance.childInfo2 = this.hcylb;
+                                this.swqxz2.instance.type = this.type;
+                                this.swqxz2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.swqxz2.instance.update_swqxzjbxx_data = this.update_swqxz_data;
+                                this.swqxz2.instance.add_swqxzjbxx_data = this.add_swqxz_data;
+                                this.swqxz2.instance.del_swqxzjbxx_data = this.del_swqxz_data;
+                                this.swqxz2.instance.init_swqxzjbxx_data = this.init_swqxz_data;
+
+                                this.swqxz2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.swqxz2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.swqxz2.instance.qshflId = this.hjbxx;
+                                }
+
+                            }
+                            break;
+                        case'qtzx':
+                            if (this.qtzxjbxx2_data != null) {
+
+
+                                const qtzxjbxx = this.AlertModel.resolveComponentFactory(QtzxjbxxComponent);
+                                this.qtzxjbxx2 = this.ModelRoom.createComponent(qtzxjbxx);
+                                console.log(this.hjbxx);
+                                this.qtzxjbxx2.instance.qtzxjbxx2_data = this.qtzxjbxx2_data;
+                                this.qtzxjbxx2.instance.childInfo = this.hjbxx;
+                                this.qtzxjbxx2.instance.childInfo2 = this.hcylb;
+                                this.qtzxjbxx2.instance.type = this.type;
+                                this.qtzxjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                this.qtzxjbxx2.instance.update_qtzxjbxx_data = this.update_qtzxjbxx_data;
+                                this.qtzxjbxx2.instance.add_qtzxjbxx_data = this.add_qtzxjbxx_data;
+                                this.qtzxjbxx2.instance.del_qtzxjbxx_data = this.del_qtzxjbxx_data;
+
+
+                                this.qtzxjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                if (this.type == 'add') {
+                                    this.qtzxjbxx2.instance.qshflId = this.qshflId;
+                                } else if (this.type == 'rew') {
+                                    this.qtzxjbxx2.instance.qshflId = this.hjbxx;
+                                }
+
+
+                            } else {
+
+
+                                this.HttpService.get(this.tabHttpUrl).then((data) => {
+
+
+                                    const qtzxjbxx = this.AlertModel.resolveComponentFactory(QtzxjbxxComponent);
+                                    this.qtzxjbxx2 = this.ModelRoom.createComponent(qtzxjbxx);
+
+
+                                    console.log(data);
+                                    this.init_qtzxjbxx2_data = JSON.parse(JSON.stringify(data['returnObject']));
+                                    this.qtzxjbxx2_data = data;
+                                    console.log(this.hjbxx);
+                                    this.qtzxjbxx2.instance.qtzxjbxx2_data = this.qtzxjbxx2_data;
+                                    this.qtzxjbxx2.instance.childInfo = this.hjbxx;
+                                    this.qtzxjbxx2.instance.childInfo2 = this.hcylb;
+                                    this.qtzxjbxx2.instance.type = this.type;
+                                    this.qtzxjbxx2.instance.listHcyAdd = this.listHcyAdd;
+
+                                    this.qtzxjbxx2.instance.update_qtzxjbxx_data = this.update_qtzxjbxx_data;
+                                    this.qtzxjbxx2.instance.add_qtzxjbxx_data = this.add_qtzxjbxx_data;
+                                    this.qtzxjbxx2.instance.del_qtzxjbxx_data = this.del_qtzxjbxx_data;
+                                    this.qtzxjbxx2.instance.init_qtzxjbxx_data = this.init_qtzxjbxx2_data;
+
+
+                                    this.qtzxjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
+                                    if (this.type == 'add') {
+                                        this.qtzxjbxx2.instance.qshflId = this.qshflId;
+                                    } else if (this.type == 'rew') {
+                                        this.qtzxjbxx2.instance.qshflId = this.hjbxx;
+                                    }
+
+                                });
+
+                            }
+
+                            break;
+                    }
+                } else {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: "请至少添加一个户成员"});
+
+                }
+
+            }
+
+
+        }
+        console.log(this.hjbxx);
 
 
         console.log(this.hjbxx);
@@ -1715,8 +4240,55 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.childrenModel);
     }
 
+    // 获取当前tab的请求地址
+
+    getTabUrl(url, zblId, jmhId) {
+        console.log(url);
+        let params = "";
+        if (url == 'fyssjbxx' || url == 'fwjbxx' || url == 'fwzxjbxx' || url == 'fsssjbxx' || url == 'tdjbxx' || url == 'tdfzwjbxx' || url == 'lxgm' || url == 'xxzx') {
+            if (jmhId) {
+                params = `${url}/list?jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${jmhId}&zblId=${zblId}`;
+            } else {
+                params = `${url}/list?jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&&zblId=${zblId}`;
+            }
+
+        } else if(url=='gtgsh' || url=='nfyh' || url=='dw'){
+            if (jmhId) {
+                params = `${url}/list?gcdm=${this.ssgcdm}&jmhId=${jmhId}`;
+            } else {
+                params = `${url}/list?gcdm=${this.ssgcdm}`;
+            }
+        }else{
+            if (jmhId) {
+                params = `${url}/list?jddm=${this.def_jddm}&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${jmhId}&zblId=${zblId}`;
+            } else {
+                params = `${url}/list?jddm=${this.def_jddm}&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&&zblId=${zblId}`;
+            }
+        }
+        console.log(params);
+
+        return params;
+    }
+
+    // 调查范围展示
+    showDcfwBlock() {
+        if (this.type != "view") {
+            if (!this.dcfwTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        this.dcfwTreeList = this.dataProcesing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.dcfwTableList = res['returnObject'];
+                    });
+            }
+            this.isShowDcfw = this.isShowDcfw ? false : true;
+        }
+    }
+
     getChildDcfw(e) {
-        console.log(e);
         if (e) {
             this.hjbxx.dcfwdm = e.dm;
             this.hjbxx.dcfwmc = e.qc;
@@ -1724,12 +4296,62 @@ export class SwzbPersonComponent implements OnInit {
         }
     }
 
+    // 专业大类展示
+    showZydlBlock() {
+        if (this.type != "view") {
+            this.isShowZydl = this.isShowZydl ? false : true;
+            if (!this.zydlTableList) {
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res);
+                        this.zydlTreeList = this.dataProcesing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
+                    });
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                    .then((res) => {
+                        console.log(res['returnObject']);
+                        this.zydlTableList = res['returnObject'];
+                    });
+            }
+        }
+    }
+
+    getChildZydl(event) {
+        if (event) {
+            this.isShowZydl = false;
+            this.hjbxx['zydlmc'] = event.qc;
+            this.hjbxx['zydldm'] = event.dm;
+        }
+    }
+
+    // 所在行政区域
+    showAreaBlock(): void {
+        console.log(this.type);
+        if (this.type != "view") {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
+    }
+
+    getChildSzxzqh(e) {
+        console.log(e);
+        if (e) {
+            this.hjbxx.xzqhmc = e.qc;
+            this.hjbxx.ssxzqhdm = e.dm;
+            this.isShowArea = false;
+        }
+    }
+
     close() {
+        if (this.getNewHuList == true) {
+            this.ShareService.sendMessage({
+                severity: 'success',
+                save: true,
+                item: 'jmh'
+            });
+        }
         this.showqqq = false;
     }
 
     getZdlsh(i) {
-        // this.HttpService.get(`jmh/generateOrderNum?code=${}`)
         this.HttpService.get(`jmh/generateOrderNum?code=${this.hjbxx.ssxzqhdm}`)
             .then((data) => {
                 this.hjbxx.dabh = `${this.hjbxx.ssxzqhdm}${data['returnObject']}`;
@@ -1740,6 +4362,9 @@ export class SwzbPersonComponent implements OnInit {
     //   HJBXX储存变量
     saveHjbxxChange(arr, initArr) {
         var lsArr = {};
+        console.log(arr);
+        console.log(initArr);
+
         for (let key in arr) {
             if (arr[key] !== initArr[key]) {
                 console.log(`${key}需要保存`);
@@ -1749,81 +4374,925 @@ export class SwzbPersonComponent implements OnInit {
         return lsArr;
     }
 
-    //判断hcy必填项
-    Tjpd(info) {
-        console.log(info);
-        this.TjpdValue = true;
-        for (let item of info) {
-            console.log(item)
-            for (let j in item) {
-                if (item[j] === "") {
-                    for (let f in hcyId) {
-                        if (j === f) {
+    //  新增人员的新增tab项
+    add_hcy_tab(item, tab_add, listHcyAdd, zdmc) {
+        console.log(tab_add);
+        let listFwAdd = this.changeTable(tab_add);
+        listHcyAdd[item][zdmc] = listFwAdd;
+        console.log(listFwAdd);
+        for (let key2 in listFwAdd) {
+            listFwAdd[key2].jddm = this.qshflId.jddm;
+            console.log(listFwAdd[key2])
+            console.log(key2);
+            console.log(listFwAdd[key2]['flbmxList']);
+            if (listFwAdd[key2]['flbmxList']) {
+                console.log(listFwAdd[key2]['flbmxList'])
+                let flbmxListArr = listFwAdd[key2]['flbmxList'];
+                flbmxListArr = this.changeTable(flbmxListArr);
+                console.log(flbmxListArr);
+                flbmxListArr.forEach((item1, key, array) => {
+                    delete array[key].zbflId;
+                    delete array[key].id;
+                    delete array[key].ssfwjbxxId;
+                    delete array[key].ssfwzxjbxxId;
+                    delete array[key].ssfsssjbxxId;
+                    delete array[key].sstdjbxxId;
+                    delete array[key].sstdfzwjbxxId;
+                    delete array[key].ssxxzxjbxxId;
+                    delete array[key].sslxgmjbxxId;
+                    delete array[key].fwzyytmc;
 
-                            this.msgs = [];
-                            this.msgs.push({severity: 'error', summary: '填入提醒', detail: hcyId[f] + ' 必填'});
-                            return this.TjpdValue = false;
+                    delete array[key].ssxxzxjbxxId;
+                    for (let item2 in item1) {
+                        if (item1[item2] == null || item1[item2] === "") {
+                            delete item1[item2];
                         }
                     }
+                    console.log(array[key].ggmxxxList);
+                    console.log(listFwAdd[key2]['flbmxList']);
+                    console.log(item1);
+                    listFwAdd[key2]['flbmxList'] = [];
+                    listFwAdd[key2]['flbmxList'].push(item1)
+
+                });
+            }
+            if (listFwAdd[key2]['ggmxxxList']) {
+                let ggmxxxListArr = listFwAdd[key2]['ggmxxxList'];
+                ggmxxxListArr = this.changeTable(ggmxxxListArr);
+                console.log(ggmxxxListArr);
+                ggmxxxListArr.forEach((item1, key, array) => {
+                    delete item1.zdxmc;
+                    delete item1.xh;
+                    delete item1.ssfwjbxxId;
+                    delete item1.ssfwzxjbxxId;
+                    delete item1.ssfsssjbxxId;
+                    delete item1.sstdjbxxId;
+                    delete item1.sstdfzwjbxxId;
+                    delete item1.sslxgmjbxxId;
+                    delete item1.ssxxzxjbxxId;
+
+                    for (let item2 in item1) {
+                        if (item1[item2] == null || item1[item2] === "") {
+                            delete item1[item2];
+                        }
+                    }
+                    listFwAdd[key2]['ggmxxxList'] = [];
+                    listFwAdd[key2]['ggmxxxList'].push(item1)
+                });
+            }
+            for (let key in listFwAdd[key2]) {
+                delete listFwAdd[key2]["list"];
+                delete listFwAdd[key2]["localitydesc"];
+                delete listFwAdd[key2]["id"];
+                delete listFwAdd[key2]["qsrId"];
+                delete listFwAdd[key2]["dcfwmc"];
+                delete listFwAdd[key2]["zydlmc"];
+                delete listFwAdd[key2]["xzqhmc"];
+                delete listFwAdd[key2]["whcdmc"];
+                delete listFwAdd[key2]['hkqkmc'];
+                delete listFwAdd[key2]['fwxzmc'];
+                delete listFwAdd[key2]['fwzyytmc'];
+                delete listFwAdd[key2]['ssxxzxjbxxId'];
+                delete listFwAdd[key2]['tdxzmc'];
+
+
+                if (listFwAdd[key2][key] === "" || listFwAdd[key2] == null) {
+                    console.log("删除listFwAdd[key2]" + key);
+                    delete listFwAdd[key2][key];
                 }
             }
 
+
         }
+        console.log(listFwAdd);
+        return listFwAdd;
+
+
+    }
+
+
+    //  新增人员的新增tab项（零星果木）
+
+    add_hcy_nnGGmx_tab(item, tab_add, listHcyAdd, zdmc) {
+        console.log(tab_add);
+        let listFwAdd = this.changeTable(tab_add);
+        listHcyAdd[item][zdmc] = listFwAdd;
+        console.log(listFwAdd);
+        for (let key2 in listFwAdd) {
+            listFwAdd[key2].jddm = this.qshflId.jddm;
+            console.log(listFwAdd[key2])
+            console.log(key2);
+            console.log(listFwAdd[key2]['flbmxList']);
+            if (listFwAdd[key2]['flbmxList']) {
+                console.log(listFwAdd[key2]['flbmxList'])
+                let flbmxListArr = listFwAdd[key2]['flbmxList'];
+                flbmxListArr = this.changeTable(flbmxListArr);
+                console.log(flbmxListArr);
+                flbmxListArr.forEach((item1, key, array) => {
+                    delete array[key].zbflId;
+                    delete array[key].id;
+                    delete array[key].ssfwjbxxId;
+                    delete array[key].ssfwzxjbxxId;
+                    delete array[key].ssfsssjbxxId;
+                    delete array[key].sstdjbxxId;
+                    delete array[key].sstdfzwjbxxId;
+                    delete array[key].sslxgmjbxxId;
+
+                    delete array[key].ssxxzxjbxxId;
+                    for (let item2 in item1) {
+                        if (item1[item2] == null || item1[item2] === "") {
+                            delete item1[item2];
+                        }
+                    }
+                    console.log(array[key].ggmxxxList);
+                    console.log(listFwAdd[key2]['flbmxList']);
+                    console.log(item1);
+                    listFwAdd[key2]['flbmxAddList'] = [];
+                    listFwAdd[key2]['flbmxAddList'].push(item1)
+
+                });
+            }
+            for (let key in listFwAdd[key2]) {
+                delete listFwAdd[key2]["list"];
+                delete listFwAdd[key2]["localitydesc"];
+                delete listFwAdd[key2]["id"];
+                delete listFwAdd[key2]["qsrId"];
+                delete listFwAdd[key2]["dcfwmc"];
+                delete listFwAdd[key2]["zydlmc"];
+                delete listFwAdd[key2]["xzqhmc"];
+                delete listFwAdd[key2]["dcfwmc"];
+                delete listFwAdd[key2]['flbmxList'];
+                if (listFwAdd[key2][key] === "" || listFwAdd[key2] == null) {
+                    console.log("删除listFwAdd[key2]" + key);
+                    delete listFwAdd[key2][key];
+                }
+            }
+
+
+        }
+        console.log(listFwAdd);
+        return listFwAdd;
+    }
+
+    // 新增人员的新增tab项（没有分类和没有规格）
+    add_hcy_noAll_tab(item, tab_add, listHcyAdd, zdmc) {
+        console.log(tab_add);
+        console.log(item);
+        console.log(listHcyAdd);
+        let listFwAdd = this.changeTable(tab_add);
+        listHcyAdd[item][zdmc] = listFwAdd;
+        console.log(listFwAdd);
+        for (let key2 in listFwAdd) {
+            listFwAdd[key2].jddm = this.qshflId.jddm;
+            for (let key in listFwAdd[key2]) {
+                delete listFwAdd[key2]["list"];
+                delete listFwAdd[key2]["localitydesc"];
+                delete listFwAdd[key2]["id"];
+                delete listFwAdd[key2]["qsrId"];
+                delete listFwAdd[key2]["dcfwmc"];
+                delete listFwAdd[key2]["zydlmc"];
+                delete listFwAdd[key2]["xzqhmc"];
+                delete listFwAdd[key2]["dcfwmc"];
+                delete listFwAdd[key2]['flbmxList'];
+                delete listFwAdd[key2]['sbdgclbmc'];
+                if (listFwAdd[key2][key] === "" || listFwAdd[key2] == null) {
+                    console.log("删除listFwAdd[key2]" + key);
+                    delete listFwAdd[key2][key];
+                }
+            }
+
+
+        }
+        console.log(listFwAdd);
+        return listFwAdd;
+    }
+
+    // 新增人员的新增tab页（唯一值的）
+    add_hcy_only_item(item, listHcyAdd, zdmc) {
+        let arr = JSON.parse(JSON.stringify(listHcyAdd[item][zdmc]));
+
+        delete arr['list'];
+        delete arr['id'];
+        delete arr['swszxzqhmc'];
+        delete arr['dcfwmc'];
+        delete arr['ssxxzxjbxxId'];
+        delete arr['zydlmc'];
+        delete arr['whcdmc'];
+        delete arr['zhgxsj'];
+        delete arr['sfzh'];
+        delete arr['flbmxList'];
+        delete arr['qsrmc'];
+        delete arr['cjsj'];
+
+        delete arr['localitydesc'];
+        delete arr['sbdgclbmc'];
+        delete arr['gbdslbmc'];
+        delete arr['gdgclbmc'];
+        delete arr['gklbmc'];
+        delete arr['xsmc'];
+        delete arr['sjhsbzmc'];
+        delete arr['ymyxcdmc'];
+        delete arr['djmc'];
+        delete arr['ljdldjmc'];
+        delete arr['jgclmc'];
+        delete arr['mtlbmc'];
+        delete arr['gkytmc'];
+        delete arr['mtytmc'];
+
+        delete arr['bhjbmc'];
+        delete arr['wwgjlbmc'];
+        delete arr['kczylbmc'];
+        delete arr['slsdlbmc'];
+        delete arr['zdlbmc'];
+
+        arr['ssxtdm'] = this.hjbxx.ssxtdm;
+        arr['ssgcdm'] = this.hjbxx.ssgcdm;
+        arr['jddm'] = this.qshflId.jddm;
+        for (let key in arr) {
+            if (arr[key] === "" || arr[key] == null) {
+                console.log("删除arr[key]" + key);
+                delete arr[key];
+            }
+        }
+        console.log(arr);
+        delete listHcyAdd[item][zdmc];
+        listHcyAdd[item][zdmc] = [];
+        listHcyAdd[item][zdmc].push(arr);
+        console.log(arr);
+        console.log(listHcyAdd);
+
+
+    }
+
+    // 某一项进行新增（唯一值）
+    add_data_only_item(add_data, fl_arr) {
+        console.log(this.hcylb);
+
+        for (let key in add_data) {
+
+            let item = add_data[key];
+            item.ssxtdm = this.hjbxx.ssxtdm;
+            item.ssgcdm = this.qshflId.ssgcdm;
+            item.jddm = this.qshflId.jddm;
+            // console.log(item.qsrId);
+            // item.mc = this.searchService.searchByRegExp(item.qsrId, this.hcylb, 'id')[0].mc;
+            console.log(item);
+            if(item.qsrId){
+                // 有权属人id的
+                if (item.qsrId.toString().length === 32) {
+                    delete item.list;
+                    delete item.id;
+                    delete item.swszxzqhmc;
+                    delete item.dcfwmc;
+                    delete item.ssxxzxjbxxId;
+                    delete item.zydlmc;
+                    delete item.whcdmc;
+                    delete item.zhgxsj;
+                    delete item.sfzh;
+                    delete item.flbmxList;
+                    delete item.qsrmc;
+                    delete item.cjsj;
+
+                    delete item.localitydesc;
+                    delete item.sbdgclbmc;
+                    delete item.gbdslbmc;
+                    delete item.gdgclbmc;
+                    delete item.gklbmc;
+                    delete item.xsmc;
+                    delete item.sjhsbzmc;
+                    delete item.ymyxcdmc;
+                    delete item.djmc;
+                    delete item.ljdldjmc;
+                    delete item.jgclmc;
+                    delete item.mtlbmc;
+                    delete item.gkytmc;
+                    delete item.mtytmc;
+
+                    delete item.bhjbmc;
+                    delete item.wwgjlbmc;
+                    delete item.kczylbmc;
+                    delete item.slsdlbmc;
+                    delete item.zdlbmc;
+                    delete item.qhjgmc;
+                    delete item.ssgllbmc;
+                    delete item.qhlbmc;
+                    delete item.hdlbmc;
+
+                    delete item.syxzmc;
+                    delete item.lglxmc;
+                    delete item.tllbmc;
+
+                    delete item.lmclmc;
+                    delete item.qtzxlbmc;
+                    delete item.gldjmc;
+                    delete item.zxlbmc
+
+
+
+                    for (let key in item) {
+                        if (item[key] === null || item[key] === "") {
+                            delete item[key];
+                        }
+                    }
+                    console.log(item);
+
+                    let ls = {};
+                    for (let i in item) {
+                        ls[i] = item[i];
+                    }
+                    fl_arr.push(ls);
+                    console.log(fl_arr);
+                } else {
+                    console.log("该项为新增人员底下的新增房屋")
+                }
+            }else{
+                     delete item.jddm;
+                    delete item.list;
+                    delete item.id;
+                    delete item.swszxzqhmc;
+                    delete item.dcfwmc;
+                    delete item.ssxxzxjbxxId;
+                    delete item.zydlmc;
+                    delete item.whcdmc;
+                    delete item.zhgxsj;
+                    delete item.sfzh;
+                    delete item.flbmxList;
+                    delete item.qsrmc;
+                    delete item.cjsj;
+
+                    delete item.localitydesc;
+                    delete item.sbdgclbmc;
+                    delete item.gbdslbmc;
+                    delete item.gdgclbmc;
+                    delete item.gklbmc;
+                    delete item.xsmc;
+                    delete item.sjhsbzmc;
+                    delete item.ymyxcdmc;
+                    delete item.djmc;
+                    delete item.ljdldjmc;
+                    delete item.jgclmc;
+                    delete item.mtlbmc;
+                    delete item.gkytmc;
+                    delete item.mtytmc;
+
+                    delete item.bhjbmc;
+                    delete item.wwgjlbmc;
+                    delete item.kczylbmc;
+                    delete item.slsdlbmc;
+                    delete item.zdlbmc;
+                    delete item.qhjgmc;
+                    delete item.ssgllbmc;
+                    delete item.qhlbmc;
+                    delete item.hdlbmc;
+
+                    delete item.syxzmc;
+                    delete item.lglxmc;
+                    delete item.tllbmc;
+
+                    delete item.lmclmc;
+                    delete item.qtzxlbmc;
+                    delete item.gldjmc;
+                    delete item.zxlbmc;
+                    delete item.xzmc;
+                    delete item.jjxzmc;
+                    delete item.hylbmc;
+                    delete item.dwlbmc;
+
+
+
+
+
+                for (let key in item) {
+                        if (item[key] === null || item[key] === "") {
+                            delete item[key];
+                        }
+                    }
+                    console.log(item);
+
+                    let ls = {};
+                    for (let i in item) {
+                        ls[i] = item[i];
+                    }
+                    fl_arr.push(ls);
+                    console.log(fl_arr);
+
+            }
+
+
+        }
+    }
+
+
+    // 如果某项需要增加进行解析
+    add_data_fn(add_data, fl_arr) {
+        for (let key in add_data) {
+            console.log(add_data[key]);
+            let item = add_data[key];
+            item.ssxtdm = this.hjbxx.ssxtdm;
+            item.ssgcdm = this.qshflId.ssgcdm;
+            item.jddm = this.qshflId.jddm;
+            if (item.qsrId.toString().length === 32) {
+                item.flbmxList = this.changeTable(item.flbmxList);
+                item.ggmxxxList = this.changeTable(item.ggmxxxList);
+                item.flbmxList.forEach((item1, key, array) => {
+                    console.log(array[key]);
+                    delete array[key].zbflId;
+                    delete array[key].id;
+                    delete array[key].qsrId;
+                    delete array[key].ssfwjbxxId;
+                    delete array[key].ssfwzxjbxxId;
+                    delete array[key].ssfsssjbxxId;
+                    delete array[key].sstdjbxxId;
+                    delete array[key].sstdfzwjbxxId;
+                    delete array[key].sslxgmjbxxId;
+                    delete array[key].ssland_otherjbxxId;
+                    delete array[key].fwzyytmc;
+
+                    delete array[key].ssxxzxjbxxId;
+
+
+                    for (let key3 in item1) {
+                        if (item1[key3] == null || item1[key3] === "") {
+                            delete item1[key3];
+                        }
+                    }
+                });
+                item.ggmxxxList.forEach((item1, key, array) => {
+                    delete array[key].ssfwjbxxId;
+                    for (let key3 in item1) {
+                        delete item1.zdxmc;
+                        delete item1.xh;
+                        delete item1.cjsj;
+                        delete item1.zhgxsj;
+                        delete item1.sslb;
+                        delete item1.id;
+                        delete item1.ssfwjbxxId;
+                        delete item1.ssfwzxjbxxId;
+                        delete item1.ssfsssjbxxId;
+                        delete item1.sstdjbxxId;
+                        delete item1.sstdfzwjbxxId;
+                        delete item1.sslxgmjbxxId;
+                        delete item1.ssxxzxjbxxId;
+                        if (item1[key3] == null || item1[key3] === "") {
+                            console.log(key3)
+                            delete item1[key3];
+                        }
+                    }
+                });
+                console.log(item.flbmxList);
+                delete item.list;
+                delete item.id;
+                delete item.swszxzqhmc;
+                delete item.dcfwmc;
+                delete item.ssxxzxjbxxId;
+                delete item.zydlmc;
+                delete item.whcdmc;
+                delete item.zhgxsj;
+                delete item.sfzh;
+                delete item.qsrmc;
+                delete item.cjsj;
+                delete item.localitydesc;
+                delete item.fwxzmc;
+                delete item.fwzyytmc;
+                delete item.tdxzmc;
+
+
+                for (let key in item) {
+                    if (item[key] === null || item[key] === "") {
+                        delete item[key];
+                    }
+                }
+                console.log(item);
+
+                let ls = {};
+                for (let i in item) {
+                    ls[i] = item[i];
+                }
+                fl_arr.push(ls);
+                console.log(fl_arr);
+            } else {
+                console.log("该项为新增人员底下的新增房屋")
+            }
+
+        }
+    }
+
+    // 没有规格明细的（零星果木）
+    add_data_noGGmx_fn(add_data, fl_arr) {
+        for (let key in add_data) {
+            console.log(add_data[key]);
+            let item = add_data[key];
+            item.ssxtdm = this.hjbxx.ssxtdm;
+            item.ssgcdm = this.qshflId.ssgcdm;
+            item.jddm = this.qshflId.jddm;
+            if (item.qsrId.toString().length === 32) {
+                item.flbmxAddList = this.changeTable(item.flbmxList);
+
+                item.flbmxAddList.forEach((item1, key, array) => {
+                    console.log(array[key]);
+                    delete array[key].zbflId;
+                    delete array[key].id;
+                    delete array[key].ssfwjbxxId;
+                    delete array[key].ssfwzxjbxxId;
+                    delete array[key].ssfsssjbxxId;
+                    delete array[key].sstdjbxxId;
+                    delete array[key].sstdfzwjbxxId;
+                    delete array[key].sslxgmjbxxId;
+                    delete array[key].ssland_otherjbxxId;
+
+                    delete array[key].ssxxzxjbxxId;
+
+
+                    for (let key3 in item1) {
+                        if (item1[key3] == null || item1[key3] === "") {
+                            delete item1[key3];
+                        }
+                    }
+                });
+
+                console.log(item.flbmxList);
+                delete item.list;
+                delete item.id;
+                delete item.swszxzqhmc;
+                delete item.dcfwmc;
+                delete item.ssxxzxjbxxId;
+                delete item.zydlmc;
+                delete item.whcdmc;
+                delete item.zhgxsj;
+                delete item.sfzh;
+                delete item.flbmxList;
+                delete item.qsrmc;
+                delete item.cjsj;
+                delete item.localitydesc;
+
+                for (let key in item) {
+                    if (item[key] === null || item[key] === "") {
+                        delete item[key];
+                    }
+                }
+                console.log(item);
+
+                let ls = {};
+                for (let i in item) {
+                    ls[i] = item[i];
+                }
+                fl_arr.push(ls);
+                console.log(fl_arr);
+            } else {
+                console.log("该项为新增人员底下的新增房屋")
+            }
+
+        }
+    }
+
+    //  没有分类明细和规格明细的
+    add_data_noAll_fn(add_data, fl_arr) {
+        console.log(add_data);
+        for (let key in add_data) {
+            // console.log(add_data[key]);
+            let item = add_data[key];
+            item.ssxtdm = this.hjbxx.ssxtdm;
+            item.ssgcdm = this.qshflId.ssgcdm;
+            item.jddm = this.qshflId.jddm;
+            if (item.qsrId.toString().length === 32) {
+
+
+                // console.log(item.flbmxList);
+                delete item.list;
+                delete item.id;
+                delete item.swszxzqhmc;
+                delete item.dcfwmc;
+                delete item.ssxxzxjbxxId;
+                delete item.zydlmc;
+                delete item.whcdmc;
+                delete item.zhgxsj;
+                delete item.sfzh;
+                delete item.flbmxList;
+                delete item.qsrmc;
+                delete item.cjsj;
+                delete item.localitydesc;
+                delete item.sslbmc;
+
+                for (let key in item) {
+                    if (item[key] === null || item[key] === "") {
+                        delete item[key];
+                    }
+                }
+                console.log(item);
+
+                let ls = {};
+                for (let i in item) {
+                    ls[i] = item[i];
+                }
+                fl_arr.push(ls);
+                console.log(fl_arr);
+            } else {
+                console.log("该项为新增人员底下的新增房屋")
+            }
+
+        }
+    }
+
+    // 新增的分类信息
+    add_flxx_data(add_flxx_data) {
+        console.log(add_flxx_data);
+        let arr = this.changeTable(add_flxx_data);
+        if (arr.length != 0) {
+            arr.forEach((item1, key, arr1) => {
+                delete arr1[key].zbflId;
+            });
+            return arr;
+        }
+    }
+
+    // 修改的分类信息
+    updata_flxx_data(updata_flxx_data) {
+        let arr = this.changeTable(updata_flxx_data);
+        if (arr.length != 0) {
+            arr.forEach((item, key, arr1) => {
+                delete arr1[key].ssxtdm;
+                delete arr1[key].ssgcdm;
+            });
+            return arr;
+        }
+    }
+
+    // 删除的分类信息
+    del_flxx_data(del_flxx_data) {
+        let arr = this.changeTable(del_flxx_data);
+        console.log(arr);
+        if (arr.length != 0) {
+            arr.forEach((item, key, arr1) => {
+                delete arr1[key].ssxtdm;
+                delete arr1[key].ssgcdm;
+            });
+            return arr;
+        }
+    }
+
+    // 新增的规格信息
+    add_ggxx_data(add_ggxx_data) {
+        let arr = this.changeTable(add_ggxx_data);
+        console.log(arr);
+        arr.forEach((item, key, arr1) => {
+            delete arr1[key].xh;
+            delete arr1[key].id;
+            delete arr1[key].zdxmc;
+            for (let i in arr1[key]) {
+                if (arr1[key][i] === "") {
+                    delete arr1[key][i]
+                }
+            }
+        });
+        return arr;
+    }
+
+    // 修改的规格信息
+    updata_ggxx_data(updata_ggxx_data) {
+        let arr = this.changeTable(updata_ggxx_data);
+        if (arr.length != 0) {
+            arr.forEach((item, key, arr1) => {
+                delete arr1[key].ssxtdm;
+                delete arr1[key].ssgcdm;
+                for(let key2 in item){
+                  if(item[key2]==null){
+                       item[key2]=-100;
+                   }
+                }
+            });
+
+            return arr;
+        }
+    }
+
+    // 删除的规格信息
+    del_ggxx_data(del_ggxx_data) {
+        let resArr = [];
+        for (let item in del_ggxx_data) {
+            let lsObj = {};
+            for (let item2 in del_ggxx_data[item]) {
+                lsObj[item2] = del_ggxx_data[item][item2];
+            }
+            resArr.push(lsObj);
+        }
+        return resArr;
+    }
+
+
+    // 获取导航的url列表
+    getUrlList(arr) {
+        arr.forEach((item, key, arr) => {
+            this.navListUrl.push(item.url)
+        })
+    }
+
+    // 去掉没有配置的导航
+    delNav(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].isCheck == 0) {
+                arr.splice(i, 1);
+                i--;
+            }
+        }
+        return arr;
+    }
+
+    //导航栏进行排序
+    delSort(name) {
+        return function (o, p) {
+            var a, b;
+            if (typeof o === "object" && typeof p === "object" && o && p) {
+                a = o[name];
+                b = p[name];
+                if (a === b) {
+                    return 0;
+                }
+                if (typeof a === typeof b) {
+                    return a < b ? -1 : 1;
+                }
+                return typeof a < typeof b ? -1 : 1;
+            }
+            else {
+                throw ("error");
+            }
+        }
+    }
+
+    // 把用id开头的转成自己需要的
+    changeTable(arr) {
+        console.log(arr);
+        let resArr = [];
+        for (let item in arr) {
+            // console.log(item);
+            let lsObj = {};
+            for (let item2 in arr[item]) {
+                console.log(item2);
+                console.log(arr[item]);
+                lsObj[item2] = arr[item][item2];
+
+            }
+            // delete arr[item];
+            lsObj['ssxtdm'] = this.hjbxx.ssxtdm;
+            lsObj['ssgcdm'] = this.hjbxx.ssgcdm;
+            // console.log(lsObj);
+            resArr.push(lsObj);
+        }
+        console.log(resArr);
+        return resArr;
+    }
+
+
+    //基本信息判断必填项
+    Btpd(info, arrBtpd, msg) {
+        this.BtpdValue = true;
+        for (let item of info) {
+            console.log(item)
+            for (let f in arrBtpd) {
+                console.log(f)
+                console.log(item[f])
+
+                if (item[f] === "" || item[f] == undefined) {
+
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: msg + arrBtpd[f] + ' 必填'});
+                    this.BtpdValue = false;
+                    console.log('有必填项未填');
+                    return false;
+                }
+
+
+            }
+        }
+        return true;
     }
 
     // 判断户基本信息必填项
-    bhjbxxBT(info) {
+    bhjbxxBtpd(info) {
         console.log(info);
-        this.TjHjbxxValue = true;
+        this.BtpdValue = true;
+        for (let f in bhjbxxBtpd) {
+            console.log(f)
+            if (info[f] === "") {
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '填入提醒', detail: bhjbxxBtpd[f] + ' 必填'});
+                this.BtpdValue = false;
+                console.log('有必填项未填');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 规格信息判断必填项
+    ggxxBtpd(info, zd, msg) {
+        this.BtpdValue = true;
         for (let item of info) {
             console.log(item)
-            for (let j in item) {
-                if (item[j] === "") {
-                    for (let f in bhjbxxBT) {
-                        if (j === f) {
-
-                            this.msgs = [];
-                            this.msgs.push({severity: 'error', summary: '填入提醒', detail: bhjbxxBT[f] + ' 必填'});
-                            return this.TjHjbxxValue = false;
-                        }
-                    }
-                }
+            if (item[zd] === "" || item[zd] == undefined) {
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '填入提醒', detail: msg + ' 必填'});
+                this.BtpdValue = false;
+                console.log('有必填项未填');
+                return false;
             }
+        }
+        return true;
+    }
 
+    beforeJmh() {
+        for (let key in this.jmhList) {
+            if (this.jmhList[key]['id'] == this.info['id']) {
+                if (parseInt(key) == 0) {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: '这为第一户，无上一户'});
+                } else {
+                    this.info['id'] = this.jmhList[parseInt(key) - 1]['id'];
+
+                    this.HttpService.get(`/jmh/show?id=${this.jmhList[parseInt(key) - 1]['id']}`)
+                        .then(res => {
+                            console.log(res);
+                            this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
+                            this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
+                            console.log(this.init_hjbxx_data);
+                            this.hjbxx = res['returnObject']['bHjbxx'];
+                            this.hcylb = res['returnObject']['listHcy'];
+                            this.def_hcylb_info = JSON.parse(JSON.stringify(this.hcylb));
+                            this.sfxw = this.hjbxx.sfxw;
+                            this.saveRouter(this.activeTabName, this.activeTabId);
+                        });
+                }
+
+                break;
+            }
         }
     }
 
-    // 判断户房屋必填项
-    housesBT(info) {
+    nextJmh(id) {
+        for (let key in this.jmhList) {
+            if (this.jmhList[key]['id'] == this.info['id']) {
+                console.log(key);
+                console.log(this.jmhList.length - 1);
+                if (parseInt(key) == this.jmhList.length - 1) {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: '这为最后一户，无下一户'});
 
+                } else {
+                    console.log(this.jmhList[parseInt(key) + 1].id);
+                    this.info['id'] = this.jmhList[parseInt(key) + 1]['id'];
+                    this.HttpService.get(`/jmh/show?id=${this.jmhList[parseInt(key) + 1]['id']}`)
+                        .then(res => {
+                            console.log(res);
+                            this.init_person_data = JSON.parse(JSON.stringify(res['returnObject']));
+                            this.init_hjbxx_data = JSON.parse(JSON.stringify(res['returnObject']['bHjbxx']));
+                            console.log(this.init_hjbxx_data);
+                            this.hjbxx = res['returnObject']['bHjbxx'];
+                            this.hcylb = res['returnObject']['listHcy'];
+                            this.def_hcylb_info = JSON.parse(JSON.stringify(this.hcylb));
+                            this.sfxw = this.hjbxx.sfxw;
+                            this.saveRouter(this.activeTabName, this.activeTabId);
+                        });
+                    break;
+                }
+
+            }
+        }
     }
 }
 
 
 const
-    hcyId = {
+    hcyBtpd = {
         szxzqhdm: '所属行政区划',
         zydldm: '专业大类',
         dcfwdm: '调查范围',
-        hlbdm: '户类型',
-        sfkgh: '是否空挂户',
+
+        sfkgr: '是否空挂人',
+        yhzgxdm: "与户主关系代码"
 
     };
 const
-    bhjbxxBT = {
+    bhjbxxBtpd = {
         hzxm: '户主姓名',
         sfkgh: '是否空挂户',
-        xzqhmc: '所属行政区',
+        xzqhdm: '所属行政区',
         dabh: '档案编号',
         zydldm: '专业大类',
-        dcfwmc: '调查范围',
+        dcfwdm: '调查范围',
 
     };
 const
-    housesBT = {
+    comBtpd = {
         zydldm: '专业大类',
-        dcfwmc: '调查范围',
+        dcfwdm: '调查范围',
         swszxzqhdm: '所属行政区',
-        xzqhmc: '所属行政区',
-    }
+    };
+const qsrBtpd = {
+    zydldm: '专业大类',
+    dcfwdm: '调查范围',
+    szxzqhdm: '所属行政区',
+    sfkgr: '是否空挂人',
+
+
+};
+
 

@@ -7,28 +7,6 @@ import {EngBaseComponent} from './eng-base/eng-base.component';
 import { WaringComponent } from "../common/waring/waring.component";
 import { YsqkComponent } from "./ymazysjd/ysqk/ysqk.component";
 
-// export const EngMangRoutingModule = [
-//     {
-//         path: '',
-//         component: EngMangNavComponent,
-//         children: [
-//             {path: '', component: HomeComponent},
-//             {path: 'EngBase/:id', component: EngBaseComponent},
-//             {path: 'ProjectProposal/:id', component: ProjectProposalComponent},
-//             {path: 'ymanysjd/ysqk/ysqk', component: YsqkComponent},
-//             {
-//                 path: 'kxxyjbgjd/:id',
-//                 loadChildren: './kxxyjbgjd/kxxyjbgjd.module#KxxyjbgjdModule',
-//             },
-//             {
-//                 path: 'ssazjd/:id',
-//                 loadChildren: './ssazjd/ssazjd.module#SsazjdModule',
-//             },
-//         ]
-//
-//     }
-//
-// ];
 export const EngMangRoutingModule = [
     {
         path: '',
@@ -39,7 +17,7 @@ export const EngMangRoutingModule = [
             {path: 'ProjectProposal/:id', component: ProjectProposalComponent},
             {path: 'ymanysjd/ysqk/ysqk', component: YsqkComponent},
             {
-                path: 'kxxyjbgjd/:id',
+                path: ':jddm/:id',
                 loadChildren: './kxxyjbgjd/kxxyjbgjd.module#KxxyjbgjdModule',
             },
             {

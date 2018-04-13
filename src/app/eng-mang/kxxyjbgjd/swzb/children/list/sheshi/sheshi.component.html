@@ -1,8 +1,9 @@
+
 <header>
     <div>
-        <p-selectButton [options]="types" [(ngModel)]="selectedType"
+        <p-selectButton [disabled]="isDisabled"  [options]="types" [(ngModel)]="selectedType"
                         (click)="selectedTypea1()"></p-selectButton>
-        <em>共 <span>3</span>人</em>
+        <em>共 <span>{{hcy_count}}</span>人</em>
     </div>
 </header>
 <div *ngIf="selectedType==1" class="clearfix">
@@ -16,8 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectPerson(personSign)" #defaultPerson
-                [ngClass]="{'active':personSign==hcy}">
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
             </tr>
@@ -26,74 +26,86 @@
         </table>
     </div>
 
+
+
+
     <div class="right fl">
         <div class="header clearfix rl">
-            <div class="fl headerTitle">人口详情</div>
-            <ul class="fr  btnGrop">
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back.png"
-                                                                       alt=""></span>上一条
+            <div class="fl headerTitle">设施详情</div>
+            <ul class="fr  btnGrop" *ngIf="!isDisabled">
+                <li class="fl" (click)="up()"><span class="img"><img src="assets/img/icon/arrow-back.png"
+                                                                     alt=""></span>上一条
                 </li>
-                <li class="fl" (click)="jump()"><span class="img"><img src="assets/img/icon/arrow-back .png"
+                <li class="fl" (click)="down()"><span class="img"><img src="assets/img/icon/arrow-back .png"
                                                                        alt=""></span>下一条
                 </li>
 
-                <li class="fl" (click)="addPerson(personSign)"><span class="img"><img src="assets/img/icon/jiahao.png"
-                                                                                      alt=""></span>增加
+                <li class="fl" (click)="addsheshi()"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                            alt=""></span>增加
                 </li>
-                <li class="fl" (click)="delEng(hcy)"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                <li class="fl" (click)="delsheshi()"><span class="img"><img src="assets/img/icon/brush_fill.png"
                                                                             alt=""></span>删除
                 </li>
                 <li class="fl">
                     <div class="selectLi rl">
                         更多操作
-
+                        <!--<span class="xiala"></span>-->
+                        <!--<div class="fj">-->
+                        <!--<span (click)="openFj()">附件查看</span>-->
+                        <!--<span>附件管理</span>-->
+                        <!--</div>-->
                     </div>
                 </li>
             </ul>
         </div>
-        <div class="box_botton clearfix">
-            <form #person="ngForm">
+
+        <div class="box_botton clearfix" *ngIf="tableList.length>0 && tableList[0]">
+            <form #person="ngForm" >
                 <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
-                        名称
+                        名称:
                     </div>
                     <div class="input_right fl">
                         <input type="text" class="inputH" value="" [(ngModel)]="hcy.mc" name="mc">
                     </div>
 
                 </div>
-                <div>
+
+
+                <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
                         权属人
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" value="" [(ngModel)]="hcy.mc" name="mc">
+                        <app-select-list [disabled]="isDisabled"  [width]="0" [values]="selectPersonList"
+                                         (SelectModel)="eventQsr($event)" [selectValue]="hcy.qsrId"
+                                         ngDefaultControl></app-select-list>
+
                     </div>
+
 
                 </div>
 
+                <!--简单填写-->
 
-                <div class="inputBox  rl fl areaBox rl">
+
+                <!--左右点击选择-->
+
+                <!--下拉框-->
+
+
+                <div class="inputBox  rl fl areaBox">
                     <div class="input_left fl importent">
                         所在行政区划
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.szxzqhdm" name="szxzqhdm">
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.localitydesc" name="szxzqhdm"
+                               (click)="showAreaBlock()" readonly="readonly">
                         <i class="xiala" (click)="showAreaBlock()"></i>
-                        <app-area-select class="areaCommpont" [display]="isShowArea"
-                                         (childEvent)="getChildEvent($event)"></app-area-select>
-                    </div>
+                        <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                                         [display]="isShowArea"
+                                         (childEvent)="getChildSzxzqh($event)"></app-area-select>
 
-                </div>
-
-
-                <div class="inputBox  rl fl">
-                    <div class="input_left fl importent">
-                        调查范围
-                    </div>
-                    <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
                     </div>
 
                 </div>
@@ -102,18 +114,132 @@
                         专业大类
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [width]="0" [values]="selectListHzgx"
-                                         (SelectModel)="getChildEvent1($event)"></app-select-list>
+                        <!--<app-select-list [width]="0" [values]="zydl_list"-->
+                        <!--(SelectModel)="eventZydl($event)" [selectValue]="hcy.zydldm"></app-select-list>-->
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.zydlmc" name="zydldm"
+                               (click)="showZydlBlock()" readonly="readonly">
+                        <i class="xiala" (click)="showZydlBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"
+                                           [treeList]="zydlTreeList" [tableList]="zydlTableList"></app-sec-type-list>
                     </div>
 
                 </div>
-                <div class="inputBox  rl fl clickInput">
+                <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
-                        是否空挂人
+                        调查范围
                     </div>
                     <div class="input_right fl">
-                        <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkgr" name="sfkgr"
-                        ></p-selectButton>
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.dcfwmc" name="dcfwdm"
+                               (click)="showDcfwBlock()" readonly="readonly">
+                        <i class="xiala" (click)="showDcfwBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                                           [isShow]="isShowDcfw"
+                                           [tableList]="dcfwTableList"></app-sec-type-list>
+
+                    </div>
+
+
+                </div>
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl importent">
+                        设施类别
+                    </div>
+                    <div class="input_right fl">
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.sslbmc" name="sblbmc"
+                               (click)="showsblbBlock()" readonly="readonly">
+                        <i class="xiala" (click)="showsblbBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildsblb($event)" [treeList]="sblbTreeList"
+                                           [isShow]="isShowSblb"
+                                           [tableList]="sblbTableList"></app-sec-type-list>
+
+                    </div>
+
+
+                </div>
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl importent">
+                        数量
+                    </div>
+                    <div class="input_right fl">
+                        <input type="number" class="inputH" [(ngModel)]="hcy.sl" name="sl" >
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        结构
+                    </div>
+                    <div class="input_right fl">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.jg" name="jg"  >
+                    </div>
+
+                </div>
+
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        规格尺寸
+                    </div>
+                    <div class="input_right fl">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.ggcc" name="ggcc"  >
+                    </div>
+
+                </div>
+
+                <div class="fl group group-4 danwei big_mj">
+                    <span>设施原值</span>
+                    <input [disabled]="isDisabled" name="ssyz" [(ngModel)]="hcy.ssyz" type="number">
+                    <div class="fl mianji">
+                        万元
+                    </div>
+
+                </div>
+
+
+                <div class="fl group group-4 danwei big_mj">
+                    <span>占地面积</span>
+                    <input [disabled]="isDisabled" name="zdmj" [(ngModel)]="hcy.zdmj" type="number">
+                    <div class="fl mianji">
+                        m²
+                    </div>
+
+                </div>
+
+
+                <div class="inputArea fl">
+                    <div class="inputLeft fl">
+                        <span>建设日期</span>
+                    </div>
+                    <div class="inputRight fl">
+                        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="hcy.jsrq"
+                                        (SelectModel)="eventJsrq($event)" readonly="readonly"></app-p-calendar>
+
+                    </div>
+                </div>
+
+                <div class="inputArea fl">
+                    <div class="inputLeft fl">
+                        <span>投产日期</span>
+                    </div>
+                    <div class="inputRight fl">
+                        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="hcy.tcrq"
+                                        (SelectModel)="eventTcrq($event)" readonly="readonly"></app-p-calendar>
+
+                    </div>
+                </div>
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        所在位置
+                    </div>
+                    <div class="input_right fl">
+                        <input type="text" class="inputH" [(ngModel)]="hcy.szwz" name="szwz"  >
                     </div>
 
                 </div>
@@ -123,8 +249,7 @@
                     <div class="textareaBeizhu">
                         <span>备注</span>
                     </div>
-                    <textarea name="" id="" cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz"
-                              name="bz"></textarea>
+                    <textarea cols="30" rows="10" class="textarea" [(ngModel)]="hcy.bz" name="bz"></textarea>
                 </div>
             </form>
         </div>
@@ -133,12 +258,10 @@
 <div *ngIf="selectedType==2">
     <div style="width:100%;overflow: auto">
         <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true" [emptyMessage]="'查询数据为空'"
-                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)" [style]="{'margin-top':'30px'}"
-                     bodyStyle="{'text-align':'center'}">
+                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)"   [style]="{'margin-top':'30px'}" bodyStyle="{'text-align':'center'}">
             <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
             <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-            <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true"
-                      [editable]="true"></p-column>
+            <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
             <p-column field="szxzqhdm" header="所在行政区划分" [style]="{'width':'150px'}" [editable]="true"></p-column>
             <p-column field="hbdm" header="户别" [style]="{'width':'150px'}"></p-column>
             <p-column field="zydldm" header="专业大类" [style]="{'width':'150px'}"></p-column>
@@ -147,8 +270,7 @@
             <p-column field="xbdm" header="性别" [style]="{'width':'150px'}" frozen="true"></p-column>
             <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
             <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
-            <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true"
-                      [style]=" {'overflow':'visible' }">
+            <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true" [style]=" {'overflow':'visible' }">
                 <ng-template let-col let-car="rowData" pTemplate="body">
                     {{car[col.field]|date }}
                 </ng-template>

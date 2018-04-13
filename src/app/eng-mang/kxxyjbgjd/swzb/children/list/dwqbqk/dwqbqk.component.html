@@ -1,92 +1,136 @@
 <div class="clearfix">
+
+
+  <header class="clearfix">
+
+    <div class="fr button_10" *ngIf="!isDisabled">
+
+      <div class="fl" (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt=""
+                                                         class="img"></span>删除
+      </div>
+    </div>
+  </header>
+  <form #forms="ngForm">
   <div class="fl group group-2">
     <span>名称</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="dwmc" [(ngModel)]="dwList[0].mc" type="text">
   </div>
-  <div class="fl group group-4">
-    <span>单位类别</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>行业类别</span>
-    <input type="text">
-  </div>
+
+
+    <div class="fl group group-4 rl importent">
+      <span>单位类别</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="dwList[0].dwlbmc" name="zydldm"
+             (click)="showgkBlock()" readonly="readonly">
+      <i class="xiala" (click)="showgkBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildgk($event)" [isShow]="isShowgk"
+                         [treeList]="gkTreeList" [tableList]="dwTableList"></app-sec-type-list>
+    </div>
+
+
+    <div class="fl group group-4 rl">
+      <span>行业类别</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="dwList[0].hylbmc" name="gkdj"
+             (click)="showgkdjBlock()" readonly="readonly">
+      <i class="xiala" (click)="showgkdjBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildgkdj($event)" [isShow]="isShowgkdj"
+                         [treeList]="gkdjTreeList" [tableList]="gkdjTableList"></app-sec-type-list>
+    </div>
   <div class="fl group group-4">
     <span>法人代表</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="frdb" [(ngModel)]="dwList[0].frdb" type="text">
   </div>
-  <div class="fl group group-4">
-    <span>是否镇外</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>经济性质</span>
-    <input type="text">
-  </div>
+
+    <div class="fl group group-4">
+
+          <span>是否镇外</span>
+
+        <p-selectButton [options]="types2" [disabled]="isDisabled"
+                          [(ngModel)]="sfzw" name="sfxwValue"
+                          (click)="selectedTypea2(sfzw)"></p-selectButton>
+
+    </div>
+
+    <div class="fl group group-4 rl">
+      <span>经济性质</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="dwList[0].jjxzmc" name="gkyt"
+             (click)="showdwBlock()" readonly="readonly">
+      <i class="xiala" (click)="showdwBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChilddw($event)" [isShow]="isShowdw"
+                         [treeList]="dwTreeList" [tableList]="dwTableList"></app-sec-type-list>
+    </div>
   <div class="fl group group-4">
     <span>隶属关系</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="lsgx" [(ngModel)]="dwList[0].lsgx" type="text">
   </div>
   <div class="fl group group-4">
     <span>营业执照号</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="yyzzh" [(ngModel)]="dwList[0].yyzzh" type="text">
 
   </div>
   <div class="fl group group-4">
     <span>税务登记证号</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="swdjzh" [(ngModel)]="dwList[0].swdjzh" type="text">
 
   </div>
 
-  <div class="fl group group-2 danwei">
-    <span>组织机构代码</span>
-    <input type="text">
+  <!--<div class="fl group group-2 danwei">-->
+    <!--<span>组织机构代码</span>-->
+    <!--<input [disabled]="isDisabled" name="zzjgdm" [(ngModel)]="dwList[0].zzjgdm" type="text">-->
 
-  </div>
+  <!--</div>-->
   <div class="fl group group-4">
     <span>所在地点</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="ssdd" [(ngModel)]="dwList[0].ssdd" type="text">
   </div>
   <div class="fl group group-4">
     <span>主管部门</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zgbm" [(ngModel)]="dwList[0].zgbm" type="text">
   </div>
   <div class="fl group group-4 ">
     <span>图幅号</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="tfh" [(ngModel)]="dwList[0].tfh" type="text">
 
   </div>
   <div class="fl group group-4 ">
     <span>图斑号</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="tbh" [(ngModel)]="dwList[0].tbh" type="text">
 
   </div>
   <div class="fl group group-4 danwei">
     <span>注册资金</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zczj" [(ngModel)]="dwList[0].zczj" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
-  <div class="fl group group-4">
-    <span>注册日期</span>
-    <input type="text">
+    <div class="fl group group-4 ">
+      <span>注册日期</span>
+      <div class="inputRight fl">
+        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="dwList[0].zcrq"
+                        (SelectModel)="eventJgrq($event)" readonly="readonly"></app-p-calendar>
 
-  </div>
-  <div class="fl group group-4">
-    <span>投产日期</span>
-    <input type="text">
-  </div>
+      </div>
+
+    </div>
+    <div class="fl group group-4 ">
+      <span>投产日期</span>
+      <div class="inputRight fl">
+        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="dwList[0].tcrq"
+                        (SelectModel)="eventTyrq($event)" readonly="readonly"></app-p-calendar>
+
+      </div>
+
+    </div>
   <div class="fl group group-4 danwei">
     <span>主要建筑物高程</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zyjzwgc" [(ngModel)]="dwList[0].zyjzwgc" type="number">
     <div class="fl mianji">
       m
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>占地面积</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zdmj" [(ngModel)]="dwList[0].zdmj" type="number">
     <div class="fl mianji">
       亩
     </div>
@@ -94,119 +138,119 @@
 
   <div class="fl group group-4 danwei">
     <span>生产用地</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="scyd" [(ngModel)]="dwList[0].scyd" type="number">
     <div class="fl mianji">
       亩
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>生活用地</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="shyd" [(ngModel)]="dwList[0].shyd" type="number">
     <div class="fl mianji">
       亩
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>厂区面积</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="cqmj" [(ngModel)]="dwList[0].cqmj" type="number">
     <div class="fl mianji">
       亩
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>固定资产原值</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="gdzcyz" [(ngModel)]="dwList[0].gdzcyz" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>房屋原值</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="fwyz" [(ngModel)]="dwList[0].fwyz" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>设备原值</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="sbyz" [(ngModel)]="dwList[0].sbyz" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>设施原值</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="ssxz" [(ngModel)]="dwList[0].ssxz" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>年产值</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="ncz" [(ngModel)]="dwList[0].ncz" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>年税收</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="nss" [(ngModel)]="dwList[0].nss" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>年利润</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="nlr" [(ngModel)]="dwList[0].nlr" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>年工资额</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="ngze" [(ngModel)]="dwList[0].ngze" type="number">
     <div class="fl mianji">
       万元
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>户口在厂总人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="hkzczrs" [(ngModel)]="dwList[0].hkzczrs" type="number">
     <div class="fl mianji">
       人
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>职工人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zgrs" [(ngModel)]="dwList[0].zgrs" type="number">
     <div class="fl mianji">
       人
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>正式工人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="zsgrs" [(ngModel)]="dwList[0].zsgrs" type="number">
     <div class="fl mianji">
       人
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>合同工人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="htgrs" [(ngModel)]="dwList[0].htgrs" type="number">
     <div class="fl mianji">
       人
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>临时工人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="lsgrs" [(ngModel)]="dwList[0].lsgrs" type="number">
     <div class="fl mianji">
       人
     </div>
   </div>
   <div class="fl group group-4 danwei">
     <span>家属人数</span>
-    <input type="text">
+    <input [disabled]="isDisabled" name="jsrs" [(ngModel)]="dwList[0].jsrs" type="number">
     <div class="fl mianji">
       人
     </div>
@@ -225,5 +269,6 @@
     <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
   </div>
 
+  </form>
 
 </div>

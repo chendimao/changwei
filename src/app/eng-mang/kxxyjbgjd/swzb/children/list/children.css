@@ -80,11 +80,14 @@ header > div > div.active {
 }
 
 .inputRight input {
-    padding: 8px;
+    padding: 7px;
     border: 1px solid #ccc;
     color: #999999;
 }
-
+.listBox{
+    position: relative;
+    z-index: 1;
+}
 .inputRight select {
     width: 100%;
     padding: 8px;
@@ -120,7 +123,6 @@ header > div > div.active {
     padding: 8px;
     margin: 15px 20px 10px 50px;
 }
-
 
 .beizhu {
     margin-top: 20px;
@@ -176,7 +178,8 @@ textarea {
 .danwei input {
     width: calc(100% - 160px);
 }
-.danwei .mianji{
+
+.danwei .mianji {
     height: 32px;
 
 }
@@ -194,85 +197,86 @@ textarea {
     margin: 10px 0;
 }
 
-.clearfix .group {
-    padding: 5px 0;
-}
 
-
-
-
-.container{
+.container {
     padding: 15px 0;
 
 }
 
-.left{
+.left {
     width: 18%;
 }
 
-.right{
+.right {
     box-sizing: border-box;
     padding: 15px;
     padding-top: 0;
     width: 82%;
 }
 
-.headerTitle{
+.headerTitle {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
-.header{
+
+.header {
     padding: 10px 0;
     border-bottom: 1px solid #cccccc;
 }
 
-.input_left{
+.input_left {
     width: 30%;
     margin-top: 8px;
- padding: 0 10px;
+    padding: 0 10px;
     text-align: justify;
     text-justify: distribute-all-lines;
     text-align-last: justify
 }
 
-.input_right{
+.input_right {
     width: 70%;
 }
 
-.box_botton{
+.box_botton {
     margin-top: 20px;
     font-size: 12px;
 }
-.inputH{
+
+.inputH {
     padding: 8px;
     border: 1px solid #ccc;
     color: #999999;
 }
-.input_right input{
+
+.input_right input {
     width: 100%;
     box-sizing: border-box;
 }
-.selectInput{
+
+.selectInput {
     padding: 5.5px;
     width: 100%;
 }
 
-.areaBox{
+.areaBox {
     width: 66%;
 }
-.table tbody tr.active{
+
+.table tbody tr.active {
     background: #0099cb;
     color: white;
 }
+
 :host
 /deep/
-.ui-calendar{
+.ui-calendar {
     width: 100%;
 }
+
 :host
 /deep/
-.ui-widget-content{
+.ui-widget-content {
     color: #333333;
 }
 
@@ -300,72 +304,89 @@ textarea {
 .importent {
     color: #ff3b03;
 }
-.inputBox .input_right .inputS{
+
+.inputBox .input_right .inputS {
     width: 40px;
     height: 30px;
 }
 
-.textarea.textarea{
+.textarea.textarea {
     width: calc(100% - 140px);
     height: 60px;
     resize: none;
     border: 1px solid #ccc;
 }
-.timeSelect{
+
+.timeSelect {
     padding: 1px 0;
 }
 
-.textareaBeizhu{
+.textareaBeizhu {
     float: left;
     margin-top: 10px;
     width: 100px;
     text-align: right;
 }
-.table1{
+
+.table1 {
     min-width: 1400px;
-    white-space:nowrap;
+    white-space: nowrap;
 }
-.table1 input{
+
+.table1 input {
     width: 100%;
 }
-.table1 thead tr td{
+
+.table1 thead tr td {
     padding: 7px 15px;
 }
+
 .table1 {
     margin-bottom: 20px;
 }
-.table1 tr td input{
+
+.table1 tr td input {
     border: none;
 }
-.table1 tbody tr td{
+
+.table1 tbody tr td {
     padding-left: 2px;
 }
 
-.clearfix .group{
+.clearfix .group {
     padding: 5px 0;
 }
-.perDanwei{
+
+.perDanwei {
     display: inline-block;
 }
-.inputBox{
+
+.inputBox {
     min-height: 34px;
     max-height: 34px;
     width: 33%;
     margin: 5px 0;
 }
-.grave_right{
+
+.grave_right {
     width: calc(100% - 240px);
 }
+
 @media (max-width: 1025px) {
-   .inputBox{
-       width: 50%;
-   }
+    .inputBox {
+        width: 50%;
+    }
 }
 
-.button_10{
-    margin-bottom:10px;
+.button_10 {
+    margin-bottom: 10px;
 }
-.inputArea .input_left{
+.button_10 div:hover{
+    background: #e6dfdf;
+    cursor: pointer;
+}
+
+.inputArea .input_left {
     width: 30%;
     margin-top: 8px;
     padding: 0 10px;
@@ -373,6 +394,66 @@ textarea {
     text-justify: distribute-all-lines;
     text-align-last: justify;
 }
+
+.foot_boxShadow {
+    max-height: 500px;
+    min-height:300px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+.foot_box {
+    padding: 5px
+}
+
+:host
+/deep/
+.current_page {
+    border: none;
+}
+
+.mar_top {
+    margin-top: 15px;
+}
+
+p-panel {
+    clear: both;
+    margin-top: 15px;
+}
+
+.tableClass {
+    width: 100%;
+    display: inline-block;
+    height: 100%;
+}
+.search_bg{
+    background-color:yellow;
+    padding:3px;
+    border-radius:3px;
+}
+.two_input{
+    width: calc(100% - 160px);
+}
+.danwei .two_input input{
+    width: 45%;
+    display: inline-block;
+}
+:host
+/deep/
+ .ui-panel.ui-widget .ui-panel-titlebar{
+     border-width: 0px 0 1px 0;
+ }
+.group .xiala{
+    right: 30px;
+}
+:host
+/deep/
+.group .boxShadow{
+    top: 38px;
+    right: 20px;
+}
+
+
 
 
 

@@ -1,57 +1,102 @@
 <div class="clearfix">
-  <div class="fl group group-4">
+  <header class="clearfix">
+
+    <div class="fr button_10" *ngIf="!isDisabled">
+
+      <div class="fl" (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt=""
+                                                         class="img"></span>删除
+      </div>
+    </div>
+  </header>
+
+  <div class="fl group group-4 importent">
     <span>权属人</span>
-    <input type="text">
+    <app-select-list [disabled]="isDisabled"  [width]="120" [values]="selectPersonList"
+                     (SelectModel)="eventQsr($event)" [selectValue]="qhList[0].qsrId"
+                     ngDefaultControl></app-select-list>
   </div>
-  <div class="fl group group-4">
-    <span>所在行政区划</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>调查范围</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>桥涵类别</span>
-    <input type="text">
-  </div>
+
+  <form #forms="ngForm">
+
+
+    <div class="fl group group-4 rl importent">
+      <span>所在行政区划</span>
+      <input [disabled]="isDisabled" name="szxzqh" type="text" class="" [(ngModel)]="qhList[0].localitydesc" name="szxzqqhm"
+             (click)="showAreaBlock()" readonly="readonly">
+      <i class="xiala" (click)="showAreaBlock()"></i>
+      <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                       [display]="isShowArea"
+                       (childEvent)="getChildSzxzqh($event)"></app-area-select>
+    </div>
+
+    <div class="fl group group-4 rl importent">
+      <span>调查范围</span>
+      <input [disabled]="isDisabled" type="text"  [(ngModel)]="qhList[0].dcfwmc" name="dcfwdm"
+             (click)="showDcfwBlock()" readonly="readonly">
+      <i class="xiala" (click)="showDcfwBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                         [isShow]="isShowDcfw"
+                         [tableList]="dcfwTableList"></app-sec-type-list>
+    </div>
+    <div class="fl group group-4 rl">
+      <span>桥涵类别</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].qhlbmc" name="zydldm"
+             (click)="showqhBlock()" readonly="readonly">
+      <i class="xiala" (click)="showqhBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildqh($event)" [isShow]="isShowqh"
+                         [treeList]="qhTreeList" [tableList]="qhTableList"></app-sec-type-list>
+    </div>
   <div class="fl group group-4">
     <span>桥涵名称</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="qhmc" [(ngModel)]="qhList[0].mc" type="text">
+
   </div>
   <div class="fl group group-4">
     <span>所在位置</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="szws" [(ngModel)]="qhList[0].szwz" type="text">
+
   </div>
-  <div class="fl group group-2">
-    <span>建成日期</span>
-    <input type="text">
-  </div>
+    <div class="fl group group-4 ">
+      <span>建成日期</span>
+      <div class="inputRight fl">
+        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="qhList[0].jcrq"
+                        (SelectModel)="eventJgrq($event)" readonly="readonly"></app-p-calendar>
+
+      </div>
+
+    </div>
   <div class="fl group group-4 ">
     <span>主管部门</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="zgbm" [(ngModel)]="qhList[0].zgbm" type="text">
+
 
   </div>
 
   <div class="fl group group-4 ">
     <span>运行管理单位</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="yxgldw" [(ngModel)]="qhList[0].yxgldw" type="text">
+
 
   </div>
-  <div class="fl group group-2">
-    <span>所属公路类别</span>
-    <input type="text">
-
-  </div>
+    <div class="fl group group-4 rl">
+      <span>所属公路类别</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].ssgllbmc" name="ssgllbmc"
+             (click)="showglBlock()" readonly="readonly">
+      <i class="xiala" (click)="showglBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildgl($event)" [isShow]="isShowgl"
+                         [treeList]="glTreeList" [tableList]="glTableList"></app-sec-type-list>
+    </div>
   <div class="fl group group-4 ">
     <span>所属公路</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="ssgl" [(ngModel)]="qhList[0].ssglmc" type="text">
+
 
   </div>
 
   <div class="fl group group-4 danwei">
     <span>桥梁长度</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="qlcd" [(ngModel)]="qhList[0].qlcd" type="number">
+
     <div class="fl mianji">
       m
     </div>
@@ -59,7 +104,8 @@
   </div>
   <div class="fl group group-4 danwei">
     <span>桥梁宽度</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="qlkd" [(ngModel)]="qhList[0].qmkd" type="number">
+
     <div class="fl mianji">
       m
     </div>
@@ -67,21 +113,26 @@
   </div>
   <div class="fl group group-4 danwei">
     <span>桥涵材料</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="qhcl" [(ngModel)]="qhList[0].qhclmc" type="text">
+
     <div class="fl mianji">
       m
     </div>
 
   </div>
 
-  <div class="fl group group-4 ">
-    <span>桥梁结构</span>
-    <input type="text">
-
-  </div>
+    <div class="fl group group-4 rl">
+      <span>桥涵结构</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].qhjgmc" name="qhjgdm"
+             (click)="showjgBlock()" readonly="readonly">
+      <i class="xiala" (click)="showjgBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildjg($event)" [isShow]="isShowjg"
+                         [treeList]="jgTreeList" [tableList]="jgTableList"></app-sec-type-list>
+    </div>
   <div class="fl group group-4 danwei">
     <span>占地面积</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="zdmj" [(ngModel)]="qhList[0].zdmj" type="number">
+
     <div class="fl mianji">
       m
     </div>
@@ -89,7 +140,8 @@
   </div>
   <div class="fl group group-4 danwei">
     <span>设计载重</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="sjzj" [(ngModel)]="qhList[0].sjzj" type="number">
+
     <div class="fl mianji">
       m
     </div>
@@ -97,12 +149,14 @@
   </div>
   <div class="fl group group-4 ">
     <span>断面编号</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="dmbh" [(ngModel)]="qhList[0].dmbh" type="text">
+
 
   </div>
   <div class="fl group group-2 danwei">
     <span>所在高程</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="szgc" [(ngModel)]="qhList[0].szgc" type="number">
+
     <div class="fl mianji">
       m
     </div>
@@ -110,35 +164,36 @@
   </div>
   <div class="fl group group-4 danwei">
     <span>桥面高程</span>
-    <input type="text">
+        <input [disabled]="isDisabled" name="qmgc" [(ngModel)]="qhList[0].qmgc" type="number">
+
     <div class="fl mianji">
       m
     </div>
 
   </div>
-  <div class="fl group group-4 ">
-    <span>设计洪水标准</span>
-    <input type="text">
+    <div class="fl group group-4 rl">
+      <span>洪水设计标准</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].sjhsbzmc" name="gkhssjbz"
+             (click)="showsjBlock()" readonly="readonly">
+      <i class="xiala" (click)="showsjBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildsj($event)" [isShow]="isShowsj"
+                         [treeList]="sjTreeList" [tableList]="sjTableList"></app-sec-type-list>
+    </div>
 
-  </div>
-  <div class="fl group group-4 ">
-    <span>淹没影响程度</span>
-    <input type="text">
-
-  </div>
-  <div class="fl group group-4 ">
-    <span>调查流水号</span>
-    <input type="text">
-
-  </div>
-
-
+    <div class="fl group group-4 rl">
+      <span>淹没影响程度</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].ymyxcdmc" name="ymyxcdmc"
+             (click)="showymBlock()" readonly="readonly">
+      <i class="xiala" (click)="showymBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildym($event)" [isShow]="isShowym"
+                         [treeList]="ymTreeList" [tableList]="ymTableList"></app-sec-type-list>
+    </div>
+  <!--<div class="fl group group-4 ">-->
+    <!--<span>调查流水号</span>-->
+        <!--<input [disabled]="isDisabled" name="dclsh" [(ngModel)]="qhList[0].dclsh" type="text">-->
 
 
-
-
-
-
+  <!--</div>-->
 
 
 
@@ -148,6 +203,6 @@
     </div>
     <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
   </div>
-
+  </form>
 
 </div>

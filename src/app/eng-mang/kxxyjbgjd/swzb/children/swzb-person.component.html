@@ -5,9 +5,9 @@
     </div>
 
     <form #ngModel="ngForm" novalidate>
-        <div class="clearfix">
+        <div class="clearfix" >
             <p-panel toggleable="true" [(collapsed)]="showTOP" expandIcon="fa-angle-double-up"
-                     collapseIcon="fa-angle-double-down">
+                   styleClass="topPanel" collapseIcon="fa-angle-double-down">
                 <p-header>
                     <div class="title">
                         户基本信息
@@ -32,58 +32,72 @@
                             <div class="fl  top_class">
 
                                 <span class="importent">户主姓名</span>
-                                <input class='inputH' type="text"
+                                <input class='inputH' type="text" [disabled]="isDisabled"
                                        [(ngModel)]="hjbxx.hzxm" name="hzxm"/>
                             </div>
                             <div class="fl top_class selectArea">
 
                                 <span class="importent">是否空挂户</span>
-                                <p-selectButton [disabled]="whetherDisabled" [options]="types1"
+                                <p-selectButton [disabled]="isDisabled" [options]="types1"
                                                 [(ngModel)]="hjbxx.sfkgh" name="sfkgh"
-                                                (click)="selectedTypea(hjbxx.sfkgh)"></p-selectButton>
+                                ></p-selectButton>
                             </div>
                             <div class="fl top_class area rl">
                                 <span class="importent">所属行政区</span>
-                                <input [disabled]="whetherDisabled" class='inputH inputArea' type="text"
-                                       [(ngModel)]="hjbxx.xzqhmc" name="xzqhmc" />
-                                <i class="xiala" (click)="showAreaBlock()"></i>
-                                <app-area-select class="areaCommpont" [display]="isShowArea"
-                                                 (childEvent)="getChildEvent($event)"></app-area-select>
+                                <input [disabled]="isDisabled" class='inputH inputArea' type="text"
+                                       [(ngModel)]="hjbxx.xzqhmc" name="xzqhmc" (click)="showAreaBlock()"
+                                       readonly="readonly"/>
+                                <i class="xiala"></i>
+                                <app-area-select [localityCode]="qshflId.ssxzqhSearchDm" class="areaCommpont"
+                                                 [display]="isShowArea"
+                                                 (childEvent)="getChildSzxzqh($event)"></app-area-select>
 
                             </div>
                             <div class="fl top_class rl">
-                                <span class="importent">编号</span>
-                                <input [disabled]="whetherDisabled" class='inputH' type="text" [(ngModel)]="hjbxx.dabh"
+                                <span class="importent">档案编号</span>
+                                <input [disabled]="isDisabled" class='inputH' type="text" [(ngModel)]="hjbxx.dabh"
                                        name="dabh"/>
-                                <span class="bianhao" (click)="getZdlsh(hjbxx.xzqhmc)">
-                            自动生成
-                        </span>
+                                <span  class="bianhao" (click)="getZdlsh(hjbxx.xzq)">
+                                     自动生成
+                                </span>
+                                <!--<span class="bianhaoDis" >-->
+                                     <!--自动生成-->
+                                <!--</span>-->
                             </div>
                             <div class="fl top_class selectArea">
                                 <span>是否线外</span>
-                                <p-selectButton [disabled]="whetherDisabled" [options]="types2"
-                                                [(ngModel)]="hjbxx.sfxw" name="sfxw"
-                                                (click)="selectedTypea2(hjbxx.sfxw)"></p-selectButton>
+                                <p-selectButton [options]="types2" [disabled]="isDisabled"
+                                                [(ngModel)]="sfxw" name="sfxwValue"
+                                                (click)="selectedTypea2(sfxw)"></p-selectButton>
                             </div>
-                            <div class="fl top_class  ">
+                            <div class="fl top_class  rl zydl">
 
                                 <span class="importent">专业大类</span>
-                                <app-select-list [width]="105" [values]="zydlList" [selectValue]="hjbxx.zydldm"
-                                                 (SelectModel)="getZydl($event)"></app-select-list>
+                                <input [disabled]="isDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.zydlmc" name="zydldm" (click)="showZydlBlock()"
+                                       readonly="readonly"/>
+                                <i class="xiala" (click)="showZydlBlock()"></i>
+                                <app-sec-type-list (SelectModel)="getChildZydl($event)" [treeList]="zydlTreeList"
+                                                   [isShow]="isShowZydl"
+                                                   [tableList]="zydlTableList"></app-sec-type-list>
+
+
                             </div>
                             <div class="fl top_class rl zydl">
                                 <span class="importent">调查范围</span>
                                 <!--<input  class='inputH' type="text"-->
                                 <!--[(ngModel)]="hjbxx.dcfwdm" name="dcfwdm" style="display: none"/>-->
-                                <input [disabled]="whetherDisabled" class='inputH' type="text"
-                                       [(ngModel)]="hjbxx.dcfwmc" name="dcfwmc" readonly="readonly"/>
-                                <i class="xiala" (click)="showTypeBlock()"></i>
-                                <app-surver-area [values]="dcfwList" [isShow]="isShowDcfw"
-                                                 (childEvent)="getChildDcfw($event)"></app-surver-area>
-                            </div>
+                                <input [disabled]="isDisabled" class='inputH' type="text"
+                                       [(ngModel)]="hjbxx.dcfwmc" name="dcfwdm" (click)="showDcfwBlock()"
+                                       readonly="readonly"/>
+                                <i class="xiala" (click)="showDcfwBlock()"></i>
+                                <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                                                   [isShow]="isShowDcfw"
+                                                   [tableList]="dcfwTableList"></app-sec-type-list>
+                             </div>
                             <div class="fl top_class">
                                 <span>调查流水号</span>
-                                <input [disabled]="whetherDisabled" [(ngModel)]="hjbxx.dclsh" name='dclsh'
+                                <input [disabled]="isDisabled" [(ngModel)]="hjbxx.dclsh" name='dclsh'
                                        class='inputH' type="text" placeholder="请输入内容"/>
                             </div>
                             <div class="top_class fl" (click)="showMoreInput()">
@@ -95,23 +109,23 @@
 
                                 <div class="fl title_gc top_class">
                                     <span>所在高程</span>
-                                    <input [disabled]="whetherDisabled" class='inputS' type="text"
+                                    <input [disabled]="isDisabled" class='inputS' type="text"
                                            [(ngModel)]="hjbxx.szzdgc" name="szzdgc"/>
                                     <i>--</i>
-                                    <input [disabled]="whetherDisabled" class='inputS' type="text"
+                                    <input [disabled]="isDisabled" class='inputS' type="text"
                                            [(ngModel)]="hjbxx.szzggc" name="szzggc"/>
                                     <i>M</i>
                                 </div>
                                 <div class="fl  top_class">
                                     <span>断面编号</span>
-                                    <input [disabled]="whetherDisabled" class='inputH' type="text"
+                                    <input [disabled]="isDisabled" class='inputH' type="text"
                                            [(ngModel)]="hjbxx.dmbh" name="dmbh"/>
                                 </div>
                                 <div class="fl top_class beizhu clearfix">
                                     <div class="textareaBeizhu">
                                         <span>备注 </span>
                                     </div>
-                                    <textarea [disabled]="whetherDisabled" id="" cols="30" rows="10"
+                                    <textarea [disabled]="isDisabled" id="" cols="30" rows="10"
                                               class="textarea" [(ngModel)]="hjbxx.bz" name="bz"></textarea>
                                 </div>
                             </div>
@@ -120,7 +134,7 @@
                     </div>
                 </div>
             </p-panel>
-            <p-growl [(value)]="msgs" ></p-growl>
+            <p-growl [(value)]="msgs"></p-growl>
 
         </div>
         <div>
@@ -129,8 +143,11 @@
                     <!--<li class="fl" routerLink="{{list.path}}" routerLinkActive="active1"  *ngFor="let list of navList">-->
                     <!--<li class="fl" (click)="saveRouter(list.path)" *ngFor="let list of navList"-->
                     <!--[ngClass]="{'active1':list.name==avtiveName}">-->
-                    <li class="fl"  *ngFor="let list of navList">
-                        <span *ngIf="list.isCheck" (click)="saveRouter(list.url,list.swzblbId)" [class.active1]="list.url === avtiveName">{{list.zdxmc}}</span>
+                    <li class="fl" *ngFor="let list of navList">
+                        <span (click)="saveRouter(list.url,list.swzblbId)"
+                              [class.active1]="list.url === activeTabName">{{list.zdxmc}}
+                          <i *ngIf="list.isIncludeData==1" class="img icon fa  fa-check-square-o"></i>
+                        </span>
 
                     </li>
                 </ul>
@@ -144,13 +161,13 @@
                 </p-panel>
             </div>
             <div class="footer clearfix">
-                <div class="fl">
+                <div class="fl" *ngIf="showFooterBtn">
 
                     <div class="fl">上一户</div>
                     <div class="fl">下一户</div>
 
                 </div>
-                <div class="fr">
+                <div class="fr" *ngIf="!showFooterBtn">
                     <div class="fl" (click)="save()">保存</div>
                     <div class="fl" (click)="save('add')">保存并新增</div>
                     <div class="fl">附件管理</div>

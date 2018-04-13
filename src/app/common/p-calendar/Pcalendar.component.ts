@@ -7,8 +7,9 @@ import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit} from '@an
 })
 export class PcalendarComponent implements OnInit {
     @Input() value: number;
-    public dateValue: any;
-    public ch: any;
+    @Input() disabled: boolean=false;
+    private dateValue: any;
+    private ch: any;
     @Output() SelectModel = new EventEmitter;
 
 
@@ -18,11 +19,6 @@ export class PcalendarComponent implements OnInit {
 
     ngOnInit() {
 
-
-
-        console.log(this.value);
-        this.dateValue = new Date(this.value);
-        console.log(this.dateValue);
         this.ch = {
             firstDayOfWeek: 0,
             dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
@@ -35,14 +31,23 @@ export class PcalendarComponent implements OnInit {
         };
     }
 
+    ngOnChanges() {
+
+        console.log(this.value);
+        if (this.value) {
+            this.dateValue = new Date(this.value);
+        }else{
+            this.dateValue=null;
+        }
+        console.log(this.dateValue);
+    }
+
     clickTime(i) {
         var timestamp = Date.parse(i);
         this.SelectModel.emit(timestamp);
+        console.log(timestamp)
 
     }
-
-
-
 
 
 }

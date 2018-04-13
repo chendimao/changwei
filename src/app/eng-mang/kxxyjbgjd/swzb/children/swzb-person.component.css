@@ -1,13 +1,15 @@
 .containerEng {
-    padding: 15px;
+    padding: 10px;
     overflow-y: auto;
     width: 100%;
-
     position: fixed;
     background: white;
     left: 0px;
     top: 37px;
+    border: 10px solid #eee;
 }
+
+
 .title{
     padding: 0;
     border: none
@@ -177,7 +179,7 @@ ul.showSecList.boxShadow .threeList li:hover{
     margin: 0px 10px;
 }
 .fl.top_class.beizhu {
-    width: 50%;
+    width: 90%;
 }
 .textarea.textarea {
     width: calc(100% - 140px);
@@ -233,7 +235,7 @@ nav ul li .active1:after{
 /deep/
 .secPanel.ui-panel.ui-widget .ui-panel-titlebar.ui-corner-all{
     background: #ffffff;
-    border-top: none;
+    /*border-top: none;*/
     border-bottom: none;
 }
 :host
@@ -268,6 +270,7 @@ nav ul li .active1:after{
         width: 50%;
     }
 }
+
 :host
 /depp/
 .ui-state-default{

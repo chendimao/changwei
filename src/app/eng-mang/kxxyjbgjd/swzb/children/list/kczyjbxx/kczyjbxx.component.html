@@ -1,162 +1,204 @@
 <div class="clearfix">
-  <div class="fl group group-4">
-    <span>权属人</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>所在行政区划</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>调查范围</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>矿产编号</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>矿产资源类别</span>
-    <input type="text">
-  </div>
+
+  <header class="clearfix">
+
+    <div class="fr button_10" *ngIf="!isDisabled">
+
+      <div class="fl" (click)="deleteSlect($event)"><span><img src="assets/img/icon/clear.png" alt=""
+                                                               class="img"></span>删除
+      </div>
+    </div>
+  </header>
+
+  <form #forms="ngForm">
 
 
-  <div class="fl group group-2 ">
-    <span>名称</span>
-    <input type="text">
+    <div class="fl group group-4 importent">
+      <span>权属人</span>
+      <app-select-list [disabled]="isDisabled" name="qsr"  [width]="120" [values]="selectPersonList"
+                       (SelectModel)="eventQsr($event)" [selectValue]="kczyList[0].qsrId"
+                       ngDefaultControl></app-select-list>
+    </div>
 
-  </div>
+    <div class="fl group group-4 rl importent">
+      <span>所在行政区划</span>
+      <input [disabled]="isDisabled" name="szxzqh" type="text" class="" [(ngModel)]="kczyList[0].localitydesc" name="szxzqhdm"
+             (click)="showAreaBlock()" readonly="readonly">
+      <i class="xiala" (click)="showAreaBlock()"></i>
+      <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                       [display]="isShowArea"
+                       (childEvent)="getChildSzxzqh($event)"></app-area-select>
+    </div>
+
+    <div class="fl group group-4 rl importent">
+      <span>调查范围</span>
+      <input [disabled]="isDisabled" name="dcfw" type="text"  [(ngModel)]="kczyList[0].dcfwmc" name="dcfwdm"
+             (click)="showDcfwBlock()" readonly="readonly">
+      <i class="xiala" (click)="showDcfwBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                         [isShow]="isShowDcfw"
+                         [tableList]="dcfwTableList"></app-sec-type-list>
+    </div>
 
 
-  <div class="fl group group-2">
-    <span>所在位置</span>
-    <input type="text">
-  </div>
+    <div class="fl group group-4">
+      <span>矿产编号</span>
+      <input [disabled]="isDisabled" placeholder="原型有，数据库没"/>
+    </div>
 
-  <div class="fl group group-4 danwei">
-    <span>品位</span>
-    <input type="text">
-    <div class="fl mianji">
+
+
+    <div class="fl group group-4 rl">
+      <span>矿产资源类别</span>
+      <input [disabled]="isDisabled" name="gdgclb" type="text" [(ngModel)]="kczyList[0].kczylbmc" name="kczylb"
+             (click)="showkczyBlock()" readonly="readonly">
+      <i class="xiala" (click)="showkczyBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildkczy($event)" [isShow]="isShowkczy"
+                         [treeList]="kczyTreeList" [tableList]="kczyTableList"></app-sec-type-list>
+    </div>
+
+
+
+
+    <div class="fl group group-4 ">
+      <span>名称</span>
+      <input [disabled]="isDisabled" name="kczymc" type="text" [(ngModel)]="kczyList[0].mc"/>
+
+    </div>
+
+    <div class="fl group group-2">
+      <span>所在位置</span>
+      <input [disabled]="isDisabled" name="szwz" type="text" [(ngModel)]="kczyList[0].szwz"/>
+    </div>
+
+    <div class="fl group group-4 danwei">
+      <span>品味</span>
+      <input [disabled]="isDisabled" name="pw" type="number" [(ngModel)]="kczyList[0].pw"/>
+      <div class="fl mianji">
         %
-    </div>
-  </div>
-
-
-
-  <div class="fl group group-4 danwei">
-    <span>储量</span>
-    <input type="text">
-    <div class="fl mianji">
-      吨
-    </div>
-  </div>
-
-
-
-  <div class="fl group group-2">
-    <span>主管部门</span>
-    <input type="text">
-  </div>
-
-
-
-  <div class="fl group group-2">
-    <span>断面编号</span>
-    <input type="text">
-
-
-  </div>
-
-
-  <div class="fl group group-2">
-    <span>分布高程</span>
-    <input type="text">
-  </div>
-
-  <div class="fl group group-4">
-    <span>埋藏深度</span>
-    <input type="text">
-  </div>
-
-  <div class="fl group group-4 danwei">
-    <span>作业点地面高度</span>
-    <input type="text" >
-    <div class="fl mianji">
-      m
+      </div>
     </div>
 
-  </div>
+
+
+    <div class="fl group group-4 danwei">
+      <span>储量</span>
+      <input [disabled]="isDisabled" name="cl" type="number" [(ngModel)]="kczyList[0].cl"/>
+      <div class="fl mianji">
+        吨
+      </div>
+    </div>
+
+
+
+    <div class="fl group group-2">
+      <span>主管部门</span>
+      <input [disabled]="isDisabled" name="zgbm" type="text" [(ngModel)]="kczyList[0].zgbm"/>
+    </div>
+
+    <div class="fl group group-4">
+      <span>断面编号</span>
+      <input [disabled]="isDisabled" name="dmbh" type="text" [(ngModel)]="kczyList[0].dmbh"/>
+
+
+    </div>
+    <div class="fl group group-4">
+      <span>分布高程</span>
+      <input [disabled]="isDisabled" name="zggc" type="number" [(ngModel)]="kczyList[0].zggc"/>
+    </div>
+
+    <div class="fl group group-4">
+      <span>埋藏深度</span>
+      <input [disabled]="isDisabled" name="mcsd" type="number" [(ngModel)]="kczyList[0].mcsd"/>
+    </div>
+
+    <div class="fl group group-4 danwei">
+      <span>作业点地面高度</span>
+      <input [disabled]="isDisabled" name="zyddmgc" type="number" [(ngModel)]="kczyList[0].zyddmgc"/>
+
+      <div class="fl mianji">
+        m
+      </div>
+
+    </div>
+
+
+    <div class="fl group group-2">
+      <span>厂址</span>
+      <input [disabled]="isDisabled" name="cz" type="text" [(ngModel)]="kczyList[0].cz"/>
+
+    </div>
+
+    <div class="fl group group-4 ">
+      <span>建成日期</span>
+      <div class="inputRight fl">
+        <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="kczyList[0].jcrq"
+                        (SelectModel)="eventJgrq($event)" readonly="readonly"></app-p-calendar>
+
+      </div>
+    </div>
 
 
 
 
-  <div class="fl group group-2 danwei">
-    <span>厂址</span>
-    <input type="text">
-
-  </div>
-
-
-  <div class="fl group group-4 ">
-    <span>建成日期</span>
-    <input type="text">
-
-  </div>
-
-
-  <div class="fl group group-4 danwei">
-    <span>总投资</span>
-    <input type="text">
-    <div class="fl mianji">
+    <div class="fl group group-4 danwei">
+      <span>总投资</span>
+      <input [disabled]="isDisabled" name="ztz" type="number" [(ngModel)]="kczyList[0].ztz"/>
+      <div class="fl mianji">
         万元
+      </div>
+
+
     </div>
 
+    <div class="fl group group-1 ">
 
-  </div>
-  <div class="fl group group-4 ">
-    <span>设计洪水标准</span>
-    <input type="text">
-
-  </div>
-  <div class="fl group group-4 ">
-    <span>淹没影响程度</span>
-    <input type="text">
-
-  </div>
-  <div class="fl group group-4 ">
-    <span>调查流水号</span>
-    <input type="text">
-
-  </div>
-
-
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
       <span >开采计划 </span>
+
+      <textarea [disabled]="isDisabled" class="textarea " cols="30"  name="kcjh"  [(ngModel)]="kczyList[0].kcjh" rows="10"  model="所在最低高程"></textarea>
     </div>
-    <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
-  </div>
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
+    <div class="fl group group-1">
+
       <span >开采程度 </span>
+
+      <textarea [disabled]="isDisabled"  class="textarea " cols="30"   name="kccd" rows="10"  [(ngModel)]="kczyList[0].kccd"  model="所在最低高程"></textarea>
     </div>
-    <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
-  </div>
 
 
-
-
-
-
-
-
-
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
-      <span >备注 </span>
+    <div class="fl group group-4 rl">
+      <span>洪水设计标准</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="kczyList[0].sjhsbzmc" name="hssjbz"
+             (click)="showsjBlock()" readonly="readonly">
+      <i class="xiala" (click)="showsjBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildsj($event)" [isShow]="isShowsj"
+                         [treeList]="sjTreeList" [tableList]="sjTableList"></app-sec-type-list>
     </div>
-    <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
-  </div>
+
+    <div class="fl group group-4 rl">
+      <span>淹没影响程度</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="kczyList[0].ymyxcdmc" name="gkhssjbz"
+             (click)="showymBlock()" readonly="readonly">
+      <i class="xiala" (click)="showymBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildym($event)" [isShow]="isShowym"
+                         [treeList]="ymTreeList" [tableList]="ymTableList"></app-sec-type-list>
+    </div>
 
 
+
+    <!--<div class="fl group group-4 ">-->
+      <!--<span>调查流水号</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="原型有，数据库没"/>-->
+
+    <!--</div>-->
+
+
+
+    <div  class="clearfix beizhu ">
+      <div  class="textareaBeizhu">
+        <span >备注 </span>
+      </div>
+      <textarea [disabled]="isDisabled" class="textarea " cols="30"   name="bz" rows="10"  [(ngModel)]="kczyList[0].bz"  model="所在最低高程"></textarea>
+    </div>
+
+  </form>
 </div>

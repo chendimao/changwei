@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
 import {DataProcessingService} from "../../../service/dataProcessing.service";
-import {CheckboxModule} from 'primeng/primeng';
 import {HttpService} from "../../../service/http-service";
 
 @Component({
@@ -19,6 +18,11 @@ export class TzgsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.HttpService.get(`locality/listTree`)
+            .then(res => {
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+
+            });
     }
 
     getEvent(event) {

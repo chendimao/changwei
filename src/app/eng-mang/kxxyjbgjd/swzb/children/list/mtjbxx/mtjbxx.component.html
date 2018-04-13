@@ -1,158 +1,253 @@
 <div class="clearfix">
-  <div class="fl group group-4">
+  <header class="clearfix">
+
+    <div class="fr button_10" *ngIf="!isDisabled">
+
+      <div class="fl" (click)="deleteSlect()"><span><img src="assets/img/icon/clear.png" alt=""
+                                                         class="img"></span>删除
+      </div>
+    </div>
+  </header>
+  <div class="fl group group-4 importent">
     <span>权属人</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>所在行政区划</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>调查范围</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>码头类型</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4">
-    <span>码头名称</span>
-    <input type="text">
-  </div>
-  <div class="fl group group-4 ">
-    <span>所在位置</span>
-    <input type="text">
-
+    <app-select-list [disabled]="isDisabled"  [width]="120" [values]="selectPersonList"
+                     (SelectModel)="eventQsr($event)" [selectValue]="mtList[0].qsrId"
+                     ngDefaultControl></app-select-list>
   </div>
 
-  <div class="fl group group-2 danwei">
-    <span>占地面积</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
+  <form #forms="ngForm">
+
+
+    <div class="fl group group-4 rl importent">
+      <span>所在行政区划</span>
+      <input [disabled]="isDisabled" name="szxzqh" type="text" class="" [(ngModel)]="mtList[0].localitydesc" name="szxzqhdm"
+             (click)="showAreaBlock()" readonly="readonly">
+      <i class="xiala" (click)="showAreaBlock()"></i>
+      <app-area-select [localityCode]="szxzqugldm" class="areaCommpont"
+                       [display]="isShowArea"
+                       (childEvent)="getChildSzxzqh($event)"></app-area-select>
     </div>
 
-  </div>
-
-  <div class="fl group group-2 danwei">
-    <span>主管部门</span>
-    <input type="text">
-
-  </div>
-  <div class="fl group group-4 ">
-    <span>运行管理单位</span>
-    <input type="text">
-  </div>
-
-
-  <div class="fl group group-4 ">
-    <span>型式</span>
-    <input type="text">
-
-  </div>
-  <div class="fl group group-4 danwei">
-    <span>结构材料</span>
-    <input type="text">
-  </div>
-
-
-  <div class="fl group group-4 danwei">
-    <span>投资</span>
-    <input type="text">
-    <div class="fl mianji">
-      万元
-    </div>
-  </div>
-
-  <div class="fl group group-2">
-    <span>断面编号</span>
-    <input type="text">
-  </div>
-
-  <div class="fl group group-4 danwei">
-    <span>所在高程</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
+    <div class="fl group group-4 rl importent">
+      <span>调查范围</span>
+      <input [disabled]="isDisabled" type="text"  [(ngModel)]="mtList[0].dcfwmc" name="dcfwdm"
+             (click)="showDcfwBlock()" readonly="readonly">
+      <i class="xiala" (click)="showDcfwBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                         [isShow]="isShowDcfw"
+                         [tableList]="dcfwTableList"></app-sec-type-list>
     </div>
 
-  </div>
+    <div class="fl group group-4">
+      <span>码头编号</span>
+      <input [disabled]="isDisabled" placeholder="原型有数据库没有" type="text">
 
-  <div class="fl group group-4">
-    <span>设计洪水标准</span>
-    <input type="text">
-  </div>
-
-  <div class="fl group group-4 danwei">
-    <span>左岸顶高</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
     </div>
 
-  </div>
-
-  <div class="fl group group-4 " >
-    <span>右岸顶高</span>
-    <input type="text" >
-
-
-  </div>
-
-  <div class="fl group group-4 danwei">
-    <span>左岸底高</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
+    <div class="fl group group-4 rl">
+      <span>码头类型</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].mtlbmc" name="zydldm"
+             (click)="showmtBlock()" readonly="readonly">
+      <i class="xiala" (click)="showmtBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildmt($event)" [isShow]="isShowmt"
+                         [treeList]="mtTreeList" [tableList]="mtTableList"></app-sec-type-list>
     </div>
 
-  </div>
-  <div class="fl group group-4 danwei">
-    <span>长度</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
+
+
+    <div class="fl group group-4">
+      <span>码头名称</span>
+      <input [disabled]="isDisabled" name="mc" [(ngModel)]="mtList[0].mc" type="text">
+
+    </div>
+    <div class="fl group group-2 ">
+      <span>所在位置</span>
+      <input [disabled]="isDisabled" name="szwz" [(ngModel)]="mtList[0].szwz" type="text">
+
+
     </div>
 
-  </div>
-  <div class="fl group group-2 danwei">
-    <span>宽度</span>
-    <input type="text">
-    <div class="fl mianji">
-      m
+    <div class="fl group group-2 danwei">
+      <span>占地面积</span>
+      <input [disabled]="isDisabled" name="zdmj" [(ngModel)]="mtList[0].zdmj" type="number">
+
+      <div class="fl mianji">
+        m
+      </div>
+
     </div>
 
-  </div>
-  <div class="fl group group-4 danwei">
-    <span>水平纵波</span>
-    <input type="text">
-    <div class="fl mianji">
-      %
+    <div class="fl group group-4 ">
+      <span>主管部门</span>
+      <input [disabled]="isDisabled" name="zgbm" [(ngModel)]="mtList[0].zgbm" type="text">
+
+
+    </div>
+    <div class="fl group group-4 ">
+      <span>运行管理单位</span>
+      <input [disabled]="isDisabled" name="yxgldw" [(ngModel)]="mtList[0].yxgldw" type="text">
+
     </div>
 
-  </div>
-
-  <div class="fl group group-1 ">
-    <span>码头规模</span>
-    <input type="text">
-
-  </div>
-
-
-
-
-
-
-
-
-
-
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
-      <span >备注 </span>
+    <div class="fl group group-4 rl">
+      <span>码头用途</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].mtytmc" name="mtytmc"
+             (click)="showytBlock()" readonly="readonly">
+      <i class="xiala" (click)="showytBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildyt($event)" [isShow]="isShowyt"
+                         [treeList]="ytTreeList" [tableList]="ytTableList"></app-sec-type-list>
     </div>
-    <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
+
+    <div class="fl group group-4 rl">
+      <span>码头形式</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].xsmc" name="xsmc"
+             (click)="showxsBlock()" readonly="readonly">
+      <i class="xiala" (click)="showxsBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildxs($event)" [isShow]="isShowxs"
+                         [treeList]="xsTreeList" [tableList]="xsTableList"></app-sec-type-list>
+    </div>
+
+    <div class="fl group group-4 rl">
+      <span>码头结构材料</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].jgclmc" name="jgclmc"
+             (click)="showjgclBlock()" readonly="readonly">
+      <i class="xiala" (click)="showjgclBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildjgcl($event)" [isShow]="isShowjgcl"
+                         [treeList]="jgclTreeList" [tableList]="jgclTableList"></app-sec-type-list>
+    </div>
+
+    <div class="fl group group-4 danwei big_mj">
+      <span>投资</span>
+      <input [disabled]="isDisabled" name="tz" [(ngModel)]="mtList[0].tz" type="number">
+
+      <div class="fl mianji">
+        万元
+      </div>
+    </div>
+
+      <div class="fl group group-4 rl">
+        <span>淹没影响程度</span>
+        <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].ymyxcdmc" name="ymyxcdmc"
+               (click)="showymBlock()" readonly="readonly">
+        <i class="xiala" (click)="showymBlock()"></i>
+        <app-sec-type-list (SelectModel)="getChildym($event)" [isShow]="isShowym"
+                           [treeList]="ymTreeList" [tableList]="ymTableList"></app-sec-type-list>
+      </div>
+
+
+
+
+
+    <div class="fl group group-2">
+      <span>断面编号</span>
+      <input [disabled]="isDisabled" name="dmbh" [(ngModel)]="mtList[0].dmbh" type="text">
+
+    </div>
+
+    <div class="fl group group-4 danwei">
+      <span>所在高程</span>
+      <input [disabled]="isDisabled" name="szgc" [(ngModel)]="mtList[0].szgc" type="number">
+
+      <div class="fl mianji">
+        m
+      </div>
+
+    </div>
+
+    <div class="fl group group-4 rl">
+      <span>洪水设计标准</span>
+      <input [disabled]="isDisabled" type="text" [(ngModel)]="mtList[0].sjhsbzmc" name="sjhsbzmc"
+             (click)="showsjBlock()" readonly="readonly">
+      <i class="xiala" (click)="showsjBlock()"></i>
+      <app-sec-type-list (SelectModel)="getChildsj($event)" [isShow]="isShowsj"
+                         [treeList]="sjTreeList" [tableList]="sjTableList"></app-sec-type-list>
+    </div>
+
+    <!--<div class="fl group group-4 danwei">-->
+      <!--<span>左岸顶高</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="左岸顶高（数据库没有）" type="text">-->
+
+
+      <!--<div class="fl mianji">-->
+        <!--m-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <!--<div class="fl group group-4 danwei" >-->
+      <!--<span>右岸顶高</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="右岸顶高（数据库没有）" type="text">-->
+
+      <!--<div class="fl mianji">-->
+        <!--m-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+
+
+    <!--<div class="fl group group-4 danwei">-->
+      <!--<span>左岸底高</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="左岸底高（数据库没有）" type="text">-->
+
+      <!--<div class="fl mianji">-->
+        <!--m-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <!--<div class="fl group group-4 danwei" >-->
+      <!--<span>右岸低高</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="右岸低高（数据库没有）" type="text">-->
+
+      <!--<div class="fl mianji">-->
+        <!--m-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <div class="fl group group-4 danwei">
+      <span>长度</span>
+      <input [disabled]="isDisabled" name="ydcd" [(ngModel)]="mtList[0].ydcd" type="number">
+
+      <div class="fl mianji">
+        m
+      </div>
+
+    </div>
+
+    <div class="fl group group-4 danwei">
+      <span>引道宽度</span>
+      <input [disabled]="isDisabled" name="ydkd" [(ngModel)]="mtList[0].ydkd" type="number">
+
+      <div class="fl mianji">
+        m
+      </div>
+
+    </div>
+
+    <!--<div class="fl group group-4 danwei">-->
+      <!--<span>水平纵波</span>-->
+      <!--<input [disabled]="isDisabled" placeholder="数据库没有" type="text">-->
+
+      <!--<div class="fl mianji">-->
+        <!--%-->
+      <!--</div>-->
+  <!--</div>-->
+
+    <div class="fl group group-1 ">
+      <span>码头规模</span>
+      <input [disabled]="isDisabled" name="gm" [(ngModel)]="mtList[0].gm" type="text">
   </div>
+
+    <div class="fl group group-1">
+      <span>备注</span>
+      <textarea  [disabled]="isDisabled" class="textarea " cols="30" id="" name="bz" rows="10"  [(ngModel)]="mtList[0].bz" model="所在最低高程"></textarea>
+    </div>
+
+
+
+  </form>
 
 
 </div>

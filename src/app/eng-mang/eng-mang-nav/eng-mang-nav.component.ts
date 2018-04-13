@@ -1,28 +1,37 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DialogModule, MessagesModule, Message} from 'primeng/primeng';
-
+import {HttpService} from "../../service/http-service";
 
 @Component({
     selector: 'app-eng-mang-nav',
     templateUrl: './eng-mang-nav.component.html',
     styleUrls: ['./eng-mang-nav.component.css'],
+    providers: [HttpService]
 })
 export class EngMangNavComponent implements OnInit {
     private display: boolean = false;
     data: any;
     index: string;
     private projectId: string;
+    private cur_index = new Object();
+    private navList = new Array();
     private projectName: string;
     public navType: string = '1';
     public width: string = '180px';
 
     @Output() childEvent = new EventEmitter<any>();
 
-    constructor(private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute, private HttpService: HttpService,) {
     }
 
     ngOnInit() {
+
+        this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
+            .then((res) => {
+                console.log(res);
+                this.navList = res['returnObject']
+            })
         this.projectId = this.route.queryParams['value'].id;
         this.projectName = this.route.queryParams['value'].name;
         console.log(this.projectId == null);
@@ -55,9 +64,9 @@ export class EngMangNavComponent implements OnInit {
 
 
     showNav(i): void {
-        this.index = i;
+        this.cur_index = i;
         this.display = true;
-        this.data = ['emgList', i, this.projectId];
+        this.data = ['emgList', i.dm, i.mc,this.projectId];
     }
 
     closeNavList() {

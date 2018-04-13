@@ -4,7 +4,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
-
 import {
     BreadcrumbModule,
     PanelModule,
@@ -21,7 +20,8 @@ import {
     DataTableModule,
     SharedModule,
     GrowlModule,
-    TreeTableModule
+    TreeTableModule,
+    TreeModule
 } from 'primeng/primeng';
 import {SwzbRoutingModule} from "./swzb-routering.module";
 
@@ -75,6 +75,9 @@ import {WwgjjbxxComponent} from './children/list/wwgjjbxx/wwgjjbxx.component';
 import {SwqxzjbxxComponent} from './children/list/swqxzjbxx/swqxzjbxx.component';
 import {QtzxjbxxComponent} from './children/list/qtzxjbxx/qtzxjbxx.component';
 import {InputChangeService} from "../../../service/input-change.service";
+import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
+import {ShareService} from "../../../systemSetting/service/share.service";
+
 
 
 @NgModule({
@@ -124,6 +127,8 @@ import {InputChangeService} from "../../../service/input-change.service";
 
     imports: [
 
+        TreeModule,
+        TreeModule,
         TreeTableModule,
         BreadcrumbModule,
         PanelModule,
@@ -153,10 +158,10 @@ import {InputChangeService} from "../../../service/input-change.service";
         GykqyxqComponent, TljbxxComponent, GljbxxComponent, QhjbxxComponent, HdjbxxComponent,
         GkjbxxComponent, MtjbxxComponent, SbdgcjbxxComponent, DxgcjbxxComponent, GbdsjbxxComponent,
         GdgcjbxxComponent, SlsdgcjbxxComponent, KczyjbxxComponent, WwgjjbxxComponent, SwqxzjbxxComponent,
-        QtzxjbxxComponent,
+        QtzxjbxxComponent, DelWaringComponent
 
     ],
-    providers: [SelectListHttpService, HttpService, ValuChangeService, DataProcessingService,InputChangeService],
+    providers: [ShareService, InputChangeService, SelectListHttpService, HttpService, ValuChangeService, DataProcessingService],
 })
 export class SwzbModule {
 }

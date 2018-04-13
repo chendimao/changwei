@@ -1,0 +1,27 @@
+<div class="boxShadow clearfix" *ngIf="isShow">
+    <header class="clearfix">
+        <div class="fl group-2"  (click)="tab()" [ngClass]="{'active':show}">树形结构</div>
+        <div class="fl group-2" (click)="tab()" [ngClass]="{'active':!show}">列表结构</div>
+    </header>
+    <div class="list_content clearfix">
+
+        <div *ngIf="show">
+            <app-treeList [value]="treeList" (childEvent)="getAreaCode($event)"></app-treeList>
+        </div>
+        <div *ngIf="!show">
+            <p-dataTable [value]="tableList" class="table"  [rows]="10" (onRowClick)="onRowSelect($event)" (onRowDblclick)="dbSelect($event)"
+                         [globalFilter]="gb"   scrollHeight="200px"    [emptyMessage]="'查询数据为空'"     scrollable="true"    resizableColumns="true" selectionMode="single">
+                <p-header><input class="searchInput" #gb type="text" pInputText size="20" placeholder="搜索"></p-header>
+                <p-column field="xh" header="序号" sortable="true"></p-column>
+                <p-column field="mc" header="名称" ></p-column>
+                <p-column field="dm" header="代码"></p-column>
+                <p-column field="qc" header="全称"></p-column>
+            </p-dataTable>
+        </div>
+    </div>
+    <div class="btn-group icon clearfix">
+        <a (click)="OutPutValue()">确认</a>
+        <a (click)="close()">取消</a>
+    </div>
+    <p-growl [(value)]="msgs"></p-growl>
+</div>
