@@ -915,7 +915,7 @@ export class LandComponent implements OnInit {
 
 
     Tree_update(data,now_data,i){
-
+        this.tdlbdm = now_data['data']['tdlbdm'];
         if(this.landList != undefined && this.landList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1503,6 +1503,8 @@ export class LandComponent implements OnInit {
     //分类信息搜索关键词
 
     searchList(searchKeyword){
+        this.isShow = true;
+
         this.searchKeyword = searchKeyword;
 
         if(this.landList != undefined && this.landList.length>0){
@@ -2065,50 +2067,27 @@ export class LandComponent implements OnInit {
 
             this.name_active_base.forEach((value,index,arr)=>{
                 console.log(index);
-                this.name_active_base[i] = this.InputChange.showCheck(this.name_active_base[index],'sjmj');
+                this.name_active_base[i] = this.InputChange.showCheck(this.name_active_base[index],'sl');
 
             });
 
-            let res = this.InputChange.showCheck3(this.name_active_base,'tdlbdm');
+            let res = this.InputChange.showCheck3(this.name_active_base,'fssslbdm');
 
-            for(let i in this.land_name_active_base_copy[0]){
 
-                this.land_name_active_base_copy[0][i] = this.InputChange.showCheck4(this.land_name_active_base_copy[0][i],res,'tdlbdm');
-            }
+
+            this.land_name_active_base_copy[0][i] = this.InputChange.showCheck4(this.land_name_active_base_copy[0][i],res,'fssslbdm');
 
             console.log(this.name_active_base);
             console.log(this.land_name_active_base_copy[0]);
             this.isShow = false;
 
-            //this.is_disabled = true;
+            // this.is_disabled = true;
         }else{
-
+            console.log(this.jzzmj);
+            //this.jzzmj = 0;
             this.name_active_base =_.cloneDeep( this.land_name_active_base_copy[0]);
-
-
-            this.name_active_base.forEach((value,index,arr)=>{
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'jzmj',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
-
             this.searchList(this.searchKeyword);
 
-            console.log(this.name_active_base);
-            console.log(this.land_name_active_base_copy[0]);
-
-            this.is_disabled = false;
             this.isShow = true;
 
         }
@@ -2116,6 +2095,7 @@ export class LandComponent implements OnInit {
 
 
     }
+
 
     getChildSzxzqh(e) {
         console.log(e);

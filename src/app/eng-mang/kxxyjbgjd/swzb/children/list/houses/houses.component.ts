@@ -218,7 +218,7 @@ export class HousesComponent implements OnInit {
 
                         console.log(this.update_ggmx_data);
                         console.log(this.add_ggmx_data);
-
+                        this.ggmxTotals = 0;
                         this.ggmx.forEach((item,key,arr) => {
                             console.log(item.jzmj);
 
@@ -536,7 +536,7 @@ export class HousesComponent implements OnInit {
 
 
             this.selectedType3 = '1';
-
+            this.selectedTypea3();
             this.flxx_is_checked = 0;
 
             console.log(this.name_active_data);
@@ -1478,6 +1478,7 @@ export class HousesComponent implements OnInit {
     }
 
     selectedTypea3(): void {
+        console.log(this.selectedType3);
         console.log(this.ytjjgTreeList);
         this.DataProcessing.tableArr = [];
         let name_active_base_copy = _.cloneDeep(this.name_active_base);
@@ -1523,6 +1524,7 @@ export class HousesComponent implements OnInit {
     //分类信息搜索关键词
 
     searchList(searchKeyword) {
+        this.isShow = true;
         this.searchKeyword = searchKeyword;
 
         if (this.houesList != undefined && this.houesList.length > 0) {
@@ -1577,7 +1579,7 @@ export class HousesComponent implements OnInit {
 
     eventQsr(e) {
 
-
+        this.selectedTypea3();
         let name = '';
         this.selectPersonList.forEach((value, index, arr) => {
             console.log(value);
@@ -2006,34 +2008,14 @@ export class HousesComponent implements OnInit {
             // this.is_disabled = true;
         } else {
 
-            this.name_active_base = _.cloneDeep(this.houses_name_active_base_copy[0]);
-
-
-            this.name_active_base.forEach((value, index, arr) => {
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj += this.InputChange.CalcSize2(this.name_active_base[index], 'jzmj', 0);
-
-                setTimeout(() => {
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] = this.CalcParent(this.name_active_base[index], this.name_active_base[index], index);
-                    console.log(this.name_active_base[index]);
-
-
-                }, 0);
-
-
-            });
-
+            this.jzzmj = 0;
+            this.name_active_base =_.cloneDeep( this.houses_name_active_base_copy[0]);
             this.searchList(this.searchKeyword);
 
             console.log(this.name_active_base);
             console.log(this.houses_name_active_base_copy[0]);
 
-            // this.is_disabled = false;
             this.isShow = true;
-
         }
 
 

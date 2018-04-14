@@ -191,19 +191,16 @@
                                 </p-column>
                                 <p-column field="sl" header="数量">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
-                                        <input  type="number" style="width:100%;" [(ngModel)]="node.data.sl"
-                                               (keydown)="calc($event,node)"
-                                               [disabled]="node.children != null  || is_disabled"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (keyup)="Tree_update(TreeTable,node,i)">
+                                        <input type="text"  style="width:100%;"
+                                               [(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)" (keydown)="calc($event,node)">
                                     </ng-template>
                                 </p-column>
 
                                 <p-column field="bz" header="备注">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
                                         <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (input)="Tree_update(TreeTable,node,i)">
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
                             </p-treeTable>
@@ -249,7 +246,7 @@
                                     </p-column>
                                     <p-column field="mc" header="名称"></p-column>
                                     <p-column field="jsgm" header="建设规模"></p-column>
-                                    <p-column field="jsgm" header="工程效益"></p-column>
+                                    <p-column field="gcxy" header="工程效益"></p-column>
                                     <p-column field="sl" header="数量">
                                         <ng-template let-col let-car="rowData" pTemplate="body">
                                             <span>{{car[col.field]}}</span>
@@ -264,7 +261,7 @@
                                     </p-column>
                                     <p-column field="sfkbq" header="是否可搬迁">
                                         <ng-template let-col let-car="rowData" pTemplate="body">
-                                            <span>{{car[col.field]?'是':'否'}}</span>
+                                            <span>{{car[col.field]==1?'是':car[col.field]==0?'否':''}}</span>
                                         </ng-template>
                                     </p-column>
                                     <p-column field="gdzctz" header="固定资产投资">

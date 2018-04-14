@@ -1,44 +1,319 @@
+
 {
-  "obj": {
-    "ssgcdm": "S000001",
-    //工程代码
-    "ssxzqhdm": "dddddd"
-    //行政区划代码
-    "sjlb": "D4805E822422404DB114F5B42D06BC21"
-    //数据类别ID
+  "bHjbxx": {
+    "id": "81675C3367944ED3966CA47472BFFB37"
   },
-  "list": [
+  "listHcyEdit": [
     {
-      "oper": "Delete",
-      "list": [
+      "id": "D48BFDD00BC043D094F1FD9A52223F3A"
+    }
+  ],
+  "listHcyAdd": [
+    {
+      "mc": "test233",
+      "szxzqhdm": "350526000000000",
+      "zydldm": "MM-C",
+      "dcfwdm": "MRS-A",
+      "yhzgxdm": "HHR-05",
+      "sfkgr": 0,
+      "listFwAdd": [
         {
-          "id": "C02BE870E7DC4746B6244C0AF2FD2F16"
-          //修改和删除操作时，由于数据库有值，这里的ID就对应数据库里的ID
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "ggmxxxList": [
+            {
+              "cs": 2333,
+              "ssgcdm": "S000001",
+              "ssxtdm": "X000001",
+              "fwjgdm": "02-2"
+            }
+          ],
+          "flbmxList": [
+            {
+              "jzmj": "234",
+              "fwjgdm": "0201",
+              "qsrId": "D48BFDD00BC043D094F1FD9A52223F3A",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ],
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A"
         }
-      ]
+      ],
+      "listFwzxAdd": [
+        {
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "flbmxList": [
+            {
+              "sl": "22",
+              "zxlbdm": "04-2-2.1-2.1",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ],
+          "ggmxxxList": [
+            {
+              "ssgcdm": "S000001",
+              "ssxtdm": "X000001",
+              "ggcc": "12",
+              "zxlbdm": "04-1",
+              "sl": 223
+            }
+          ]
+        }
+      ],
+      "listXxzxAdd": [
+        {
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "flbmxList": [
+            {
+              "sl": "342",
+              "sslb": "08-1-1.1",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ],
+          "ggmxxxList": [
+            {
+              "ssgcdm": "S000001",
+              "ssxtdm": "X000001",
+              "ggcc": "44",
+              "xxzxlbdm": "08-1",
+              "sl": 33
+            }
+          ]
+        }
+      ],
+      "listLxgmAdd": [
+        {
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "flbmxAddList": [
+            {
+              "sl": "4",
+              "lxgmlbdm": "050030302030204",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ]
+        }
+      ],
+      "listTdAdd": [
+        {
+          "start": null,
+          "limit": null,
+          "orderCol": null,
+          "orderType": null,
+          "sql": null,
+          "searchKey": null,
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "sjmj": null,
+          "sfxw": null,
+          "tdxzdm": null,
+          "tdjyqzh": null,
+          "lqzh": null,
+          "dclsh": null,
+          "ttkxs": null,
+          "tlmj": null,
+          "bz": null,
+          "cjsj": 1523675636000,
+          "zhgxsj": 1523675636000,
+          "qsrmc": "test233",
+          "flbmxList": null,
+          "ggmxxxList": [
+            {
+              "id": "184FC7E8E85444EEB4C8A736D5603B6B",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001",
+              "tdlbdm": "06-3",
+              "tfh": "1",
+              "tbh": "2",
+              "dkbh": "3",
+              "gkcc": "4",
+              "tgsmj": 6,
+              "dmbh": "7",
+              "ysdl": "8",
+              "txmj": 5,
+              "cjsj": 1523675636000,
+              "zhgxsj": 1523675636000
+            }
+          ]
+        }
+      ],
+      "listFsssAdd": [
+        {
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "flbmxList": [
+            {
+              "sl": "4",
+              "fssslbdm": "03-2",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ],
+          "ggmxxxList": [
+            {
+              "ssgcdm": "S000001",
+              "ssxtdm": "X000001",
+              "ggcc": "23",
+              "fssslbdm": "03-1"
+            }
+          ]
+        }
+      ],
+      "listTdfzwAdd": [
+        {
+          "ssxtdm": "X000001",
+          "ssgcdm": "S000001",
+          "jddm": "MPH-A",
+          "swszxzqhdm": "350526000000000",
+          "zydldm": "MM-C",
+          "dcfwdm": "MRS-A",
+          "qsrmc": "test233",
+          "flbmxList": [
+            {
+              "sl": "23",
+              "tdlbdm": "07-2",
+              "ssxtdm": "X000001",
+              "ssgcdm": "S000001"
+            }
+          ],
+          "ggmxxxList": [
+            {
+              "ssgcdm": "S000001",
+              "ssxtdm": "X000001",
+              "tfh": "3",
+              "tbh": "55",
+              "tgsmj": "4",
+              "tdfzwlbdm": "07-1",
+              "dmbh": "5"
+            }
+          ]
+        }
+      ],
+      "ssxtdm": "X000001",
+      "ssgcdm": "S000001",
+      "jddm": "MPH-A"
+    }
+  ],
+  "listFwEdit": [
+    {
+      "id": "3DD1E7D556754A1DAD94A20F7F384118"
+    }
+  ],
+  "listFwzxEdit": [
+    {
+      "id": "98BE8B49598A4C2199962D0405C5DABF"
+    }
+  ],
+  "listFwzxggmxEdit": [
+    {
+      "id": "1524289D3A624F1DB41EF7142078E8AC"
+    }
+  ],
+  "listFsssEdit": [
+    {
+      "id": "0D77138500B74AD08B87F7EE4EFA9194"
+    }
+  ],
+  "listFsssflmxAdd": [
+    {
+      "sl": "3",
+      "bz": null,
+      "fssslbdm": "03-2",
+      "ssfsssjbxxId": "0D77138500B74AD08B87F7EE4EFA9194",
+      "ssxtdm": "X000001",
+      "ssgcdm": "S000001"
     },
     {
-      "oper": "Add",
-      //操作内容，注意大小写
-      "list": [
-        {
-          "zdxId": "D4805E822422404DB114F5B42D06BC21",
-          //勾选的字典项的ID
-          "bz": "123"
-          //备注
-        }
-      ]
-    },
+      "sl": "45",
+      "bz": null,
+      "fssslbdm": "03-3",
+      "ssfsssjbxxId": "0D77138500B74AD08B87F7EE4EFA9194",
+      "ssxtdm": "X000001",
+      "ssgcdm": "S000001"
+    }
+  ],
+  "listFsssggmxEdit": [
     {
-      "oper": "Update",
-      "list": [
-        {
-          "id": "8C4E4BCA579A426EBBFFF452656E913B",
-          //分工程ID
-          "bz": "321"
-          //备注
-        }
-      ]
+      "id": "76B61813237A445E909F7C65417E8C0E"
+    }
+  ],
+  "listXxzxEdit": [
+    {
+      "id": "2F44392717644AE98FDB3FFB4457F1EC"
+    }
+  ],
+  "listXxzxggmxEdit": [
+    {
+      "id": "623EDF2EAFA0492FADD30B7DC372A0A2"
+    }
+  ],
+  "listTdDel": [
+    {
+      "id": "A428336A8C4A436985ECC4AD366BB956"
+    }
+  ],
+  "listTdflmxEdit": [
+    {
+      "id": "B6C09B495B6842959F8EF6155A97E91A",
+      "sjmj": "33",
+      "bz": null,
+      "tdlbdm": "06-2",
+      "zbflId": "84041F82A4F6459D84905B0300515EDC",
+      "sstdjbxxId": "A428336A8C4A436985ECC4AD366BB956"
+    }
+  ],
+  "listTdggmxEdit": [
+    {
+      "id": "184FC7E8E85444EEB4C8A736D5603B6B"
+    }
+  ],
+  "listTdfzwEdit": [
+    {
+      "id": "302E2E9466B14C11B629F0E9CF120260"
+    }
+  ],
+  "listTdfzwggmxEdit": [
+    {
+      "id": "0A5CA70E949C4E318C897146623CEEAF"
+    }
+  ],
+  "listLxgmEdit": [
+    {
+      "id": "2B8FDD1D9D8B41A883A322D978899C92"
     }
   ]
 }

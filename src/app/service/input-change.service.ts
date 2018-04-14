@@ -359,10 +359,11 @@ export class InputChangeService {
 
     CalcSize2(list,type,size){
         this.sizes = 0;
+        console.log(this.sizes);
         let zmj = 0;
 
 
-            this.CalcSize(list,type,size);
+            this.CalcSize(list,type,this.sizes);
 
 
 

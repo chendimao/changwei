@@ -348,7 +348,17 @@ export class WaterComponent implements OnInit {
 // =============== end 规格明细  =======================
 
                 this.sfxw = this.name_active_data['sfxw'];
-                this.sfkbq = this.name_active_data['sfkbq'];
+
+                if(this.name_active_data['ggmxxxList'] && this.name_active_data['ggmxxxList'].length>0){
+                    this.sfkbq = this.name_active_data['ggmxxxList'][0]['sfkbq'];
+
+                }else{
+                    this.sfkbq =2;
+                }
+
+
+                console.log(this.name_active_data['ggmxxxList']);
+                console.log(this.sfkbq);
 
 
             }else{
@@ -623,7 +633,12 @@ export class WaterComponent implements OnInit {
             });
 
             this.sfxw = this.name_active_data['sfxw'];
-            this.sfkbq = this.name_active_data['sfkbq'];
+            if(this.name_active_data['ggmxxxList'] && this.name_active_data['ggmxxxList'].length>0){
+                this.sfkbq = this.name_active_data['ggmxxxList'][0]['sfkbq'];
+
+            }else{
+                this.sfkbq =2;
+            }
 
 
         }
@@ -901,7 +916,7 @@ export class WaterComponent implements OnInit {
 
 
     Tree_update(data,now_data,i){
-
+            this.sslb = now_data['data']['sslb'];
         if(this.waterList != undefined && this.waterList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1188,8 +1203,6 @@ export class WaterComponent implements OnInit {
 
     //规格明细选中
     DatatableClick(e){
-        console.log(e);
-        console.log(this.add_ggmx_data);
 
 
         this.ggmx.forEach((value,index,arr)=>{
@@ -1199,8 +1212,8 @@ export class WaterComponent implements OnInit {
         });
         this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['xxzxlbdm'],this.tableList,'sslb')[0]['zdxmc'];
 
-        console.log(this.GgmxIndex);
-        console.log(this.add_ggmx_data);
+         this.sfkbq = this.ggmx[this.GgmxIndex]['sfkbq'] ;
+
     }
 
     //新增规格明细
@@ -1211,7 +1224,7 @@ export class WaterComponent implements OnInit {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','', this.tableList[0]['xxzxlbdm'],this.ssxxzxjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',2, this.tableList[0]['sslb'],this.ssxxzxjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1486,6 +1499,9 @@ export class WaterComponent implements OnInit {
     //分类信息搜索关键词
 
     searchList(searchKeyword){
+
+        this.isShow = true;
+
         this.searchKeyword = searchKeyword;
 
         if(this.waterList != undefined && this.waterList.length>0){
@@ -2023,7 +2039,7 @@ export class WaterComponent implements OnInit {
 
     //分类明细 显示所有
     showAll(i){
-
+        console.log(this.jzzmj);
         console.log(this.name_active_base);
         if(i){
 
@@ -2048,32 +2064,17 @@ export class WaterComponent implements OnInit {
             // this.is_disabled = true;
         }else{
 
+            this.jzzmj = 0;
             this.name_active_base =_.cloneDeep( this.water_name_active_base_copy[0]);
 
 
-            this.name_active_base.forEach((value,index,arr)=>{
 
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
 
             this.searchList(this.searchKeyword);
 
             console.log(this.name_active_base);
             console.log(this.water_name_active_base_copy[0]);
 
-            this.is_disabled = false;
             this.isShow = true;
 
         }
@@ -2216,18 +2217,26 @@ export class WaterComponent implements OnInit {
 
     //  是否可搬迁
     selectedTypea4(e): void {
-
-        if (this.sfkbq == this.name_active_data.sfkbq) {
+        console.log(e);
+        console.log(this.ggmx);
+        console.log(this.sfkbq);
+        if (this.sfkbq == this.ggmx[this.GgmxIndex]['sfkbq']) {
             this.sfkbq = 2;
-            this.name_active_data.sfkbq= 2;
+            this.ggmx[this.GgmxIndex]['sfkbq']= 2;
         } else {
-            this.name_active_data.sfkbq = this.sfkbq;
+            this.ggmx[this.GgmxIndex]['sfkbq']= this.sfkbq;
             this.sfkbq = this.sfkbq;
         }
+        console.log(this.sfkbq);
+
         let res =  this.InputChange.get_select_change(this.name_active_data,this.name_active_key,this.init_water_data,this.update_water_data,this.add_water_data);
 
+        let res2 = this.InputChange.get_ggmx_change(this.list_ggmx_data_copy,this.ggmx,this.update_ggmx_data,this.add_ggmx_data);
 
-        console.log(res);
+        this.update_ggmx_data = res2['update_data'];
+        this.add_ggmx_data = res2['add_data'];
+        console.log(this.ggmx);
+        console.log(res2);
         this.add_water_data = res.add_data;
         this.update_water_data = res.update_data;
 

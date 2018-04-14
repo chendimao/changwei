@@ -428,22 +428,22 @@ export class TreesComponent {
             });
 
 
-            // this.name_active_base.forEach((value,index,arr)=>{
-            //
-            //     console.log(this.name_active_base);
-            //     //计算分类明细总面积
-            //     this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-            //
-            //     setTimeout(()=>{
-            //         //初始化的时候计算父节点的值
-            //         this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-            //         console.log(this.name_active_base[index]);
-            //
-            //
-            //     },0);
-            //
-            //
-            // });
+            this.name_active_base.forEach((value,index,arr)=>{
+
+                console.log(this.name_active_base);
+                //计算分类明细总面积
+                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
+
+                setTimeout(()=>{
+                    //初始化的时候计算父节点的值
+                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                    console.log(this.name_active_base[index]);
+
+
+                },0);
+
+
+            });
             console.log(this.name_active_base);
             console.log(this.trees_name_active_base_copy);
 
@@ -893,12 +893,12 @@ export class TreesComponent {
             this.now_data = now_data;
             //console.log(this.now_data);
             //console.log(this.name_active_data);
-            // if(this.now_data.parent != undefined){
-            //
-            //     this.InputChange.get_data(this.now_data.parent,'sl');
-            //
-            //
-            // }
+            if(this.now_data.parent != undefined){
+
+                this.InputChange.get_data(this.now_data.parent,'sl');
+
+
+            }
 
 
             this.name_active_base[i] = data;
@@ -1474,6 +1474,8 @@ export class TreesComponent {
     //分类信息搜索关键词
 
     searchList(searchKeyword){
+        this.isShow = true;
+
         this.searchKeyword = searchKeyword;
 
         if(this.treesList != undefined && this.treesList.length>0){
@@ -2003,12 +2005,11 @@ export class TreesComponent {
 
             });
 
-            let res = this.InputChange.showCheck3(this.name_active_base,'lxgmlbdm');
+            let res = this.InputChange.showCheck3(this.name_active_base,'fssslbdm');
 
-            for(let i in this.trees_name_active_base_copy[0]){
 
-                this.trees_name_active_base_copy[0][i] = this.InputChange.showCheck4(this.trees_name_active_base_copy[0][i],res,'lxgmlbdm');
-            }
+
+            this.trees_name_active_base_copy[0][i] = this.InputChange.showCheck4(this.trees_name_active_base_copy[0][i],res,'fssslbdm');
 
             console.log(this.name_active_base);
             console.log(this.trees_name_active_base_copy[0]);
@@ -2016,33 +2017,11 @@ export class TreesComponent {
 
             // this.is_disabled = true;
         }else{
-
+            console.log(this.jzzmj);
+            this.jzzmj = 0;
             this.name_active_base =_.cloneDeep( this.trees_name_active_base_copy[0]);
-
-
-            this.name_active_base.forEach((value,index,arr)=>{
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
-
             this.searchList(this.searchKeyword);
 
-            console.log(this.name_active_base);
-            console.log(this.trees_name_active_base_copy[0]);
-
-            this.is_disabled = false;
             this.isShow = true;
 
         }

@@ -896,7 +896,7 @@ export class LandOtherComponent implements OnInit {
 
 
     Tree_update(data,now_data,i){
-
+        this.tdlbdm = this.now_data['data']['tdlbdm'];
         if(this.land_otherList != undefined && this.land_otherList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1204,7 +1204,7 @@ export class LandOtherComponent implements OnInit {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','','', this.tableList[0]['tdfzwlbdm'],this.sstdfzwjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','','', this.tableList[0]['tdlbdm'],this.sstdfzwjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1482,6 +1482,8 @@ export class LandOtherComponent implements OnInit {
     //分类信息搜索关键词
 
     searchList(searchKeyword){
+        this.isShow = true;
+
         this.searchKeyword = searchKeyword;
 
         if(this.land_otherList != undefined && this.land_otherList.length>0){
@@ -1539,7 +1541,7 @@ export class LandOtherComponent implements OnInit {
 
     eventQsr(e){
 
-
+        this.selectedTypea3();
 
         let name = '';
         this.selectPersonList.forEach((value,index,arr)=>{
@@ -2043,32 +2045,13 @@ export class LandOtherComponent implements OnInit {
            // this.is_disabled = true;
         }else{
 
+            this.jzzmj = 0;
             this.name_active_base =_.cloneDeep( this.land_other_name_active_base_copy[0]);
-
-
-            this.name_active_base.forEach((value,index,arr)=>{
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
-
             this.searchList(this.searchKeyword);
 
             console.log(this.name_active_base);
             console.log(this.land_other_name_active_base_copy[0]);
 
-            this.is_disabled = false;
             this.isShow = true;
 
         }

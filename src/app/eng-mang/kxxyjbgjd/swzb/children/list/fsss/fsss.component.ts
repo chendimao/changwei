@@ -1484,6 +1484,8 @@ export class FsssComponent implements OnInit {
     //分类信息搜索关键词
 
     searchList(searchKeyword){
+        this.isShow = true;
+
         this.searchKeyword = searchKeyword;
 
         if(this.fsssList != undefined && this.fsssList.length>0){
@@ -2043,32 +2045,10 @@ export class FsssComponent implements OnInit {
            // this.is_disabled = true;
         }else{
 
+            this.jzzmj = 0;
             this.name_active_base =_.cloneDeep( this.fsss_name_active_base_copy[0]);
-
-
-            this.name_active_base.forEach((value,index,arr)=>{
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
-
             this.searchList(this.searchKeyword);
 
-            console.log(this.name_active_base);
-            console.log(this.fsss_name_active_base_copy[0]);
-
-            this.is_disabled = false;
             this.isShow = true;
 
         }

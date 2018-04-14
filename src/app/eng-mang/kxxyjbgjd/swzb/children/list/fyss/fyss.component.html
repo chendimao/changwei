@@ -193,10 +193,9 @@
               </p-column>
               <p-column field="sl" header="数量">
                 <ng-template let-col let-node="rowData" pTemplate="body">
-                  <input  style="width:100%;" [(ngModel)]="node.data.sl"
-                          (keydown)="calc($event,node)" [disabled]="node.children != null  || is_disabled"
-                          (click)="Tree_update(TreeTable,node,i)"
-                          (keyup)="Tree_update(TreeTable,node,i)">
+                  <input type="text"  style="width:100%;"
+                         [(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"
+                         (ngModelChange)="Tree_update(TreeTable,node,i)" (keydown)="calc($event,node)">
                 </ng-template>
               </p-column>
               <p-column field="dwmc" header="单位">
@@ -207,9 +206,8 @@
 
               <p-column field="bz" header="备注">
                 <ng-template let-col let-node="rowData" pTemplate="body">
-                  <input  [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                          (click)="Tree_update(TreeTable,node,i)"
-                          (input)="Tree_update(TreeTable,node,i)">
+                  <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
+                         (ngModelChange)="Tree_update(TreeTable,node,i)">
                 </ng-template>
               </p-column>
             </p-treeTable>

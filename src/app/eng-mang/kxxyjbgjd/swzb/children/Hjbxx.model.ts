@@ -6,6 +6,7 @@ export class HjbxxModel {
     ssxzqhdm: string;        //所属行政区划代码';
     xzqhmc: string;        //所属行政区划代码';
     zydldm: string;        //专业大类代码';
+    zydlmc: string;
     dcfwdm: string;        //调查范围代码';
     dcfwmc: string;
     hlbdm: string;        //户类型代码';
@@ -14,7 +15,7 @@ export class HjbxxModel {
     dabh: string;        //档案编号';
     hs: string;        //户数';
     sfkgh: string;        //是否空挂户';
-    sfxw: string;        //是否线外';
+    sfxw: number;        //是否线外';
     dclsh: string;        //调查流水号';
     szzdgc: string;        //所在最低高程';
     szzggc: string;        //所在最高高程';

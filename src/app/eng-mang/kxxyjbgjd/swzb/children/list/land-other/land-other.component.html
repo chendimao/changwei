@@ -185,13 +185,11 @@
                                       [ngClass]="{'search_bg':node.data?node.data.searchRsut:false}">{{node.data.zdxmc}}</span>
                                     </ng-template>
                                 </p-column>
-                                <p-column field="jzmj" header="数量">
+                                <p-column field="sl" header="数量">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
-                                        <input  type="text" style="width:100%;" [(ngModel)]="node.data.sl"
-
-                                               [disabled]="node.children != null  || is_disabled"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (keyup)="Tree_update(TreeTable,node,i)">
+                                        <input type="text"  style="width:100%;"
+                                               [(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)" (keydown)="calc($event,node)">
                                     </ng-template>
                                 </p-column>
                                 <p-column field="dwmc" header="单位">
@@ -203,8 +201,7 @@
                                 <p-column field="bz" header="备注">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
                                         <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (input)="Tree_update(TreeTable,node,i)">
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
                             </p-treeTable>
@@ -258,7 +255,7 @@
                                             <span>{{car[col.field]}}</span>
                                         </ng-template>
                                     </p-column>
-                                    <p-column field="ggcc" header="丈量尺寸">
+                                    <p-column field="gkcc" header="丈量尺寸">
                                         <ng-template let-col let-car="rowData" pTemplate="body">
                                             <span>{{car[col.field]}}</span>
                                         </ng-template>
@@ -358,7 +355,7 @@
                                         <span>丈量尺寸</span>
                                     </div>
                                     <div class="inputRight fl" style="width:calc(100% - 140px)">
-                                        <input [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['gkcc']">
+                                        <input [disabled]="isDisabled" type="text" name="gkcc" [(ngModel)]="ggmx[GgmxIndex]['gkcc']">
                                     </div>
                                     <div class="fl mianji">
                                         ㎡

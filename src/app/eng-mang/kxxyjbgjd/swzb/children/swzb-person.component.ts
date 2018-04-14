@@ -58,6 +58,9 @@ import * as _ from 'lodash';
 })
 export class SwzbPersonComponent implements OnInit {
 
+    private allComTj = new Object();
+
+
     private selectList = new Array;
     public hjbxx = new HjbxxModel;
     public info: any;
@@ -65,7 +68,7 @@ export class SwzbPersonComponent implements OnInit {
     private showBoottom: boolean = false;
     private showTOP: boolean = false;
     private childrenModel: any;
-    private sfxw: string;
+    private sfxw: any;
     msgs: Message[] = [];
     Breadcrumb: MenuItem[];
     types1: SelectItem[];
@@ -166,13 +169,12 @@ export class SwzbPersonComponent implements OnInit {
     public hdjbxx2_data: any;
     public qhjbxx2_data: any;
     public tljbxx2_data: any;
-
     public qtzxjbxx2_data: any;
     public dxgcjbxx2_data: any;
     public gljbxx2_data: any;
     public nfyjbxx2_data: any;
     public dwjbxx2_data: any;
-    public gtgsjbxx_data:any;
+    public gtgsjbxx_data: any;
 
 
     //标记第一次加载
@@ -187,14 +189,16 @@ export class SwzbPersonComponent implements OnInit {
 
 
     // 子组件中准备新增的真实数据
-    public add_lxgm_data = new Array();
-    public add_xxzx_data = new Array();
     public add_fwjbxx_data = new Array();
-    public add_grave_data = new Array();
+    public add_fwzxjbxx_data = new Array();
     public add_fsssjbxx_data = new Array();
     public add_tdjbxx_data = new Array();
     public add_tdfzwjbxx_other_data = new Array();
-    public add_fwzxjbxx_data = new Array();
+    public add_lxgm_data = new Array();
+    public add_grave_data = new Array();
+    public add_xxzx_data = new Array();
+
+
     public add_sbdgcjbxx_data = new Array();
     public add_gbdsjbxx_data = new Array();
     public add_gdgcjbxx_data = new Array();
@@ -390,7 +394,7 @@ export class SwzbPersonComponent implements OnInit {
     private hdjbxx2: any;
     private tljbxx2: any;
     private qhjbxx2: any;
-    private gtgsjbxx2:any;
+    private gtgsjbxx2: any;
     private nfyjbxx2: any;
     private dwjbxx2: any;
     private gljbxx2: any;
@@ -463,6 +467,12 @@ export class SwzbPersonComponent implements OnInit {
 
 
     ngOnInit() {
+        this.allComTj = {
+            dcfwdm: "调查范围",
+            zydldm: "专业大类代码",
+            qsrId: "权属人名称",
+            mc: "名称",
+        };
         console.log(this.tabHttpUrl);
         console.log(this.fwjbxx_data);
         //  所属行政区划代码和工程代码
@@ -531,6 +541,8 @@ export class SwzbPersonComponent implements OnInit {
                             });
                     });
                 console.log(this.jmhListUrl);
+                let url = this.jmhListUrl.replace('jmh/list', 'jmh/listAll');
+                console.log(url);
                 this.HttpService.get(this.jmhListUrl)
                     .then((data) => {
                         this.jmhList = data['returnObject'];
@@ -625,16 +637,9 @@ export class SwzbPersonComponent implements OnInit {
     selectedTypea2(event): void {
         console.log(this.hjbxx.sfxw);
         console.log(this.sfxw);
-        // if(this.hjbxx.sfxw == event.option.value){
-        //     this.hjbxx.sfxw = null;
-        //     event.option.value=null
-        // }else{
-        //     this.hjbxx.sfxw=event.option.value;
-        // }
-
-
         if (this.sfxw == this.hjbxx.sfxw) {
-            this.sfxw = null;
+            this.sfxw = 2;
+            this.hjbxx.sfxw = 2;
         } else {
             this.hjbxx.sfxw = this.sfxw;
             this.sfxw = this.sfxw;
@@ -653,7 +658,6 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.add_nfyjbxx_data);
 
 
-
         console.log(this.update_shebei_data);
         console.log(this.add_shebei_data);
         console.log(this.del_shebei_data);
@@ -665,12 +669,6 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.add_fyssjbxx_ggmx_data);
         console.log(this.update_fyssjbxx_ggmx_data);
         console.log(this.del_fyssjbxx_ggmx_data);
-
-        console.log(this.add_fwjbxx_data);
-        console.log(this.update_fwjbxx_data);
-        console.log(this.flxx_fwjbxx_update);
-        console.log(this.flxx_fwjbxx_add);
-        console.log(this.flxx_fwjbxx_del);
 
         if (this.moreInput) {
             this.moreInput = false;
@@ -729,7 +727,6 @@ export class SwzbPersonComponent implements OnInit {
         }
 
 
-        console.log("3");
         if (this.add_fwjbxx_data.length != 0) {
             console.log(this.add_fwjbxx_data);
             if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
@@ -738,20 +735,18 @@ export class SwzbPersonComponent implements OnInit {
         }
 
 
-        console.log("4");
-
         if (this.add_fsssjbxx_data.length != 0) {
             if (!this.Btpd(this.changeTable(this.add_fsssjbxx_data), comBtpd, "附属设施信息")) {
                 return false;
             }
         }
-        console.log("5");
+
         if (this.add_tdjbxx_data.length != 0) {
             if (!this.Btpd(this.changeTable(this.add_tdjbxx_data), comBtpd, "土地信息")) {
                 return false;
             }
         }
-        console.log("6");
+
         if (this.add_tdfzwjbxx_other_data.length != 0) {
             if (!this.Btpd(this.changeTable(this.add_tdfzwjbxx_other_data), comBtpd, "土地附着物信息")) {
                 return false;
@@ -762,8 +757,8 @@ export class SwzbPersonComponent implements OnInit {
                 return false;
             }
         }
-        if (this.add_grave_data.length != 0) {
-            if (!this.Btpd(this.add_grave_data, comBtpd, "坟墓信息")) {
+        if (this.add_fyssjbxx_data.length != 0) {
+            if (!this.Btpd(this.changeTable(this.add_fyssjbxx_data), comBtpd, "副业设施")) {
                 return false;
             }
         }
@@ -772,50 +767,165 @@ export class SwzbPersonComponent implements OnInit {
                 return false;
             }
         }
-        // if (this.add_fwjbxx_data) {
-        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
-        //         return false;
-        //     }
-        // }
-        // if (this.add_fwjbxx_data) {
-        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
-        //         return false;
-        //     }
-        // }
-        // if (this.add_fwjbxx_data) {
-        //     if (!this.Btpd(this.changeTable(this.add_fwjbxx_data), comBtpd, "房屋信息")) {
-        //         return false;
-        //     }
-        // }
+        if (this.add_grave_data.length != 0) {
+            if (!this.Btpd(this.add_grave_data, comBtpd, "坟墓信息")) {
+                return false;
+            }
+        }
+        if (this.add_shebei_data.length != 0) {
+            if (!this.Btpd(this.add_shebei_data, comBtpd, "设备信息")) {
+                return false;
+            }
+        }
+        if (this.add_sheshi_data.length != 0) {
+            if (!this.Btpd(this.add_sheshi_data, comBtpd, "设施信息")) {
+                return false;
+            }
+        }
 
-        // 规格信息新增，结构代码为必填项
-        if (this.changeTable(this.add_fwjbxx_ggmx_data).length != 0) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_fwjbxx_ggmx_data), 'fwjgdm', "房屋规格信息结构代码")) {
+        if (this.add_sbdgcjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['sbdgclbdm'] = "输变电工程类别";
+            lsObj['lsgx'] = "隶属关系";
+            if (!this.Btpd(this.changeTable(this.add_sbdgcjbxx_data), lsObj, "输变电工程")) {
                 return false;
             }
         }
-        if (this.changeTable(this.add_fwzxjbxx_ggmx_data)) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_fwzxjbxx_ggmx_data), 'zxlbdm', "房屋装修规格信息结构代码")) {
+        if (this.add_gbdsjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['dxgclbdm'] = "广播电视工程类别";
+            lsObj['lsgx'] = "隶属关系";
+            if (!this.Btpd(this.changeTable(this.add_gbdsjbxx_data), lsObj, "广播电视工程")) {
                 return false;
             }
         }
-        if (this.changeTable(this.add_fsssjbxx_ggmx_data)) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_fsssjbxx_ggmx_data), 'fssslbdm', "附属设施类别代码")) {
+        if (this.add_gdgcjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['gdgclbdm'] = "管道工程类别";
+            lsObj['lsgx'] = "隶属关系";
+            if (!this.Btpd(this.changeTable(this.add_gdgcjbxx_data), lsObj, "管道工程")) {
                 return false;
             }
         }
-        if (this.changeTable(this.add_tdjbxx_ggmx_data)) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_tdjbxx_ggmx_data), 'tdlbdm', "土地类别代码")) {
+        if (this.add_gkjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['gklbdm'] = "港口类别";
+            if (!this.Btpd(this.changeTable(this.add_gkjbxx_data), lsObj, "港口工程")) {
                 return false;
             }
         }
-        if (this.changeTable(this.add_tdjbxx_ggmx_other_data)) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_tdjbxx_ggmx_other_data), 'tdlbdm', "土地附着物类别代码")) {
+        if (this.add_mtjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['mtlbdm'] = "码头类别";
+            if (!this.Btpd(this.changeTable(this.add_mtjbxx_data), lsObj, "码头")) {
                 return false;
             }
         }
-        if (this.changeTable(this.add_xxzx_ggmx_data)) {
-            if (!this.ggxxBtpd(this.changeTable(this.add_xxzx_ggmx_data), 'xxzxlbdm', "小型专项类别代码")) {
+
+        if (this.add_wwgj_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['wwgjlbdm'] = "文物古迹类别代码";
+            if (!this.Btpd(this.changeTable(this.add_wwgj_data), lsObj, "文物古迹")) {
+                return false;
+            }
+        }
+        if (this.add_mtjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['mtlbdm'] = "码头类别";
+            if (!this.Btpd(this.changeTable(this.add_mtjbxx_data), lsObj, "码头")) {
+                return false;
+            }
+        }
+        if (this.add_swqxz_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['zdlbdm'] = "站点类别";
+            if (!this.Btpd(this.changeTable(this.add_swqxz_data), lsObj, "水文气象站")) {
+                return false;
+            }
+        }
+        if (this.add_kczy_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['kczylbdm'] = "矿产资源类别";
+            if (!this.Btpd(this.changeTable(this.add_kczy_data), lsObj, "矿产资源")) {
+                return false;
+            }
+        }
+        if (this.add_slsd_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['gclbdm'] = "工程类别";
+            if (!this.Btpd(this.changeTable(this.add_slsd_data), lsObj, "水利水电")) {
+                return false;
+            }
+        }
+
+        if (this.add_hdjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['hdlbdm'] = "航道类别";
+            if (!this.Btpd(this.changeTable(this.add_hdjbxx_data), lsObj, "航道")) {
+                return false;
+            }
+        }
+        if (this.add_tljbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['tllbdm'] = "铁路类别";
+            if (!this.Btpd(this.changeTable(this.add_tljbxx_data), lsObj, "铁路")) {
+                return false;
+            }
+        }
+        if (this.add_qhjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['qhlbdm'] = "桥涵类别";
+            if (!this.Btpd(this.changeTable(this.add_qhjbxx_data), lsObj, "桥涵")) {
+                return false;
+            }
+        }
+        if (this.add_qtzxjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['zxlbdm'] = "其他类别";
+            if (!this.Btpd(this.changeTable(this.add_qtzxjbxx_data), lsObj, "其它专项")) {
+                return false;
+            }
+        }
+        if (this.add_dxgcjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['dxgclbdm'] = "电信工程类别";
+            lsObj['lsgx'] = "隶属关系";
+            if (!this.Btpd(this.changeTable(this.add_dxgcjbxx_data), lsObj, "电信工程")) {
+                return false;
+            }
+        }
+
+        if (this.add_nfyjbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['xzdm'] = "性质类别";
+            lsObj['jyr'] = "经营人";
+            if (!this.Btpd(this.changeTable(this.add_nfyjbxx_data), lsObj, "农副业工程")) {
+                return false;
+            }
+        }
+        if (this.add_gljbxx_data.length != 0) {
+            let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            lsObj['gldjdm'] = "公路等级代码";
+            if (!this.Btpd(this.changeTable(this.add_gljbxx_data), lsObj, "公路基本信息")) {
+                return false;
+            }
+        }
+        if (this.add_dwjbxx_data.length != 0) {
+            let dwTj = {
+                mc: "名称",
+                lsgx: "隶属关系"
+            };
+            if (!this.Btpd(this.changeTable(this.add_dwjbxx_data), dwTj, "单位")) {
+                return false;
+            }
+        }
+        if (this.add_gtgsjbxx_data.length != 0) {
+            let dwTj = {
+                mc: "名称",
+                jyr: "经营人",
+                xzdm: "性质代码",
+            };
+            if (!this.Btpd(this.changeTable(this.add_gtgsjbxx_data), dwTj, "个体工商户")) {
                 return false;
             }
         }
@@ -976,10 +1086,10 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listFwEdit'] = [];
             update_fwjbxx_data.forEach((item, key, arr) => {
                 if (item) {
-                    console.log(arr[key]==null);
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    console.log(arr[key] == null);
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1043,9 +1153,9 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listFwzxEdit'] = [];
             update_fwzxjbxx_data.forEach((item, key, arr) => {
                 if (item) {
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1108,9 +1218,9 @@ export class SwzbPersonComponent implements OnInit {
             update_fsssjbxx_data.forEach((item, key, arr) => {
                 if (item) {
                     delete item.ggmxxxList;
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     this.postObject['listFsssEdit'].push(item);
@@ -1173,9 +1283,9 @@ export class SwzbPersonComponent implements OnInit {
             update_xxzx_data.forEach((item, key, arr) => {
                 if (item) {
                     delete item.ggmxxxList;
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     this.postObject['listXxzxEdit'].push(item);
@@ -1207,7 +1317,7 @@ export class SwzbPersonComponent implements OnInit {
 
         // 小型专项分类信息删除
         if (this.flxx_xxzx_del) {
-            this.postObject['listXxzxflmxDe l'] = this.del_flxx_data(this.flxx_xxzx_del);
+            this.postObject['listXxzxflmxDel'] = this.del_flxx_data(this.flxx_xxzx_del);
         }
         // 小型专项规格信息有修改
         if (this.update_xxzx_ggmx_data) {
@@ -1237,9 +1347,9 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listTdEdit'] = [];
             update_tdjbxx_data.forEach((item, key, arr) => {
                 if (item) {
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1302,9 +1412,9 @@ export class SwzbPersonComponent implements OnInit {
             update_tdfzwjbxx_other_data.forEach((item, key, arr) => {
                 if (item) {
                     delete item.ggmxxxList;
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     this.postObject['listTdfzwEdit'].push(item);
@@ -1364,9 +1474,9 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listFyssEdit'] = [];
             update_fyssjbxx_data.forEach((item, key, arr) => {
                 if (item) {
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1429,9 +1539,9 @@ export class SwzbPersonComponent implements OnInit {
             update_lxgm_data.forEach((item, key, arr) => {
                 if (item) {
                     delete item.ggmxxxList;
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     this.postObject['listLxgmEdit'].push(item);
@@ -1488,9 +1598,9 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listFmEdit'] = [];
             update_grave_data.forEach((item, key, arr) => {
                 if (item) {
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1525,9 +1635,9 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listSsxxEdit'] = [];
             update_sheshi_data.forEach((item, key, arr) => {
                 if (item) {
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     delete item.ggmxxxList;
@@ -1564,9 +1674,9 @@ export class SwzbPersonComponent implements OnInit {
             update_shebei_data.forEach((item, key, arr) => {
                 if (item) {
                     delete item.ggmxxxList;
-                    for(let key2 in item){
-                        if(!item[key2]){
-                            item[key2]="";
+                    for (let key2 in item) {
+                        if (item[key2] == null) {
+                            item[key2] = -100;
                         }
                     }
                     this.postObject['listSbxxEdit'].push(item);
@@ -1575,6 +1685,8 @@ export class SwzbPersonComponent implements OnInit {
             })
 
         }
+
+
         // 输变电工程基本信息
         if (this.add_sbdgcjbxx_data.length != 0) {
             this.postObject['listSbdgcAdd'] = [];
@@ -1582,6 +1694,7 @@ export class SwzbPersonComponent implements OnInit {
         }
         if (this.update_sbdgcjbxx_data.length != 0) {
             this.postObject['listSbdgcEdit'] = [];
+            console.log(this.update_sbdgcjbxx_data)
             this.postObject['listSbdgcEdit'].push(this.update_sbdgcjbxx_data[0])
         }
         if (this.del_sbdgcjbxx_data.length != 0) {
@@ -1797,7 +1910,7 @@ export class SwzbPersonComponent implements OnInit {
         // 个体工商基本信息
         if (this.add_gtgsjbxx_data) {
             this.postObject['listGtgshAdd'] = [];
-             this.add_data_only_item(this.changeTable(this.add_gtgsjbxx_data), this.postObject['listGtAdd'])
+            this.add_data_only_item(this.changeTable(this.add_gtgsjbxx_data), this.postObject['listGtAdd'])
         }
         if (this.update_gtgsjbxx_data.length != 0) {
             this.postObject['listGtgshEdit'] = [];
@@ -1902,78 +2015,142 @@ export class SwzbPersonComponent implements OnInit {
                             }
 
 
-                            this.del_person_data = [];
                             // this.hcylb=[];
                             this.init_person_data = [];
                             this.listHcyAdd = [];
                             this.update_person_data = [];
                             this.del_person_data = [];
+
+                            this.trees_data = null;
+                            this.water_data = null;
                             this.fwjbxx_data = null;
-                            this.decor_data = null;
+                            this.grave_data = null;
                             this.fsss_data = null;
                             this.land_data = null;
                             this.land_other_data = null;
-                            this.trees_data = null;
-                            this.water_data = null;
-                            this.grave_data = null;
+                            this.decor_data = null;
                             this.sbdgcjbxx2_data = null;
-                            this.gdgcjbxx2_data = null;
                             this.gbdsgc_data = null;
+                            this.gdgcjbxx2_data = null;
                             this.gkjbxx_data = null;
                             this.mtjbxx_data = null;
+                            this.wwgj_data = null;
+                            this.swqxz_data = null;
+                            this.kczy_date = null;
+                            this.slsd_data = null;
                             this.fyss_data = null;
+                            this.shebei_data = null;
+                            this.sheshi_data = null;
+                            this.hdjbxx2_data = null;
+                            this.qhjbxx2_data = null;
+                            this.tljbxx2_data = null;
+                            this.qtzxjbxx2_data = null;
+                            this.dxgcjbxx2_data = null;
+                            this.gljbxx2_data = null;
+                            this.nfyjbxx2_data = null;
+                            this.dwjbxx2_data = null;
+                            this.gtgsjbxx_data = null;
 
 
                             this.postObject = new Object();
 
-                            this.add_lxgm_data = [];
-                            this.add_xxzx_data = [];
-                            this.add_fwjbxx_data = [];
-                            this.add_grave_data = [];
-                            this.add_fsssjbxx_data = [];
-                            this.add_tdjbxx_data = [];
-                            this.add_tdfzwjbxx_other_data = [];
-                            this.add_fwzxjbxx_data = [];
-                            this.add_sbdgcjbxx_data = [];
-                            this.add_gbdsjbxx_data = [];
-                            this.add_gdgcjbxx_data = [];
-                            this.add_gkjbxx_data = [];
-                            this.add_mtjbxx_data = [];
-                            this.add_fyssjbxx_data = [];
+                            this.add_lxgm_data = new Array();
+                            this.add_xxzx_data = new Array();
+                            this.add_fwjbxx_data = new Array();
+                            this.add_grave_data = new Array();
+                            this.add_fsssjbxx_data = new Array();
+                            this.add_tdjbxx_data = new Array();
+                            this.add_tdfzwjbxx_other_data = new Array();
+                            this.add_fwzxjbxx_data = new Array();
+                            this.add_sbdgcjbxx_data = new Array();
+                            this.add_gbdsjbxx_data = new Array();
+                            this.add_gdgcjbxx_data = new Array();
+                            this.add_gkjbxx_data = new Array();
+                            this.add_mtjbxx_data = new Array();
+                            this.add_wwgj_data = new Array();
+                            this.add_swqxz_data = new Array();
+                            this.add_kczy_data = new Array();
+                            this.add_slsd_data = new Array();
+                            this.add_fyssjbxx_data = new Array();
+                            this.add_shebei_data = new Array();
+                            this.add_sheshi_data = new Array();
+                            this.add_hdjbxx_data = new Array();
+                            this.add_tljbxx_data = new Array();
+                            this.add_qhjbxx_data = new Array();
+                            this.add_qtzxjbxx_data = new Array();
+                            this.add_dxgcjbxx_data = new Array();
+                            this.add_nfyjbxx_data = new Array();
+                            this.add_gljbxx_data = new Array();
+                            this.add_dwjbxx_data = new Array();
+                            this.add_gtgsjbxx_data = new Array();
 
 
-                            this.update_lxgm_data = [];
-                            this.update_xxzx_data = [];
-                            this.update_fwjbxx_data = [];
-                            this.update_grave_data = [];
-                            this.update_fsssjbxx_data = [];
-                            this.update_tdjbxx_data = [];
-                            this.update_tdfzwjbxx_other_data = [];
-                            this.update_person_data = [];
-                            this.update_fwzxjbxx_data = [];
-                            this.update_sbdgcjbxx_data = [];
-                            this.update_gbdsjbxx_data = [];
-                            this.update_gdgcjbxx_data = [];
-                            this.update_gkjbxx_data = [];
-                            this.update_mtjbxx_data = [];
-                            this.update_fyssjbxx_data = [];
+                            this.update_lxgm_data = new Array();
+                            this.update_xxzx_data = new Array();
+                            this.update_fwjbxx_data = new Array();
+                            this.update_grave_data = new Array();
+                            this.update_fsssjbxx_data = new Array();
+                            this.update_tdjbxx_data = new Array();
+                            this.update_tdfzwjbxx_other_data = new Array();
+                            this.update_person_data = new Array();
+                            this.update_fwzxjbxx_data = new Array();
+                            this.update_sbdgcjbxx_data = new Array();
+                            this.update_gbdsjbxx_data = new Array();
+                            this.update_gdgcjbxx_data = new Array();
+                            this.update_gkjbxx_data = new Array();
+                            this.update_mtjbxx_data = new Array();
+                            this.update_wwgj_data = new Array();
+                            this.update_swqxz_data = new Array();
+                            this.update_kczy_data = new Array();
+                            this.update_slsd_data = new Array();
+                            this.update_fyssjbxx_data = new Array();
+                            this.update_shebei_data = new Array();
+                            this.update_sheshi_data = new Array();
+                            this.update_hdjbxx_data = new Array();
+
+                            this.update_dwjbxx_data = new Array();
+                            this.update_dxgcjbxx_data = new Array();
+                            this.update_nfyjbxx_data = new Array();
+                            this.update_gljbxx_data = new Array();
+                            this.update_qtzxjbxx_data = new Array();
+
+
+                            this.update_tljbxx_data = new Array();
+                            this.update_qhjbxx_data = new Array();
+                            this.update_gtgsjbxx_data = new Array();
 
                             //  子组件中准备删除的真实数据
-                            this.del_lxgm_data = [];
-                            this.del_xxzx_data = [];
-                            this.del_fwjbxx_data = [];
-                            this.del_grave_data = [];
-                            this.del_fsssjbxx_data = [];
-                            this.del_tdjbxx_data = [];
-                            this.del_tdfzwjbxx_other_data = [];
-                            this.del_person_data = [];
-                            this.del_fwzxjbxx_data = [];
-                            this.del_sbdgcjbxx_data = [];
-                            this.del_gbdsjbxx_data = [];
-                            this.del_gdgcjbxx_data = [];
-                            this.del_gkjbxx_data = [];
-                            this.del_mtjbxx_data = [];
-                            this.del_fyssjbxx_data = [];
+                            this.del_lxgm_data = new Array();
+                            this.del_xxzx_data = new Array();
+                            this.del_fwjbxx_data = new Array();
+                            this.del_grave_data = new Array();
+                            this.del_fsssjbxx_data = new Array();
+                            this.del_tdjbxx_data = new Array();
+                            this.del_tdfzwjbxx_other_data = new Array();
+                            this.del_person_data = new Array();
+                            this.del_fwzxjbxx_data = new Array();
+                            this.del_sbdgcjbxx_data = new Array();
+                            this.del_gbdsjbxx_data = new Array();
+                            this.del_gdgcjbxx_data = new Array();
+                            this.del_gkjbxx_data = new Array();
+                            this.del_mtjbxx_data = new Array();
+                            this.del_wwgj_data = new Array();
+                            this.del_swqxz_data = new Array();
+                            this.del_kczy_data = new Array();
+                            this.del_slsd_data = new Array();
+                            this.del_fyssjbxx_data = new Array();
+                            this.del_shebei_data = new Array();
+                            this.del_sheshi_data = new Array();
+                            this.del_hdjbxx_data = new Array();
+                            this.del_tljbxx_data = new Array();
+                            this.del_qhjbxx_data = new Array();
+
+                            this.del_qtzxjbxx_data = new Array();
+                            this.del_dxgcjbxx_data = new Array();
+                            this.del_gljbxx_data = new Array();
+                            this.del_dwjbxx_data = new Array();
+                            this.del_nfyjbxx_data = new Array();
+                            this.del_gtgsjbxx_data = new Array();
 
                             //子组件中修改过的分类新增信息数据
                             this.flxx_fwjbxx_add = [];
@@ -4252,13 +4429,13 @@ export class SwzbPersonComponent implements OnInit {
                 params = `${url}/list?jdId=4DDBCC17FC9348DC945B42F7C46769B0&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&&zblId=${zblId}`;
             }
 
-        } else if(url=='gtgsh' || url=='nfyh' || url=='dw'){
+        } else if (url == 'gtgsh' || url == 'nfyh' || url == 'dw') {
             if (jmhId) {
                 params = `${url}/list?gcdm=${this.ssgcdm}&jmhId=${jmhId}`;
             } else {
                 params = `${url}/list?gcdm=${this.ssgcdm}`;
             }
-        }else{
+        } else {
             if (jmhId) {
                 params = `${url}/list?jddm=${this.def_jddm}&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}&jmhId=${jmhId}&zblId=${zblId}`;
             } else {
@@ -4422,6 +4599,7 @@ export class SwzbPersonComponent implements OnInit {
                 console.log(ggmxxxListArr);
                 ggmxxxListArr.forEach((item1, key, array) => {
                     delete item1.zdxmc;
+                    delete item1.qsrId;
                     delete item1.xh;
                     delete item1.ssfwjbxxId;
                     delete item1.ssfwzxjbxxId;
@@ -4571,6 +4749,7 @@ export class SwzbPersonComponent implements OnInit {
     add_hcy_only_item(item, listHcyAdd, zdmc) {
         let arr = JSON.parse(JSON.stringify(listHcyAdd[item][zdmc]));
 
+        delete arr['jddm'];
         delete arr['list'];
         delete arr['id'];
         delete arr['swszxzqhmc'];
@@ -4604,6 +4783,24 @@ export class SwzbPersonComponent implements OnInit {
         delete arr['kczylbmc'];
         delete arr['slsdlbmc'];
         delete arr['zdlbmc'];
+        delete arr['qhjgmc'];
+        delete arr['ssgllbmc'];
+        delete arr['qhlbmc'];
+        delete arr['hdlbmc'];
+
+        delete arr['syxzmc'];
+        delete arr['lglxmc'];
+        delete arr['tllbmc'];
+
+        delete arr['lmclmc'];
+        delete arr['qtzxlbmc'];
+        delete arr['gldjmc'];
+        delete arr['zxlbmc'];
+        delete arr['xzmc'];
+        delete arr['jjxzmc'];
+        delete arr['hylbmc'];
+        delete arr['dwlbmc'];
+
 
         arr['ssxtdm'] = this.hjbxx.ssxtdm;
         arr['ssgcdm'] = this.hjbxx.ssgcdm;
@@ -4620,8 +4817,6 @@ export class SwzbPersonComponent implements OnInit {
         listHcyAdd[item][zdmc].push(arr);
         console.log(arr);
         console.log(listHcyAdd);
-
-
     }
 
     // 某一项进行新增（唯一值）
@@ -4637,7 +4832,7 @@ export class SwzbPersonComponent implements OnInit {
             // console.log(item.qsrId);
             // item.mc = this.searchService.searchByRegExp(item.qsrId, this.hcylb, 'id')[0].mc;
             console.log(item);
-            if(item.qsrId){
+            if (item.qsrId) {
                 // 有权属人id的
                 if (item.qsrId.toString().length === 32) {
                     delete item.list;
@@ -4688,7 +4883,6 @@ export class SwzbPersonComponent implements OnInit {
                     delete item.zxlbmc
 
 
-
                     for (let key in item) {
                         if (item[key] === null || item[key] === "") {
                             delete item[key];
@@ -4705,83 +4899,79 @@ export class SwzbPersonComponent implements OnInit {
                 } else {
                     console.log("该项为新增人员底下的新增房屋")
                 }
-            }else{
-                     delete item.jddm;
-                    delete item.list;
-                    delete item.id;
-                    delete item.swszxzqhmc;
-                    delete item.dcfwmc;
-                    delete item.ssxxzxjbxxId;
-                    delete item.zydlmc;
-                    delete item.whcdmc;
-                    delete item.zhgxsj;
-                    delete item.sfzh;
-                    delete item.flbmxList;
-                    delete item.qsrmc;
-                    delete item.cjsj;
+            } else {
+                delete item.jddm;
+                delete item.list;
+                delete item.id;
+                delete item.swszxzqhmc;
+                delete item.dcfwmc;
+                delete item.ssxxzxjbxxId;
+                delete item.zydlmc;
+                delete item.whcdmc;
+                delete item.zhgxsj;
+                delete item.sfzh;
+                delete item.flbmxList;
+                delete item.qsrmc;
+                delete item.cjsj;
 
-                    delete item.localitydesc;
-                    delete item.sbdgclbmc;
-                    delete item.gbdslbmc;
-                    delete item.gdgclbmc;
-                    delete item.gklbmc;
-                    delete item.xsmc;
-                    delete item.sjhsbzmc;
-                    delete item.ymyxcdmc;
-                    delete item.djmc;
-                    delete item.ljdldjmc;
-                    delete item.jgclmc;
-                    delete item.mtlbmc;
-                    delete item.gkytmc;
-                    delete item.mtytmc;
+                delete item.localitydesc;
+                delete item.sbdgclbmc;
+                delete item.gbdslbmc;
+                delete item.gdgclbmc;
+                delete item.gklbmc;
+                delete item.xsmc;
+                delete item.sjhsbzmc;
+                delete item.ymyxcdmc;
+                delete item.djmc;
+                delete item.ljdldjmc;
+                delete item.jgclmc;
+                delete item.mtlbmc;
+                delete item.gkytmc;
+                delete item.mtytmc;
 
-                    delete item.bhjbmc;
-                    delete item.wwgjlbmc;
-                    delete item.kczylbmc;
-                    delete item.slsdlbmc;
-                    delete item.zdlbmc;
-                    delete item.qhjgmc;
-                    delete item.ssgllbmc;
-                    delete item.qhlbmc;
-                    delete item.hdlbmc;
+                delete item.bhjbmc;
+                delete item.wwgjlbmc;
+                delete item.kczylbmc;
+                delete item.slsdlbmc;
+                delete item.zdlbmc;
+                delete item.qhjgmc;
+                delete item.ssgllbmc;
+                delete item.qhlbmc;
+                delete item.hdlbmc;
 
-                    delete item.syxzmc;
-                    delete item.lglxmc;
-                    delete item.tllbmc;
+                delete item.syxzmc;
+                delete item.lglxmc;
+                delete item.tllbmc;
 
-                    delete item.lmclmc;
-                    delete item.qtzxlbmc;
-                    delete item.gldjmc;
-                    delete item.zxlbmc;
-                    delete item.xzmc;
-                    delete item.jjxzmc;
-                    delete item.hylbmc;
-                    delete item.dwlbmc;
-
-
-
+                delete item.lmclmc;
+                delete item.qtzxlbmc;
+                delete item.gldjmc;
+                delete item.zxlbmc;
+                delete item.xzmc;
+                delete item.jjxzmc;
+                delete item.hylbmc;
+                delete item.dwlbmc;
 
 
                 for (let key in item) {
-                        if (item[key] === null || item[key] === "") {
-                            delete item[key];
-                        }
+                    if (item[key] === null || item[key] === "") {
+                        delete item[key];
                     }
-                    console.log(item);
+                }
+                console.log(item);
 
-                    let ls = {};
-                    for (let i in item) {
-                        ls[i] = item[i];
-                    }
-                    fl_arr.push(ls);
-                    console.log(fl_arr);
+                let ls = {};
+                for (let i in item) {
+                    ls[i] = item[i];
+                }
+                fl_arr.push(ls);
+                console.log(fl_arr);
 
             }
 
 
         }
     }
-
 
     // 如果某项需要增加进行解析
     add_data_fn(add_data, fl_arr) {
@@ -5054,10 +5244,10 @@ export class SwzbPersonComponent implements OnInit {
             arr.forEach((item, key, arr1) => {
                 delete arr1[key].ssxtdm;
                 delete arr1[key].ssgcdm;
-                for(let key2 in item){
-                  if(item[key2]==null){
-                       item[key2]=-100;
-                   }
+                for (let key2 in item) {
+                    if (item[key2] == null) {
+                        item[key2] = -100;
+                    }
                 }
             });
 
@@ -5291,8 +5481,6 @@ const qsrBtpd = {
     dcfwdm: '调查范围',
     szxzqhdm: '所属行政区',
     sfkgr: '是否空挂人',
-
-
 };
 
 
