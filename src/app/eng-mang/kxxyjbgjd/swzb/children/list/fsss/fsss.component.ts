@@ -895,6 +895,8 @@ export class FsssComponent implements OnInit {
 
     Tree_update(data,now_data,i){
 
+        this.fssslbdm = now_data['data']['fssslbdm'];
+
         if(this.fsssList != undefined && this.fsssList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1190,7 +1192,7 @@ export class FsssComponent implements OnInit {
                 this.GgmxIndex  = index;
             }
         });
-        this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fwjgdm'],this.tableList,'fwjgdm')[0]['zdxmc'];
+        this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fssslbdm'],this.tableList,'fssslbdm')[0]['zdxmc'];
 
         console.log(this.GgmxIndex);
         console.log(this.add_ggmx_data);
@@ -1204,7 +1206,7 @@ export class FsssComponent implements OnInit {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','',this.ssfsssjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','', this.tableList[0]['fssslbdm'],this.ssfsssjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1299,20 +1301,24 @@ export class FsssComponent implements OnInit {
 
 
 
-            let defaultPerson = this.defaultPerson;
+            if (this.ggmx != null && this.ggmx.length>0) {
 
-            if(defaultPerson.last != undefined){
-                console.log(defaultPerson);
-                setTimeout(()=>{
-                    if(this.GgmxIndex == 0){
-                        defaultPerson._results[this.GgmxIndex].nativeElement.click();
+                let defaultPerson = this.defaultPerson;
 
-                    }else{
-                        defaultPerson._results[this.GgmxIndex-1].nativeElement.click();
+                if (defaultPerson.last != undefined) {
+                    console.log(defaultPerson);
+                    setTimeout(() => {
+                        if (this.GgmxIndex == 0) {
+                            defaultPerson._results[this.GgmxIndex].nativeElement.click();
 
-                    }
+                        } else {
+                            defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
 
-                },0);
+                        }
+
+                    }, 0);
+                }
+
             }
 
 
@@ -1446,27 +1452,30 @@ export class FsssComponent implements OnInit {
                 ytjjgTreeList.push(v);
             });
         });
+
+        this.showTable = this.selectedType3;
         this.tableList=this.DataProcessing.changeTable(ytjjgTreeList);
 
 
         if(this.ggmx && this.ggmx.length>0){
 
             this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fssslbdm'],this.tableList,'fssslbdm')[0]['zdxmc'];
-        }
 
+            if(this.ggmx != null ){
+                if(this.showTable == 2){
+                    let defaultPerson = this.defaultPerson;
+                    setTimeout(()=>{
+                        console.log(defaultPerson);
+                        console.log(defaultPerson.last.nativeElement);
+                        defaultPerson.first.nativeElement.click();
 
-        this.showTable = this.selectedType3;
-        if(this.ggmx != null ){
-            if(this.showTable == 2){
-                let defaultPerson = this.defaultPerson;
-                setTimeout(()=>{
-                    console.log(defaultPerson);
-                    console.log(defaultPerson.last.nativeElement);
-                    defaultPerson.first.nativeElement.click();
-
-                },0);
+                    },0);
+                }
             }
         }
+
+
+
 
     }
 

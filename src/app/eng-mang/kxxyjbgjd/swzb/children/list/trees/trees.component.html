@@ -225,14 +225,19 @@
                                               [ngClass]="{'search_bg':node.data.searchRsut}">{{node.data.zdxmc}}</span>
                                     </ng-template>
                                 </p-column>
-                                <p-column field="jzmj" header="数量">
+                                <p-column field="sl" header="数量">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
-                                        <input type="number"  style="width:100%;" (keydown)="calc($event,node)"
-                                               [(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (keyup)="Tree_update(TreeTable,node,i)">
+                                        <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.sl"
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
+                                <!--<p-column field="jzmj" header="数量">-->
+                                    <!--<ng-template let-col let-node="rowData" pTemplate="body">-->
+                                        <!--<input type="text"  style="width:100%;"-->
+                                               <!--[(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"-->
+                                               <!--(ngModelChange)="Tree_update(TreeTable,node,i)" >-->
+                                    <!--</ng-template>-->
+                                <!--</p-column>-->
                                 <p-column field="dwmc" header="单位">
                                     <!--<ng-template let-node="rowData" pTemplate="body">-->
                                     <!--<input [disabled]="isDisabled" type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
@@ -242,8 +247,7 @@
                                 <p-column field="bz" header="备注">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
                                         <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                               (click)="Tree_update(TreeTable,node,i)"
-                                               (input)="Tree_update(TreeTable,node,i)">
+                                               (ngModelChange)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
                             </p-treeTable>

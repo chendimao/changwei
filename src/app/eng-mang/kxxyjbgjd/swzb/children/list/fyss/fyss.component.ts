@@ -886,7 +886,7 @@ export class FyssComponent implements OnInit {
 
 
     Tree_update(data,now_data,i){
-
+        this.fysslbdm = now_data['data']['fysslbdm'];
         if(this.fyssList != undefined && this.fyssList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1181,7 +1181,7 @@ export class FyssComponent implements OnInit {
                 this.GgmxIndex  = index;
             }
         });
-        this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fwjgdm'],this.tableList,'fwjgdm')[0]['zdxmc'];
+        this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fysslbdm'],this.tableList,'fysslbdm')[0]['zdxmc'];
 
 
         console.log(this.GgmxIndex);
@@ -1196,7 +1196,7 @@ export class FyssComponent implements OnInit {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','','',this.ssfyssjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','','','','','','','', this.tableList[0]['fysslbdm'],this.ssfyssjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1290,21 +1290,24 @@ export class FyssComponent implements OnInit {
         if(this.ggmx && this.ggmx.length >0){
 
 
+            if (this.ggmx != null && this.ggmx.length>0) {
 
-            let defaultPerson = this.defaultPerson;
+                let defaultPerson = this.defaultPerson;
 
-            if(defaultPerson.last != undefined){
-                console.log(defaultPerson);
-                setTimeout(()=>{
-                    if(this.GgmxIndex == 0){
-                        defaultPerson._results[this.GgmxIndex].nativeElement.click();
+                if (defaultPerson.last != undefined) {
+                    console.log(defaultPerson);
+                    setTimeout(() => {
+                        if (this.GgmxIndex == 0) {
+                            defaultPerson._results[this.GgmxIndex].nativeElement.click();
 
-                    }else{
-                        defaultPerson._results[this.GgmxIndex-1].nativeElement.click();
+                        } else {
+                            defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
 
-                    }
+                        }
 
-                },0);
+                    }, 0);
+                }
+
             }
 
 
@@ -1438,27 +1441,31 @@ export class FyssComponent implements OnInit {
                 ytjjgTreeList.push(v);
             });
         });
+
         this.tableList=this.DataProcessing.changeTable(ytjjgTreeList);
 
+        this.showTable = this.selectedType3;
 
         if(this.ggmx && this.ggmx.length>0){
 
             this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fysslbdm'],this.tableList,'fysslbdm')[0]['zdxmc'];
-        }
 
+            if(this.ggmx != null ){
+                if(this.showTable == 2){
+                    let defaultPerson = this.defaultPerson;
+                    setTimeout(()=>{
+                        console.log(defaultPerson);
+                        console.log(defaultPerson.last.nativeElement);
+                        defaultPerson.first.nativeElement.click();
 
-        this.showTable = this.selectedType3;
-        if(this.ggmx != null ){
-            if(this.showTable == 2){
-                let defaultPerson = this.defaultPerson;
-                setTimeout(()=>{
-                    console.log(defaultPerson);
-                    console.log(defaultPerson.last.nativeElement);
-                    defaultPerson.first.nativeElement.click();
-
-                },0);
+                    },0);
+                }
             }
+
+
         }
+
+
 
     }
 

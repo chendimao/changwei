@@ -197,6 +197,8 @@ export class TreesComponent {
 
                     console.log(this.add_trees_data);
                     console.log(this.update_trees_data);
+                    console.log(this.flxx_trees_add);
+                    console.log(this.flxx_trees_update);
 
 
                 }
@@ -426,22 +428,22 @@ export class TreesComponent {
             });
 
 
-            this.name_active_base.forEach((value,index,arr)=>{
-
-                console.log(this.name_active_base);
-                //计算分类明细总面积
-                this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
-
-                setTimeout(()=>{
-                    //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
-
-
-                },0);
-
-
-            });
+            // this.name_active_base.forEach((value,index,arr)=>{
+            //
+            //     console.log(this.name_active_base);
+            //     //计算分类明细总面积
+            //     this.jzzmj +=this.InputChange.CalcSize2(this.name_active_base[index],'sl',0);
+            //
+            //     setTimeout(()=>{
+            //         //初始化的时候计算父节点的值
+            //         this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+            //         console.log(this.name_active_base[index]);
+            //
+            //
+            //     },0);
+            //
+            //
+            // });
             console.log(this.name_active_base);
             console.log(this.trees_name_active_base_copy);
 
@@ -886,16 +888,17 @@ export class TreesComponent {
 
     Tree_update(data,now_data,i){
 
+            this.lxgmlbdm = now_data['data']['lxgmlbdm'];
         if(this.treesList != undefined && this.treesList.length>0){
             this.now_data = now_data;
-            console.log(this.now_data);
-            console.log(this.name_active_data);
-            if(this.now_data.parent != undefined){
-
-                this.InputChange.get_data(this.now_data.parent,'sl');
-
-
-            }
+            //console.log(this.now_data);
+            //console.log(this.name_active_data);
+            // if(this.now_data.parent != undefined){
+            //
+            //     this.InputChange.get_data(this.now_data.parent,'sl');
+            //
+            //
+            // }
 
 
             this.name_active_base[i] = data;
@@ -959,6 +962,8 @@ export class TreesComponent {
                             //如果不在 flxx_trees_del 中，则更新flxx_trees_update
                             if(is_del ==0){
                                     console.log(this.lxgmlbdm);
+                                    console.log(now_data['data']['sl']);
+                                    console.log(this.init_name_active_base[0]);
                                 let res = this.InputChange.IsWith(this.init_name_active_base[i],this.lxgmlbdm,this.sslxgmjbxxId,now_data['data']['sl'],'sl','lxgmlbdm','sslxgmjbxxId');
                                 let res2 = this.InputChange.isWithBz2(this.init_name_active_base[i],now_data,now_data['data']['bz'],'bz');
 
@@ -1179,6 +1184,9 @@ export class TreesComponent {
             }
         });
 
+        this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['lxgmlbdm'],this.tableList,'lxgmlbdm')[0]['zdxmc'];
+
+
         console.log(this.GgmxIndex);
         console.log(this.add_ggmx_data);
     }
@@ -1191,7 +1199,7 @@ export class TreesComponent {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','',this.lxgmlbdm,this.sslxgmjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','', this.tableList[0]['lxgmlbdm'],this.sslxgmjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1286,22 +1294,25 @@ export class TreesComponent {
 
 
 
-            let defaultPerson = this.defaultPerson;
+            if (this.ggmx != null && this.ggmx.length>0) {
 
-            if(defaultPerson.last != undefined){
-                console.log(defaultPerson);
-                setTimeout(()=>{
-                    if(this.GgmxIndex == 0){
-                        defaultPerson._results[this.GgmxIndex].nativeElement.click();
+                let defaultPerson = this.defaultPerson;
 
-                    }else{
-                        defaultPerson._results[this.GgmxIndex-1].nativeElement.click();
+                if (defaultPerson.last != undefined) {
+                    console.log(defaultPerson);
+                    setTimeout(() => {
+                        if (this.GgmxIndex == 0) {
+                            defaultPerson._results[this.GgmxIndex].nativeElement.click();
 
-                    }
+                        } else {
+                            defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
 
-                },0);
+                        }
+
+                    }, 0);
+                }
+
             }
-
 
             this.ggmx = this.ggmx.slice();
             if(this.name_active_data.qsrId.toString().length == 32) {
@@ -1436,24 +1447,26 @@ export class TreesComponent {
         this.tableList=this.DataProcessing.changeTable(ytjjgTreeList);
 
 
+        this.showTable = this.selectedType3;
+
         if(this.ggmx && this.ggmx.length>0){
 
             this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['lxgmlbdm'],this.tableList,'lxgmlbdm')[0]['zdxmc'];
-        }
 
+            if(this.ggmx != null ){
+                if(this.showTable == 2){
+                    let defaultPerson = this.defaultPerson;
+                    setTimeout(()=>{
+                        console.log(defaultPerson);
+                        console.log(defaultPerson.last.nativeElement);
+                        defaultPerson.first.nativeElement.click();
 
-        this.showTable = this.selectedType3;
-        if(this.ggmx != null ){
-            if(this.showTable == 2){
-                let defaultPerson = this.defaultPerson;
-                setTimeout(()=>{
-                    console.log(defaultPerson);
-                    console.log(defaultPerson.last.nativeElement);
-                    defaultPerson.first.nativeElement.click();
-
-                },0);
+                    },0);
+                }
             }
         }
+
+
 
     }
 

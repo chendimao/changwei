@@ -912,7 +912,7 @@ export class HousesComponent implements OnInit {
 
 
     Tree_update(data, now_data, i) {
-
+        this.fwjgdm = now_data['data']['fwjgdm'];
         console.log(this.fwjgdm);
         console.log(now_data);
         console.log(this.init_name_active_base);
@@ -1344,23 +1344,26 @@ export class HousesComponent implements OnInit {
         if (this.ggmx && this.ggmx.length > 0) {
 
 
-            let defaultPerson = this.defaultPerson;
 
-            if (defaultPerson.last != undefined) {
-                console.log(defaultPerson);
-                setTimeout(() => {
-                    if (this.GgmxIndex == 0) {
-                        defaultPerson._results[this.GgmxIndex].nativeElement.click();
+            if (this.ggmx != null && this.ggmx.length>0) {
 
-                    } else {
-                        defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
+                let defaultPerson = this.defaultPerson;
 
-                    }
+                if (defaultPerson.last != undefined) {
+                    console.log(defaultPerson);
+                    setTimeout(() => {
+                        if (this.GgmxIndex == 0) {
+                            defaultPerson._results[this.GgmxIndex].nativeElement.click();
 
-                }, 0);
+                        } else {
+                            defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
+
+                        }
+
+                    }, 0);
+                }
+
             }
-
-
             this.ggmx = this.ggmx.slice();
             if (this.name_active_data.qsrId.toString().length == 32) {
 
@@ -1495,7 +1498,7 @@ export class HousesComponent implements OnInit {
 
             this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fwjgdm'], this.tableList, 'fwjgdm')[0]['zdxmc'];
 
-            if (this.ggmx != null) {
+            if (this.ggmx != null && this.ggmx.length>0) {
                 if (this.showTable == 2) {
                     let defaultPerson = this.defaultPerson;
                     setTimeout(() => {

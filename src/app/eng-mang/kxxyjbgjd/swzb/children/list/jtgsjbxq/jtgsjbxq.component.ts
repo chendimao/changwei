@@ -81,11 +81,11 @@ export class JtgsjbxqComponent implements OnInit {
             console.log(this.update_gtgsjbxx_data);
             console.log(this.add_gtgsjbxx_data);
 
-            // for( let i in this.add_gtgsjbxx_data){
-            //     if(i != '0'){
-            //         delete this.add_gtgsjbxx_data[i];
-            //     }
-            // }
+            for( let i in this.add_gtgsjbxx_data){
+                if(i != '0'){
+                    delete this.add_gtgsjbxx_data[i];
+                }
+            }
         });
 
         // }

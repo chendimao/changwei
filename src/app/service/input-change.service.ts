@@ -39,8 +39,8 @@ export class InputChangeService {
     get_select_change(name_active_data,name_active_key,init_data,update_data,add_data){
 
 
-      console.log(name_active_data);
-      console.log(name_active_key);
+      //console.log(name_active_data);
+      //console.log(name_active_key);
 
         this.name_active_data=name_active_data;
         this.name_active_key = name_active_key;
@@ -50,7 +50,7 @@ export class InputChangeService {
 
 
         if(this.name_active_data.id != undefined && this.name_active_data.id != null && this.name_active_data.id.toString().length == 32){
-            console.log(this.init_data);
+            //console.log(this.init_data);
             let linshiPerson = new Array();
             if(this.init_data['datalist'] != undefined){
                 linshiPerson = this.init_data['datalist'];
@@ -71,7 +71,7 @@ export class InputChangeService {
 
             });
 
-            console.log(this.update_data);
+           // console.log(this.update_data);
 
         }else{
 
@@ -92,8 +92,8 @@ export class InputChangeService {
 
 
         }
-        console.log(this.name_active_data);
-          console.log(this.add_data);
+        //console.log(this.name_active_data);
+        //  console.log(this.add_data);
         return {'update_data':this.update_data,'add_data':this.add_data};
 
     }
@@ -103,8 +103,8 @@ export class InputChangeService {
     get_value_change(name_active_data,name_active_key,init_data,update_data,add_data){
 
 
-        console.log(name_active_data);
-        console.log(name_active_key);
+        //console.log(name_active_data);
+       // console.log(name_active_key);
 
         this.name_active_data=name_active_data;
         this.name_active_key = name_active_key;
@@ -113,8 +113,8 @@ export class InputChangeService {
         this.add_data = add_data;
 
         if( this.init_data != undefined && (this.init_data['datalist'] != undefined || this.init_data['listHcy'] != undefined) && this.name_active_data != undefined && this.name_active_data.cjsj != undefined && this.name_active_data.cjsj !=""){
-            console.log(this.name_active_data);
-            console.log( this.name_active_data.cjsj);
+            //console.log(this.name_active_data);
+            //console.log( this.name_active_data.cjsj);
             let linshiPerson = new Array();
             if(this.init_data['datalist'] != undefined){
                  linshiPerson = this.init_data['datalist'];
@@ -128,8 +128,8 @@ export class InputChangeService {
             linshiPerson.forEach((value,index,arr)=>{
 
                 if( this.name_active_data['id'] == value['id'] ){
-                    console.log(this.name_active_data);
-                    console.log(value['id']);
+                 //   console.log(this.name_active_data);
+                 //   console.log(value['id']);
 
 
                     this.update_data[index] = this.ValueChangeService.changeDate(value, this.name_active_data);
@@ -142,7 +142,7 @@ export class InputChangeService {
 
         }else{
 
-            console.log(this.name_active_data);
+          //  console.log(this.name_active_data);
             if(this.add_data[this.name_active_data['id']] ==undefined ){
 
                 this.add_data[this.name_active_data['id']] = new Array();
@@ -176,15 +176,15 @@ export class InputChangeService {
             this.name_active_data = name_active_data;
             this.listHcyAdd = listHcyAdd;
         this.childInfo2.forEach((value, index, arr) => {
-            console.log(value);
+         //   console.log(value);
             if (value['id'] == this.name_active_data['qsrId']) {
 
                 if (value[url] == undefined) {
                     value[url] = new Array();
 
                 }
-                console.log(this.name_active_data['id']);
-                console.log(value['id']);
+             //   console.log(this.name_active_data['id']);
+              //  console.log(value['id']);
                 value[url][this.name_active_data['id']] = (this.name_active_data);
                 this.listHcyAdd[value['id']] = value;
 
@@ -210,8 +210,8 @@ export class InputChangeService {
 
         this.list_ggmx_data.forEach((value, index, arr) => {
 
-            console.log(value);
-            console.log(index);
+           // console.log(value);
+           // console.log(index);
 
 
 
@@ -258,10 +258,10 @@ export class InputChangeService {
 
     get_data(now_data,type){
 
-        console.log(now_data);
+       // console.log(now_data);
         now_data.data[type] = null;
         now_data.children.forEach((value,index,arr)=>{
-            console.log(isNaN(value['data']['jzmj']));
+           // console.log(isNaN(value['data']['jzmj']));
             if(value['data'] != undefined && (value['data'][type] == null|| value['data'][type].toString().trim() == "" || isNaN(value['data'][type]))){
 
 
@@ -295,7 +295,7 @@ export class InputChangeService {
                 console.log(v['data']['zbflId']);
                 return name_active_base;
             }else{
-                console.log(v);
+                //console.log(v);
 
                 if(v.children){
 
@@ -318,13 +318,13 @@ export class InputChangeService {
     //分类明细计算器模式
     calc(now_data,type) {
 
-        console.log(now_data,type);
+       // console.log(now_data,type);
         if(now_data.data[type] != null && now_data.data[type].toString().indexOf('=') == 0){
             now_data.data[type] = now_data.data[type].toString().substr(1);
 
             now_data.data[type] = eval(eval("now_data.data[type]"));
 
-            console.log(now_data.data);
+           // console.log(now_data.data);
         }
 
 
@@ -340,9 +340,9 @@ export class InputChangeService {
 
 
         for (var i = 0; i < list.length; i++) {
-                console.log(list[i]);
+//                console.log(list[i]);
             if (list[i].data[type] != null && list[i].data[type] != "" &&  !isNaN(list[i].data[type] ) && list[i].children == undefined) {
-                console.log(list[i].data[type]);
+               // console.log(list[i].data[type]);
                 this.sizes += parseFloat(list[i].data[type]);
             }else{
 
@@ -352,7 +352,7 @@ export class InputChangeService {
             }
         }
 
-        console.log(list);
+        //console.log(list);
         return this.sizes;
     }
 
@@ -508,10 +508,10 @@ console.log(list);
 
     showCheck5(init_list,value,type){
                 for(let i in init_list){
-                    console.log(init_list[i]);
+                  //  console.log(init_list[i]);
                     if(init_list[i] && (init_list[i].children == undefined || init_list[i].children == null )&& init_list[i]['data'][type] == value[type] && init_list[i]['data']['zbflId'] == value['zbflId']){
-                        console.log(init_list[i]);
-                        console.log(value);
+                    //    console.log(init_list[i]);
+                     //   console.log(value);
                             init_list[i]['data'] = value;
 
                     }else{
@@ -580,31 +580,33 @@ console.log(list);
     //查找指定字段是否改变
     IsWith2(name_active_base,dm,ssfwjbxxId,value,zd,zd_dm,zd_id){
 
+        // console.log(name_active_base);
+        // console.log(value);
 
-            console.log(name_active_base);
+           // console.log(name_active_base);
         for (let item of name_active_base) {
-            console.log(item);
+           // console.log(item);
             if (!item.children) {
-                    console.log(item);
-                    console.log(dm);
-                    console.log(item.data[zd_dm]);
-                    console.log(ssfwjbxxId);
-                    console.log(item.data[zd_dm] == dm);
-                    console.log(item.data['zbflId'] == ssfwjbxxId);
+                   // console.log(item);
+                   // console.log(dm);
+                   // console.log(item.data[zd_dm]);
+                   // console.log(ssfwjbxxId);
+                   // console.log(item.data[zd_dm] == dm);
+               // console.log(item.data['zbflId'] == ssfwjbxxId);
                 if( item.data[zd_dm] == dm && item.data[zd_id] == ssfwjbxxId){
                         console.log(item['data'][zd]);
                     if(item['data'][zd] == value){
-                        console.log(`1${value}`);
+                     //   console.log(`1${value}`);
                         this.base_flg = true;
                         return this.base_flg;
                     }else{
-                        console.log(`2${value}`);
+                    //    console.log(`2${value}`);
                         this.base_flg = false;
                         return this.base_flg;
                     }
 
                 }else{
-                    console.log(`3${value}`);
+                  //  console.log(`3${value}`);
 
                 }
 
@@ -621,7 +623,7 @@ console.log(list);
 
     IsWith(name_active_base,dm,ssfwjbxxId,value,zd,zd_dm,zd_id){
 
-        console.log(dm);
+       // console.log(dm);
         this.base_flg = true;
         return this.IsWith2(name_active_base,dm,ssfwjbxxId,value,zd,zd_dm,zd_id);
 
@@ -634,17 +636,17 @@ console.log(list);
 
 
         for (let item of name_active_base) {
-            console.log(item);
+            //console.log(item);
 
 
                 if( item.data['id'] == now_data['data']['id']){
 
                     if(item['data'][zd] == value){
-                        console.log(`1${value}`);
+                       // console.log(`1${value}`);
                         this.base_flg2 = true;
                         return this.base_flg2;
                     }else{
-                        console.log(`2${value}`);
+                      //  console.log(`2${value}`);
                         this.base_flg2 = false;
                         return this.base_flg2;
                     }
@@ -666,7 +668,7 @@ console.log(list);
 
 
     isWithBz2(name_active_base,now_data,value,zd){
-        console.log(now_data);
+       // console.log(now_data);
         this.base_flg2 = true;
         return this.isWithBz(name_active_base,now_data,value,zd);
 

@@ -913,6 +913,8 @@ export class DecorationComponent implements OnInit {
 
     Tree_update(data,now_data,i){
 
+        this.zxlbdm = now_data['data']['zxlbdm'];
+
         if(this.decorList != undefined && this.decorList.length>0){
             this.now_data = now_data;
             console.log(this.now_data);
@@ -1233,8 +1235,7 @@ export class DecorationComponent implements OnInit {
         });
 
 
-            this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['fwjgdm'],this.tableList,'fwjgdm')[0]['zdxmc'];
-
+            this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['zxlbdm'],this.tableList,'zxlbdm')[0]['zdxmc'];
 
 
         console.log(this.GgmxIndex);
@@ -1249,7 +1250,7 @@ export class DecorationComponent implements OnInit {
             this.ggmx = new Array();
         }
         console.log(this.ggmx);
-        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','',this.zxlbdm,this.ssfwzxjbxxId));
+        this.ggmx.push(new Ggmx(this.ggmx.length==0?0:this.ggmx[this.ggmx.length - 1]['xh']+1,'','','','','','','','','','','','','','','', this.tableList[0]['zxlbdm'],this.ssfwzxjbxxId));
 
         this.GgmxIndex =this.ggmx.length-1;
 
@@ -1344,22 +1345,25 @@ export class DecorationComponent implements OnInit {
 
 
 
-            let defaultPerson = this.defaultPerson;
+            if (this.ggmx != null && this.ggmx.length>0) {
 
-            if(defaultPerson.last != undefined){
-                console.log(defaultPerson);
-                setTimeout(()=>{
-                    if(this.GgmxIndex == 0){
-                        defaultPerson._results[this.GgmxIndex].nativeElement.click();
+                let defaultPerson = this.defaultPerson;
 
-                    }else{
-                        defaultPerson._results[this.GgmxIndex-1].nativeElement.click();
+                if (defaultPerson.last != undefined) {
+                    console.log(defaultPerson);
+                    setTimeout(() => {
+                        if (this.GgmxIndex == 0) {
+                            defaultPerson._results[this.GgmxIndex].nativeElement.click();
 
-                    }
+                        } else {
+                            defaultPerson._results[this.GgmxIndex - 1].nativeElement.click();
 
-                },0);
+                        }
+
+                    }, 0);
+                }
+
             }
-
 
             this.ggmx = this.ggmx.slice();
             if(this.name_active_data.qsrId.toString().length == 32) {
@@ -1493,25 +1497,33 @@ export class DecorationComponent implements OnInit {
         });
         this.tableList=this.DataProcessing.changeTable(ytjjgTreeList);
 
-
+        this.showTable = this.selectedType3;
         if(this.ggmx && this.ggmx.length>0){
 
             this.ggmx[this.GgmxIndex]['zdxmc'] = this.searchService.searchByRegExp(this.ggmx[this.GgmxIndex]['zxlbdm'],this.tableList,'zxlbdm')[0]['zdxmc'];
-        }
 
 
-        this.showTable = this.selectedType3;
-        if(this.ggmx != null ){
-            if(this.showTable == 2){
-                let defaultPerson = this.defaultPerson;
-                setTimeout(()=>{
-                    console.log(defaultPerson);
-                    console.log(defaultPerson.last.nativeElement);
-                    defaultPerson.first.nativeElement.click();
 
-                },0);
+            if(this.ggmx != null ){
+                if(this.showTable == 2){
+                    let defaultPerson = this.defaultPerson;
+                    setTimeout(()=>{
+                        console.log(defaultPerson);
+                        console.log(defaultPerson.last.nativeElement);
+                        defaultPerson.first.nativeElement.click();
+
+                    },0);
+                }
             }
+
         }
+
+
+
+
+
+
+
 
     }
 
