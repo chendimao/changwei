@@ -9,6 +9,8 @@
       <img src="/assets/img/icon/x.png" alt="关闭" (click)="closeModal(1)">
     </div>
   </p-header>
+
+
   <div class="moduleAlert">
     <div class="wraper">
       <div class="com">
@@ -41,134 +43,181 @@
         </div>
       </div>
 
-      <div class="com">
-        <h4 class="title-1 pb-4">量化指标信息</h4>
-        <div class="form clearfix">
-          <div class="group float-r">
-            <input type="checkbox" name="" id="" value="">
-            <label class="text-left">仅显示非空项</label>
-          </div>
+
+      <header class="clearfix">
+        <div class="fl">
+          <div class="fl"  (click)="selectName(1)"
+               [ngClass]="{'active':selectType == 1}" >量化指标信息</div>
+          <div class="fl" (click)="selectName(2)"
+               [ngClass]="{'active':selectType == 2}" >非量化指标信息</div>
         </div>
-        <div class="table-wrap">
-          <table class="table">
-            <thead>
-            <tr>
-              <td>序号</td>
-              <td>名称</td>
-              <td>数量</td>
-              <td>单位</td>
-              <td>备注</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>1</td>
-              <td class="">总里程</td>
-              <td>26.430</td>
-              <td>km</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td class="">设计时速</td>
-              <td>60</td>
-              <td>km/h</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td class="">建设占地</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>3.1</td>
-              <td style="padding-left: 20px">总面积</td>
-              <td></td>
-              <td>㎡</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>3.2</td>
-              <td style="padding-left: 20px">永久征地</td>
-              <td></td>
-              <td>㎡</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>道路</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.1</td>
-              <td style="padding-left: 20px">路线长度</td>
-              <td>26.430</td>
-              <td>km</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.2</td>
-              <td style="padding-left: 20px">路基宽度</td>
-              <td>16.5</td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.3</td>
-              <td style="padding-left: 20px">路面宽度</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.4</td>
-              <td style="padding-left: 20px">主要工程量</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.4.1</td>
-              <td style="padding-left: 30px">土石方开挖</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.4.2</td>
-              <td style="padding-left: 30px">土石方回填</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.4.3</td>
-              <td style="padding-left: 30px">砌筑</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>4.4.4</td>
-              <td style="padding-left: 20px">路面浇筑</td>
-              <td></td>
-              <td>m</td>
-              <td></td>
-            </tr>
+      </header>
+      <div class="com" *ngIf="selectType == 1">
+
+        <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
+                     (onNodeSelect)="TreeTableClick($event,TreeTable,$event.node,i)"
+                     selectionMode="single"
+
+                     [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+          <p-column field="zdxxh" header="序号">
+            <!--<ng-template let-node="rowData" pTemplate="body">-->
+            <!--<input [disabled]="isDisabled" type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+            <!--</ng-template>-->
+          </p-column>
+          <p-column field="zdxmc" header="指标名称">
+            <ng-template let-node="rowData" pTemplate="body">
+                                <span style="width:100%;border-width:0px 0px 1px 0px"
+                                      [ngClass]="{'search_bg':node.data?node.data.searchRsut:false}">{{node.data.zdxmc}}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="sl" header="数量">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+              <input type="text"  style="width:100%;"
+                     [(ngModel)]="node.data.sl"
+                     (ngModelChange)="update()">
+            </ng-template>
+          </p-column>
+          <p-column field="dwmc" header="单位">
+            <!--<ng-template let-node="rowData" pTemplate="body">-->
+            <!--<input [disabled]="isDisabled" type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+            <!--</ng-template>-->
+          </p-column>
+
+          <p-column field="bz" header="备注">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+              <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
+                     (ngModelChange)="update()">
+            </ng-template>
+          </p-column>
+        </p-treeTable>
 
 
-            </tbody>
 
-          </table>
-        </div>
+        <!--<div class="form clearfix">-->
+          <!--<div class="group float-r">-->
+            <!--<input type="checkbox" name="" id="" value="">-->
+            <!--<label class="text-left">仅显示非空项</label>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="table-wrap">-->
+          <!--<table class="table">-->
+            <!--<thead>-->
+            <!--<tr>-->
+              <!--<td>序号</td>-->
+              <!--<td>名称</td>-->
+              <!--<td>数量</td>-->
+              <!--<td>单位</td>-->
+              <!--<td>备注</td>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+              <!--<td>1</td>-->
+              <!--<td class="">总里程</td>-->
+              <!--<td>26.430</td>-->
+              <!--<td>km</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>2</td>-->
+              <!--<td class="">设计时速</td>-->
+              <!--<td>60</td>-->
+              <!--<td>km/h</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>3</td>-->
+              <!--<td class="">建设占地</td>-->
+              <!--<td></td>-->
+              <!--<td></td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>3.1</td>-->
+              <!--<td style="padding-left: 20px">总面积</td>-->
+              <!--<td></td>-->
+              <!--<td>㎡</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>3.2</td>-->
+              <!--<td style="padding-left: 20px">永久征地</td>-->
+              <!--<td></td>-->
+              <!--<td>㎡</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4</td>-->
+              <!--<td>道路</td>-->
+              <!--<td></td>-->
+              <!--<td></td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.1</td>-->
+              <!--<td style="padding-left: 20px">路线长度</td>-->
+              <!--<td>26.430</td>-->
+              <!--<td>km</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.2</td>-->
+              <!--<td style="padding-left: 20px">路基宽度</td>-->
+              <!--<td>16.5</td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.3</td>-->
+              <!--<td style="padding-left: 20px">路面宽度</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.4</td>-->
+              <!--<td style="padding-left: 20px">主要工程量</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.4.1</td>-->
+              <!--<td style="padding-left: 30px">土石方开挖</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.4.2</td>-->
+              <!--<td style="padding-left: 30px">土石方回填</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.4.3</td>-->
+              <!--<td style="padding-left: 30px">砌筑</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>4.4.4</td>-->
+              <!--<td style="padding-left: 20px">路面浇筑</td>-->
+              <!--<td></td>-->
+              <!--<td>m</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+
+
+            <!--</tbody>-->
+
+          <!--</table>-->
+        <!--</div>-->
       </div>
 
-      <div class="com no-bor">
-        <h4 class="title-1 pb-4">非量化指标信息</h4>
+      <div class="com no-bor" *ngIf="selectType ==2">
         <div class="form clearfix">
           <div class="group group-2 ">
             <label>所在位置：</label>
@@ -192,9 +241,9 @@
       </div>
 
       <div class="btn-group icon">
-        <a class="active" href="###"><i><img src="assets/img/icon/save.png"/></i>保存</a>
-        <a href="###"><i><img src="assets/img/icon/go.png"/></i>保存并新增</a>
-        <a href="###"><i><img src="assets/img/icon/exit.png"/></i>退出</a>
+        <a class="active" href="###">保存</a>
+        <a href="###">保存并新增</a>
+        <a href="###">退出</a>
       </div>
 
     </div>

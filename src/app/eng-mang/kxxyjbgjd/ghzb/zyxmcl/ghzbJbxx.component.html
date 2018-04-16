@@ -2,7 +2,7 @@
 
     <header>
         <div class="title">
-            <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+            <!--<app-breadcrumb [items]="breadcrumb"></app-breadcrumb>-->
         </div>
     </header>
     <div class="engBody">
@@ -15,7 +15,7 @@
             </div>
             <div class="btnGrop fr">
                 <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
-                <div class="fl" (click)="openModal()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                <div class="fl" (click)="openModal('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
                                                                              alt=""></span>编辑
                 </div>
                 <div class="fl"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
@@ -23,40 +23,28 @@
             </div>
         </div>
         <div class="body clearfix">
-            <p-treeTable [value]="sourceTreeTable" [(selection)]="selectedFiles2"
-                         (onNodeSelect)="nodeSelect($event)"
-                         [style]="{'margin-top':'15px','border':'1px solid #cccccc'}" #pTree>
-                <p-column field="zdxmc" header="名称">
-                    <ng-template let-col let-node="rowData" pTemplate="body">
-                                <span [ngStyle]="{'display':node.isDisplayCheck?'inline':'none'}">
-                                    <p-checkbox [label]="node.data.zdxmc" name="groupname" binary="true"
-                                                [(ngModel)]="node.select" [disabled]="disabled==='view'"
-                                                (onChange)="checkbox(node,node.select)">
-                                    </p-checkbox>
-                                </span>
-                        <span [ngStyle]="{'display':node.isDisplayCheck?'none':'inline'}">{{node.data.zdxmc}}</span>
+            <p-dataTable [value]="dataList" dataKey="id"
+                         (onRowClick)="DatatableClick($event.data)"
+                         [emptyMessage]="'查询数据为空'"
+                         responsive="true"
+                         selectionMode="single">
+                <p-column field="ssghxmflmc" header="{{title.mc}}"></p-column>
+                <p-column field="xmszxzqhmc" header="{{title.dj}}"></p-column>
+                <p-column field="xmgldwxzqhmc" header="{{title.qy}}"></p-column>
+            </p-dataTable>
 
-                    </ng-template>
-                </p-column>
-                <p-column field="ssxtdm" header="代码">
-                    <!--<ng-template let-col let-car="rowData" pTemplate="body" >-->
-                    <!--<span title="标题">{{car[col.field]}}</span>-->
-                    <!--</ng-template>-->
-                </p-column>
-                <p-column field="jldwId" header="计量单位">
-                    <ng-template let-col let-node="rowData" pTemplate="body">
-                        <div *ngFor="let i of jldwList">
-                            <div *ngIf="i.id==node.data.jldwId">{{i.mc}}</div>
-                        </div>
-                    </ng-template>
-                </p-column>
-                <p-column field="xh" header="序号"></p-column>
-            </p-treeTable>
+
+
+
+
         </div>
+
         <div class="tableEng footer">
             <p-paginator rows="10" totalRecords="100" pageLinkSize="1" templateRight></p-paginator>
         </div>
     </div>
+    <div #modelRoom></div>
+    <p-growl [(value)]="msgs"></p-growl>
 
 </div>
 

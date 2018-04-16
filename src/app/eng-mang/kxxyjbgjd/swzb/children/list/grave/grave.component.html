@@ -222,14 +222,16 @@
 
             </div>
 
-            <div class="inputBox  rl fl">
-                <div class="input_left fl ">
-                    建成日期
+            <div class="inputArea fl">
+                <div class="inputLeft fl">
+                    <span>建成日期</span>
                 </div>
-                <div class="input_right fl">
-                    <input type="text" class="inputH" name="jcrq" [(ngModel)]="hcy.jcrq" value="">
-                </div>
+                <div class="inputRight fl">
+                    <app-p-calendar [disabled]="isDisabled"
+                                    [value]="hcy.jcrq"
+                                    (SelectModel)="eventJcrq($event)" readonly="readonly"></app-p-calendar>
 
+                </div>
             </div>
             <div class="inputBox  rl fl">
                 <div class="input_left fl ">
@@ -591,8 +593,8 @@
 
         <div *ngIf="isShowJcrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
             <!--建成日期-->
-            <!--<p-calendar [inline]="true" [locale]="ch" (onSelect)="jcrqClickTime(value)"-->
-                        <!--[(ngModel)]="value"></p-calendar>-->
+            <p-calendar [inline]="true" [locale]="ch" (onSelect)="jcrqClickTime(value)"
+                        [(ngModel)]="value"></p-calendar>
 
         </div>
     </div>

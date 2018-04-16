@@ -17,33 +17,10 @@ export class GhzbAreaComponent implements OnInit {
     private treelist: any;
     private getParem: any;
     private secNav: string;
-
+    public dataList :any;
     constructor(private SearchService: SearchService, private router: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
         this.router.params.subscribe(res => {
-            this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
-                .then((data) => {
-                    console.log(data);
-                    let lsArr = this.SearchService.searchByRegExp(data['jddm'], data['returnObject'], 'dm');
-                    console.log(lsArr);
-                    this.secNav = lsArr[0].mc;
-                    this.getParem.jdId = lsArr[0].id;
-                    this.getParem.jddm = res['jddm'];
-                    this.getParem.ssgcdm = res['id'];
-                    this.getParem.id = res['qshflId'];
-
-                    console.log(this.getParem.id);
-                    console.log(this.secNav);
-                    this.breadcrumb = [
-                        {label: '首页', routerLink: '/engmang'},
-                        {label: this.secNav},
-                        {label: '规划指标'},
-                        {label: res['item']}
-                    ];
-
-                    console.log(this.breadcrumb);
-                    console.log('路由在改变');
-
-                })
+            this.dataList = res['res'];
         })
     }
 

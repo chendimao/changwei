@@ -12,13 +12,14 @@ export class GhzbTreelistComponent implements OnInit {
     private componentDm: string;
     private treelist: any;
     private qshflId: any;
+    public res:any;
 
     constructor(private Router: Router, private route: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
 
         this.route.params.subscribe(res => {
-            console.log("路由在改变")
-            console.log(res['qshflId']);
+            console.log(res);
             this.qshflId = res['qshflId'];
+            this.res = res;
 
 
         });
@@ -33,19 +34,27 @@ export class GhzbTreelistComponent implements OnInit {
     }
 
     getEvent(i) {
+        console.log(i);
+        console.log(this.res);
         console.log(this.qshflId);
         this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
             .then((data) => {
-                console.log(data['returnObject']);
+                //console.log(data);
                 this.returnDm(data['returnObject'], this.qshflId);
                 console.log(this.componentDm);
                 console.log(this.componentDm == 'GHXMFL_0101');
                 console.log(this.componentDm == 'GHXMFL_0102');
                 console.log(this.componentDm == 'GHXMFL_0105');
                 if (this.componentDm == 'GHXMFL_0101' || this.componentDm == 'GHXMFL_0102' || this.componentDm == 'GHXMFL_0105') {
-                    this.Router.navigate(['ghzbjbxx', i.localityCode], {relativeTo: this.route})
+
+
+
+                        console.log(this.route);
+                    this.Router.navigate(['ghzbArea'], {relativeTo: this.route,queryParams: {ssgcdm: this.res['id'],xmszxzqhdm:i['localityCode'],ssghxmfldm:this.componentDm}})
                 } else {
-                    this.Router.navigate(['ghzbArea', i.localityCode], {relativeTo: this.route})
+                    console.log(this.route);
+
+                    this.Router.navigate(['ghzbjbxx'],{relativeTo: this.route,queryParams: {ssgcdm: this.res['id'],xmszxzqhdm:i['localityCode'],ssghxmfldm:this.componentDm}})
                 }
             });
 
@@ -73,3 +82,5 @@ export class GhzbTreelistComponent implements OnInit {
         }
     }
 }
+
+

@@ -29,12 +29,14 @@ import {HttpService} from "../../service/http-service";
 import {KxxyjbgjdRoutingModule} from './kxxyjbgjd-routing.module';
 import {TzgsComponent} from "./tzgs/tzgs.component";
 import {DataProcessingService} from "../../service/dataProcessing.service";
+import {KxxyjbgjdComponent} from "./kxxyjbgjd.component";
 @NgModule({
     declarations: [
-        TzgsComponent,
+        TzgsComponent
     ],
 
     imports: [
+
         BreadcrumbModule,
         PanelModule,
         DropdownModule,

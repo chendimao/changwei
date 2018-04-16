@@ -18,7 +18,7 @@ import {
     LightboxModule,
     DataTableModule,
     SharedModule,
-    PanelModule
+    PanelModule, GrowlModule
 } from 'primeng/primeng';
 import {DataProcessingService} from "../../../service/dataProcessing.service";
 import {SearchService} from "../../../service/search.service";
@@ -37,6 +37,7 @@ import {GhzbJbxxChildComponent} from "./zyxmcl/children/ghzbJbxxChild.component"
         GhzbTreelistComponent
     ],
     imports: [
+        GrowlModule,
         TreeTableModule,
         PanelModule,
         CommonModule,
@@ -58,6 +59,7 @@ import {GhzbJbxxChildComponent} from "./zyxmcl/children/ghzbJbxxChild.component"
 
     ],
     providers: [DataProcessingService, SearchService],
+    entryComponents:[GhzbJbxxChildComponent]
 })
 export class GhzbModule {
 }

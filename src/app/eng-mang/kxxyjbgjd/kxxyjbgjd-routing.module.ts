@@ -6,13 +6,13 @@ export const KxxyjbgjdRoutingModule = [
         loadChildren: './swzb/swzb.module#SwzbModule',
     },
     {
-        path: 'ghzb/:item/:qshflId',
-        loadChildren: './ghzb/ghzb.module#GhzbModule',
-    },
-    {
-        path: 'tzgs/:item/:qshflId',
+    path: 'ghzb/:item/:qshflId',
+    loadChildren: './ghzb/ghzb.module#GhzbModule',
+},
+{
+    path: 'tzgs/:item/:qshflId',
         component: TzgsComponent
-    },
+},
 
 
 

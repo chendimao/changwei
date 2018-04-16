@@ -181,7 +181,7 @@ input:focus,select:focus,textarea:focus  {
     transition: all .33s;
 }
 .table tr:hover {
-    background-color: #8fe3ff;
+    background-color: #0099cb;
 }
 .table tbody>tr>td:nth-child(2){
     text-align: left;
@@ -212,4 +212,30 @@ input:focus,select:focus,textarea:focus  {
 /deep/
 .ui-dialog .ui-dialog-content{
     padding: 0;
+}
+
+header{
+    margin-top:15px;
+}
+
+
+header > div > div {
+    padding: 7px 15px;
+    color: #666666;
+    border: 1px solid #cccccc;
+    border-bottom: 0;
+}
+
+header .fl div {
+    margin-right: 20px;
+
+}
+
+header .fr div {
+    margin-left: 20px;
+}
+
+header > div > div.active {
+    background: #0099cb;
+    color: white;
 }

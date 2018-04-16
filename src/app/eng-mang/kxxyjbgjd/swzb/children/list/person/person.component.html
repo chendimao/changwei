@@ -680,18 +680,18 @@
                          [display]="isShowArea" (childEvent)="getChildSzxzqh($event)"></app-area-select>
         <div *ngIf="isShowQrrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
             <!--迁入时间-->
-            <p-calendar [inline]="true" [locale]="ch" (onSelect)="qrrqClickTime(value)"
+            <p-calendar [inline]="true"  (onSelect)="qrrqClickTime(value)"
                         [(ngModel)]="value"></p-calendar>
         </div>
         <div *ngIf="isShowQcrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
             <!--迁出时间-->
-            <p-calendar [inline]="true" [locale]="ch" (onSelect)="qcrqClickTime(value)"
+            <p-calendar [inline]="true"  (onSelect)="qcrqClickTime(value)"
                         [(ngModel)]="value"></p-calendar>
 
         </div>
         <div *ngIf="isShowCsrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
             <!--迁出时间-->
-            <p-calendar [inline]="true" [locale]="ch" (onSelect)="csrqClickTime(value)"
+            <p-calendar [inline]="true"  (onSelect)="csrqClickTime(value)"
                         [(ngModel)]="value"></p-calendar>
 
         </div>
