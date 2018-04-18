@@ -230,6 +230,7 @@ export class QsrComponent implements OnInit {
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
+        console.log(this.type);
         if (this.type != "view") {
             this.isShowZydl = this.isShowZydl ? false : true;
             if (!this.zydlTableList) {

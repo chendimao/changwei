@@ -345,7 +345,7 @@ export class DwqbqkComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.dwList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.dwList[0].qsrId]['listdwAdd'];
+                    delete this.listHcyAdd[this.dwList[0].qsrId]['listDwAdd'];
                 }
 
             }
@@ -365,7 +365,7 @@ export class DwqbqkComponent implements OnInit {
                 this.add_dwjbxx_data[0] = this.dwList[0];
             }
         }else{
-            this.listHcyAdd[this.dwList[0].qsrId]['listdwAdd'] = this.dwList[0];
+            this.listHcyAdd[this.dwList[0].qsrId]['listDwAdd'] = this.dwList[0];
 
 
 

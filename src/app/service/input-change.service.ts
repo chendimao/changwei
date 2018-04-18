@@ -39,8 +39,8 @@ export class InputChangeService {
     get_select_change(name_active_data,name_active_key,init_data,update_data,add_data){
 
 
-      //console.log(name_active_data);
-      //console.log(name_active_key);
+      console.log(name_active_data);
+      console.log(name_active_key);
 
         this.name_active_data=name_active_data;
         this.name_active_key = name_active_key;

@@ -189,7 +189,7 @@ export class GljbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.glList[0].qsrId] != undefined) {
 
-                delete this.listHcyAdd[this.glList[0].qsrId]['listglAdd'];
+                delete this.listHcyAdd[this.glList[0].qsrId]['listGlAdd'];
             }
         }
         this.glList[0] = (new gl(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
@@ -355,7 +355,7 @@ export class GljbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.glList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.glList[0].qsrId]['listglAdd'];
+                    delete this.listHcyAdd[this.glList[0].qsrId]['listGlAdd'];
                 }
 
             }
@@ -375,7 +375,7 @@ export class GljbxxComponent implements OnInit {
                 this.add_gljbxx_data[0] = this.glList[0];
             }
         }else{
-            this.listHcyAdd[this.glList[0].qsrId]['listglAdd'] = this.glList[0];
+            this.listHcyAdd[this.glList[0].qsrId]['listGlAdd'] = this.glList[0];
 
 
 

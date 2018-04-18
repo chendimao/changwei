@@ -187,17 +187,18 @@ input:focus,select:focus,textarea:focus  {
     text-align: left;
 }
 .no-bor {
-    border-bottom: none;
+    border-bottom: 1px solid #ddd;
 }
 .btn-group {
     text-align: center;
 }
 .btn-group.icon>a {
-    padding: 10px 16px;
+    padding: 10px 16px 10px 30px;
     margin: 3px;
     background-color: #f5f6fa;
     border: 1px solid #ddd;
     color: #666;
+
 }
 .btn-group.icon>a.active {
     background-color: #09c;
@@ -238,4 +239,26 @@ header .fr div {
 header > div > div.active {
     background: #0099cb;
     color: white;
+}
+
+/*对齐方式*/
+.align{
+    text-align: justify;
+}
+
+
+.margin_top_20{
+    margin-top:20px;
+}
+
+.margin_left_20{
+    margin-left:20px;
+}
+
+.margin_right_20{
+    margin-right:20px;
+}
+
+.margin_bottom_20{
+    margin-bottom:20px;
 }

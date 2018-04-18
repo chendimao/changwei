@@ -229,7 +229,7 @@ export class GkjbxxComponent implements OnInit {
         if (this.type != "view") {
             this.isShowDcfw = this.isShowDcfw ? false : true;
             if (!this.dcfwTableList) {
-                this.HttpService.get(`zdk/getZdkByTableAndColumn1?tableName=B_GK&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GK&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
                         this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
@@ -538,7 +538,7 @@ export class GkjbxxComponent implements OnInit {
         if(this.gkList[0].qsrId){
             if(this.gkList[0].qsrId.toString().length == 32){
                 if(this.add_gkjbxx_data.length>0){
-                    this.add_gkjbxx_data.forEach((value,index,arr)=>{
+                    this.add_gkjbxx_data.forEach((value,index, arr)=>{
                         if(value['id'] == this.gkList[0].id){
                             delete this.add_gkjbxx_data[index];
                         }
@@ -632,7 +632,9 @@ export class GkjbxxComponent implements OnInit {
     eventJgrq(e){
 
         this.gkList[0].jcrq = e;
+        let res = this.InputChange.get_select_change(this.gkList[0],0,this.init_gkjbxx_data,this.update_gkjbxx_data,this.add_gkjbxx_data);
 
+        this.update_gkjbxx_data= res['update_data'];
     }
 
 

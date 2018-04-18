@@ -24,20 +24,20 @@ import {Subscription} from 'rxjs/Subscription';
 export class JmhComponent implements OnInit {
     private alertModelInfo: alertModelInfo = new alertModelInfo;
     private breadcrumb: MenuItem[];
-    private id: number;
     private msgs: any;
     private treelist: any;
     public persionList: any;
 
     private projectId: any;
     private huInfo: any;
+
     private totalPage: number;
-    private current_page: number;
-    private listUrl: string;
+    private listUrl: any;
     private count: number;
+    private currentPage: number;
+
     private secNav: string;
     private getParem = new getParem;
-    private params: string;
     subscription = new Subscription;
 
 
@@ -85,35 +85,55 @@ export class JmhComponent implements OnInit {
                     console.log(this.breadcrumb);
                     console.log('路由在改变');
 
+                    this.HttpService.get(`jmh/list?ssxzqhdm=${this.getParem.ssxzqhdm}&ssgcdm=${this.getParem.ssgcdm}&jddm=${this.getParem.jddm}&id=${this.getParem.id}`)
+                        .then(res => {
+                            this.persionList = res['returnObject'];
+                            this.persionList = this.persionList.slice();
+                            this.totalPage = res['totalPage'];
+                            this.count = res['count'];
+                        })
+
                 })
 
 
         });
         this.subscription = this.ShareService.getMessage()
             .subscribe((data) => {
-                if(data['message']['item']=='jmh'){
-                    this.msgs = [];
-                    console.log(this.current_page);
-                    this.msgs.push(data['message']);
+                console.log(data);
+                if (data['message']['item'] == 'jmh') {
+                    if (data['message']['summary']) {
+                        this.msgs = [];
+                        this.msgs.push(data['message']);
+                    }
+
                     if (data['message']['severity'] === 'success') {
-                        //如果传过来为true,删除当前弹窗
+                        console.log(this.getUrl());
+                        this.HttpService.get(this.getUrl())
+                            .then(res => {
+                                this.persionList = res['returnObject'];
+                                this.totalPage = res['totalPage'];
+                                this.count = res['count'];
+                            })
                     }
                 }
             })
-
-
     }
 
     ngOnInit() {
+        this.listUrl = 'jmh/list';
+        this.getParem.start = '1';
+        this.getParem.limit = '10';
 
 
         this.HttpService.get(`locality/listTree`)
             .then(res => {
                 this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
-
+                this.DataProcessingService.openLv(this.treelist, 1);
             });
-
-
+        // let paglistUrl = JSON.parse(JSON.stringify(this.getParem));
+        // delete paglistUrl.start;
+        // delete paglistUrl.limit;
+        // this.listUrl = "jmh/list?" + this.DataProcessingService.transString(paglistUrl);
     }
 
     ngOnDestroy() {
@@ -143,11 +163,14 @@ export class JmhComponent implements OnInit {
     }
 
     openModal(name) {
+
+
         this.ModelRoom.clear();
         switch (name) {
             case 'query':
                 const query = this.AlertModel.resolveComponentFactory(JmhQueryComponent);
-                this.ModelRoom.createComponent(query);
+                const queryModel = this.ModelRoom.createComponent(query);
+                queryModel.instance.getParem = this.getParem;
                 break;
             case 'fj_view':
                 const fjView = this.AlertModel.resolveComponentFactory(JmhFjViewComponent);
@@ -171,6 +194,7 @@ export class JmhComponent implements OnInit {
                     perModel.instance.type = name;
                     perModel.instance.info = this.huInfo;
                     perModel.instance.qshflId = this.getParem;
+                    // perModel.instance.jmhListUrl = this.getUrl();
                 } else {
                     if (name === 'view') {
                         this.msgs = [];
@@ -194,12 +218,17 @@ export class JmhComponent implements OnInit {
         }
     }
 
-
+    // 搜索时候，需要把url地址进行改变
     searchList(e, key) {
         if (e.keyCode == 13 || e == 'click') {
-            console.log("搜索");
-            this.listUrl = `jmh/list?${this.params}&searchKey=${key}`;
-            this.HttpService.get(`jmh/list?${this.params}&searchKey=${key}`)
+            this.getParem.searchKey = key;
+            this.getParem.start = "1";
+            for (let key in this.getParem) {
+                if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm') {
+                    delete  this.getParem[key];
+                }
+            }
+            this.HttpService.get(this.getUrl())
                 .then(res => {
                     this.persionList = res['returnObject'];
                     this.totalPage = res['totalPage'];
@@ -215,27 +244,43 @@ export class JmhComponent implements OnInit {
     }
 
     queryList(res) {
-        this.current_page = res.data['currentPage'];
+        this.getParem.start = res.value.first + 1;
+        this.getParem.limit = res.value.rows;
+        this.currentPage = res.data['currentPage'];
         this.totalPage = res.data['totalPage'];
         this.count = res.data['count'];
+
+
+
+
         this.persionList = res.data['returnObject'];
     }
 
 
     getEvent(event) {
-        console.log(event);
+
+        this.getParem.start = '1';
+
+        this.count = 0;
+        console.log(this.getParem);
         this.getParem.ssxzqhdm = event.localityCode;
         if (event.localityLevel == 5) {
             this.getParem.ssxzqhdmMin = event.parent.localityCode;
         } else if (event.localityLevel == 6) {
             this.getParem.ssxzqhdmMin = event.parent.parent.localityCode;
         }
+
         this.getParem.ssxzqhmc = event.localityDesc;
+        this.getParem.searchKey = null;
+
         this.isShowRight = event;
         this.defaultShow = false;
-        this.params = this.DataProcessingService.transString(this.getParem);
-        this.listUrl = `jmh/list?${this.params}&`;
-        this.HttpService.get('jmh/list?' + this.params)
+        for (let key in this.getParem) {
+            if (key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm') {
+                delete  this.getParem[key];
+            }
+        }
+        this.HttpService.get(this.getUrl())
             .then(res => {
                 this.persionList = res['returnObject'];
                 this.totalPage = res['totalPage'];
@@ -244,9 +289,17 @@ export class JmhComponent implements OnInit {
             .catch(res => {
                 console.log(res);
             });
-
-
+        // let paglistUrl = JSON.parse(JSON.stringify(this.getParem));
+        // console.log(paglistUrl);
+        // delete paglistUrl.start;
+        // delete paglistUrl.limit;
+        // this.listUrl = "jmh/list?" + this.DataProcessingService.transString(paglistUrl);
     }
+
+    getUrl() {
+        return this.listUrl + '?' + this.DataProcessingService.transString(this.getParem);
+    }
+
 }
 
 
@@ -255,13 +308,24 @@ export class getParem {
     ssxzqhdmMin: string; // 行政区划最小集代码
     ssxzqhmc: string;	//行政区划名称	是	S000001	S000001
     ssgcdm: string;	//工程代码	是	S000001	S000001
-
-    jddm: string;	//阶段代码	是	1	1
+    jddm: string;	     //阶段代码	是	1	1
     searchKey: string;	//搜索关键字	否
-    start: string;	//开始条数	是
-    limit: string;	//取多少条记录	是
-    id: string;  //权属户分类ID	是
-    jdId: string;  //当前阶段的id
+    start: string;	 //开始条数	是
+    limit: string;	 //取多少条记录	是
+    id: string;   //权属户分类ID	是
+
+
+    jdId: string;   //当前阶段的id
+    hzxm: string;   //户主姓名
+    hzsfzh: string;   //	户主身份证号
+    jtcyxm: string;   // 家庭成员姓名
+    jtcysfzh: string; // 家庭成员身份证号
+    dabh: string;     //档案编号
+    zydldm: string;   //专业大类代码
+    dcfwdm: string;   //调查范围代码
+    sfkgh: string;    //是否空挂户
+    sfxw: string;     //	是否线外
+
 }
 
 

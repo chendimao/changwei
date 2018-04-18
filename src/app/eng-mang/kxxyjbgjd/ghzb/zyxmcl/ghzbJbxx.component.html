@@ -2,7 +2,7 @@
 
     <header>
         <div class="title">
-            <!--<app-breadcrumb [items]="breadcrumb"></app-breadcrumb>-->
+            <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
         </div>
     </header>
     <div class="engBody">
@@ -16,9 +16,9 @@
             <div class="btnGrop fr">
                 <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
                 <div class="fl" (click)="openModal('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                             alt=""></span>编辑
+                                                                                alt=""></span>编辑
                 </div>
-                <div class="fl"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
+                <div class="fl"  (click)="delSelect()"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
                 <div class="fl"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</div>
             </div>
         </div>
@@ -28,8 +28,8 @@
                          [emptyMessage]="'查询数据为空'"
                          responsive="true"
                          selectionMode="single">
-                <p-column field="ssghxmflmc" header="{{title.mc}}"></p-column>
-                <p-column field="xmszxzqhmc" header="{{title.dj}}"></p-column>
+                <p-column field="xmmc" header="{{title.mc}}"></p-column>
+                <p-column field="xmjc" header="{{title.dj}}"></p-column>
                 <p-column field="xmgldwxzqhmc" header="{{title.qy}}"></p-column>
             </p-dataTable>
 
@@ -40,7 +40,8 @@
         </div>
 
         <div class="tableEng footer">
-            <p-paginator rows="10" totalRecords="100" pageLinkSize="1" templateRight></p-paginator>
+            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" [condition]="getparam"
+                           (pageSelect)="queryList($event)"></app-paginator>
         </div>
     </div>
     <div #modelRoom></div>

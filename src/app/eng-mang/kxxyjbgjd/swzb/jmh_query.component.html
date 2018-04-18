@@ -1,4 +1,4 @@
-<p-dialog modal="modal"
+ <p-dialog modal="modal"
           responsive="true"
           [(visible)]="display" height="100%" breakpoint="100%">
     <p-header>
@@ -12,27 +12,39 @@
         <div class="moduleAlert">
             <div>
                 <ul>
-                    <li class="fl group group-2"><span>户主名称</span><input type="text" ngModel name="mc" ></li>
-                    <li class="fl group group-2"><span>户主身份证号</span><input type="text" ngModel name="cardId" ></li>
-                    <li class="fl group group-2"><span>家庭成员姓名</span><input type="text" ngModel name="mc"></li>
-                    <li class="fl group group-2"><span>家庭成员省份证号</span><input type="text" ngModel name="mc"></li>
-                    <li class="fl group group-2"><span>编号</span><input type="text" ngModel name="mc"></li>
-                    <li class="fl group group-2"><span>专业大类</span>
-                        <app-select-list [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    <li class="fl group group-2"><span>户主名称</span><input type="text" [(ngModel)]="getParem['hzxm']" name="hzxm" ></li>
+                    <li class="fl group group-2"><span>户主身份证号</span><input type="text" [(ngModel)]="getParem['hzsfzh']" name="hzsfzh" ></li>
+                    <li class="fl group group-2"><span>家庭成员姓名</span><input type="text" [(ngModel)]="getParem['jtcyxm']" name="jtcyxm"></li>
+                    <li class="fl group group-2"><span>家庭成员身份证号</span><input type="text" [(ngModel)]="getParem['jtcysfzh']" name="jtcysfzh" ></li>
+                    <li class="fl group group-2"><span>档案编号</span><input type="text" [(ngModel)]="getParem['dabh']" name="dabh" ></li>
+                    <li class="fl group group-2 rl query"><span>专业大类</span>
+                        <input [disabled]="isDisabled" class='inputH' type="text"
+                               [(ngModel)]="getParem.zydlmc" name="zydldm" (click)="showZydlBlock()"
+                               readonly="readonly"/>
+                        <i class="xiala" (click)="showZydlBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildZydl($event)" [treeList]="zydlTreeList"
+                                           [isShow]="isShowZydl"
+                                           [tableList]="zydlTableList"></app-sec-type-list>
+
                     </li>
-                    <li class="fl group group-1 rl"><span>调查范围</span>
-                        <input type="text" class="dcfw">
-                        <i class="xiala" (click)="showTypeBlock()"></i>
-                        <app-surver-area [values]="isShowDcfw"></app-surver-area>
+                    <li class="fl group group-1 rl rl query"><span>调查范围</span>
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="getParem.dcfwmc" name="dcfwdm"
+                               (click)="showDcfwBlock()" readonly="readonly">
+                        <i class="xiala" (click)="showDcfwBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildDcfw($event)" [treeList]="dcfwTreeList"
+                                           [isShow]="isShowDcfw"
+                                           [tableList]="dcfwTableList"></app-sec-type-list>
+
+
                     </li>
                     <li class="fl group group-2"><span>是否线外</span>
-                        <p-selectButton [options]="types1" ngModel name="mc"
-                                        (click)="selectedTypea()"></p-selectButton>
+                        <p-selectButton [options]="types1"  [(ngModel)]="getParem.sfxw" name="sfxw"
+                                        ></p-selectButton>
                     </li>
                     <li class="fl group group-2">
                         <span>是否空挂户</span>
-                        <p-selectButton [options]="types2" [(ngModel)]="selectedType2" name="sfgkh"
-                                        (click)="selectedTypeb()"></p-selectButton>
+                        <p-selectButton [options]="types2" [(ngModel)]="getParem.sfkgh" name="sfkgh"
+                                      ></p-selectButton>
 
                     </li>
                 </ul>
@@ -44,8 +56,8 @@
 
 
                 <div class="btn-group icon clearfix">
-                    <a class="active" (click)="clear()"><i><img class="img" src="assets/img/icon/save.png"/></i>清空筛选条件</a>
-                    <a><i><img class="img" src="assets/img/icon/go.png"/></i>执行筛选</a>
+                    <a (click)="clear()">清空筛选条件</a>
+                    <a (click)="search()">执行筛选</a>
 
                 </div>
 

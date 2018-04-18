@@ -67,16 +67,6 @@
                     </div>
 
                 </div>
-
-
-                <!--简单填写-->
-
-
-                <!--左右点击选择-->
-
-                <!--下拉框-->
-
-
                 <div class="inputBox  rl fl areaBox">
                     <div class="input_left fl importent">
                         所在行政区划
@@ -149,10 +139,10 @@
 </div>
 <div *ngIf="selectedType==2">
     <div style="width:100%;overflow: auto">
-        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true" [emptyMessage]="'查询数据为空'"
-                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)" [style]="{'margin-top':'30px'}"
+        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [(selection)]="tableSelecValue" [editable]="true" [emptyMessage]="'查询数据为空'"
+                     frozenWidth="300px" selectionMode="single" unfrozenWidth="calc(100% - 100px)" (onNodeSelect)="nodeSelect($event)" [style]="{'margin-top':'30px'}"
                      bodyStyle="{'text-align':'center'}">
-            <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
+            <p-column field="mc" header="名称" [style]="{'width':'100px','height':'44px'}" frozen="true" [editable]="true"></p-column>
             <p-column field="xzqhmc" [style]="{'width':'150px','height':'44px','overflow':'hidden'}">
                 <ng-template pTemplate="header">
                     <span class="importent">所在行政区划</span>
@@ -206,9 +196,9 @@
 
                         {{node.sfkgr==1?"是":"否"}}
                     </div>
-
-                </ng-template>
+              </ng-template>
             </p-column>
+
 
 
             <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
@@ -216,6 +206,25 @@
 
 
         </p-dataTable>
+        <div *ngIf="zzcModel" (click)="closeZzc()" class="ui-widget-overlay ui-dialog-mask"></div>
+        <app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="zydlTableList" [treeList]="zydlTreeList">
+        </app-sec-type-list>
+        <app-sec-type-list (SelectModel)="getChildDcfw($event)" [isShow]="isShowDcfw"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="dcfwTableList" [treeList]="dcfwTreeList">
+        </app-sec-type-list>
+        <app-area-select [localityCode]="ssxzqhSearchDm" class="areaCommpont"
+                         [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                         [display]="isShowArea" (childEvent)="getChildSzxzqh($event)"></app-area-select>
+
+        <div *ngIf="isShowJcrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
+            <!--建成日期-->
+            <p-calendar [inline]="true" [locale]="ch" (onSelect)="jcrqClickTime(value)"
+                        [(ngModel)]="value"></p-calendar>
+
+        </div>
     </div>
 </div>
 

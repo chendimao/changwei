@@ -604,8 +604,11 @@ export class TreesComponent {
 
                 setTimeout(()=>{
                     //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
+                    if(this.name_active_base && this.name_active_base.length>0){
+
+                        this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                    }
+
 
 
                 },0);
@@ -1511,8 +1514,12 @@ export class TreesComponent {
 
             setTimeout(()=>{
                 //初始化的时候计算父节点的值
-                this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                console.log(this.name_active_base[index]);
+
+                if(this.name_active_base && this.name_active_base.length>0){
+
+                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                }
+
 
 
             },0);
@@ -1648,6 +1655,11 @@ export class TreesComponent {
             console.log(this.name_active_data.qsrId);
             //this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd);
 
+
+
+
+
+
             if(this.listHcyAdd[this.name_active_data.qsrId]['listLxgmAdd'][this.name_active_data.id]){
                 delete this.listHcyAdd[this.name_active_data.qsrId]['listLxgmAdd'][this.name_active_data.id];
 
@@ -1735,13 +1747,23 @@ export class TreesComponent {
             if(this.name_active_data['flbmxList'] != undefined && this.name_active_data['flbmxList'].length>0){
 
                 for(let i in this.name_active_data['flbmxList']){
-                    if((this.name_active_data['flbmxList'][i]['sl'] == "" || this.name_active_data['flbmxList'][i]['sl'] == null) && (this.name_active_data['flbmxList'][i]['bz'] == "" && this.name_active_data['flbmxList'][i]['bz'] == null)){
-                        delete this.name_active_data['flbmxList'][i];
+                        if((this.name_active_data['flbmxList'][i]['sl'] == "" || this.name_active_data['flbmxList'][i]['sl'] == null) && (this.name_active_data['flbmxList'][i]['bz'] == "" && this.name_active_data['flbmxList'][i]['bz'] == null)){
+                            delete this.name_active_data['flbmxList'][i];
                     }
                 }
 
             }
             console.log(this.name_active_data);
+
+
+            let res2 = this.ToggleFlxxAdd2(this.name_active_base, e, this.name_active_data['id']);
+            console.log(res2);
+
+            for(let i in res2){
+                delete res2[i]['qsrId'];
+            }
+            this.name_active_data['flbmxList'] = res2;
+
 
 
             this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listLxgmAdd');

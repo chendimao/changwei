@@ -222,15 +222,14 @@
 
             </div>
 
-            <div class="inputArea fl">
-                <div class="inputLeft fl">
-                    <span>建成日期</span>
+            <div class="inputBox  rl fl">
+                <div class="input_left fl ">
+                    建成日期
                 </div>
-                <div class="inputRight fl">
+                <div class="input_right fl">
                     <app-p-calendar [disabled]="isDisabled"
                                     [value]="hcy.jcrq"
                                     (SelectModel)="eventJcrq($event)" readonly="readonly"></app-p-calendar>
-
                 </div>
             </div>
             <div class="inputBox  rl fl">
@@ -311,7 +310,7 @@
                     <div *ngIf="tableSelecValue">
                         <div *ngIf="tableSelecValue.id==node.id">
                             <app-select-list [width]="0" [values]="selectPersonList" [selectValue]="node.qsrId"
-                                             (SelectModel)="getChildSelect($event,'qsrId')"></app-select-list>
+                                             (SelectModel)="eventQsr($event)"></app-select-list>
                         </div>
                         <div *ngIf="tableSelecValue.id!=node.id">
                             {{node.qsrmc}}

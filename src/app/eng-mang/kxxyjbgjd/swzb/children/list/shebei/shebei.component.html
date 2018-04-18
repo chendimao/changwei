@@ -79,7 +79,7 @@
                     <div class="input_right fl">
                         <app-select-list [disabled]="isDisabled"  [width]="0" [values]="selectPersonList"
                                          (SelectModel)="eventQsr($event)" [selectValue]="hcy.qsrId"
-                                         ngDefaultControl></app-select-list>
+                                         ngDefaultControl ></app-select-list>
 
                     </div>
 
@@ -163,7 +163,7 @@
                         数量
                     </div>
                     <div class="input_right fl">
-                        <input type="number" class="inputH" [(ngModel)]="hcy.sl" name="sl" >
+                        <input type="number" class="inputH" [(ngModel)]="hcy.sl" (ngModelChange)="tableChange()" name="sl" >
                     </div>
 
                 </div>
@@ -187,7 +187,7 @@
                         型号
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.xh" name="xh"  >
+                        <input type="text" class="inputH" [(ngModel)]="hcy.xh" (ngModelChange)="tableChange()" name="xh"  >
                     </div>
 
                 </div>
@@ -198,7 +198,7 @@
                         规格尺寸
                     </div>
                     <div class="input_right fl">
-                        <input type="text" class="inputH" [(ngModel)]="hcy.ggcc" name="ggcc"  >
+                        <input type="text" class="inputH"  [(ngModel)]="hcy.ggcc" (ngModelChange)="tableChange()" name="ggcc"  >
                     </div>
 
                 </div>
@@ -216,7 +216,7 @@
 
                 <div class="fl group group-4 danwei big_mj">
                     <span>设备原值</span>
-                    <input [disabled]="isDisabled" name="sbyz" [(ngModel)]="hcy.ssyz" type="number">
+                    <input [disabled]="isDisabled" name="sbyz" [(ngModel)]="hcy.ssyz" (ngModelChange)="tableChange()" type="number">
                     <div class="fl mianji">
                         万元
                     </div>

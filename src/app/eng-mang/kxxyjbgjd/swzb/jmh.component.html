@@ -94,8 +94,16 @@
                                     <span title="{{car[col.field]}}">{{car[col.field]}}</span>
                                 </ng-template>
                             </p-column>
-                            <p-column field="zydlmc" header="专业大类" [style]="{'width':'75px'}"></p-column>
-                            <p-column field="dcfwmc" header="调查范围"></p-column>
+                            <p-column field="zydlmc" header="专业大类" [style]="{'width':'75px'}">
+                                <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <span title="{{car[col.field]}}">{{car[col.field]}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="dcfwmc" header="调查范围">
+                                <ng-template let-col let-car="rowData" pTemplate="body">
+                                    <span title="{{car[col.field]}}">{{car[col.field]}}</span>
+                                </ng-template>
+                            </p-column>
                             <p-column field="sfkgh" header="是否为空挂户">
                                 <ng-template let-col let-car="rowData" pTemplate="body">
                                     <span title="{{car[col.field]}}">{{car[col.field]==0?'否':'是'}}</span>
@@ -109,7 +117,7 @@
                             <p-column field="bz" header="备注"></p-column>
                         </p-dataTable>
                         <div class="foot">
-                            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage"
+                            <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" [condition]="getParem"
                                            (pageSelect)="queryList($event)"></app-paginator>
                         </div>
                     </div>

@@ -47,7 +47,7 @@
                                 <input [disabled]="isDisabled" class='inputH inputArea' type="text"
                                        [(ngModel)]="hjbxx.xzqhmc" name="xzqhmc" (click)="showAreaBlock()"
                                        readonly="readonly"/>
-                                <i class="xiala"></i>
+                                <i class="xiala" (click)="showAreaBlock()"></i>
                                 <app-area-select [localityCode]="qshflId.ssxzqhSearchDm" class="areaCommpont"
                                                  [display]="isShowArea"
                                                  (childEvent)="getChildSzxzqh($event)"></app-area-select>
@@ -68,8 +68,8 @@
                                 <span>是否线外</span>
                                 <p-selectButton [options]="types2" [disabled]="isDisabled"
                                                 [(ngModel)]="sfxw" name="sfxwValue"
-                                                (click)="selectedTypea2(sfxw)"></p-selectButton>
-                            </div>
+                                                (click)="selectedTypea2($event)"></p-selectButton>
+                              </div>
                             <div class="fl top_class  rl zydl">
 
                                 <span class="importent">专业大类</span>
@@ -163,8 +163,8 @@
             <div class="footer clearfix">
                 <div class="fl" *ngIf="showFooterBtn">
 
-                    <div class="fl">上一户</div>
-                    <div class="fl">下一户</div>
+                    <div class="fl" (click)="beforeJmh()">上一户</div>
+                    <div class="fl" (click)="nextJmh()">下一户</div>
 
                 </div>
                 <div class="fr" *ngIf="!showFooterBtn">

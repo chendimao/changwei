@@ -72,6 +72,9 @@ export class QtzxjbxxComponent implements OnInit {
         // 订阅表单值改变事件
         this.forms.valueChanges.subscribe( data => {
             console.log('test');
+            if(this.qtzxList && this.qtzxList[0].length>0){
+
+            }
             let res = this.InputChange.get_select_change(this.qtzxList[0],0,this.init_qtzxjbxx_data,this.update_qtzxjbxx_data,[]);
 
             this.update_qtzxjbxx_data= res['update_data'];

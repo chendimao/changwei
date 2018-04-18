@@ -443,8 +443,11 @@ export class FsssComponent implements OnInit {
 
                 setTimeout(()=>{
                     //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
+                    if(this.name_active_base && this.name_active_base.length>0){
+
+                        this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                    }
+
 
 
                 },0);
@@ -608,8 +611,10 @@ export class FsssComponent implements OnInit {
 
                 setTimeout(()=>{
                     //初始化的时候计算父节点的值
-                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                    console.log(this.name_active_base[index]);
+                    if(this.name_active_base && this.name_active_base.length>0){
+
+                        this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                    }
 
 
                 },0);
@@ -1521,8 +1526,10 @@ export class FsssComponent implements OnInit {
 
             setTimeout(()=>{
                 //初始化的时候计算父节点的值
-                this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                console.log(this.name_active_base[index]);
+                if(this.name_active_base && this.name_active_base.length>0){
+
+                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                }
 
 
             },0);
@@ -1771,6 +1778,21 @@ export class FsssComponent implements OnInit {
 
             }
             console.log(this.name_active_data);
+
+
+
+
+            let res2 = this.ToggleFlxxAdd2(this.name_active_base, e, this.name_active_data['id']);
+            console.log(res2);
+
+            for(let i in res2){
+                delete res2[i]['qsrId'];
+            }
+            this.name_active_data['flbmxList'] = res2;
+
+
+
+
 
 
             this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listFsssAdd');

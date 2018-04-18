@@ -68,7 +68,7 @@ export class SwzbPersonComponent implements OnInit {
     private showBoottom: boolean = false;
     private showTOP: boolean = false;
     private childrenModel: any;
-    private sfxw: any;
+    private sfxw: number;
     msgs: Message[] = [];
     Breadcrumb: MenuItem[];
     types1: SelectItem[];
@@ -670,6 +670,14 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.update_fyssjbxx_ggmx_data);
         console.log(this.del_fyssjbxx_ggmx_data);
 
+        console.log(this.listHcyAdd);
+
+        console.log(this.del_sheshi_data);
+        console.log(this.update_sheshi_data);
+
+        console.log(this.add_shebei_data);
+        console.log(this.update_shebei_data);
+
         if (this.moreInput) {
             this.moreInput = false;
             this.moreText = "显示更多内容";
@@ -807,6 +815,7 @@ export class SwzbPersonComponent implements OnInit {
                 return false;
             }
         }
+
         if (this.add_gkjbxx_data.length != 0) {
             let lsObj = JSON.parse(JSON.stringify(this.allComTj));
             lsObj['gklbdm'] = "港口类别";
@@ -975,6 +984,156 @@ export class SwzbPersonComponent implements OnInit {
                 listHcyAdd[item]["jddm"] = this.qshflId.jddm;
                 console.log(listHcyAdd[item]);
 
+                if (listHcyAdd[item]['listSbdgcAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['sbdgclbdm'] = "输变电工程类别";
+                    lsObj['lsgx'] = "隶属关系"
+                    console.log(listHcyAdd[item]['listSbdgcAdd']);
+                    if (!this.objPd(listHcyAdd[item]['listSbdgcAdd'], lsObj, "输变电工程")) {
+                        return false;
+                    }
+                }
+
+
+                if (listHcyAdd[item]['listGbdsgcAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['dxgclbdm'] = "广播电视工程类别";
+                    lsObj['lsgx'] = "隶属关系";
+                    if (!this.objPd(listHcyAdd[item]['listGbdsgcAdd'], lsObj, "广播电视工程")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listGdgcAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['gdgclbdm'] = "管道工程类别";
+                    lsObj['lsgx'] = "隶属关系";
+                    if (!this.objPd(listHcyAdd[item]['listGdgcAdd'], lsObj, "管道工程")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listGkAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['gklbdm'] = "港口类别";
+                    if (!this.objPd(listHcyAdd[item]['listGkAdd'], lsObj, "港口工程")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listMtAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['mtlbdm'] = "码头类别";
+                    if (!this.objPd(listHcyAdd[item]['listMtAdd'], lsObj, "码头")) {
+                        return false;
+                    }
+                }
+
+                if (listHcyAdd[item]['listWwgjAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['wwgjlbdm'] = "文物古迹类别代码";
+                    if (!this.objPd(listHcyAdd[item]['listWwgjAdd'], lsObj, "文物古迹")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listSwqxzAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['zdlbdm'] = "站点类别";
+                    if (!this.objPd(listHcyAdd[item]['listSwqxzAdd'], lsObj, "水文气象站")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listKczyAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['kczylbdm'] = "矿产资源类别";
+                    if (!this.objPd(listHcyAdd[item]['listKczyAdd'], lsObj, "矿产资源")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listSlsdgcAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['gclbdm'] = "工程类别";
+                    if (!this.objPd(listHcyAdd[item]['listSlsdgcAdd'], lsObj, "水利水电")) {
+                        return false;
+                    }
+                }
+
+                if (listHcyAdd[item]['listHdAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['hdlbdm'] = "航道类别";
+                    if (!this.objPd(listHcyAdd[item]['listHdAdd'], lsObj, "航道")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listTlAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['tllbdm'] = "铁路类别";
+                    if (!this.objPd(listHcyAdd[item]['listTlAdd'], lsObj, "铁路")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listQhAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['qhlbdm'] = "桥涵类别";
+                    if (!this.objPd(listHcyAdd[item]['listQhAdd'], lsObj, "桥涵")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listGlAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['qhlbdm'] = "公路类别";
+                    if (!this.objPd(listHcyAdd[item]['listGlAdd'], lsObj, "公路")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listQtzxAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['zxlbdm'] = "其他类别";
+                    if (!this.objPd(listHcyAdd[item]['listQtzxAdd'], lsObj, "其它专项")) {
+                        return false;
+                    }
+                }
+                if (listHcyAdd[item]['listDxgcAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['dxgclbdm'] = "电信工程类别";
+                    lsObj['lsgx'] = "隶属关系";
+                    if (!this.objPd(listHcyAdd[item]['listDxgcAdd'], lsObj, "电信工程")) {
+                        return false;
+                    }
+                }
+
+                if (listHcyAdd[item]['listNfyhAdd']) {
+                    let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+                    lsObj['xzdm'] = "性质类别";
+                    lsObj['jyr'] = "经营人";
+                    if (!this.objPd(listHcyAdd[item]['listNfyhAdd'], lsObj, "农副业工程")) {
+                        return false;
+                    }
+                }
+
+
+                if (listHcyAdd[item]['listGtgshAdd']) {
+                    let dwTj = {
+                        mc: "名称",
+                        jyr: "经营人",
+                        xzdm: "性质代码",
+                    };
+                    if (!this.objPd(listHcyAdd[item]['listGtgshAdd'], dwTj, "个体工商户")) {
+                        return false;
+                    }
+                }
+
+                if (listHcyAdd[item]['listDwAdd']) {
+                    let dwTj = {
+                        mc: "名称",
+                        lsgx: "隶属关系"
+                    };
+                    if (!this.objPd(listHcyAdd[item]['listDwAdd'], dwTj, "单位")) {
+                        return false;
+                    }
+                }
+
+
+
+
+
                 if (listHcyAdd[item]['listFwAdd']) {
                     console.log(listHcyAdd[item]['listFwAdd']);
                     this.add_hcy_tab(item, listHcyAdd[item]['listFwAdd'], listHcyAdd, 'listFwAdd');
@@ -987,28 +1146,32 @@ export class SwzbPersonComponent implements OnInit {
                 if (listHcyAdd[item]['listFsssAdd']) {
                     this.add_hcy_tab(item, listHcyAdd[item]['listFsssAdd'], listHcyAdd, 'listFsssAdd');
                 }
-
+                if (listHcyAdd[item]['listXxzxAdd']) {
+                    this.add_hcy_tab(item, listHcyAdd[item]['listXxzxAdd'], listHcyAdd, 'listXxzxAdd');
+                }
                 if (listHcyAdd[item]['listTdAdd']) {
                     this.add_hcy_tab(item, listHcyAdd[item]['listTdAdd'], listHcyAdd, 'listTdAdd');
                 }
                 if (listHcyAdd[item]['listTdfzwAdd']) {
                     this.add_hcy_tab(item, listHcyAdd[item]['listTdfzwAdd'], listHcyAdd, 'listTdfzwAdd');
                 }
-
-                if (listHcyAdd[item]['listLxgmAdd']) {
-                    this.add_hcy_nnGGmx_tab(item, listHcyAdd[item]['listLxgmAdd'], listHcyAdd, 'listLxgmAdd');
-                }
-
                 if (listHcyAdd[item]['listFyssAdd']) {
                     this.add_hcy_tab(item, listHcyAdd[item]['listFyssAdd'], listHcyAdd, 'listFyssAdd');
                 }
-                if (listHcyAdd[item]['listXxzxAdd']) {
-                    this.add_hcy_tab(item, listHcyAdd[item]['listXxzxAdd'], listHcyAdd, 'listXxzxAdd');
+                if (listHcyAdd[item]['listLxgmAdd']) {
+                    this.add_hcy_nnGGmx_tab(item, listHcyAdd[item]['listLxgmAdd'], listHcyAdd, 'listLxgmAdd');
                 }
                 if (listHcyAdd[item]['listFmAdd']) {
                     this.add_hcy_noAll_tab(item, listHcyAdd[item]['listFmAdd'], listHcyAdd, 'listFmAdd');
                 }
-                if (listHcyAdd[item]['listSbdgcAdd']) {
+                if (listHcyAdd[item]['listSsxxAdd']) {
+                    this.add_hcy_noAll_tab(item, listHcyAdd[item]['listSsxxAdd'], listHcyAdd, 'listSsxxAdd');
+                }
+                if (listHcyAdd[item]['listSbxxAdd']) {
+                    this.add_hcy_noAll_tab(item, listHcyAdd[item]['listSbxxAdd'], listHcyAdd, 'listSbxxAdd');
+                }
+
+                 if (listHcyAdd[item]['listSbdgcAdd']) {
                     this.add_hcy_only_item(item, listHcyAdd, 'listSbdgcAdd');
                 }
                 if (listHcyAdd[item]['listGbdsgcAdd']) {
@@ -1025,20 +1188,52 @@ export class SwzbPersonComponent implements OnInit {
                 if (listHcyAdd[item]['listMtAdd']) {
                     this.add_hcy_only_item(item, listHcyAdd, 'listMtAdd');
                 }
-
-
+                if (listHcyAdd[item]['listWwgjAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listWwgjAdd');
+                }
                 if (listHcyAdd[item]['listSwqxzAdd']) {
                     this.add_hcy_only_item(item, listHcyAdd, 'listSwqxzAdd');
                 }
+
                 if (listHcyAdd[item]['listKczyAdd']) {
                     this.add_hcy_only_item(item, listHcyAdd, 'listKczyAdd');
                 }
                 if (listHcyAdd[item]['listSlsdgcAdd']) {
                     this.add_hcy_only_item(item, listHcyAdd, 'listSlsdgcAdd');
                 }
-                if (listHcyAdd[item]['listWwgjAdd']) {
-                    this.add_hcy_only_item(item, listHcyAdd, 'listWwgjAdd');
+                if (listHcyAdd[item]['listHdAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listHdAdd');
                 }
+                if (listHcyAdd[item]['listTlAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listTlAdd');
+                }
+                if (listHcyAdd[item]['listQhAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listQhAdd');
+                }
+                if (listHcyAdd[item]['listGlAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listGlAdd');
+                }
+                if (listHcyAdd[item]['listQtzxAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listQtzxAdd');
+                }
+                if (listHcyAdd[item]['listDxgcAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listDxgcAdd');
+                }
+                 if (listHcyAdd[item]['listNfyAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listNfyAdd');
+                }
+                if (listHcyAdd[item]['listGtgshAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listGtgshAdd');
+                }
+                if (listHcyAdd[item]['listDwAdd']) {
+                    this.add_hcy_only_item(item, listHcyAdd, 'listDwAdd');
+                }
+
+
+
+
+
+
 
 
                 for (let item2 in listHcyAdd[item]) {
@@ -1824,7 +2019,7 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listHdEdit'].push(this.update_hdjbxx_data[0])
         }
         if (this.del_hdjbxx_data.length != 0) {
-            this.postObject['listHdAdd'] = [];
+            this.postObject['listHdDel'] = [];
             this.postObject['listHdDel'].push(this.del_hdjbxx_data[0])
         }
 
@@ -1838,7 +2033,7 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listTlEdit'].push(this.update_tljbxx_data[0])
         }
         if (this.del_tljbxx_data.length != 0) {
-            this.postObject['listTlAdd'] = [];
+            this.postObject['listTlDel'] = [];
             this.postObject['listTlDel'].push(this.del_tljbxx_data[0])
         }
 
@@ -1852,7 +2047,7 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listQhEdit'].push(this.update_qhjbxx_data[0])
         }
         if (this.del_qhjbxx_data.length != 0) {
-            this.postObject['listQhAdd'] = [];
+            this.postObject['listQhDel'] = [];
             this.postObject['listQhDel'].push(this.del_qhjbxx_data[0])
         }
         // 公路基本信息
@@ -1896,7 +2091,7 @@ export class SwzbPersonComponent implements OnInit {
         }
         // 农副业基本信息
         if (this.add_nfyjbxx_data) {
-            this.postObject['listNfyAdd'] = [];
+            this.postObject['listNfyhAdd'] = [];
             this.add_data_only_item(this.changeTable(this.add_nfyjbxx_data), this.postObject['listNfyhAdd'])
         }
         if (this.update_nfyjbxx_data.length != 0) {
@@ -1910,7 +2105,7 @@ export class SwzbPersonComponent implements OnInit {
         // 个体工商基本信息
         if (this.add_gtgsjbxx_data) {
             this.postObject['listGtgshAdd'] = [];
-            this.add_data_only_item(this.changeTable(this.add_gtgsjbxx_data), this.postObject['listGtAdd'])
+            this.add_data_only_item(this.changeTable(this.add_gtgsjbxx_data), this.postObject['listGtgshAdd'])
         }
         if (this.update_gtgsjbxx_data.length != 0) {
             this.postObject['listGtgshEdit'] = [];
@@ -3902,6 +4097,7 @@ export class SwzbPersonComponent implements OnInit {
                                 this.dxgcjbxx2.instance.update_dxgcjbxx_data = this.update_dxgcjbxx_data;
                                 this.dxgcjbxx2.instance.add_dxgcjbxx_data = this.add_dxgcjbxx_data;
                                 this.dxgcjbxx2.instance.del_dxgcjbxx_data = this.del_dxgcjbxx_data;
+                                this.dxgcjbxx2.instance.init_dxgcjbxx_data = this.init_dxgcjbxx2_data;
 
 
                                 this.dxgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
@@ -4066,6 +4262,7 @@ export class SwzbPersonComponent implements OnInit {
                                 this.gdgcjbxx2.instance.update_gdgcjbxx_data = this.update_gdgcjbxx_data;
                                 this.gdgcjbxx2.instance.add_gdgcjbxx_data = this.add_gdgcjbxx_data;
                                 this.gdgcjbxx2.instance.del_gdgcjbxx_data = this.del_gdgcjbxx_data;
+                                this.gdgcjbxx2.instance.init_gdgcjbxx_data = this.init_gdgcjbxx2_data;
 
 
                                 this.gdgcjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
@@ -4245,7 +4442,7 @@ export class SwzbPersonComponent implements OnInit {
 
                             } else {
 
-
+                                console.log(this.wwgj_data);
                                 const wwgjjbxx = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
                                 this.wwgj = this.ModelRoom.createComponent(wwgjjbxx);
 
@@ -4254,10 +4451,9 @@ export class SwzbPersonComponent implements OnInit {
                                 this.wwgj.instance.childInfo2 = this.hcylb;
                                 this.wwgj.instance.type = this.type;
                                 this.wwgj.instance.listHcyAdd = this.listHcyAdd;
-                                this.wwgj.instance.update_wwgj_data = this.update_wwgj_data;
+                                this.wwgj.instance.update_wwgjjbxx_data = this.update_wwgj_data;
                                 this.wwgj.instance.add_wwgjjbxx_data = this.add_wwgj_data;
-                                this.wwgj.instance.add_wwgjjbxx_data = this.del_wwgj_data;
-                                this.wwgj.instance.add_wwgjjbxx_data = this.init_wwgj_data;
+                                this.wwgj.instance.del_wwgjjbxx_data = this.del_wwgj_data;
                                 this.wwgj.instance.init_wwgjjbxx_data = this.init_wwgj_data;
 
 
@@ -4349,6 +4545,7 @@ export class SwzbPersonComponent implements OnInit {
                                 this.qtzxjbxx2.instance.update_qtzxjbxx_data = this.update_qtzxjbxx_data;
                                 this.qtzxjbxx2.instance.add_qtzxjbxx_data = this.add_qtzxjbxx_data;
                                 this.qtzxjbxx2.instance.del_qtzxjbxx_data = this.del_qtzxjbxx_data;
+                                this.qtzxjbxx2.instance.init_qtzxjbxx_data = this.init_qtzxjbxx2_data;
 
 
                                 this.qtzxjbxx2.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
@@ -5313,7 +5510,7 @@ export class SwzbPersonComponent implements OnInit {
         console.log(arr);
         let resArr = [];
         for (let item in arr) {
-            // console.log(item);
+            console.log(item);
             let lsObj = {};
             for (let item2 in arr[item]) {
                 console.log(item2);
@@ -5334,8 +5531,12 @@ export class SwzbPersonComponent implements OnInit {
 
     //基本信息判断必填项
     Btpd(info, arrBtpd, msg) {
+        console.log(info);
+        console.log(arrBtpd);
+
         this.BtpdValue = true;
         for (let item of info) {
+            console.log("33333333333")
             console.log(item)
             for (let f in arrBtpd) {
                 console.log(f)
@@ -5349,12 +5550,27 @@ export class SwzbPersonComponent implements OnInit {
                     console.log('有必填项未填');
                     return false;
                 }
-
-
             }
         }
         return true;
     }
+
+    // 对象判断
+
+    objPd(info, arrBtpd, msg) {
+         this.BtpdValue = true;
+           for (let f in arrBtpd) {
+                if (info[f] === "" || info[f] == undefined) {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: msg + arrBtpd[f] + ' 必填'});
+                    this.BtpdValue = false;
+                    console.log('有必填项未填');
+                    return false;
+                }
+            }
+         return true;
+    }
+
 
     // 判断户基本信息必填项
     bhjbxxBtpd(info) {

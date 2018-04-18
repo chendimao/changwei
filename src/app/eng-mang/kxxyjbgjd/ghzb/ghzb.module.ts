@@ -27,6 +27,7 @@ import {GhzbTreelistComponent} from "./ghzbjclist.component";
 import {GhzbJbxxComponent} from "./zyxmcl/ghzbJbxx.component";
 import {GhzbAreaComponent} from "./ghzbArea/ghzbArea.component";
 import {GhzbJbxxChildComponent} from "./zyxmcl/children/ghzbJbxxChild.component";
+import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import {GhzbJbxxChildComponent} from "./zyxmcl/children/ghzbJbxxChild.component"
 
     ],
     providers: [DataProcessingService, SearchService],
-    entryComponents:[GhzbJbxxChildComponent]
+    entryComponents:[GhzbJbxxChildComponent, DelWaringComponent]
 })
 export class GhzbModule {
 }

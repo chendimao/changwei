@@ -39,7 +39,7 @@
                          [tableList]="dcfwTableList"></app-sec-type-list>
     </div>
     <div class="fl group group-4">
-      <span>公路</span>
+      <span>公路编号</span>
       <input [disabled]="isDisabled" name="glbh" [(ngModel)]="glList[0].glbh" type="text">
 
     </div>
@@ -53,9 +53,9 @@
       <app-sec-type-list (SelectModel)="getChildgkdj($event)" [isShow]="isShowgkdj"
                          [treeList]="gkdjTreeList" [tableList]="gkdjTableList"></app-sec-type-list>
     </div>
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>公路名称</span>
-                  <input [disabled]="isDisabled" name="glmc" [(ngModel)]="glList[0].mc" type="text">
+                  <input [disabled]="isDisabled" name="mc" [(ngModel)]="glList[0].mc" type="text">
 
   </div>
   <div class="fl group group-4 danwei">

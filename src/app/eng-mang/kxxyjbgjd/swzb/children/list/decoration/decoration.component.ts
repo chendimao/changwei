@@ -1510,8 +1510,7 @@ export class DecorationComponent implements OnInit {
                 if(this.showTable == 2){
                     let defaultPerson = this.defaultPerson;
                     setTimeout(()=>{
-                        console.log(defaultPerson);
-                        console.log(defaultPerson.last.nativeElement);
+
                         defaultPerson.first.nativeElement.click();
 
                     },0);
@@ -1570,8 +1569,10 @@ export class DecorationComponent implements OnInit {
 
             setTimeout(()=>{
                 //初始化的时候计算父节点的值
-                this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
-                console.log(this.name_active_base[index]);
+                if(this.name_active_base && this.name_active_base.length>0){
+
+                    this.name_active_base[index] =  this.CalcParent(this.name_active_base[index],this.name_active_base[index],index);
+                }
 
 
             },0);
@@ -1823,6 +1824,17 @@ export class DecorationComponent implements OnInit {
             console.log(this.name_active_data);
 
 
+            let res2 = this.ToggleFlxxAdd2(this.name_active_base, e, this.name_active_data['id']);
+            console.log(res2);
+
+            for(let i in res2){
+                delete res2[i]['qsrId'];
+            }
+            this.name_active_data['flbmxList'] = res2;
+
+
+
+
             this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listFwzxAdd');
 
             console.log(this.listHcyAdd);
@@ -1892,11 +1904,11 @@ export class DecorationComponent implements OnInit {
 
             if (!this.zydlTableList) {
 
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_FWZX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_FWZXJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         this.zydlTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_FWZX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_FWZXJBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.zydlTableList = res['returnObject'];
@@ -1925,11 +1937,11 @@ export class DecorationComponent implements OnInit {
 
             if (!this.dcfwTableList) {
 
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_FWZX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_FWZXJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_FWZX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_FWZXJBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.dcfwTableList = res['returnObject'];
