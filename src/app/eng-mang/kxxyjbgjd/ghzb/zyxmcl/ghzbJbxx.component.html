@@ -7,11 +7,11 @@
     </header>
     <div class="engBody">
         <div class="tableEng">
-            可行性研究报告阶段专业项目公路迁复建信息
+            可行性研究报告阶段专业项目{{this.parent_params['item']}}迁复建信息
         </div>
         <div class="clearfix">
             <div class="fl searchDiv">
-                <input type="text" class="searchInput" placeholder="名称，等级">
+                <input type="text" class="searchInput" [formControl]="nameFilter"   [(ngModel)]="key" placeholder="名称，等级">
             </div>
             <div class="btnGrop fr">
                 <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>

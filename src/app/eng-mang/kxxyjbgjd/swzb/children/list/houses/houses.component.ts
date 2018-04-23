@@ -1734,6 +1734,11 @@ export class HousesComponent implements OnInit {
         if (e.toString().length == 32) {
 
 
+
+
+
+
+
             this.name_active_data['id'] = new Date().getTime();
 
 

@@ -233,6 +233,8 @@ export class ShebeiComponent implements OnInit {
     selectshebei(shebei, i) {
         this.hcy = shebei;
         this.name_active_key = i;
+        console.log(this.name_active_key);
+
     }
 
 
@@ -382,12 +384,12 @@ export class ShebeiComponent implements OnInit {
 
         console.log(this.childInfo4);
         this.tableList.push({
-            'swszxzqhdm': this.childInfo4?this.childInfo4.ssxzqhdm:"",
-            'localitydesc': this.childInfo4?this.childInfo4.xzqhmc:"",
-            'zydldm': this.childInfo4?this.childInfo4.zydldm:"",
-            'zydlmc': this.childInfo4?this.childInfo4.zydlmc:"",
-            'dcfwdm': this.childInfo4?this.childInfo4.dcfwdm:"",
-            'dcfwmc': this.childInfo4?this.childInfo4.dcfwmc:"",
+            'swszxzqhdm':  "",
+            'localitydesc':  "",
+            'zydldm':  "",
+            'zydlmc':  "",
+            'dcfwdm': "",
+            'dcfwmc':  "",
             "ssxtdm": "",
             "ssgcdm": "",
             "jddm": "",
@@ -890,6 +892,33 @@ export class ShebeiComponent implements OnInit {
         if(event.toString().length == 32){
 
             //this.hcy.id = new Date().getTime();
+
+
+
+            //将户成员基本信息带到房屋基本信息中
+            this.childInfo3.forEach((value, index, arr) => {
+
+                if (value['id'] == this.hcy['qsrId']) {
+                    for (var i in value) {
+                        for (var ii in this.hcy) {
+                            // this.name_active_data['swszxzqhdm']=value['szxzqhdm'];
+                            if (i == ii && (i == 'szxzqhdm' || i == 'xzqhmc' || i == 'dcfwdm' || i == 'dcfwmc' || i == 'zydlmc' || i == 'zydldm')) {
+                                console.log(i);
+                                this.hcy[ii] = value[i];
+                            }
+                        }
+                    }
+                    if (value['szxzqhdm'] != null) {
+                        this.hcy['swszxzqhdm'] = value['szxzqhdm'];
+                        this.hcy['localitydesc'] = value['xzqhmc'];
+                    }
+
+                }
+
+
+            });
+
+
 
 
             let res =  this.InputChange.get_select_change(this.hcy,this.name_active_key,this.init_shebei_data,this.update_shebei_data,this.add_shebei_data);

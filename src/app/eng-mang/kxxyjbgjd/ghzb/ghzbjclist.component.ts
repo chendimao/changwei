@@ -40,21 +40,13 @@ export class GhzbTreelistComponent implements OnInit {
         this.subscription = this.ShareService.getMessage()
             .subscribe((data) => {
                 console.log(data);
-                if (data['message']['item'] == 'jmh') {
+                if (data['message']['item'] == 'ghzb') {
                     if (data['message']['summary']) {
                         this.msgs = [];
                         this.msgs.push(data['message']);
                     }
 
-                    if (data['message']['severity'] === 'success') {
-                        console.log(this.getUrl());
-                        this.HttpService.get(this.getUrl())
-                            .then(res => {
-                                //this.persionList = res['returnObject'];
-                                this.totalPage = res['totalPage'];
-                                this.count = res['count'];
-                            })
-                    }
+
                 }
             })
 
@@ -89,13 +81,19 @@ export class GhzbTreelistComponent implements OnInit {
 
 
                         console.log(this.route);
-                    this.Router.navigate(['ghzbArea'], {relativeTo: this.route,queryParams: {ssgcdm: this.res['id'],xmszxzqhdm:i['localityCode'],ssghxmfldm:this.componentDm,item:this.res['item']}})
+                    this.Router.navigate([`ghzbArea/${this.res['id']}/${i['localityCode']}/${this.componentDm}`], {relativeTo: this.route})
                 } else {
                     console.log(this.route);
 
-                    this.Router.navigate(['ghzbjbxx'],{relativeTo: this.route,queryParams: {ssgcdm: this.res['id'],xmszxzqhdm:i['localityCode'],ssghxmfldm:this.componentDm,item:this.res['item']}})
+                    this.Router.navigate([`ghzbjbxx/${this.res['id']}/${i['localityCode']}/${this.componentDm}`],{relativeTo: this.route})
                 }
             });
+
+
+        this.ShareService.sendMessage({
+            severity: 'success',
+            item: 'ghzb'
+        });
 
 
     }

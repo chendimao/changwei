@@ -16,14 +16,21 @@ export class PaginatorUserComponent implements OnInit {
     @Output() pageSelect = new EventEmitter();
     @ViewChild('paginator') paginator1:Paginator;
     constructor(private HttpService: HttpService) {
+
     }
 
     ngOnInit() {
         console.log(this.url);
         console.log(this.paginator1);
+        console.log(this.totalPage);
+        console.log(this.count);
     }
 
     ngOnChanges() {
+
+        console.log(this.totalPage);
+        console.log(this.count);
+        console.log(this.url);
         console.log("输入值有改变");
         if(this.condition){
             if(this.condition.start==1){
@@ -37,6 +44,7 @@ export class PaginatorUserComponent implements OnInit {
     paginate(value) {
         console.log(this.condition);
         console.log(value);
+        console.log(this.url);
         this.condition.start=value.first+1;
         this.condition.limit=value.rows;
         let resUrl=this.url+'?'+this.transString(this.condition);

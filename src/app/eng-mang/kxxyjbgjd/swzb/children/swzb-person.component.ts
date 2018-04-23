@@ -677,6 +677,7 @@ export class SwzbPersonComponent implements OnInit {
 
         console.log(this.add_shebei_data);
         console.log(this.update_shebei_data);
+        console.log(this.del_shebei_data);
 
         if (this.moreInput) {
             this.moreInput = false;

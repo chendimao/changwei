@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
 
@@ -18,6 +18,7 @@ import {
     LightboxModule,
     DataTableModule,
     SharedModule,
+
     PanelModule, GrowlModule
 } from 'primeng/primeng';
 import {DataProcessingService} from "../../../service/dataProcessing.service";
@@ -56,6 +57,7 @@ import {DelWaringComponent} from "../../../common/del-waring/del-waring.componen
         TabViewModule,
         AccordionModule,
         CalendarModule,
+        ReactiveFormsModule,
         RouterModule.forChild(GhzbRoutingModule)
 
     ],

@@ -17,7 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign,i)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
             </tr>

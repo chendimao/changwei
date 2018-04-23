@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../../../../../service/http-service";
 import {DataProcessingService} from "../../../../../service/dataProcessing.service";
 import {GHZB_DATA_TITLE} from "../../../../../service/ghzb-title.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
     selector: 'app-ghzbJbxxChild',
@@ -23,6 +24,25 @@ export class  GhzbJbxxChildComponent implements OnInit {
     public isDisabled;
     public ghzb_data;
 
+
+
+
+    public ghxm = {};
+    public ghxmjbxx = {};
+    public listDlzbflbmxDel = [];
+    public listDlzbflbmxAdd = [];
+    public listDlzbflbmxEdit = [];
+    public isShow: boolean = true;
+    private init_ghzb_data: any;
+    private ghzb_data_copy: any;
+    public xmmc: FormControl = new FormControl();
+    public xmjc: FormControl = new FormControl();
+
+
+
+
+
+
     constructor(private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
 
 
@@ -37,6 +57,27 @@ export class  GhzbJbxxChildComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        //========mc change=======
+            this.xmmc.valueChanges.subscribe(data =>{
+
+                console.log(data);
+
+            })
+        //=================
+
+        //========jc change=======
+        this.xmjc.valueChanges.subscribe(data =>{
+
+            console.log(data);
+
+        })
+        //=================
+
+
+
+
+
         console.log(this.baseInfo);
         console.log(this.dm);
 
@@ -48,7 +89,15 @@ export class  GhzbJbxxChildComponent implements OnInit {
         }
 
         this.ghzb_data = GHZBDATA;
-        this.treelist = this.DataProcessingService.returnTreeTable(this.DataProcessingService.replaceChildlList(this.ghzb_data['datalist'][0]['flbmxList'],'dlzbflmc','label','childList','children')[0]);
+
+
+        this.HttpService.get(`ghxm/show?id=${this.baseInfo['id']}`).then(data=>{
+            console.log(data);
+            this.init_ghzb_data = JSON.parse(JSON.stringify(data['returnObject']));
+            this.ghzb_data_copy = JSON.parse(JSON.stringify(data['returnObject']));
+            this.ghzb_data = JSON.parse(JSON.stringify(data['returnObject']));
+
+        });
         console.log(this.treelist);
         // this.HttpService.get(`locality/listTree`)
         //     .then(res => {
@@ -95,11 +144,93 @@ export class  GhzbJbxxChildComponent implements OnInit {
 
 
     //树table点击
-    TreeTableClick(event,treetable,node){
+    DatatableClick(event ){
         console.log(event);
-        console.log(treetable);
-        console.log(node);
+
     }
+
+
+    //tableChange
+    tableChange($event){
+        console.log($event);
+        this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
+
+            if(arr[index]['zdxxh'] == $event.zdxxh){
+                arr[index]['sl'] = $event.sl;
+            }
+
+        })
+    }
+
+
+    //清除表单数据
+    Clear(){
+        console.log(this.ghzb_data.flbmxList);
+        this.isShow = true;
+        this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
+
+            arr[index].sl = null;
+
+        })
+
+        this.ghzb_data = JSON.parse(JSON.stringify(this.ghzb_data_copy));
+
+
+    }
+
+
+    //  显示所有
+    showAll(i){
+
+        console.log(this.ghzb_data);
+        console.log(this.init_ghzb_data);
+        console.log(i);
+        if(i){
+
+            for(let i = 0,len = this.ghzb_data.flbmxList.length;i<len;i++){
+                if(this.ghzb_data.flbmxList[i].sl == null || this.ghzb_data.flbmxList[i].sl.trim() == ""){
+                      this.ghzb_data.flbmxList.splice(i,1);
+                      len--;
+                      i--;
+                }
+            }
+            console.log(this.ghzb_data.flbmxList);
+            this.ghzb_data.flbmxList = this.ghzb_data.flbmxList.slice();
+            //
+            // this.name_active_base.forEach((value,index,arr)=>{
+            //     console.log(index);
+            //     this.name_active_base[i] = this.InputChange.showCheck(this.name_active_base[index],'sl');
+            //
+            // });
+            //
+            // let res = this.InputChange.showCheck3(this.name_active_base,'zxlbdm');
+            //
+            // this.decor_name_active_base_copy[0][i] = this.InputChange.showCheck4(this.decor_name_active_base_copy[0][i],res,'zxlbdm');
+            //
+            //
+            // console.log(this.name_active_base);
+            // console.log(this.decor_name_active_base_copy[0]);
+            this.isShow = false;
+
+            // this.is_disabled = true;
+        }else{
+            this.ghzb_data.flbmxList = JSON.parse(JSON.stringify(this.ghzb_data_copy.flbmxList));
+            // this.jzzmj = 0;
+            // this.name_active_base =_.cloneDeep( this.decor_name_active_base_copy[0]);
+            // this.searchList(this.searchKeyword);
+            //
+            // console.log(this.name_active_base);
+            // console.log(this.decor_name_active_base_copy[0]);
+
+            this.isShow = true;
+
+        }
+
+
+
+    }
+
+
 
 }
 
