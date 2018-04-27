@@ -21,103 +21,75 @@
           </div>
           <div class="btnGrop fl rl">
             <div class="fl tab_title">
-              东阳村规划生产安置人口信息
+              <span *ngIf="event">{{event.label}}规划生产安置人口信息</span>
             </div>
             <div class="fr sec">
-              <div class="fl text">
-                <p-checkbox class="fl" name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-                仅显示非空项
-              </div>
-              <div class="fl"><span class="img"><img src="assets/img/icon/diquxuanze.png" alt=""></span>保存</div>
-              <div class="fl"><span class="img"><img src="assets/img/icon/clear.png" alt=""></span>清空</div>
+
+
+
+              <ul class="clearfix">
+
+
+
+                <li class="fl" >
+
+                <div *ngIf="!isDisabled" class="fl" (click)="save()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                            alt=""></span>保存
+                </div>
+                </li>
+
+                <li class="fl" >
+
+                  <div *ngIf="!isDisabled" class="fl" (click)="Clear('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                                      alt=""></span>清空所有
+                </div>
+                </li>
+
+                <li class="fl" (click)="showAll(true)" *ngIf="isShow">
+                  <span class="img icon fa fa-square-o"></span>
+                  显示非空项
+                </li>
+                <li class="fl" (click)="showAll(false)" *ngIf="!isShow">
+                  <span class="img icon fa fa-check-square"></span>
+                  显示所有项
+                </li>
+
+
+
+
+
+              </ul>
+
             </div>
           </div>
         </div>
         <div class="body1 clearfix">
           <div class="bodyLeft fl">
-            <p-accordion>
-              <p-accordionTab header="白濑乡">
-                <ul class="pro">
-                  <li >长基村</li>
-                  <li >下镇村
-                  </li>
-                  <li >寨板村</li>
+            <app-treeList (childEvent)="getEvent($event)" [value]="treeList"></app-treeList>
 
-                </ul>
-              </p-accordionTab>
-            </p-accordion>
-            <p-accordion>
-              <p-accordionTab header="剑斗镇" [selected]="true">
-                <ul class="pro">
-                  <li class="slect">   东阳村</li>
-                  <li >后井寸</li>
-                  <li >    云溪村</li>
-                </ul>
-              </p-accordionTab>
-            </p-accordion>
           </div>
           <div class="bodyRight fl">
-            <table class="table">
-              <thead>
-              <tr>
-                <td>序号</td>
-                <td>名称</td>
-                <td>数量</td>
-                <td>计量单位</td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
+            <p-dataTable [value]="ghzb_data?.flbmxList" dataKey="zdxxh"
 
-                <td >生产安置人数</td>
-                <td>1338</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td >按安置方式划分</td>
-                <td>1338</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2.1</td>
-                <td style="padding-left: 20px"> 农业安置</td>
-                <td>402</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2.2</td>
-                <td style="padding-left: 20px"> 非农业安置</td>
-                <td>936</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2.2.1</td>
-                <td style="padding-left: 40px">自谋职业</td>
-                <td>843</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2.2.2</td>
-                <td style="padding-left: 40px">养老保障</td>
-                <td>93</td>
-                <td>人</td>
-              </tr>
-              <tr>
-                <td>2.2.3</td>
-                <td style="padding-left: 40px">宅基地安置</td>
-                <td></td>
-                <td>人</td>
-              </tr>
-              </tbody>
-
-            </table>
+                         [emptyMessage]="'查询数据为空'"
+                         responsive="true">
+              <p-column field="zdxxh" header="序号"></p-column>
+              <p-column field="zdxmc" header="指标名称">
+                <ng-template let-col let-i="rowIndex" let-car="rowData" pTemplate="body">
+                  <span [innerHTML]="car.zdxmc"></span>
+                </ng-template>
+              </p-column>
+              <p-column field="sl" header="数量" [editable]="true" >
+                <ng-template let-col let-i="rowIndex" let-car="rowData" pTemplate="body">
+                  <input [disabled]="isDisabled" type="number"  onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )'    [(ngModel)]="car.sl"  (ngModelChange)="tableChange(car)">
+                </ng-template>
+              </p-column>
+            </p-dataTable>
           </div>
         </div>
       </div>
     </div>
 
-
+  <p-growl [(value)]="msgs"></p-growl>
 
 </div>

@@ -7,6 +7,7 @@ import {EngMangHomeComponent} from './EngMangHome/eng-mang.component';
 import {LoginComponent} from './login/login.component';
 
 
+
 const appRoutes: Routes = [
     {
         path: 'engmang', loadChildren: 'app/eng-mang/eng-mang.module#EngMangModule',

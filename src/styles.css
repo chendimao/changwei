@@ -1861,3 +1861,31 @@ p-confirmDialog .ng-trigger-dialogState {
 th.ui-state-default.ui-unselectable-text{
     height: 44px;
 }
+
+.inputLeftSelect.fl {
+    line-height: 220%;
+}
+
+.inputRight.fl {
+
+    width: calc(100% - 130px);
+}
+
+input {
+    width:100%;
+}
+
+
+.bodyLeft .nav.fl {
+    width: 100%;
+    padding-top: 0;
+}
+
+.ui-tree.ui-widget.ui-widget-content.ui-corner-all.ui-tree-selectable {
+    padding: 0;
+}
+
+.bodyLeft{
+    padding:0;
+}
+

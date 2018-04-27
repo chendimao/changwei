@@ -13,6 +13,7 @@ import {alertModelInfo} from "../../swzb/alertModelInfo";
 import {FormControl} from "@angular/forms";
 
 import "rxjs/Rx";
+import {LoadingBarComponent} from "../../../../common/share/loading-bar/loading-bar.component";
 
 
 @Component({
@@ -35,6 +36,7 @@ export class GhzbJbxxComponent implements OnInit {
     public params;
     public parent_params;
     public key;
+    public dj;
     private alertModelInfo: alertModelInfo = new alertModelInfo;
     public nameFilter: FormControl = new FormControl();
 
@@ -60,7 +62,7 @@ export class GhzbJbxxComponent implements OnInit {
 
     @ViewChild('modelRoom', {read: ViewContainerRef}) ModelRoom: ViewContainerRef;
     public subscription: Subscription;
-    constructor(public ShareService:ShareService, public AlertModel: ComponentFactoryResolver,public SearchService: SearchService, public router: ActivatedRoute, public HttpService: HttpService, public DataProcessingService: DataProcessingService) {
+    constructor(public Loading:LoadingBarComponent,public ShareService:ShareService, public AlertModel: ComponentFactoryResolver,public SearchService: SearchService, public router: ActivatedRoute, public HttpService: HttpService, public DataProcessingService: DataProcessingService) {
 
 
 
@@ -70,29 +72,49 @@ export class GhzbJbxxComponent implements OnInit {
     }
 
     openModal(name) {
-        console.log("创建子模块");
 
+        console.log(name);
+        console.log(this.getparam);
+        console.log(this.parent_params);
+        if(name === 'add'){
 
-        if(this.selectInfo){
-            console.log(this.selectInfo);
             const person = this.AlertModel.resolveComponentFactory(GhzbJbxxChildComponent);
             const perModel = this.ModelRoom.createComponent(person);
-                  perModel.instance.baseInfo = this.selectInfo;
+
                   perModel.instance.dm = this.params.ssghxmfldm;
-                  perModel.instance.ghxm = this.ghxm;
-                  perModel.instance.ghxmjbxx = this.ghxmjbxx;
-                  perModel.instance.listDlzbflbmxDel = this.listDlzbflbmxDel;
-                  perModel.instance.listDlzbflbmxAdd = this.listDlzbflbmxAdd;
-                  perModel.instance.listDlzbflbmxEdit = this.listDlzbflbmxEdit;
+                  perModel.instance.type = name;
+                  perModel.instance.dj = JSON.parse(JSON.stringify(this.dj));
+                  perModel.instance.parent_params = this.parent_params;
+                  perModel.instance.params = this.params;
+                  perModel.instance.dataList = this.dataList;
+                  perModel.instance.currentPage = this.currentPage;
+                  perModel.instance.totalPage = this.totalPage;
+                  perModel.instance.count = this.count;
+
+
 
         }else{
 
-            if (name === 'view') {
-                this.msgs = [];
-                this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择查看项'});
-            } else if (name === 'rew') {
-                this.msgs = [];
-                this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择修改项'});
+            if(this.selectInfo ){
+                console.log(this.selectInfo);
+                const person = this.AlertModel.resolveComponentFactory(GhzbJbxxChildComponent);
+                const perModel = this.ModelRoom.createComponent(person);
+                perModel.instance.baseInfo = this.selectInfo;
+                perModel.instance.dm = this.params.ssghxmfldm;
+                perModel.instance.type = name;
+                perModel.instance.dj = JSON.parse(JSON.stringify(this.dj));
+                perModel.instance.parent_params = this.parent_params;
+                perModel.instance.params = this.params;
+
+            }else {
+                if (name === 'view') {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择查看项'});
+                } else if (name === 'rew') {
+                    this.msgs = [];
+                    this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择修改项'});
+                }
+
             }
 
 
@@ -103,7 +125,7 @@ export class GhzbJbxxComponent implements OnInit {
 
     ngOnInit() {
         //搜索
-
+            this.Loading.open();
            this.nameFilter.valueChanges
                .debounceTime(500)
                .subscribe( value => {
@@ -126,6 +148,10 @@ export class GhzbJbxxComponent implements OnInit {
                        for (let key in this.getparam) {
                            if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm' && key != 'ssghxmfldm' && key != 'xmszxzqhdm') {
                                delete  this.getparam[key];
+                           }else if(key == 'searchKey'){
+                               if(!this.getparam[key]){
+                                   delete  this.getparam[key];
+                               }
                            }
                        }
 
@@ -138,7 +164,29 @@ export class GhzbJbxxComponent implements OnInit {
                            this.currentPage = data['currentPage'];
                            this.totalPage = data['totalPage'];
                            this.count = data['count'];
+
+
+                           if(this.dj  && this.dj.length>0){
+
+                               this.dataList.forEach((value, index, arr)=>{
+
+                                   this.dj.forEach((v, i, a)=>{
+
+                                       if(value.ssghxmfldm == v.dm){
+
+                                           arr[index].djmc = v.mc;
+                                       }
+
+                                   })
+
+                               })
+                           }
+
+
                        });
+
+
+
 
                    }else{
 
@@ -169,6 +217,19 @@ export class GhzbJbxxComponent implements OnInit {
             this.parent_params = this.router.snapshot.parent.params;
 
             console.log(res);
+
+            //请求 下拉列表
+
+            this.HttpService.get(`ghxm/getSubSsghxmfl?ssgcdm=${this.parent_params.ssgcdm}&ssghxmfldm=${this.params.ssghxmfldm}`).then( res=>{
+                this.dj = res['returnObject'];
+
+            });
+
+            //============
+
+
+
+
             this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
                 .then((data) => {
                     console.log(data);
@@ -234,6 +295,11 @@ export class GhzbJbxxComponent implements OnInit {
                                     this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
                                     this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
 
+                                    if(!this.getparam.searchKey){
+                                        delete this.getparam.searchKey;
+                                    }
+
+
                                     this.HttpService.get(this.getUrl()).then((data)=>{
 
                                         console.log(data);
@@ -245,6 +311,64 @@ export class GhzbJbxxComponent implements OnInit {
 
                                 }
                             }
+
+
+                            if (data['message']['item'] == 'ghzb2') {
+
+
+                                if (data['message']['severity'] === 'success') {
+
+
+                                    //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
+
+                                    console.log(this.params)
+                                    console.log(this.getparam);
+                                    this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.params['ssgcdm']));
+                                    this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+                                    this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+
+
+                                    if(!this.getparam.searchKey){
+                                        delete this.getparam.searchKey;
+                                    }
+
+                                    this.HttpService.get(this.getUrl()).then((data)=>{
+
+                                        console.log(data);
+                                        this.dataList = data['returnObject'];
+                                        this.currentPage = data['currentPage'];
+                                        this.totalPage = data['totalPage'];
+                                        this.count = data['count'];
+
+
+
+                                        if(this.dj  && this.dj.length>0){
+
+                                            this.dataList.forEach((value, index, arr)=>{
+
+                                                this.dj.forEach((v, i, a)=>{
+
+                                                    if(value.ssghxmfldm == v.dm){
+                                                        console.log(v);
+                                                        arr[index].djmc = v.mc;
+                                                    }
+
+                                                })
+
+                                            })
+                                        }
+
+
+
+                                    });
+
+                                }
+                            }
+
+
+
+
+
                         })
 
 
@@ -280,6 +404,29 @@ export class GhzbJbxxComponent implements OnInit {
                 this.currentPage = data['currentPage'];
                 this.totalPage = data['totalPage'];
                 this.count = data['count'];
+
+                if(this.dj  && this.dj.length>0){
+
+                    this.dataList.forEach((value, index, arr)=>{
+
+                        this.dj.forEach((v, i, a)=>{
+
+                            if(value.ssghxmfldm == v.dm){
+                                console.log(v);
+                                arr[index].djmc = v.mc;
+                            }
+
+                        })
+
+                    })
+                }
+
+                console.log(this.dataList);
+
+
+
+
+
             });
 
 
@@ -406,6 +553,10 @@ export class GhzbJbxxComponent implements OnInit {
         for (let key in this.getparam) {
             if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm' && key != 'ssghxmfldm' && key != 'xmszxzqhdm') {
                 delete  this.getparam[key];
+            }else if(key == 'searchKey'){
+                    if(!this.getparam[key]){
+                        delete  this.getparam[key];
+                    }
             }
         }
 
@@ -418,6 +569,25 @@ export class GhzbJbxxComponent implements OnInit {
             this.currentPage = data['currentPage'];
             this.totalPage = data['totalPage'];
             this.count = data['count'];
+
+            console.log(this.dj);
+            if(this.dj  && this.dj.length>0){
+
+                this.dataList.forEach((value, index, arr)=>{
+
+                    this.dj.forEach((v, i, a)=>{
+
+                        if(value.ssghxmfldm == v.dm){
+                            console.log(v);
+                            arr[index].djmc = v.mc;
+                        }
+
+                    })
+
+                })
+            }
+
+
         });
 
 

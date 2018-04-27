@@ -18,7 +18,8 @@ import {
     SharedModule,
     ConfirmDialogModule,
     TreeModule,
-    GrowlModule
+    GrowlModule,
+
 } from 'primeng/primeng';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';

@@ -61,7 +61,7 @@ import {YsqkComponent} from "./ymazysjd/ysqk/ysqk.component";
         CalendarModule,
         RouterModule.forChild(EngMangRoutingModule)
     ],
-    providers: [],
+
 })
 export class EngMangModule {
 }

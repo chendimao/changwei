@@ -38,6 +38,7 @@ export class HttpService {
 
 
     post(URL, data) {
+        console.log(data);
         let headers = new Headers({
             'Content-Type': 'application/json'
         });

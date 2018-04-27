@@ -25,7 +25,6 @@ import {UserComponent} from './user/user.component';
 import {EngMangHomeComponent} from './EngMangHome/eng-mang.component';
 import {LoginComponent} from './login/login.component';
 import {UserCommonModule} from './common/UserCommon.module';
-import {SelectListHttpService} from "./service/select-list-http.service";
 
 
 
@@ -43,6 +42,7 @@ import {SelectListHttpService} from "./service/select-list-http.service";
         LoadingBarComponent,
         PopupComponent,
 
+
     ],
     imports: [
         BrowserModule,
@@ -51,11 +51,13 @@ import {SelectListHttpService} from "./service/select-list-http.service";
         FormsModule,
         AppRoutingModule,
         TabViewModule,
-        AccordionModule
+        AccordionModule,
+
+
+
     ],
     providers:
         [
-
             LoadingBarService,
             PopupService,
             {
@@ -64,6 +66,7 @@ import {SelectListHttpService} from "./service/select-list-http.service";
                 deps: [XHRBackend, RequestOptions, LoadingBarService, PopupService]
             }
         ],
+
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,57 +1,73 @@
-.nav{
+.nav {
     background: #eaedf4;
     width: 180px;
     height: 100%;
     color: white;
     overflow: hidden;
-    padding-top: 15px;
+
 }
-.styleClass{
+
+.styleClass {
     margin-top: 15px;
 }
 :host
 /deep/
-.styleClass .ui-tree-container{
+.nav .ui-widget-content{
+    border:none;
+}
+:host
+/deep/
+.styleClass .ui-tree-container {
     background: #eaedf4;
 }
+
 :host
 /deep/
-.styleClass .ui-tree .ui-treenode-selectable.ui-treenode-content{
+.styleClass .ui-tree .ui-treenode-selectable.ui-treenode-content {
     padding: 3px 0px;
 }
-.styleClass .ui-tree.ui-widget.ui-widget-content.ui-corner-all.ui-tree-selectable{
+
+.styleClass .ui-tree.ui-widget.ui-widget-content.ui-corner-all.ui-tree-selectable {
     border: none;
 }
+
 :host
 /deep/
-p-treenode{
+p-treenode {
     display: block;
 }
+
 :host
 /deep/
-.ui-tree{
+.ui-tree {
     width: 100%;
 }
+
+.active {
+    background: yellow;
+    padding: 5px;
+}
+
 /*:host*/
 /*/deep/*/
 /*.ui-tree .ui-treenode-children{*/
-    /*padding: 0;*/
+/*padding: 0;*/
 /*}*/
 
 /*:host*/
 /*/deep/*/
 /*p-treenode .ui-tree-container li.ui-treenode div.ui-treenode-content{*/
-    /*text-indent: 20px;*/
+/*text-indent: 20px;*/
 /*}*/
 /*:host*/
 /*/deep/*/
 /*.ui-tree-container li.ui-treenode li.ui-treenode div.ui-treenode-content{*/
-    /*text-indent: 30px;*/
+/*text-indent: 30px;*/
 /*}*/
 /*:host*/
 /*/deep/*/
 /*.ui-tree-container li.ui-treenode-content li.ui-treenode-content div.ui-treenode-content{*/
-    /*text-indent: 40px;*/
+/*text-indent: 40px;*/
 /*}*/
 
 

@@ -51,7 +51,7 @@ export class DelWaringComponent implements OnInit {
                             detail: '删除成功',
                             display: 'true',
                             item: this.item,
-                            id: this.id,
+
                         });
                     })
                 .catch(res => {

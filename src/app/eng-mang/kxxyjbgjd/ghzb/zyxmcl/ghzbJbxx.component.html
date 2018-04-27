@@ -11,15 +11,15 @@
         </div>
         <div class="clearfix">
             <div class="fl searchDiv">
-                <input type="text" class="searchInput" [formControl]="nameFilter"   [(ngModel)]="key" placeholder="名称，等级">
+                <input type="text" class="searchInput" [formControl]="nameFilter"   [(ngModel)]="key" placeholder="名称">
             </div>
             <div class="btnGrop fr">
-                <div class="fl"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
+                <div class="fl" (click)="openModal('add')"><span class="img"><img src="assets/img/icon/jiahao.png" alt=""></span>新增</div>
                 <div class="fl" (click)="openModal('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
                                                                                 alt=""></span>编辑
                 </div>
                 <div class="fl"  (click)="delSelect()"><span class="img"><img src="assets/img/icon/trash.png" alt=""></span>删除</div>
-                <div class="fl"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</div>
+                <div class="fl" (click)="openModal('view')"><span class="img"><img src="assets/img/icon/browse_fill.png" alt=""></span>查看</div>
             </div>
         </div>
         <div class="body clearfix">
@@ -29,7 +29,8 @@
                          responsive="true"
                          selectionMode="single">
                 <p-column field="xmmc" header="{{title.mc}}"></p-column>
-                <p-column field="xmjc" header="{{title.dj}}"></p-column>
+                <span *ngIf="dataList  && dataList.length>0 && !dataList[0].djmc "> <p-column  field="xmjc" header="{{title.dj}}"></p-column></span>
+                <p-column field="djmc" header="{{title.dj}}"></p-column>
                 <p-column field="xmgldwxzqhmc" header="{{title.qy}}"></p-column>
             </p-dataTable>
 

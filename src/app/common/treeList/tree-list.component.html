@@ -1,0 +1,15 @@
+<div class="nav fl">
+
+    <p-tree children="listZdk" [value]="qyhfList" class="{{styleClass}}" selectionMode="single"
+            [(selection)]="selectedFile" (onNodeSelect)="nodeSelect(selectedFile)">
+
+        <ng-template let-node pTemplate="default">
+
+            <div [ngClass]="{'active':node.searchRsut}"  >
+
+                {{node.label}}
+            </div>
+
+        </ng-template>
+    </p-tree>
+</div>
