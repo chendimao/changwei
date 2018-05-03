@@ -23,27 +23,25 @@
             </div>
         </div>
         <div class="body clearfix">
-            <p-dataTable [value]="dataList" dataKey="id"
-                         (onRowClick)="DatatableClick($event.data)"
-                         [emptyMessage]="'查询数据为空'"
-                         responsive="true"
+            <p-dataTable [value]="dataList" class="table" (onRowClick)="DatatableClick($event)"
+                         [emptyMessage]="'查询数据为空'" scrollable="true" resizableColumns="true"
                          selectionMode="single">
                 <p-column field="xmmc" header="{{title.mc}}"></p-column>
                 <span *ngIf="dataList  && dataList.length>0 && !dataList[0].djmc "> <p-column  field="xmjc" header="{{title.dj}}"></p-column></span>
                 <p-column field="djmc" header="{{title.dj}}"></p-column>
                 <p-column field="xmgldwxzqhmc" header="{{title.qy}}"></p-column>
             </p-dataTable>
-
-
-
-
-
-        </div>
-
-        <div class="tableEng footer">
             <app-paginator [url]="listUrl" [count]="count" [totalPage]="totalPage" [condition]="getparam"
                            (pageSelect)="queryList($event)"></app-paginator>
+
+
+
+
         </div>
+
+        <!--<div class="tableEng footer">-->
+          <!---->
+        <!--</div>-->
     </div>
     <div #modelRoom></div>
     <p-growl [(value)]="msgs"></p-growl>

@@ -46,10 +46,10 @@ export class ShebeiComponent implements OnInit {
     public whcd_list: any; //  文化程度下拉列表
     public cyzk_list: any; //  从业状况下拉列表
     public sfsldl_list: any; // 是否是劳动力
-    public sfkgr_list: any; //是否空挂人
+    public sfkbq_list: any; //是否空挂人
     public xb_list: any; //  性别选择
     public xb_list_copy: any; //  性别选择
-    public sfkgr: number = 0; //  是否空挂人
+    public sfkbq: number = 0; //  是否空挂人
     public sfldl: number = 0; //  是否劳动力
 
     public hkqk_list: any; //  户口情况列表
@@ -66,7 +66,7 @@ export class ShebeiComponent implements OnInit {
     public  isShowWhcd: any;
     public  isShowQcrq: any;
     public  isShowQrrq: any;
-    public  isShowCsrq:any;
+    public  isShowGmrq:any;
     public  whcdTableList: any;
     public  whcdTreeList: any;
     public  dcfwTableList: any;
@@ -114,7 +114,7 @@ export class ShebeiComponent implements OnInit {
             {label: '否', value: 0},
             {label: '空', value: ""}
         ];
-        this.sfkgr_list = [
+        this.sfkbq_list = [
             {label: '是', value: 1},
             {label: '否', value: 0},
             {label: '空', value: ""}
@@ -158,8 +158,16 @@ export class ShebeiComponent implements OnInit {
     }
 
     ngOnInit() {
-
-
+        this.ch = {
+            firstDayOfWeek: 0,
+            dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['天', '一', '二', '三', '四', '五', '六'],
+            dayNamesMin: ['天', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+            today: '今天',
+            clear: '清除',
+        };
         console.log(this.childInfo2);
         console.log(this.childInfo);
         console.log(this.qshflId);
@@ -233,18 +241,25 @@ export class ShebeiComponent implements OnInit {
     selectshebei(shebei, i) {
         this.hcy = shebei;
         this.name_active_key = i;
-        console.log(this.name_active_key);
-
     }
 
 
 
     // 专业大类展示
     showZydlBlock(index) {
-
+        let test = document.getElementById("zydl");
+        this.zzcModel = true;
+        if (test) {
+            let top = $('#zydl').offset().top;
+            let left = $('#zydl').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 44 - 20 + "px";
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
         if (this.type != "view") {
             this.isShowZydl = this.isShowZydl ? false : true;
-            if (!this.zydlTreeList) {
+            if (!this.zydlTableList) {
                 this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SBXX&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
@@ -264,24 +279,40 @@ export class ShebeiComponent implements OnInit {
         this.zzcModel = false;
         this.isShowZydl = false;
         if (event) {
-
+            if (this.selectedType == 1) {
                 console.log(this.selectedType);
                 this.hcy.zydldm = event.dm;
                 this.hcy.zydlmc = event.mc;
-                let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
                 this.add_shebei_data = res.add_data;
                 this.update_shebei_data = res.update_data;
-
+            }else{
+                this.tableSelecValue['zydlmc'] = event.mc;
+                this.tableSelecValue['zydldm'] = event.dm;
+                let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                this.add_shebei_data = res.add_data;
+                this.update_shebei_data = res.update_data;
+            }
         }
     }
 
     //  调查范围显示下拉
     showDcfwBlock(index) {
         this.zzcModel = true;
+        let dcfw = document.getElementById("dcfw");
+        if (dcfw) {
+            let top = $('#dcfw').offset().top;
+            let left = $('#dcfw').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
 
         if (this.type != "view") {
             this.isShowDcfw = this.isShowDcfw ? false : true;
-            if (!this.dcfwTreeList) {
+            if (!this.dcfwTableList) {
                 this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SBXX&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
@@ -302,14 +333,21 @@ export class ShebeiComponent implements OnInit {
         console.log(this.name_active_key);
         this.isShowDcfw = false;
         if (event) {
-
+            if (this.selectedType == 1) {
                 console.log(this.selectedType);
                 this.hcy.dcfwdm = event.dm;
                 this.hcy.dcfwmc = event.mc;
-            let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-            this.add_shebei_data = res.add_data;
-            this.update_shebei_data = res.update_data;
-
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                this.add_shebei_data = res.add_data;
+                this.update_shebei_data = res.update_data;
+            }else{
+                this.tableSelecValue['dcfwmc'] = event.mc;
+                this.tableSelecValue['dcfwdm'] = event.dm;
+                console.log(this.name_active_key);
+                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                this.add_shebei_data = res.add_data;
+                this.update_shebei_data = res.update_data;
+            }
 
         }
         console.log(this.update_shebei_data);
@@ -318,12 +356,18 @@ export class ShebeiComponent implements OnInit {
 
     //设备类别
 
-    showsblbBlock() {
+    showsblbBlock(index) {
         this.zzcModel = true;
-
+        let sslb = document.getElementById("sslb");
+        if (sslb) {
+            let top = $('#sslb').offset().top;
+            let left = $('#sslb').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+        }
         if (this.type != "view") {
             this.isShowSblb = this.isShowSblb ? false : true;
-            if (!this.sblbTreeList) {
+            if (!this.dcfwTableList) {
                 this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SBXX&column=SSLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
@@ -346,19 +390,21 @@ export class ShebeiComponent implements OnInit {
         console.log(this.hcy);
         this.isShowSblb = false;
         if (event) {
-
-            console.log(this.selectedType);
-            this.hcy.sslbdm = event.dm;
-            this.hcy.sslbmc = event.mc;
-            let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-            this.add_shebei_data = res.add_data;
-            this.update_shebei_data = res.update_data;
-
-
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.sslbdm = event.dm;
+                this.hcy.sslbmc = event.mc;
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                this.add_shebei_data = res.add_data;
+                this.update_shebei_data = res.update_data;
+            }else{
+                this.tableSelecValue['sslbmc'] = event.mc;
+                this.tableSelecValue['sslbdm'] = event.dm;
+                let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+                this.add_shebei_data = res.add_data;
+                this.update_shebei_data = res.update_data;
+            }
         }
-        console.log(this.update_shebei_data);
-        console.log(this.hcy);
-
     }
 
 
@@ -384,12 +430,12 @@ export class ShebeiComponent implements OnInit {
 
         console.log(this.childInfo4);
         this.tableList.push({
-            'swszxzqhdm':  "",
-            'localitydesc':  "",
-            'zydldm':  "",
-            'zydlmc':  "",
-            'dcfwdm': "",
-            'dcfwmc':  "",
+            'swszxzqhdm': this.childInfo4?this.childInfo4.ssxzqhdm:"",
+            'localitydesc': this.childInfo4?this.childInfo4.xzqhmc:"",
+            'zydldm': this.childInfo4?this.childInfo4.zydldm:"",
+            'zydlmc': this.childInfo4?this.childInfo4.zydlmc:"",
+            'dcfwdm': this.childInfo4?this.childInfo4.dcfwdm:"",
+            'dcfwmc': this.childInfo4?this.childInfo4.dcfwmc:"",
             "ssxtdm": "",
             "ssgcdm": "",
             "jddm": "",
@@ -413,6 +459,8 @@ export class ShebeiComponent implements OnInit {
 
 
         });
+
+
 
 
 
@@ -561,38 +609,48 @@ export class ShebeiComponent implements OnInit {
     }
 
 
-    getQrrqDate(event) {
-        console.log(event);
-        console.log(this.tableSelecValue)
-        if (event) {
-            if (this.selectedType == 1) {
-                console.log(this.selectedType);
-                this.hcy.qrrq = event;
-                let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-                this.add_shebei_data = res.add_data;
-                this.update_shebei_data = res.update_data;
-            } else {
-                this.tableSelecValue['qrrq'] = event;
-                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-                this.add_shebei_data = res.add_data;
-                this.update_shebei_data = res.update_data;
-            }
+
+    showGmrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowGmrq = this.isShowGmrq ? false : true;
+        let dcfw = document.getElementById("gmrq");
+        if (dcfw) {
+            let top = $('#gmrq').offset().top;
+            let left = $('#gmrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
         }
     }
 
-    getQcrqDate(event) {
-        this.hcy.qcrq = event;
-
-
-        let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-        this.add_shebei_data = res.add_data;
+    gmrqClickTime(event) {
+        this.tableSelecValue.qrrq = event;
+        let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
+        this.add_shebei_data= res.add_data;
         this.update_shebei_data = res.update_data;
-
-        console.log(this.add_shebei_data);
-
+        this.isShowQrrq=false;
+        this.zzcModel = false;
     }
 
-
+    // 所属行政区划
+    showSzxzqhBlock(index) {
+        this.zzcModel = true;
+        let szxzqh = document.getElementById("szxzqh");
+        if (szxzqh) {
+            let top = $('#szxzqh').offset().top;
+            let left = $('#szxzqh').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+        if (this.type != 'view') {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
+    }
     getCsrqDate(event) {
         this.hcy.csrq = event;
         let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
@@ -646,7 +704,7 @@ export class ShebeiComponent implements OnInit {
     //  是否空挂人
     eventSfkgr(event) {
         console.log(event);
-        this.hcy.sfkgr = event.option.value;
+        this.hcy.sfkbq = event.option.value;
 
 
         let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
@@ -802,22 +860,6 @@ export class ShebeiComponent implements OnInit {
 
     }
 
-    //坟墓类别
-    eventYmzgx(event){
-        this.hcy.ymzgx = event;
-        console.log(event);
-        console.log(this.ymzgx_list);
-
-        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_shebei_data, this.update_shebei_data, this.add_shebei_data);
-        this.add_shebei_data = res.add_data;
-        this.update_shebei_data = res.update_data;
-        console.log(this.add_shebei_data);
-        console.log(this.update_shebei_data);
-
-
-    }
-
-
     //  备注
     eventBz(event) {
         this.hcy.bz = event;
@@ -879,7 +921,7 @@ export class ShebeiComponent implements OnInit {
                 //如果上一个权属人ID长度不为32，则说明该权属人为新增
                 //则删除listHcyAdd中的该项数据
                 console.log(this.hcy.qsrId);
-                delete  this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id];
+                delete  this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'][this.hcy.id];
 
 
             }
@@ -892,33 +934,6 @@ export class ShebeiComponent implements OnInit {
         if(event.toString().length == 32){
 
             //this.hcy.id = new Date().getTime();
-
-
-
-            //将户成员基本信息带到房屋基本信息中
-            this.childInfo3.forEach((value, index, arr) => {
-
-                if (value['id'] == this.hcy['qsrId']) {
-                    for (var i in value) {
-                        for (var ii in this.hcy) {
-                            // this.name_active_data['swszxzqhdm']=value['szxzqhdm'];
-                            if (i == ii && (i == 'szxzqhdm' || i == 'xzqhmc' || i == 'dcfwdm' || i == 'dcfwmc' || i == 'zydlmc' || i == 'zydldm')) {
-                                console.log(i);
-                                this.hcy[ii] = value[i];
-                            }
-                        }
-                    }
-                    if (value['szxzqhdm'] != null) {
-                        this.hcy['swszxzqhdm'] = value['szxzqhdm'];
-                        this.hcy['localitydesc'] = value['xzqhmc'];
-                    }
-
-                }
-
-
-            });
-
-
 
 
             let res =  this.InputChange.get_select_change(this.hcy,this.name_active_key,this.init_shebei_data,this.update_shebei_data,this.add_shebei_data);
@@ -947,15 +962,15 @@ export class ShebeiComponent implements OnInit {
                 this.listHcyAdd[this.hcy.qsrId] = new Array();
             }
 
-            if( this.listHcyAdd[this.hcy.qsrId]['listsbAdd'] == undefined){
-                this.listHcyAdd[this.hcy.qsrId]['listsbAdd'] = new Array();
+            if( this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'] == undefined){
+                this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'] = new Array();
             }
 
-            if( this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id]){
-                this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id] = new Array();
+            if( this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'][this.hcy.id]){
+                this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'][this.hcy.id] = new Array();
             }
 
-            this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id] = this.hcy;
+            this.listHcyAdd[this.hcy.qsrId]['listSbxxAdd'][this.hcy.id] = this.hcy;
 
 
         }
@@ -968,6 +983,15 @@ export class ShebeiComponent implements OnInit {
 
 
 
+    }
+    //关闭遮罩层
+    closeZzc() {
+        this.isShowZydl = false;
+        this.isShowDcfw = false;
+        this.isShowArea = false;
+        this.isShowGmrq=false;
+        this.isShowSblb=false;
+        this.zzcModel = false;
     }
 
 
@@ -997,7 +1021,7 @@ const hcy = {
     qcrq: "",
     hbdm: "户别代码",
     hkszd: "户口所在地",
-    sfkgr: "是否空挂人",
+    sfkbq: "是否空挂人",
     sfsldl: "是否是劳动力",
     rs: "人数",
     bz: "备注",

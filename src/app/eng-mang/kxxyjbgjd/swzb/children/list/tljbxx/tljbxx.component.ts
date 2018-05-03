@@ -188,7 +188,7 @@ export class TljbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.tlList[0].qsrId] != undefined) {
 
-                delete this.listHcyAdd[this.tlList[0].qsrId]['listtlAdd'];
+                delete this.listHcyAdd[this.tlList[0].qsrId]['listTlAdd'];
             }
         }
         this.tlList[0] = (new tl(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','' ));
@@ -325,7 +325,7 @@ export class TljbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.tlList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.tlList[0].qsrId]['listtlAdd'];
+                    delete this.listHcyAdd[this.tlList[0].qsrId]['listTlAdd'];
                 }
 
             }
@@ -345,7 +345,7 @@ export class TljbxxComponent implements OnInit {
                 this.add_tljbxx_data[0] = this.tlList[0];
             }
         }else{
-            this.listHcyAdd[this.tlList[0].qsrId]['listtlAdd'] = this.tlList[0];
+            this.listHcyAdd[this.tlList[0].qsrId]['listTlAdd'] = this.tlList[0];
 
 
 

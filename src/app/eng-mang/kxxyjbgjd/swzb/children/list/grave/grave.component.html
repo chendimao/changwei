@@ -270,6 +270,23 @@
 </div>
 <div *ngIf="selectedType==2" (scroll)="onScroll($event)">
     <div style="width:100%;height: 100%;margin-top: 15px">
+        <div class="btnGrop fr">
+            <ul class="fr  btnGrop" *ngIf="!isDisabled">
+                <li class="fl" (click)="addgrave()"><span class="img"><img src="assets/img/icon/jiahao.png"
+                                                                           alt=""></span>增加
+                </li>
+                <li class="fl" (click)="delgrave()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                           alt=""></span>删除
+                </li>
+                <li class="fl">
+                    <div class="selectLi rl">
+                        更多操作
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix" style="margin-top: 15px"></div>
         <p-dataTable [value]="tableList" scrollable="true" [(selection)]="tableSelecValue"
                      selectionMode="single" scrollHeight="500px" [editable]="true" (onNodeSelect)="nodeSelect($event)"
 
@@ -277,7 +294,7 @@
                      bodyStyle="{'text-align':'center'}">
             <p-column field="fmbh" header="坟墓编号" frozen="true" [editable]="true"  [style]="{'width':'200px','height':'44px'}">
                 <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
-                    <div *ngIf="tableSelecValue">
+                    <div *ngIf="tableSelecValue" #tablePerson>
                         <div *ngIf="tableSelecValue.id==node.id">
                             <input [disabled]="isDisabled" type="text" [(ngModel)]="node.fmbh" (ngModelChange)="tableChange()">
                         </div>

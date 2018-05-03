@@ -48,15 +48,15 @@
     <!--</div>-->
 
 
-    <div class="fl group group-4">
+    <div class="fl group group-4 importent">
       <span>名称</span>
       <input [disabled]="isDisabled" name="mc" [(ngModel)]="dxgcList[0].mc" type="text" />
     </div>
 
 
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>电信工程类别</span>
-      <input [disabled]="isDisabled" name="gdgclb" type="text" [(ngModel)]="dxgcList[0].gdgclbmc" name="zydldm"
+      <input [disabled]="isDisabled" name="gdgclb" type="text" [(ngModel)]="dxgcList[0].dxgclbmc" name="dxgclbmc"
              (click)="showgdgcBlock()" readonly="readonly">
       <i class="xiala" (click)="showgdgcBlock()"></i>
       <app-sec-type-list (SelectModel)="getChildgdgc($event)" [isShow]="isShowgdgc"
@@ -68,13 +68,13 @@
 
   </div>
 
-  <div class="fl group group-2 danwei">
+  <div class="fl group group-2">
     <span>结束地点</span>
     <input [disabled]="isDisabled" name="jsdd" [(ngModel)]="dxgcList[0].jsdd" type="text" />
 
   </div>
 
-  <div class="fl group group-4 ">
+  <div class="fl group group-4 importent">
     <span>隶属关系</span>
     <input [disabled]="isDisabled" name="jsgx" [(ngModel)]="dxgcList[0].lsgx" type="text" />
 
@@ -152,7 +152,7 @@
     <input [disabled]="isDisabled" name="fwfw" [(ngModel)]="dxgcList[0].fwfw" type="text" />
 
   </div>
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>建成日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="dxgcList[0].jcrq"
@@ -170,10 +170,10 @@
 
 
 
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
+    <div class="fl group group-1 ">
+
       <span >备注 </span>
-    </div>
+
     <textarea  class="textarea " cols="30" id="" name="bz" [(ngModel)]="dxgcList[0].bz" rows="10"  model="所在最低高程"></textarea>
   </div>
 

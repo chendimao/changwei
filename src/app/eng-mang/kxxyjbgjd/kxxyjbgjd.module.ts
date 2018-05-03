@@ -29,15 +29,12 @@ import {HttpService} from "../../service/http-service";
 import {KxxyjbgjdRoutingModule} from './kxxyjbgjd-routing.module';
 import {TzgsComponent} from "./tzgs/tzgs.component";
 import {DataProcessingService} from "../../service/dataProcessing.service";
-import {KxxyjbgjdComponent} from "./kxxyjbgjd.component";
-import {ShareService} from "../../systemSetting/service/share.service";
 @NgModule({
     declarations: [
-        TzgsComponent
+        TzgsComponent,
     ],
 
     imports: [
-
         BreadcrumbModule,
         PanelModule,
         DropdownModule,
@@ -61,7 +58,7 @@ import {ShareService} from "../../systemSetting/service/share.service";
         RouterModule.forChild(KxxyjbgjdRoutingModule)
     ],
     entryComponents: [],
-    providers: [HttpService, ValuChangeService,ShareService,  DataProcessingService],
+    providers: [HttpService, ValuChangeService, DataProcessingService],
 })
 export class KxxyjbgjdModule {
 }

@@ -45,7 +45,7 @@
 
   </div>
 
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>工程类别</span>
       <input [disabled]="isDisabled" name="gclbmc" type="text" [(ngModel)]="slsdList[0].gclbmc"
              (click)="showslsdBlock()" readonly="readonly">
@@ -55,7 +55,7 @@
     </div>
 
 
- <div class="fl group group-4">
+ <div class="fl group group-4 importent">
     <span>工程名称</span>
        <input [disabled]="isDisabled" name="mc" type="text" [(ngModel)]="slsdList[0].mc"/>
 
@@ -70,13 +70,6 @@
 
 
   </div>
-  
-  
-
-
-
-
-
 
   <div class="fl group group-4 danwei">
     <span>数量（装机容量）</span>
@@ -103,7 +96,7 @@
   </div>
 
 
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>建成日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="slsdList[0].jcrq"

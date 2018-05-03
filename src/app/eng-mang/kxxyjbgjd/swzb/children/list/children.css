@@ -34,13 +34,13 @@ header > div > div.active {
     margin: 5px 0;
 }
 
+
 .textareaBeizhu {
     float: left;
     margin-top: 10px;
-    width: 8.5%;
+    width: 10%;
     text-align: right;
 }
-
 .beizhu {
     margin-top: 20px;
     padding-top: 5px;
@@ -180,7 +180,7 @@ textarea {
 }
 
 .danwei .mianji {
-    height: 32px;
+    height: 31px;
 
 }
 
@@ -212,6 +212,7 @@ textarea {
     padding: 15px;
     padding-top: 0;
     width: 82%;
+    background: white;
 }
 
 .headerTitle {
@@ -309,9 +310,14 @@ textarea {
     width: 40px;
     height: 30px;
 }
-
+.input_right_dw{
+    width: calc(70% - 40px);
+}
+.input_right_dw input{
+    height: 31px;
+}
 .textarea.textarea {
-    width: calc(100% - 140px);
+    width: calc(100% - 10%);
     height: 60px;
     resize: none;
     border: 1px solid #ccc;
@@ -321,12 +327,7 @@ textarea {
     padding: 1px 0;
 }
 
-.textareaBeizhu {
-    float: left;
-    margin-top: 10px;
-    width: 100px;
-    text-align: right;
-}
+
 
 .table1 {
     min-width: 1400px;
@@ -376,6 +377,11 @@ textarea {
     .inputBox {
         width: 50%;
     }
+    .group-4{
+        width:50%;
+    }
+
+
 }
 
 .button_10 {
@@ -438,6 +444,29 @@ p-panel {
     width: 45%;
     display: inline-block;
 }
+.danwei.big_mj input{
+    width: calc(100% - 175px);
+}
+.big_mj .mianji{
+    width: 45px;
+}
+.group .inputRight{
+    width: calc(100% - 120px);
+    height: 33px;
+}
+.group .textarea{
+    width: calc(100% - 120px);
+}
+.group-2 .textarea{
+    width: calc(100% - 120px);
+}
+.group > span{
+    width: 110px;
+    padding: 8px 3px 8px 9px;
+}
+.time{
+    height: 42px;
+}
 :host
 /deep/
  .ui-panel.ui-widget .ui-panel-titlebar{
@@ -452,7 +481,6 @@ p-panel {
     top: 38px;
     right: 20px;
 }
-
 
 
 

@@ -17,7 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign,i)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
             </tr>
@@ -63,7 +63,7 @@
             <form #person="ngForm" >
                 <div class="inputBox  rl fl">
                     <div class="input_left fl importent">
-                        名称:
+                        名称
                     </div>
                     <div class="input_right fl">
                         <input type="text" class="inputH" value="" [(ngModel)]="hcy.mc" name="mc">
@@ -192,9 +192,13 @@
 
                 </div>
 
-                <div class="fl group group-4 danwei big_mj">
-                    <span>设施原值</span>
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        设施原值
+                    </div>
+                    <div class="input_right fl input_right_dw">
                     <input [disabled]="isDisabled" name="ssyz" [(ngModel)]="hcy.ssyz" type="number">
+                    </div>
                     <div class="fl mianji">
                         万元
                     </div>
@@ -202,9 +206,14 @@
                 </div>
 
 
-                <div class="fl group group-4 danwei big_mj">
-                    <span>占地面积</span>
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+            占地面积
+                    </div>
+                    <div class="input_right fl input_right_dw">
                     <input [disabled]="isDisabled" name="zdmj" [(ngModel)]="hcy.zdmj" type="number">
+                    </div>
                     <div class="fl mianji">
                         m²
                     </div>
@@ -212,22 +221,23 @@
                 </div>
 
 
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>建设日期</span>
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        建设日期
                     </div>
-                    <div class="inputRight fl">
+                    <div class="input_right fl">
                         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="hcy.jsrq"
                                         (SelectModel)="eventJsrq($event)" readonly="readonly"></app-p-calendar>
 
                     </div>
                 </div>
 
-                <div class="inputArea fl">
-                    <div class="inputLeft fl">
-                        <span>投产日期</span>
+
+                <div class="inputBox  rl fl">
+                    <div class="input_left fl ">
+                        投产日期
                     </div>
-                    <div class="inputRight fl">
+                    <div class="input_right fl">
                         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="hcy.tcrq"
                                         (SelectModel)="eventTcrq($event)" readonly="readonly"></app-p-calendar>
 
@@ -256,40 +266,274 @@
     </div>
 </div>
 <div *ngIf="selectedType==2">
-    <div style="width:100%;overflow: auto">
-        <p-dataTable [value]="tableList" scrollable="true" scrollHeight="200px" [editable]="true" [emptyMessage]="'查询数据为空'"
-                     frozenWidth="300px" unfrozenWidth="calc(100% - 300px)"   [style]="{'margin-top':'30px'}" bodyStyle="{'text-align':'center'}">
-            <p-column field="mc" header="名称" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-            <p-column field="cym" header="曾用名" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-            <p-column field="sfzh" header="身份证号码" [style]="{'width':'100px'}" frozen="true" [editable]="true"></p-column>
-            <p-column field="szxzqhdm" header="所在行政区划分" [style]="{'width':'150px'}" [editable]="true"></p-column>
-            <p-column field="hbdm" header="户别" [style]="{'width':'150px'}"></p-column>
-            <p-column field="zydldm" header="专业大类" [style]="{'width':'150px'}"></p-column>
-            <p-column field="dcfwdm" header="调查范围" [style]="{'width':'150px'}"></p-column>
+    <div style="width:100%;height: 100%;margin-top: 15px">
+        <p-dataTable [value]="tableList" scrollable="true" [(selection)]="tableSelecValue"
+                     selectionMode="single" scrollHeight="500px" [editable]="true" (onNodeSelect)="nodeSelect($event)"
 
-            <p-column field="xbdm" header="性别" [style]="{'width':'150px'}" frozen="true"></p-column>
-            <p-column field="mzdm" header="民族" [style]="{'width':'150px'}"></p-column>
-            <p-column field="yhzgx" header="与户主关系" [style]="{'width':'150px'}"></p-column>
-            <p-column field="csrq" header="出生日期" [style]="{'width':'150px'}" [editable]="true" [style]=" {'overflow':'visible' }">
-                <ng-template let-col let-car="rowData" pTemplate="body">
-                    {{car[col.field]|date }}
+                     class="table" frozenWidth="200px" unfrozenWidth="calc(100% - 200px)" [frozenValue]="frozenCars"
+                     bodyStyle="{'text-align':'center'}">
+            <p-column field="mc" header="名称" frozen="true" [editable]="true">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.mc" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.mc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.mc}}
+                    </div>
+
                 </ng-template>
-                <ng-template let-col let-car="rowData" pTemplate="editor">
-                    <p-calendar [(ngModel)]="car[col.field]" appendTo="body"></p-calendar>
+            </p-column>
+            <p-column field="qsrmc" header="权属人" frozen="true" [style]="{'width':'100px','height':'44px'}" >
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <app-select-list [width]="0" [values]="selectPersonList" [selectValue]="node.qsrId"
+                                             (SelectModel)="eventQsr($event)"></app-select-list>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.qsrmc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.qsrmc}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="xzqhmc" [style]="{'width':'150px','height':'44px','overflow':'hidden'}">
+                <ng-template pTemplate="header">
+                    <span class="importent">所在行政区划</span>
+                </ng-template>
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <div class="tableClass"
+                                 (click)="showSzxzqhBlock(i)" id="szxzqh" title="{{node.localitydesc}}">{{node.localitydesc}}
+                            </div>
+
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.localitydesc}}
+                        </div>
+                    </div>
+
+                    <div *ngIf="!tableSelecValue">
+                        {{node.localitydesc}}
+                    </div>
+
+
+                </ng-template>
+            </p-column>
+            <p-column field="zydlmc" header="专业大类" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div (click)="showZydlBlock(i)" class="tableClass"
+                         id="zydl" title="{{node.zydlmc}}">{{node.zydlmc}}
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="dcfwmc" header="调查范围" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div (click)="showDcfwBlock(i)" class="tableClass"
+                         id="dcfw" title="{{node.dcfwmc}}">{{node.dcfwmc}}
+                    </div>
                 </ng-template>
 
             </p-column>
-            <p-column field="whcddm" header="文化程度" [style]="{'width':'150px'}"></p-column>
-            <p-column field="hydm" header="婚姻" [style]="{'width':'150px'}"></p-column>
-            <p-column field="sfsldl" header="是否劳动" [style]="{'width':'150px'}"></p-column>
+            <p-column field="sslbmc" header="设施类别" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div (click)="showsblbBlock(i)" class="tableClass"
+                         id="sslb" title="{{node.sslbmc}}">{{node.sslbmc}}
+                    </div>
+                </ng-template>
 
-            <p-column field="hkszd" header="户口所在地" [style]="{'width':'150px'}"></p-column>
-            <p-column field="rs" header="人数" [style]="{'width':'150px'}"></p-column>
-            <p-column field="bz" header="备注" [style]="{'width':'150px'}"></p-column>
-            <p-column field="cjsj" header="创建时间" [style]="{'width':'150px'}"></p-column>
+            </p-column>
+            <p-column field="sl" header="数量" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sl" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.sl}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.sl}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+
+            <p-column field="jg" header="结构" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.jg" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.jg}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.jg}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+            <p-column field="ggcc" header="规格尺寸" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.ggcc" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.ggcc}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.ggcc}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+            <p-column field="ssyz" header="设施原值" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sbyz" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.sbyz}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.sbyz}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+            <p-column field="zdmj" header="占地面积" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.sbyz" (ngModelChange)="tableChange()">
+
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.zdmj}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.zdmj}}
+                    </div>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="jsrq" header="建设日期" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id" style="margin-top: -15px">
+                            <div class="tableClass" (click)="showJsrqBlock(i)"
+                                 id="jsrq" title="{{node.jsrq | date:'yyyy-MM-dd'}}">{{node.jsrq | date:"yyyy-MM-dd"}}&nbsp;
+                            </div>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.jsrq | date:"yyyy-MM-dd"}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.jsrq | date:"yyyy-MM-dd"}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+            <p-column field="tcrq" header="投产日期" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id" style="margin-top: -15px">
+                            <div class="tableClass" (click)="showTcrqBlock(i)"
+                                 id="tcrq" title="{{node.tcrq | date:'yyyy-MM-dd'}}">{{node.tcrq | date:"yyyy-MM-dd"}}&nbsp;
+                            </div>
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.tcrq | date:"yyyy-MM-dd"}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.tcrq | date:"yyyy-MM-dd"}}
+                    </div>
+
+                </ng-template>
+            </p-column>
+            <p-column field="szwz" header="所在位置" [style]="{'width':'150px','height':'30px'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.szwz" (ngModelChange)="tableChange()">
+
+                            <div *ngIf="tableSelecValue.id!=node.id">
+                                {{node.szwz}}
+                            </div>
+                        </div>
+                        <div *ngIf="!tableSelecValue">
+                            {{node.szwz}}
+                        </div>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="bz" header="备注" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
+                <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
+                    <div *ngIf="tableSelecValue">
+                        <div *ngIf="tableSelecValue.id==node.id">
+                            <input [disabled]="isDisabled" type="text" [(ngModel)]="node.bz" (ngModelChange)="tableChange()">
+                        </div>
+                        <div *ngIf="tableSelecValue.id!=node.id">
+                            {{node.bz}}
+                        </div>
+                    </div>
+                    <div *ngIf="!tableSelecValue">
+                        {{node.bz}}
+                    </div>
+                </ng-template>
+            </p-column>
 
 
         </p-dataTable>
+
+        <div *ngIf="zzcModel" (click)="closeZzc()" class="ui-widget-overlay ui-dialog-mask"></div>
+        <app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="zydlTableList" [treeList]="zydlTreeList">
+        </app-sec-type-list>
+        <app-sec-type-list (SelectModel)="getChildDcfw($event)" [isShow]="isShowDcfw"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="dcfwTableList" [treeList]="dcfwTreeList">
+        </app-sec-type-list>
+
+        <app-sec-type-list (SelectModel)="getChildsblb($event)" [isShow]="isShowSblb"
+                           [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                           [tableList]="sblbTableList" [treeList]="sblbTreeList">
+        </app-sec-type-list>
+        <app-area-select [localityCode]="ssxzqhSearchDm" class="areaCommpont"
+                         [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
+                         [display]="isShowArea" (childEvent)="getChildSzxzqh($event)"></app-area-select>
+        <div *ngIf="isShowJsrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
+            <!--建设日期-->
+            <p-calendar [inline]="true" [locale]="ch" (onSelect)="jsrqClickTime(value)"
+                        [(ngModel)]="value"></p-calendar>
+        </div>
+        <div *ngIf="isShowTcrq" [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}">
+            <!--投产日期-->
+            <p-calendar [inline]="true" [locale]="ch" (onSelect)="tcrqClickTime(value)"
+                        [(ngModel)]="value"></p-calendar>
+        </div>
+
+
+
+
     </div>
 </div>
 

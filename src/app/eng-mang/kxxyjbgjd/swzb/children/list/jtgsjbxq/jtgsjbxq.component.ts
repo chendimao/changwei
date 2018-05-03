@@ -81,11 +81,11 @@ export class JtgsjbxqComponent implements OnInit {
             console.log(this.update_gtgsjbxx_data);
             console.log(this.add_gtgsjbxx_data);
 
-            for( let i in this.add_gtgsjbxx_data){
-                if(i != '0'){
-                    delete this.add_gtgsjbxx_data[i];
-                }
-            }
+            // for( let i in this.add_gtgsjbxx_data){
+            //     if(i != '0'){
+            //         delete this.add_gtgsjbxx_data[i];
+            //     }
+            // }
         });
 
         // }
@@ -175,12 +175,15 @@ export class JtgsjbxqComponent implements OnInit {
                     this.del_gtgsjbxx_data.push({id:this.gtgsList[0].id});
 
 
-                        delete this.update_gtgsjbxx_data[this.gtgsList[0]['id']];
+                        delete this.update_gtgsjbxx_data[0];
 
+                        if(this.add_gtgsjbxx_data[0] && this.add_gtgsjbxx_data[0].length>0){
+                            delete this.add_gtgsjbxx_data[0];
+                        }
 
                 }else{
 
-                        delete this.add_gtgsjbxx_data[this.gtgsList[0]['id']];
+                        delete this.add_gtgsjbxx_data[0];
 
                 }
 
@@ -324,7 +327,7 @@ export class JtgsjbxqComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.gtgsList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.gtgsList[0].qsrId]['listgtgsAdd'];
+                    delete this.listHcyAdd[this.gtgsList[0].qsrId]['listGtgshAdd'];
                 }
 
             }
@@ -344,7 +347,7 @@ export class JtgsjbxqComponent implements OnInit {
                 this.add_gtgsjbxx_data[0] = this.gtgsList[0];
             }
         }else{
-            this.listHcyAdd[this.gtgsList[0].qsrId]['listgtgsAdd'] = this.gtgsList[0];
+            this.listHcyAdd[this.gtgsList[0].qsrId]['listGtgshAdd'] = this.gtgsList[0];
 
 
 

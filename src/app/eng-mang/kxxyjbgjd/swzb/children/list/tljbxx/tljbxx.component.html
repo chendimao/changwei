@@ -43,7 +43,7 @@
               <input [disabled]="isDisabled" name="xlbh" [(ngModel)]="tlList[0].xlbh" type="text">
 
     </div>
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>铁路类别</span>
       <input [disabled]="isDisabled" type="text" [(ngModel)]="tlList[0].tllbmc" name="zydldm"
              (click)="showtlBlock()" readonly="readonly">
@@ -51,7 +51,7 @@
       <app-sec-type-list (SelectModel)="getChildtl($event)" [isShow]="isShowtl"
                          [treeList]="tlTreeList" [tableList]="tlTableList"></app-sec-type-list>
     </div>
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>路线名称</span>
             <input [disabled]="isDisabled" name="lxmc" [(ngModel)]="tlList[0].mc" type="text">
 
@@ -169,7 +169,7 @@
 
 
   <!--</div>-->
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>建成日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="tlList[0].jcrq"
@@ -178,7 +178,7 @@
       </div>
 
     </div>
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>投运日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="tlList[0].tyrq"

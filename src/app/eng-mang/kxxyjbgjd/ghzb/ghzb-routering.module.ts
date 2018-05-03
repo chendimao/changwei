@@ -7,8 +7,8 @@ export const GhzbRoutingModule = [
         path: '',
         component: GhzbTreelistComponent,
         children: [
-            {path: 'ghzbArea/:ssgcdm/:xmszxzqhdm/:ssghxmfldm/:localityDesc', component: GhzbAreaComponent},
-            {path: 'ghzbjbxx/:ssgcdm/:xmszxzqhdm/:ssghxmfldm/:localityDesc', component: GhzbJbxxComponent},
+            {path: 'ghzbArea/:xmszxzqhdm/:ssghxmfldm/:localityDesc', component: GhzbAreaComponent},
+            {path: 'ghzbjbxx/:xmszxzqhdm/:ssghxmfldm/:localityDesc', component: GhzbJbxxComponent},
         ]
 
     },

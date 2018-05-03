@@ -1747,8 +1747,8 @@ export class TreesComponent {
             if(this.name_active_data['flbmxList'] != undefined && this.name_active_data['flbmxList'].length>0){
 
                 for(let i in this.name_active_data['flbmxList']){
-                        if((this.name_active_data['flbmxList'][i]['sl'] == "" || this.name_active_data['flbmxList'][i]['sl'] == null) && (this.name_active_data['flbmxList'][i]['bz'] == "" && this.name_active_data['flbmxList'][i]['bz'] == null)){
-                            delete this.name_active_data['flbmxList'][i];
+                    if((this.name_active_data['flbmxList'][i]['sl'] == "" || this.name_active_data['flbmxList'][i]['sl'] == null) && (this.name_active_data['flbmxList'][i]['bz'] == "" && this.name_active_data['flbmxList'][i]['bz'] == null)){
+                        delete this.name_active_data['flbmxList'][i];
                     }
                 }
 

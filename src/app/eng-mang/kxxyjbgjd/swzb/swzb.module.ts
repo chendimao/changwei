@@ -4,7 +4,9 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
+
 import {
+    TreeModule,
     BreadcrumbModule,
     PanelModule,
     DropdownModule,
@@ -20,8 +22,7 @@ import {
     DataTableModule,
     SharedModule,
     GrowlModule,
-    TreeTableModule,
-    TreeModule
+    TreeTableModule
 } from 'primeng/primeng';
 import {SwzbRoutingModule} from "./swzb-routering.module";
 
@@ -79,7 +80,6 @@ import {DelWaringComponent} from "../../../common/del-waring/del-waring.componen
 import {ShareService} from "../../../systemSetting/service/share.service";
 
 
-
 @NgModule({
     declarations: [
         CardReformPipe,
@@ -126,8 +126,6 @@ import {ShareService} from "../../../systemSetting/service/share.service";
     ],
 
     imports: [
-
-        TreeModule,
         TreeModule,
         TreeTableModule,
         BreadcrumbModule,

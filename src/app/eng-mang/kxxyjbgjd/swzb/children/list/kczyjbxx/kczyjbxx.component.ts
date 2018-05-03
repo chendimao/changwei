@@ -433,6 +433,10 @@ export class KczyjbxxComponent implements OnInit {
     eventJgrq(e){
 
         this.kczyList[0].jcrq = e;
+        let res = this.InputChange.get_select_change(this.kczyList[0],0,this.init_kczyjbxx_data,this.update_kczyjbxx_data,[]);
+
+        this.update_kczyjbxx_data= res['update_data'];
+
 
     }
 

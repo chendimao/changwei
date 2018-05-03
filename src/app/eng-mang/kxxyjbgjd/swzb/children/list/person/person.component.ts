@@ -33,7 +33,7 @@ export class PersonComponent implements OnInit {
     public test: any;
     public test2: any;
 
-
+    public ssxzqhSearchDm: any;
     public qshflId; //  权属户信息
     public type: string; //  类型：查看、新增、修改
     public childInfo: any;
@@ -65,39 +65,40 @@ export class PersonComponent implements OnInit {
     public hbdm_list: any;// 户别代码 列表
     public ssxzqhdm: any; //  所属行政区划代码
     public ssgcdm: any; //  所属行政区划代码
-    public  isShowZydl: any;
-    public  isShowDcfw: any;
-    public  isShowHkqk: any;
-    public  isShowWhcd: any;
-    public  isShowQcrq: any;
-    public  isShowQrrq: any;
-    public  isShowCsrq:any;
-    public  whcdTableList: any;
-    public  whcdTreeList: any;
-    public  dcfwTableList: any;
-    public  dcfwTreeList: any;
-    public  zydlTableList: any;
-    public  zydlTreeList: any;
-    public  hkqkTableList: any;
-    public  hkqkTreeList: any;
+    public isShowZydl: any;
+    public isShowDcfw: any;
+    public isShowHkqk: any;
+    public isShowWhcd: any;
+    public isShowQcrq: any;
+    public isShowQrrq: any;
+    public isShowCsrq: any;
+    public whcdTableList: any;
+    public whcdTreeList: any;
+    public dcfwTableList: any;
+    public dcfwTreeList: any;
+    public zydlTableList: any;
+    public zydlTreeList: any;
+    public hkqkTableList: any;
+    public hkqkTreeList: any;
     public isDisabled = false;
-    public  tableSelecValue: any;
-    public  zydlLeft: any;
-    public  zydlTop: any;
+    public tableSelecValue: any;
+    public zydlLeft: any;
+    public zydlTop: any;
     public szxzqugldm: any;
     public xb;
     public sfldldm;
 
 
-    public  zzcModel: boolean = false;
-    public  ch:any;
+    public zzcModel: boolean = false;
+    public ch: any;
 
 
     area: string;
     @ViewChild('person') person: NgForm;
     @ViewChildren('defaultPerson') defaultPerson: QueryList<ElementRef>;
+    @ViewChildren('tablePerson') tablePerson;
     public hyzk: any;
-    public hb:any;
+    public hb: any;
 
 
     constructor(public InputChange: InputChangeService, public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, public  ValuChangeService: ValuChangeService, public  HttpService: HttpService, public  route: ActivatedRoute) {
@@ -175,28 +176,27 @@ export class PersonComponent implements OnInit {
         console.log(this.qshflId);
         this.selectedType = 1;
         this.tableList = this.childInfo2;
-                //
-                // if(this.childInfo2 && this.childInfo2.length>0){
-                //     this.tableList = this.childInfo2;
-                //
-                // }else{
-                //     this.tableList = this.childInfo2;
-                //     this.add_person_data = this.tableList;
-                // }
+        //
+        // if(this.childInfo2 && this.childInfo2.length>0){
+        //     this.tableList = this.childInfo2;
+        //
+        // }else{
+        //     this.tableList = this.childInfo2;
+        //     this.add_person_data = this.tableList;
+        // }
 
 
-                this.hcy_count = this.tableList != undefined && this.tableList.length ? this.tableList.length : 0;
+        this.hcy_count = this.tableList != undefined && this.tableList.length ? this.tableList.length : 0;
 
-                if(this.tableList && this.tableList.length){
-                    this.hcy = this.tableList[0];
-                    this.name_active_key = 0;
+        if (this.tableList && this.tableList.length) {
+            this.hcy = this.tableList[0];
+            this.name_active_key = 0;
 
-                    this.hyzk = this.hcy.hydm;
-                    this.xb = this.hcy.xbdm;
-                    this.sfldldm = this.hcy.sfsldl;
-                    this.hb = this.hcy.hbdm;
-                }
-
+            this.hyzk = this.hcy.hydm;
+            this.xb = this.hcy.xbdm;
+            this.sfldldm = this.hcy.sfsldl;
+            this.hb = this.hcy.hbdm;
+        }
 
 
         console.log(this.hcy);
@@ -211,22 +211,22 @@ export class PersonComponent implements OnInit {
 
             this.ssgcdm = this.childInfo.ssgcdm;
             this.ssxzqhdm = this.childInfo.ssxzqhdm;
-        }else{
+        } else {
             this.ssgcdm = this.childInfo.ssgcdm;
             this.ssxzqhdm = this.childInfo.ssxzqhdm;
             this.isDisabled = true;
         }
 
 
-        console.log(this.ssgcdm);
+        console.log(this.ssgcdm = "S000001");
 
 
         //  与户主关系 下拉列表
         this.selectList.getSelectList('B_HYHCYGX', 'YHZGXDM', this.ssgcdm, this.ssxzqhdm).then(data => {
             let lsObj = [];
             for (let item in data) {
-                console.log(data[item])
-                lsObj.push(data[item])
+                console.log(data[item]);
+                lsObj.push(data[item]);
             }
             lsObj.push({label: "空", value: ""});
 
@@ -236,8 +236,8 @@ export class PersonComponent implements OnInit {
         this.selectList.getSelectList('B_HCY', 'MZDM', this.ssgcdm, this.ssxzqhdm).then(data => {
             let lsObj = [];
             for (let item in data) {
-                console.log(data[item])
-                lsObj.push(data[item])
+                console.log(data[item]);
+                lsObj.push(data[item]);
             }
             lsObj.push({label: "空", value: ""});
 
@@ -247,8 +247,8 @@ export class PersonComponent implements OnInit {
         this.selectList.getSelectList('B_HCY', 'WHCDDM', this.ssgcdm, this.ssxzqhdm).then(data => {
             let lsObj = [];
             for (let item in data) {
-                console.log(data[item])
-                lsObj.push(data[item])
+                console.log(data[item]);
+                lsObj.push(data[item]);
             }
             lsObj.push({label: "空", value: ""});
             this.whcd_list = lsObj;
@@ -258,8 +258,8 @@ export class PersonComponent implements OnInit {
             // data.push({label: "kong", value: null});
             let lsObj = [];
             for (let item in data) {
-                console.log(data[item])
-                lsObj.push(data[item])
+                console.log(data[item]);
+                lsObj.push(data[item]);
             }
             lsObj.push({label: "空", value: ""});
             this.cyzk_list = lsObj;
@@ -293,7 +293,7 @@ export class PersonComponent implements OnInit {
             let left = $('#szxzqh').offset().left;
             this.zydlLeft = left + 130 + "px";
             this.zydlTop = top + index * 30 - 20 + "px";
-            console.log(index)
+            console.log(index);
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
@@ -339,7 +339,7 @@ export class PersonComponent implements OnInit {
 
     //  文化程度选中数据
     getChildWhcd(event) {
-        console.log(event)
+        console.log(event);
         this.zzcModel = false;
         this.isShowWhcd = false;
         if (event) {
@@ -441,7 +441,7 @@ export class PersonComponent implements OnInit {
     }
 
     getChildZydl(event) {
-        console.log(event)
+        console.log(event);
         this.zzcModel = false;
         this.isShowZydl = false;
         if (event) {
@@ -471,7 +471,7 @@ export class PersonComponent implements OnInit {
             let left = $('#dcfw').offset().left;
             this.zydlLeft = left + 130 + "px";
             this.zydlTop = top + index * 30 - 20 + "px";
-            console.log(index)
+            console.log(index);
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
@@ -526,7 +526,7 @@ export class PersonComponent implements OnInit {
             let left = $('#qrrq').offset().left;
             this.zydlLeft = left + 130 + "px";
             this.zydlTop = top + index * 30 - 20 + "px";
-            console.log(index)
+            console.log(index);
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
@@ -537,9 +537,9 @@ export class PersonComponent implements OnInit {
         let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
-        this.isShowQrrq=false;
+        this.isShowQrrq = false;
         this.zzcModel = false;
-      }
+    }
 
     showQcrqBlock(index) {
         this.zzcModel = true;
@@ -550,17 +550,18 @@ export class PersonComponent implements OnInit {
             let left = $('#qcrq').offset().left;
             this.zydlLeft = left + 130 + "px";
             this.zydlTop = top + index * 30 - 20 + "px";
-            console.log(index)
+            console.log(index);
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
     }
+
     qcrqClickTime(event) {
-        this.tableSelecValue.qcrq= event;
+        this.tableSelecValue.qcrq = event;
         let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
-        this.isShowQcrq=false;
+        this.isShowQcrq = false;
         this.zzcModel = false;
     }
 
@@ -573,23 +574,25 @@ export class PersonComponent implements OnInit {
             let left = $('#csrq').offset().left;
             this.zydlLeft = left + 130 + "px";
             this.zydlTop = top + index * 30 - 20 + "px";
-            console.log(index)
+            console.log(index);
             console.log(this.zydlTop);
             console.log(this.zydlLeft);
         }
     }
+
     csrqClickTime(event) {
-        this.tableSelecValue.csrq= event;
+        this.tableSelecValue.csrq = event;
         let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
-        this.isShowCsrq=false;
+        this.isShowCsrq = false;
         this.zzcModel = false;
     }
+
     // 为每个select绑定事件
     getChildSelect(e, zd) {
         console.log(e);
-        console.log(zd)
+        console.log(zd);
         this.tableSelecValue[zd] = e;
         console.log(this.tableSelecValue);
         let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
@@ -608,34 +611,34 @@ export class PersonComponent implements OnInit {
         this.isShowZydl = false;
         this.isShowDcfw = false;
         this.isShowArea = false;
-        this.isShowQcrq=false;
-        this.isShowCsrq=false;
-        this.isShowQrrq=false;
-        this.isShowHkqk=false;
-        this.isShowWhcd=false;
+        this.isShowQcrq = false;
+        this.isShowCsrq = false;
+        this.isShowQrrq = false;
+        this.isShowHkqk = false;
+        this.isShowWhcd = false;
         this.zzcModel = false;
     }
 
 
     addPerson(): void {
-        console.log(this.childInfo)
+        console.log(this.childInfo);
 
         this.tableList.push({
             "mc": "",
             'sfzh': '',
-            'szxzqhdm': this.childInfo?this.childInfo.ssxzqhdm:"",
-            'xzqhmc': this.childInfo?this.childInfo.xzqhmc:"",
-            'zydldm': this.childInfo?this.childInfo.zydldm:"",
-            'zydlmc': this.childInfo?this.childInfo.zydlmc:"",
-            'dcfwdm': this.childInfo?this.childInfo.dcfwdm:"",
-            'dcfwmc': this.childInfo?this.childInfo.dcfwmc:"",
+            'szxzqhdm': this.childInfo ? this.childInfo.ssxzqhdm : "",
+            'xzqhmc': this.childInfo ? this.childInfo.xzqhmc : "",
+            'zydldm': this.childInfo ? this.childInfo.zydldm : "",
+            'zydlmc': this.childInfo ? this.childInfo.zydlmc : "",
+            'dcfwdm': this.childInfo ? this.childInfo.dcfwdm : "",
+            'dcfwmc': this.childInfo ? this.childInfo.dcfwmc : "",
             'xbdm': "",
             'mzdm': "",
             'yhzgxdm': "",
             'csrq': "",
             'whcddm': "",
             'hydm': "",
-            "sfkgr":null,
+            "sfkgr": 1,
             'sfsldl': "",
             'qrrq': '',
             'qcrq': '',
@@ -648,27 +651,32 @@ export class PersonComponent implements OnInit {
 
 
         let that = this.defaultPerson;
+        let tablePerson = this.tablePerson;
 
         setTimeout(function () {
             console.log(that);
-            console.log(that.last);
-            console.log(that.last.nativeElement);
-            that.last.nativeElement.click();
+            if (that.last) {
+                console.log(that.last.nativeElement);
+                that.last.nativeElement.click();
+            }
+            if (tablePerson.last) {
+                tablePerson.last.nativeElement.click();
+            }
+
         }, 0);
 
         this.hcy_count = this.tableList.length;
-        this.hcy = this.tableList[this.tableList.length-1];
+        this.hcy = this.tableList[this.tableList.length - 1];
         console.log(this.hcy);
 
-
-
+        this.tableList = this.tableList.slice();
 
 
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
 
-         //this.add_person_data[this.hcy['id']]=this.hcy;
+        //this.add_person_data[this.hcy['id']]=this.hcy;
         this.update_person_data = res.update_data;
-       // this.add_person_data = res.add_data;
+        // this.add_person_data = res.add_data;
 
         //   this.add_person_data.push(this.tableList[this.hcy_count-1]);
 
@@ -725,9 +733,7 @@ export class PersonComponent implements OnInit {
 
         }
 
-        if (this.tableList.length == 0) {
-
-        }
+        this.tableList=this.tableList.slice();
 
 
     }
@@ -781,7 +787,7 @@ export class PersonComponent implements OnInit {
 
     getQrrqDate(event) {
         console.log(event);
-        console.log(this.tableSelecValue)
+        console.log(this.tableSelecValue);
         if (event) {
             if (this.selectedType == 1) {
                 console.log(this.selectedType);
@@ -900,7 +906,7 @@ export class PersonComponent implements OnInit {
     //  婚姻状况
     eventHyzt(event) {
 
-        this.hcy.hydm= event;
+        this.hcy.hydm = event;
         console.log(this.hcy.hydm);
 
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
@@ -940,7 +946,7 @@ export class PersonComponent implements OnInit {
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
-        console.log('1111111')
+        console.log('1111111');
     }
 
     //  性别
@@ -948,11 +954,11 @@ export class PersonComponent implements OnInit {
 
 
         if (this.xb == this.hcy.xbdm) {
-            this.xb= null;
-            this.hcy.xbdm= null;
+            this.xb = null;
+            this.hcy.xbdm = null;
         } else {
             this.hcy.xbdm = this.xb;
-            this.xb= this.xb;
+            this.xb = this.xb;
         }
 
         let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
@@ -981,7 +987,7 @@ export class PersonComponent implements OnInit {
     eventHb(event) {
 
 
-      this.hcy.hbdm = event;
+        this.hcy.hbdm = event;
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
@@ -994,11 +1000,11 @@ export class PersonComponent implements OnInit {
     eventSFLDL(event) {
 
         if (this.sfldldm == this.hcy.sfsldl) {
-            this.sfldldm= null;
-            this.hcy.sfsldl= null;
+            this.sfldldm = null;
+            this.hcy.sfsldl = null;
         } else {
             this.hcy.sfsldl = this.sfldldm;
-            this.sfldldm= this.sfldldm;
+            this.sfldldm = this.sfldldm;
         }
 
         let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
@@ -1013,7 +1019,6 @@ export class PersonComponent implements OnInit {
     eventBz(event) {
 
 
-
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
@@ -1024,7 +1029,7 @@ export class PersonComponent implements OnInit {
     }
 
 
-    eventXm(){
+    eventXm() {
 
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
@@ -1034,7 +1039,7 @@ export class PersonComponent implements OnInit {
         console.log(this.update_person_data);
     }
 
-    eventSzzdgc(){
+    eventSzzdgc() {
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
@@ -1044,7 +1049,7 @@ export class PersonComponent implements OnInit {
     }
 
 
-    eventSzzggc(){
+    eventSzzggc() {
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
@@ -1053,7 +1058,7 @@ export class PersonComponent implements OnInit {
         console.log(this.update_person_data);
     }
 
-    eventCym(){
+    eventCym() {
         let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_person_data, this.update_person_data, this.add_person_data);
         this.add_person_data = res.add_data;
         this.update_person_data = res.update_data;
@@ -1098,7 +1103,7 @@ const hcy = {
     bz: "备注",
     cjsj: "创建时间",
     zhgxsj: "最后更新时间",
-}
+};
 
 
 

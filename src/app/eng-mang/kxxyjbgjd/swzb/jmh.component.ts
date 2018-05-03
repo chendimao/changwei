@@ -13,6 +13,7 @@ import {DataProcessingService} from "../../../service/dataProcessing.service";
 import {SearchService} from "../../../service/search.service";
 import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
 import {Subscription} from 'rxjs/Subscription';
+import {ProjectInfoService} from "../../service/projectInfo..service";
 
 @Component({
     selector: 'app-jmh',
@@ -50,11 +51,12 @@ export class JmhComponent implements OnInit {
     moduleStyle: any;
 
 
-    constructor(private ShareService: ShareService, private SearchService: SearchService, private DataProcessingService: DataProcessingService, private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private HttpService: HttpService) {
+    constructor(private projectInfo: ProjectInfoService, private ShareService: ShareService, private SearchService: SearchService, private DataProcessingService: DataProcessingService, private AlertModel: ComponentFactoryResolver, private route: ActivatedRoute, private HttpService: HttpService) {
         console.log(this.route.snapshot);
         this.route.params.subscribe(res => {
 
             console.log(res);
+            console.log(this.projectInfo.project);
             this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
                 .then((data) => {
                     console.log(data);
@@ -63,7 +65,8 @@ export class JmhComponent implements OnInit {
                     this.secNav = lsArr[0].mc;
                     this.getParem.jdId = lsArr[0].id;
                     this.getParem.jddm = res['jddm'];
-                    this.getParem.ssgcdm = res['id'];
+                    this.getParem.ssgcdm = this.projectInfo.project.code;
+                    this.getParem.ssgcdm="S000001";
                     this.getParem.id = res['qshflId'];
 
                     console.log(this.getParem.id);
@@ -91,9 +94,9 @@ export class JmhComponent implements OnInit {
                             this.persionList = this.persionList.slice();
                             this.totalPage = res['totalPage'];
                             this.count = res['count'];
-                        })
+                        });
 
-                })
+                });
 
 
         });
@@ -113,10 +116,10 @@ export class JmhComponent implements OnInit {
                                 this.persionList = res['returnObject'];
                                 this.totalPage = res['totalPage'];
                                 this.count = res['count'];
-                            })
+                            });
                     }
                 }
-            })
+            });
     }
 
     ngOnInit() {
@@ -146,7 +149,7 @@ export class JmhComponent implements OnInit {
     }
 
     delSelect() {
-        console.log(this.huInfo)
+        console.log(this.huInfo);
         console.log("删除所选项");
         this.ModelRoom.clear();
         if (this.huInfo['id'] == null) {
@@ -185,6 +188,7 @@ export class JmhComponent implements OnInit {
                 const perModel = this.ModelRoom.createComponent(person);
                 perModel.instance.type = name;
                 perModel.instance.qshflId = this.getParem;
+                perModel.instance.jmhListUrl = this.getUrl();
                 break;
             default:
                 console.log(this.huInfo);
@@ -194,7 +198,7 @@ export class JmhComponent implements OnInit {
                     perModel.instance.type = name;
                     perModel.instance.info = this.huInfo;
                     perModel.instance.qshflId = this.getParem;
-                    // perModel.instance.jmhListUrl = this.getUrl();
+                    perModel.instance.jmhListUrl = this.getUrl();
                 } else {
                     if (name === 'view') {
                         this.msgs = [];
@@ -249,10 +253,6 @@ export class JmhComponent implements OnInit {
         this.currentPage = res.data['currentPage'];
         this.totalPage = res.data['totalPage'];
         this.count = res.data['count'];
-
-
-
-
         this.persionList = res.data['returnObject'];
     }
 

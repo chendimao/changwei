@@ -497,7 +497,9 @@ export class SwqxzjbxxComponent implements OnInit {
     eventJgrq(e){
 
         this.swqxzList[0].jcrq = e;
+        let res = this.InputChange.get_select_change(this.swqxzList[0],0,this.init_swqxzjbxx_data,this.update_swqxzjbxx_data,[]);
 
+        this.update_swqxzjbxx_data= res['update_data'];
     }
 
 

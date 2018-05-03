@@ -290,7 +290,7 @@ export class GbdsjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.gbdsList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.gbdsList[0].qsrId]['listGbdsLAdd'];
+                    delete this.listHcyAdd[this.gbdsList[0].qsrId]['listGbdsgcAdd'];
                 }
 
             }
@@ -304,15 +304,12 @@ export class GbdsjbxxComponent implements OnInit {
         console.log(this.gbdsList[0].id);
 
         if(this.gbdsList[0].qsrId.toString().length ==32){
-            if(this.gbdsList[0].id.toString().length == 32){
-                this.update_gbdsjbxx_data.push(this.gbdsList[0]);
-            }else{
+
                 this.add_gbdsjbxx_data.push(this.gbdsList[0]);
                 console.log(this.add_gbdsjbxx_data);
 
-            }
         }else{
-            this.listHcyAdd[this.gbdsList[0].qsrId]['listGbdsLAdd'] = this.gbdsList[0];
+            this.listHcyAdd[this.gbdsList[0].qsrId]['listGbdsgcAdd'] = this.gbdsList[0];
 
 
 
@@ -353,7 +350,9 @@ export class GbdsjbxxComponent implements OnInit {
     eventJgrq(e){
 
       this.gbdsList[0].jcrq = e;
+        let res = this.InputChange.get_select_change(this.gbdsList[0],0,this.init_gbdsjbxx_data,this.update_gbdsjbxx_data,this.add_gbdsjbxx_data,);
 
+        this.update_gbdsjbxx_data = res['update_data'];
     }
 
 

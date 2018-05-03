@@ -176,7 +176,7 @@
           <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl fl foot_box"
                [ngClass]="{'group-4':name_active_base?.length==4,'group-3':name_active_base?.length==3,'group-2':name_active_base?.length==2,'group-1':name_active_base?.length==1}">
 
-            <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
+            <p-treeTable toggleColumnIndex="1" ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
                          (onNodeSelect)="TreeTableClick($event,TreeTable,$event.node,i)"
                          selectionMode="single" [(selection)]="selectedFile"
                          [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
@@ -253,14 +253,14 @@
                   </ng-template>
                 </p-column>
                 <p-column field="mc" header="名称"></p-column>
-                <p-column field="sl" header="建设规模"></p-column>
-                <p-column field="dw" header="工程效益"></p-column>
-                <p-column field="dw" header="数量"></p-column>
+                <p-column field="jsgm" header="建设规模"></p-column>
+                <p-column field="gcxy" header="工程效益"></p-column>
+                <p-column field="sl" header="数量"></p-column>
                 <p-column field="dw" header="单位"></p-column>
-                <p-column field="dw" header="规格尺寸"></p-column>
-                <p-column field="dw" header="建成日期"></p-column>
-                <p-column field="dw" header="固定资产投资(元)"></p-column>
-                <p-column field="dw" header="产权登记人"></p-column>
+                <p-column field="gkcc" header="规格尺寸"></p-column>
+                <p-column field="jcrq" header="建成日期"></p-column>
+                <p-column field="gdzctz" header="固定资产投资(元)"></p-column>
+                <p-column field="cqdjr" header="产权登记人"></p-column>
                <p-column field="bz" header="备注">
                   <ng-template let-col let-car="rowData" pTemplate="body">
                     <span>{{car[col.field]}}</span>
@@ -309,7 +309,15 @@
                   <span>建设规模</span>
                 </div>
                 <div class="inputRight fl">
-                  <input  [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['ggcc']">
+                  <input  [disabled]="isDisabled" type="text" name="jsgm" [(ngModel)]="ggmx[GgmxIndex]['jsgm']">
+                </div>
+              </div>
+              <div class="inputArea fl">
+                <div class="inputLeft fl">
+                  <span>工程效益</span>
+                </div>
+                <div class="inputRight fl">
+                  <input  [disabled]="isDisabled" type="text" name="gcxy" [(ngModel)]="ggmx[GgmxIndex]['gcxy']">
                 </div>
               </div>
               <div class="inputArea fl">
@@ -333,7 +341,9 @@
                   <span>建成日期</span>
                 </div>
                 <div class="inputRight fl">
-                  <input  [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['ggcc']">
+                  <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="ggmx[GgmxIndex]['jcrq']"
+                                  (SelectModel)="eventJgrq($event)" readonly="readonly"></app-p-calendar>
+
                 </div>
               </div>
               <div class="inputArea fl">
@@ -341,7 +351,7 @@
                   <span>固定资产投资(元)</span>
                 </div>
                 <div class="inputRight fl">
-                  <input  [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['ggcc']">
+                  <input  [disabled]="isDisabled" type="text" name="gdzctz" [(ngModel)]="ggmx[GgmxIndex]['gdzctz']">
                 </div>
               </div>
               <div class="inputArea fl">
@@ -349,7 +359,7 @@
                   <span>产权登记人</span>
                 </div>
                 <div class="inputRight fl">
-                  <input  [disabled]="isDisabled" type="text" name="ggcc" [(ngModel)]="ggmx[GgmxIndex]['ggcc']">
+                  <input  [disabled]="isDisabled" type="text" name="cqdjr" [(ngModel)]="ggmx[GgmxIndex]['cqdjr']">
                 </div>
               </div>
 

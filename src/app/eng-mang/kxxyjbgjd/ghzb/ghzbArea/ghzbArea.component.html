@@ -30,21 +30,6 @@
               <ul class="clearfix">
 
 
-
-                <li class="fl" >
-
-                <div *ngIf="!isDisabled" class="fl" (click)="save()"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                                            alt=""></span>保存
-                </div>
-                </li>
-
-                <li class="fl" >
-
-                  <div *ngIf="!isDisabled" class="fl" (click)="Clear('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
-                                                                                                      alt=""></span>清空所有
-                </div>
-                </li>
-
                 <li class="fl" (click)="showAll(true)" *ngIf="isShow">
                   <span class="img icon fa fa-square-o"></span>
                   显示非空项
@@ -53,9 +38,13 @@
                   <span class="img icon fa fa-check-square"></span>
                   显示所有项
                 </li>
+                <div *ngIf="!isDisabled" class="fl" (click)="Clear('rew')"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                                  alt=""></span>清空所有
+                </div>
 
-
-
+                <div *ngIf="!isDisabled" class="fl" (click)="save()"><span class="img"><img src="assets/img/icon/brush_fill.png"
+                                                                                            alt=""></span>保存
+                </div>
 
 
               </ul>

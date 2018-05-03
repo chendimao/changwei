@@ -1,14 +1,12 @@
 .containerEng{
     padding: 15px;
     overflow-y: auto;
-
+    padding-bottom: 50px;
 }
 li.fl.group.group-3{
     max-height: 50px;
 }
-*{
-    color: #666666;
-}
+
 .header{
     border-bottom: 1px solid #cccccc;
     font-size: 15px;
@@ -51,7 +49,15 @@ li.fl.group.group-3{
     margin-top: 0px;
 }
 .btn-group{
-    margin-top: 20px;
+    position: fixed;
+    bottom: 0px;
+    width: calc(100% - 180px);
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    background: white;
+    margin-left: -15px;
+    height: 50px;
+
 }
 .secd_title{
     border-bottom: 1px solid #ccc;
@@ -62,4 +68,55 @@ li.fl.group.group-3{
 .secd_title span{
     border-left: 2px solid #0099cb;
     padding-left: 20px;
+}
+.img_des{
+    margin: 10px -15px 0px;
+    border-top: 1px solid #0099cd;
+    text-align: center;
+
+}
+.del{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: #2399e5;
+    display: none;
+    cursor: pointer;
+    border: 1px solid #0099cb;
+    border-top: none;
+    border-right: none;
+    border-radius: 0 0 0 3px;
+    padding: 2px 4px;
+}
+.del span{
+    color: #0099cb;
+}
+.check{
+    width: 20px;
+    left: 0;
+    border-left: none;
+    border-right: 1px solid #0099cb;
+    border-radius: 0 0 3px 0;
+}
+
+
+.hover{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: white;
+    display: none;
+    background: #0099cb;
+    padding: 2px;
+    cursor: pointer;
+}
+.wj_box:hover .del{
+    display: block;
+}
+.wj_box:hover .hover{
+    display: block;
+}
+.imgShow{
+    height: 90px;
+    overflow: hidden;
 }

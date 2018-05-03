@@ -30,7 +30,7 @@
                        [display]="isShowArea"
                        (childEvent)="getChildSzxzqh($event)"></app-area-select>
     </div>
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>站点类别</span>
       <input [disabled]="isDisabled" name="gdgclb" type="text" [(ngModel)]="swqxzList[0].zdlbmc" name="zdlbmc"
              (click)="showswqxzBlock()" readonly="readonly">
@@ -39,7 +39,7 @@
                          [treeList]="swqxzTreeList" [tableList]="swqxzTableList"></app-sec-type-list>
     </div>
 
-    <div class="fl group group-4">
+    <div class="fl group group-4 importent">
       <span>站点名称</span>
       <input [disabled]="isDisabled" name="zdmc" type="text" [(ngModel)]="swqxzList[0].mc"/>
     </div>
@@ -187,7 +187,7 @@
 
 
 
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>建成日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="swqxzList[0].jcrq"

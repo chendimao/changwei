@@ -1,7 +1,7 @@
 <div class="nav rl clearfix" [ngStyle]="{'width':width }">
     <div class="showNav" *ngIf="navType=='1'">
         <span class="closeNav" (click)="closeNav()"><img src="assets/img/icon/fullscreen-exit(1).png" alt="">收起</span>
-        <div class="return" routerLink="/engmangHome"><span class="img"><img src="assets/img/icon/reply.png"
+        <div class="return" routerLink="/engmang/info"><span class="img"><img src="assets/img/icon/reply.png"
                                                                              alt=""></span>返回
         </div>
         <div class="nav_img rl">
@@ -15,8 +15,11 @@
                         <li [routerLink]="['EngBase',projectId]" routerLinkActive="active"><span class="img"><img
                                 src="assets/img/icon/wewqewqewq.png" alt=""></span>工程基本信息登记
                         </li>
-                        <li [routerLink]="['ProjectProposal',projectId]" routerLinkActive="active"><span
-                                class="img"><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>前期工作情况跟踪
+                        <li *ngIf="projectInfo.project.ssgcgkjbxxId" [routerLink]="['ProjectProposal',projectId]" routerLinkActive="active">
+                            <span class="img"><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>前期工作情况跟踪
+                        </li>
+                        <li *ngIf="!projectInfo.project.ssgcgkjbxxId" routerLinkActive="active" (click)="warning()">
+                            <span class="img"><img src="assets/img/icon/sfdasdsgdfsda.png" alt=""></span>前期工作情况跟踪
                         </li>
                         <li class="moreList">
                             <p-accordion>
@@ -76,6 +79,7 @@
         </ul>
     </div>
 </div>
+<p-growl [(value)]="msgs"></p-growl>
 <!--<div class="fl container " [ngStyle]="{'width':'calc(100% - '+width1+')'}"><router-outlet></router-outlet></div>-->
 <app-second-nav [values]="data" *ngIf="display" (childEvent)="getChildEvent($event)"
                 (mouseleave)="closeNavList()"></app-second-nav>

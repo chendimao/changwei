@@ -38,7 +38,7 @@
                          [isShow]="isShowDcfw"
                          [tableList]="dcfwTableList"></app-sec-type-list>
     </div>
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>桥涵类别</span>
       <input [disabled]="isDisabled" type="text" [(ngModel)]="qhList[0].qhlbmc" name="zydldm"
              (click)="showqhBlock()" readonly="readonly">
@@ -46,7 +46,7 @@
       <app-sec-type-list (SelectModel)="getChildqh($event)" [isShow]="isShowqh"
                          [treeList]="qhTreeList" [tableList]="qhTableList"></app-sec-type-list>
     </div>
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>桥涵名称</span>
         <input [disabled]="isDisabled" name="qhmc" [(ngModel)]="qhList[0].mc" type="text">
 
@@ -56,7 +56,7 @@
         <input [disabled]="isDisabled" name="szws" [(ngModel)]="qhList[0].szwz" type="text">
 
   </div>
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>建成日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="qhList[0].jcrq"
@@ -197,10 +197,10 @@
 
 
 
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
+    <div class="fl group group-1 ">
+
       <span >备注 </span>
-    </div>
+
     <textarea  class="textarea " cols="30" id="" name="bz" rows="10"  model="所在最低高程"></textarea>
   </div>
   </form>

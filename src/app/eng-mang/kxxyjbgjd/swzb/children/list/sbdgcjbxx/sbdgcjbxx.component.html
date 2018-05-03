@@ -48,12 +48,12 @@
     <!--<app-sec-type-list (SelectModel)="getChildZydl($event)" [isShow]="isShowZydl"-->
                        <!--[treeList]="zydlTreeList" [tableList]="zydlTableList"></app-sec-type-list>-->
   <!--</div>-->
-    <div class="fl group group-4">
+    <div class="fl group group-4 importent">
       <span>名称</span>
       <input [disabled]="isDisabled" name="mc" type="text" [(ngModel)]="sbdList[0].mc"/>
 
     </div>
-  <div class="fl group group-4 rl">
+  <div class="fl group group-4 rl importent">
     <span>输变电工程类别</span>
     <input [disabled]="isDisabled" type="text" [(ngModel)]="sbdList[0].sbdgclbmc" name="zydldm"
            (click)="showSbdgcBlock()" readonly="readonly">
@@ -75,7 +75,7 @@
     <input [disabled]="isDisabled" name="jsdd" [(ngModel)]="sbdList[0].jsdd" type="text">
 
   </div>
-  <div class="fl group group-4 ">
+  <div class="fl group group-4 importent">
     <span>隶属关系</span>
     <input [disabled]="isDisabled" name="lsgx" [(ngModel)]="sbdList[0].lsgx" type="text">
 

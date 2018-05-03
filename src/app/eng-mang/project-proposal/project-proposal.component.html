@@ -1,133 +1,125 @@
-<div class="project_content" [@flyIn]>
+<div class="containerEng" [@flyIn]>
 
-    <header>
-        <!--<div class="title">项目建议书</div>-->
-        <div class="title">移民安置前期工作进度</div>
-    </header>
-    <div class="showBox clearfix">
+    <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+    <div class="engBody clearfix">
         <div>
             <ul class="pro_list">
-                <li (click)="tab(1)" class="fl pro_li bl " [ngClass]="{'active':index==1}"><span>1</span>
-                    <div class="step"><p>预可研批复</p></div>
-
-
-                </li>
-                <li (click)="tab(2)" class="fl pro_li bl wnStyle" [ngClass]="{'active':index==2}"><span>2</span>
-                    <div class="step">实物指标调查大细则批复</div>
-                    <div class="rl timeBox">
-                        <div class="time">时间：2017/08/23</div>
-                        <i class="xiala"></i>
+                <li (click)="selectItem(item)" *ngFor="let item of gzjdList" class="fl pro_li bl "
+                    [ngClass]="{'active':item.active?true:false,'wnStyle':item.hasTrue?true:false}">
+                    <span>{{item.xh}}</span>
+                    <div class="step"><p>{{item.mc}}</p></div>
+                    <div *ngFor="let list of gzjdInfoList">
+                        <div *ngIf="item.dm==list.ssymazqqgzfldm" class="rl timeBox">
+                            <div class="time">时间：{{list.pzrq | date:'yyyy/MM/dd'}}</div>
+                            <i class="xiala"></i>
+                        </div>
                     </div>
-                </li>
-                <li (click)="tab(3)" class="fl pro_li bl" [ngClass]="{'active':index==3}"><span>3</span>
-                    <div class="step">建设征地通告发布</div>
-                </li>
-                <li (click)="tab(4)" class="fl pro_li bl " [ngClass]="{'active':index==4}"><span>4</span>
-                    <div class="step">实物调查指标启动</div>
-                </li>
-                <li (click)="tab(5)" class="fl pro_li bl" [ngClass]="{'active':index==5}"><span>5</span>
-                    <div class="step">移民安置规划大纲批准</div>
-                </li>
-                <li (click)="tab(6)" class="fl pro_li bl" [ngClass]="{'active':index==6}"><span>6</span>
-                    <div class="step">移民安置规划批复</div>
-                </li>
-                <li (click)="tab(7)" class="fl pro_li bl" [ngClass]="{'active':index==7}"><span>7</span>
-                    <div class="step">项目可研批复（核准）</div>
                 </li>
             </ul>
         </div>
         <div class="info clearfix">
-            <div class="secd_title">
-                基本信息
-            </div>
-            <div>
+            <p-panel styleClass="secPanel" [toggleable]="true" expandIcon="fa-angle-double-up"
+                     collapseIcon="fa-angle-double-down">
+                <p-header>
+                    <div class="t">
+                        基本信息
+                    </div>
+                </p-header>
+                <div class="clearfix">
+                    <form #ngModel="ngForm">
 
 
-                <ul class="ul_list clearfix">
-                    <li class="fl"><span>批准(或发布)单位：</span><input  type="text"
-                                                                 class="searchInput"
-                                                                 placeholder="请填入单位"></li>
-                    <li class="fl rl"><span>批准(或发布)时间：</span>
-                        <app-p-calendar></app-p-calendar>
 
-                    </li>
-                    <li class="fl"><span>批准(或发布)文号：</span><input  type="text"
-                                                                 class="searchInput"
-                                                                 placeholder="请填入单位"></li>
-                    <li class="clearfix">
-                        <div class="clearfix beizhu ">
-                            <span class="textareaBeizhu">
+                    <ul class="ul_list clearfix">
+                        <li class="fl"><span>批准(或发布)单位：</span>
+                            <input type="text" class="searchInput" [(ngModel)]="active_jd.pzdw"
+                                   name="pzdw" placeholder="请填入单位"></li>
+                        <li class="fl rl"><span>批准(或发布)时间：</span>
+                            <app-p-calendar (SelectModel)="getPzrqDate($event)" [value]="active_jd?.pzrq"></app-p-calendar>
+
+                        </li>
+                        <li class="fl"><span>批准(或发布)文号：</span>
+                            <input type="text" class="searchInput" [(ngModel)]="active_jd.pzwh"
+                                   name="pzwh" placeholder="请填入单位"></li>
+                        <li class="clearfix">
+                            <div class="clearfix beizhu ">
+                            <span class="textareaBeizhu" style="width: 143px">
                                 备注 ：
                             </span>
-                            <textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-                        </div>
+                                <textarea name="bz" [(ngModel)]="active_jd.bz" cols="30" rows="10"
+                                          class="textarea"></textarea>
+                            </div>
 
-                    </li>
+                        </li>
 
-                </ul>
-            </div>
-            <div class="secd_title">
+                    </ul>
+
+                    </form>
+                </div>
+            </p-panel>
+
+
+            <div class="t">
                 相关文件
             </div>
             <div class="clearfix">
                 <div>
-                    <header  class="clearfix">
+                    <header class="clearfix">
 
-                        <div  class="btnGrop fr">
-                            <ul  >
-                                <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
-                                    <span class="img icon fa fa-square-o"></span>
-                                    显示非空项
-                                </li>
-                                <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
-                                    <span class="img icon fa fa-check-square"></span>
-                                    显示所有项
-                                </li>
-                                <li  class="fl"><span  class="img fa fa-minus-square-o"></span>批量删除
+                        <div class="btnGrop fr">
+                            <ul>
+                                <li class="fl" (click)="delCheck()"><span class="img fa fa-minus-square-o"></span>批量删除
                                 </li>
                             </ul>
                         </div>
                     </header>
-                    <div class="rl fl wj_box ">
-                        <div class="wj_b_h clearfix">
-                            <div class="fl wj_b_Im">
-                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
-                                <span>pdf</span>
-                            </div>
-                            <div class="fl text">
-                                泉州白濑水利枢纽工程建设征地
-                                移民安置监理月报2017年度第1期
-                            </div>
+                    <div class="rl fl wj_box" *ngFor="let list of fjList;">
+                        <div class="del" (click)="delImg(list)">
+                            <span><img src="assets/img/icon/x.png" alt=""></span>
+                        </div>
+                        <div class="del check" (click)="check(list)" [ngStyle]="{'display':list.isCheck?'block':''}">
+                            <span *ngIf="!list.isCheck" class="img icon fa fa-square-o"></span>
+                            <span *ngIf="list.isCheck" class="img icon fa fa-check-square"></span>
+                        </div>
+                        <div class="imgShow">
+                            <img [src]="list.url" alt="">
                         </div>
 
+                        <div class="img_des">
+                            <span *ngIf="list.id">{{list.bt}}</span>
+                            <input *ngIf="!list.id" type="text" [(ngModel)]="list.bt"
+                                   (ngModelChange)="changeImgBt(list.url,list.bt)">
 
-                        <div class="hover">
-                            <ul>
-                                <li class="enter fl">下载</li>
-                                <li class="care fl">删除</li>
-                            </ul>
                         </div>
                     </div>
                     <div class="rl fl wj_box ">
                         <div class="wj_b_h clearfix">
-                            <div class="fl wj_b_Im">
-                                <span class="img"><img src="assets/img/icon/img06.png" alt=""></span>
-                                <span>pdf</span>
-                            </div>
-                            <div class="fl text">
-                                上传附件
-                            </div>
+
+                            <p-fileUpload mode="basic" name="file"
+                                          url="http://115.28.69.231:8090/LARMS_SERVER/gcgkjbxx/uploadFile"
+                                          (onUpload)="onBasicUploadAuto($event)" auto="true"
+                                          chooseLabel="上传">
+
+
+                                <ng-template pTemplate="content">
+                                </ng-template>
+                            </p-fileUpload>
+
+
                         </div>
+
                     </div>
+
                 </div>
 
             </div>
             <div>
                 <div class="btn-group icon">
-                    <a>保存</a>
-                    <a>清空所有</a>
+                    <a (click)="save()">保存</a>
+                    <a (click)="clearArr()">清空所有</a>
                 </div>
             </div>
+            <p-growl [(value)]="msgs"></p-growl>
 
         </div>
     </div>

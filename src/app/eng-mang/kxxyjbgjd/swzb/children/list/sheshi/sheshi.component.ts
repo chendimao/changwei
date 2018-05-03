@@ -65,7 +65,8 @@ export class SheshiComponent implements OnInit {
     public  isShowWhcd: any;
     public  isShowQcrq: any;
     public  isShowQrrq: any;
-    public  isShowCsrq:any;
+    public  isShowJsrq:any;
+    public  isShowTcrq:any;
     public  whcdTableList: any;
     public  whcdTreeList: any;
     public  dcfwTableList: any;
@@ -82,6 +83,7 @@ export class SheshiComponent implements OnInit {
     public sblb_list:any;
     public ymzgx_list:any;
     public listHcyAdd;
+
 
 
     public  zzcModel: boolean = false;
@@ -157,8 +159,17 @@ export class SheshiComponent implements OnInit {
     }
 
     ngOnInit() {
-
-
+        this.ch = {
+            firstDayOfWeek: 0,
+            dayNames: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['天', '一', '二', '三', '四', '五', '六'],
+            dayNamesMin: ['天', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+            today: '今天',
+            clear: '清除',
+        };
+         console.log(this.szxzqugldm)
         console.log(this.childInfo2);
         console.log(this.childInfo);
         console.log(this.qshflId);
@@ -238,7 +249,16 @@ export class SheshiComponent implements OnInit {
 
     // 专业大类展示
     showZydlBlock(index) {
-
+        let test = document.getElementById("zydl");
+        this.zzcModel = true;
+        if (test) {
+            let top = $('#zydl').offset().top;
+            let left = $('#zydl').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 44 - 20 + "px";
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
         if (this.type != "view") {
             this.isShowZydl = this.isShowZydl ? false : true;
             if (!this.zydlTreeList) {
@@ -261,13 +281,21 @@ export class SheshiComponent implements OnInit {
         this.zzcModel = false;
         this.isShowZydl = false;
         if (event) {
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.zydldm = event.dm;
+                this.hcy.zydlmc = event.mc;
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+                this.add_sheshi_data = res.add_data;
+                this.update_sheshi_data = res.update_data;
+            }else{
+                this.tableSelecValue['zydlmc'] = event.mc;
+                this.tableSelecValue['zydldm'] = event.dm;
+                let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+                this.add_sheshi_data = res.add_data;
+                this.update_sheshi_data = res.update_data;
+            }
 
-            console.log(this.selectedType);
-            this.hcy.zydldm = event.dm;
-            this.hcy.zydlmc = event.mc;
-            let res = this.InputChange.get_value_change(this.hcy, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
-            this.add_sheshi_data = res.add_data;
-            this.update_sheshi_data = res.update_data;
 
         }
     }
@@ -275,6 +303,16 @@ export class SheshiComponent implements OnInit {
     //  调查范围显示下拉
     showDcfwBlock(index) {
         this.zzcModel = true;
+        let dcfw = document.getElementById("dcfw");
+        if (dcfw) {
+            let top = $('#dcfw').offset().top;
+            let left = $('#dcfw').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
 
         if (this.type != "view") {
             this.isShowDcfw = this.isShowDcfw ? false : true;
@@ -284,7 +322,7 @@ export class SheshiComponent implements OnInit {
                         console.log(res);
                         this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SSXX&column=SBLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_SSXX&column=SBLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.dcfwTableList = res['returnObject'];
@@ -299,14 +337,21 @@ export class SheshiComponent implements OnInit {
         console.log(this.name_active_key);
         this.isShowDcfw = false;
         if (event) {
-
-            console.log(this.selectedType);
-            this.hcy.dcfwdm = event.dm;
-            this.hcy.dcfwmc = event.mc;
-            let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
-            this.add_sheshi_data = res.add_data;
-            this.update_sheshi_data = res.update_data;
-
+            if (this.selectedType == 1) {
+                console.log(this.selectedType);
+                this.hcy.dcfwdm = event.dm;
+                this.hcy.dcfwmc = event.mc;
+                let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+                this.add_sheshi_data = res.add_data;
+                this.update_sheshi_data = res.update_data;
+            }else{
+                this.tableSelecValue['dcfwmc'] = event.mc;
+                this.tableSelecValue['dcfwdm'] = event.dm;
+                console.log(this.name_active_key);
+                let res = this.InputChange.get_value_change(this.tableSelecValue, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+                this.add_sheshi_data = res.add_data;
+                this.update_sheshi_data = res.update_data;
+            }
 
         }
         console.log(this.update_sheshi_data);
@@ -315,9 +360,15 @@ export class SheshiComponent implements OnInit {
 
     //设备类别
 
-    showsblbBlock() {
+    showsblbBlock(index) {
         this.zzcModel = true;
-
+        let sslb = document.getElementById("sslb");
+        if (sslb) {
+            let top = $('#sslb').offset().top;
+            let left = $('#sslb').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+        }
         if (this.type != "view") {
             this.isShowSblb = this.isShowSblb ? false : true;
             if (!this.sblbTreeList) {
@@ -326,7 +377,7 @@ export class SheshiComponent implements OnInit {
                         console.log(res);
                         this.sblbTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SSXX&column=SSLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_SSXX&column=SSLBDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.sblbTableList = res['returnObject'];
@@ -371,15 +422,52 @@ export class SheshiComponent implements OnInit {
     }
 
 
-    //投产日期
-    eventTcrq(e){
-        console.log(e);
-        this.hcy.tcrq = e;
+    showJsrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowJsrq = this.isShowJsrq ? false : true;
+        let dcfw = document.getElementById("jsrq");
+        if (dcfw) {
+            let top = $('#jsrq').offset().top;
+            let left = $('#jsrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+    }
 
-        let res = this.InputChange.get_select_change(this.hcy, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
-        this.add_sheshi_data = res.add_data;
+    jsrqClickTime(event) {
+        this.tableSelecValue.jsrq = event;
+        let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+        this.add_sheshi_data= res.add_data;
         this.update_sheshi_data = res.update_data;
+        this.isShowJsrq=false;
+        this.zzcModel = false;
+    }
 
+    showTcrqBlock(index) {
+        this.zzcModel = true;
+        this.isShowTcrq = this.isShowTcrq ? false : true;
+        let dcfw = document.getElementById("tcrq");
+        if (dcfw) {
+            let top = $('#tcrq').offset().top;
+            let left = $('#tcrq').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+    }
+
+    tcrqClickTime(event) {
+        this.tableSelecValue.tcrq = event;
+        let res = this.InputChange.get_select_change(this.tableSelecValue, this.name_active_key, this.init_sheshi_data, this.update_sheshi_data, this.add_sheshi_data);
+        this.add_sheshi_data= res.add_data;
+        this.update_sheshi_data = res.update_data;
+        this.isShowTcrq=false;
+        this.zzcModel = false;
     }
 
     nodeSelect(e) {
@@ -394,12 +482,12 @@ export class SheshiComponent implements OnInit {
         console.log(this.childInfo4);
         this.tableList.push({
             'id': new Date().getTime(),
-            'swszxzqhdm':  "",
-            'localitydesc' :"",
-            'zydldm' :"",
-            'zydlmc':  "",
-            'dcfwdm':  "",
-            'dcfwmc':  "",
+            'swszxzqhdm': this.childInfo4?this.childInfo4.ssxzqhdm:"",
+            'localitydesc': this.childInfo4?this.childInfo4.xzqhmc:"",
+            'zydldm': this.childInfo4?this.childInfo4.zydldm:"",
+            'zydlmc': this.childInfo4?this.childInfo4.zydlmc:"",
+            'dcfwdm': this.childInfo4?this.childInfo4.dcfwdm:"",
+            'dcfwmc': this.childInfo4?this.childInfo4.dcfwmc:"",
             "ssxtdm": "",
             "ssgcdm": "",
             "jddm": "",
@@ -612,7 +700,23 @@ export class SheshiComponent implements OnInit {
         console.log(this.add_sheshi_data);
 
     }
-
+// 所属行政区划
+    showSzxzqhBlock(index) {
+        this.zzcModel = true;
+        let szxzqh = document.getElementById("szxzqh");
+        if (szxzqh) {
+            let top = $('#szxzqh').offset().top;
+            let left = $('#szxzqh').offset().left;
+            this.zydlLeft = left + 130 + "px";
+            this.zydlTop = top + index * 30 - 20 + "px";
+            console.log(index)
+            console.log(this.zydlTop);
+            console.log(this.zydlLeft);
+        }
+        if (this.type != 'view') {
+            this.isShowArea = this.isShowArea ? false : true;
+        }
+    }
     getChildEvent(index) {
         this.area = index;
     }
@@ -890,7 +994,7 @@ export class SheshiComponent implements OnInit {
                 //如果上一个权属人ID长度不为32，则说明该权属人为新增
                 //则删除listHcyAdd中的该项数据
                 console.log(this.hcy.qsrId);
-                delete  this.listHcyAdd[this.hcy.qsrId]['listssAdd'][this.hcy.id];
+                delete  this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'][this.hcy.id];
 
 
             }
@@ -904,28 +1008,6 @@ export class SheshiComponent implements OnInit {
 
             //this.hcy.id = new Date().getTime();
 
-            //将户成员基本信息带到房屋基本信息中
-            this.childInfo3.forEach((value, index, arr) => {
-
-                if (value['id'] == this.hcy['qsrId']) {
-                    for (var i in value) {
-                        for (var ii in this.hcy) {
-                            // this.name_active_data['swszxzqhdm']=value['szxzqhdm'];
-                            if (i == ii && (i == 'szxzqhdm' || i == 'xzqhmc' || i == 'dcfwdm' || i == 'dcfwmc' || i == 'zydlmc' || i == 'zydldm')) {
-                                console.log(i);
-                                this.hcy[ii] = value[i];
-                            }
-                        }
-                    }
-                    if (value['szxzqhdm'] != null) {
-                        this.hcy['swszxzqhdm'] = value['szxzqhdm'];
-                        this.hcy['localitydesc'] = value['xzqhmc'];
-                    }
-
-                }
-
-
-            });
 
             let res =  this.InputChange.get_select_change(this.hcy,this.name_active_key,this.init_sheshi_data,this.update_sheshi_data,this.add_sheshi_data);
 
@@ -953,15 +1035,15 @@ export class SheshiComponent implements OnInit {
                 this.listHcyAdd[this.hcy.qsrId] = new Array();
             }
 
-            if( this.listHcyAdd[this.hcy.qsrId]['listsbAdd'] == undefined){
-                this.listHcyAdd[this.hcy.qsrId]['listsbAdd'] = new Array();
+            if( this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'] == undefined){
+                this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'] = new Array();
             }
 
-            if( this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id]){
-                this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id] = new Array();
+            if( this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'][this.hcy.id]){
+                this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'][this.hcy.id] = new Array();
             }
 
-            this.listHcyAdd[this.hcy.qsrId]['listsbAdd'][this.hcy.id] = this.hcy;
+            this.listHcyAdd[this.hcy.qsrId]['listSsxxAdd'][this.hcy.id] = this.hcy;
 
 
         }
@@ -975,7 +1057,20 @@ export class SheshiComponent implements OnInit {
 
 
     }
+    //关闭遮罩层
+    closeZzc() {
+        this.isShowZydl = false;
+        this.isShowDcfw = false;
+        this.isShowArea = false;
+        this.isShowJsrq=false;
+        this.isShowTcrq=false;
+        this.isShowSblb=false;
 
+        this.isShowQrrq=false;
+        this.isShowHkqk=false;
+        this.isShowWhcd=false;
+        this.zzcModel = false;
+    }
 
 }
 

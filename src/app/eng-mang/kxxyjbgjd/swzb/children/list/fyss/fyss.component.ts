@@ -174,7 +174,7 @@ export class FyssComponent implements OnInit {
                         if(this.name_active_data.qsrId.toString().length != 32) { // 如果权属人ID等于32位也就是说 在数据库中已经存在的户成员
 
 
-                            this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listfyssAdd');
+                            this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listFyssAdd');
 
                             console.log(this.listHcyAdd);
 
@@ -776,7 +776,7 @@ export class FyssComponent implements OnInit {
                     console.log(value);
                     if (value['id'] == this.name_active_data['qsrId']) {
 
-                        delete this.listHcyAdd[value['id']]['listfyssAdd'][this.name_active_data['id']];
+                        delete this.listHcyAdd[value['id']]['listFyssAdd'][this.name_active_data['id']];
 
                     }
 
@@ -1073,7 +1073,7 @@ export class FyssComponent implements OnInit {
                 this.name_active_data['flbmxList'][this.now_data['data']['zbflId']] = {'id':this.now_data['data']['id'],'sl':this.now_data['data']['sl'],'bz':this.now_data['data']['bz'],'fysslbdm':this.now_data['data']['fysslbdm'],'zbflId':this.now_data['data']['zbflId'],'ssfyssjbxxId':this.name_active_data.id};
 
 
-                this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listfyssAdd');
+                this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listFyssAdd');
 
 
                 console.log(this.listHcyAdd);
@@ -1318,6 +1318,7 @@ export class FyssComponent implements OnInit {
 
 
             this.ggmx = this.ggmx.slice();
+            console.log(this.name_active_data.qsrId);
             if(this.name_active_data.qsrId.toString().length == 32) {
 
 
@@ -1673,8 +1674,8 @@ export class FyssComponent implements OnInit {
             console.log(this.name_active_data.qsrId);
             //this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd);
 
-            if(this.listHcyAdd[this.name_active_data.qsrId]['listfyssAdd'][this.name_active_data.id]){
-                delete this.listHcyAdd[this.name_active_data.qsrId]['listfyssAdd'][this.name_active_data.id];
+            if(this.listHcyAdd[this.name_active_data.qsrId]['listFyssAdd'][this.name_active_data.id]){
+                delete this.listHcyAdd[this.name_active_data.qsrId]['listFyssAdd'][this.name_active_data.id];
 
             }
             console.log(this.listHcyAdd);
@@ -1779,7 +1780,7 @@ export class FyssComponent implements OnInit {
 
 
 
-            this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listfyssAdd');
+            this.listHcyAdd = this.InputChange.get_add_change(this.childInfo2,this.name_active_data,this.listHcyAdd,'listFyssAdd');
 
             console.log(this.listHcyAdd);
 
@@ -1823,20 +1824,18 @@ export class FyssComponent implements OnInit {
 
 
     //竣工日期
+
     eventJgrq(e){
         console.log(e);
-        this.name_active_data.jgrq = e;
+        console.log(this.ggmx[this.GgmxIndex]);
+        this.ggmx[this.GgmxIndex]['jcrq'] = e;
 
 
+        let res = this.InputChange.get_ggmx_change(this.list_ggmx_data_copy,this.list_ggmx_data,this.update_ggmx_data,this.add_ggmx_data);
 
-        let res =  this.InputChange.get_select_change(this.name_active_data,this.name_active_key,this.init_fyss_data,this.update_fyss_data,this.add_fyss_data);
+        this.update_ggmx_data = res['update_data'];
+        this.add_ggmx_data = res['add_data'];
 
-        this.add_fyss_data = res.add_data;
-        this.update_fyss_data = res.update_data;
-
-
-        console.log(this.add_fyss_data);
-        console.log(this.update_fyss_data);
     }
 
     //专业大类

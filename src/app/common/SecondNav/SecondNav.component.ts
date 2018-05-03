@@ -14,8 +14,8 @@ export class SecondNavComponent implements OnInit {
     private projectId: string;
     private emgList = new Array();
     private queryNav = new Object();
-    private jddm: String;
-    private jdmc: String;
+    private jdList = new Array();
+
 
     @Input() values;
     @Output() childEvent = new EventEmitter<any>();
@@ -34,105 +34,42 @@ export class SecondNavComponent implements OnInit {
         let jdmc = this.values[2];
         console.log(jddm);
         this.emgList[jddm] = new Array();
+        console.log(
+            this.HttpService.get('zbflpz/listGzjd')
+                .then((res) => {
+                    this.jdList = res['returnObject'];
+                    for (let item of this.jdList) {
+                        if (item.dm == jddm) {
+                            let swzbObj1 = {mc: "实物指标", routerLink: 'swzb', content: []};
+                            let ghzbObj1 = {mc: "规划指标", routerLink: 'ghzb', content: []};
+                            let tzgsObj1 = {mc: "投资概算", routerLink: 'tzgs', content: []};
+                            this.emgList[jddm].push(swzbObj1);
+                            this.emgList[jddm].push(ghzbObj1);
+                            this.emgList[jddm].push(tzgsObj1);
+                            this.HttpService.get('qsrsjswzb/listQsrlb')
+                                .then((res) => {
+                                    console.log(res['returnObject']);
+                                    res['returnObject'].sort(this.zdySort());
+                                    res['returnObject'].forEach((item) => {
+                                        swzbObj1.content.push(item);
+                                    });
+                                    console.log(this.emgList);
+                                });
+                            this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
+                                .then((res) => {
+                                    console.log(res['returnObject']);
+                                    res['returnObject'].forEach((item) => {
+                                        console.log(item);
+                                        ghzbObj1.content.push(item);
+                                    });
+                                    console.log(this.emgList);
+                                });
+                            tzgsObj1.content.push({mc: '投资概算', id: 'tzgs', content: ''});
+                        }
+                    }
+                })
+        );
 
-        switch (jddm) {
-            case "MPH-A":
-                let swzbObj1 = {mc: "实物指标", routerLink: 'swzb', content: []};
-                let ghzbObj1 = {mc: "规划指标", routerLink: 'ghzb', content: []};
-                let tzgsObj1 = {mc: "投资概算", routerLink: 'tzgs', content: []}
-                this.emgList[jddm].push(swzbObj1);
-                this.emgList[jddm].push(ghzbObj1);
-                this.emgList[jddm].push(tzgsObj1);
-                this.HttpService.get('qsrsjswzb/listQsrlb')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            swzbObj1.content.push(item);
-                        })
-                        console.log(this.emgList);
-                    });
-                this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            console.log(item);
-                            ghzbObj1.content.push(item);
-                        });
-                        console.log(this.emgList);
-                    });
-                tzgsObj1.content.push({mc: '投资概算', id: 'tzgs', content: ''});
-                break;
-            case "MPH-B":
-                let swzbObj2 = {mc: "实物指标", routerLink: 'swzb', content: []};
-                let ghzbObj2 = {mc: "规划指标", routerLink: 'ghzb', content: []};
-                this.emgList[jddm].push(swzbObj2);
-                this.emgList[jddm].push(ghzbObj2);
-                this.HttpService.get('qsrsjswzb/listQsrlb')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            swzbObj2.content.push(item);
-                        })
-                        console.log(this.emgList);
-                    });
-                this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            ghzbObj2.content.push(item);
-                        });
-                        console.log(this.emgList);
-                    });
-                break;
-
-            case "MPH-C":
-                let swzbObj3 = {mc: "实物指标", routerLink: 'swzb', content: []};
-                let ghzbObj3 = {mc: "规划指标", routerLink: 'ghzb', content: []};
-                this.emgList[jddm].push(swzbObj3);
-                this.emgList[jddm].push(ghzbObj3);
-                this.HttpService.get('qsrsjswzb/listQsrlb')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            swzbObj3.content.push(item);
-                        })
-                        console.log(this.emgList);
-                    });
-                this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            ghzbObj3.content.push(item);
-                        });
-                        console.log(this.emgList);
-                    });
-
-                break;
-            case "MPH-D":
-                let swzbObj4 = {mc: "实物指标", routerLink: 'swzb', content: []};
-                let ghzbObj4 = {mc: "规划指标", routerLink: 'ghzb', content: []};
-                this.emgList[jddm].push(swzbObj4);
-                this.emgList[jddm].push(ghzbObj4);
-                this.HttpService.get('qsrsjswzb/listQsrlb')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            swzbObj4.content.push(item);
-                        })
-                        console.log(this.emgList);
-                    });
-                this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
-                    .then((res) => {
-                        console.log(res['returnObject']);
-                        res['returnObject'].forEach((item) => {
-                            ghzbObj4.content.push(item);
-                        });
-                        console.log(this.emgList);
-                    });
-                break;
-
-
-        }
 
 
         this.queryNav = {
@@ -301,7 +238,7 @@ export class SecondNavComponent implements OnInit {
                     ]
                 },
             ],
-        }
+        };
 
 
         console.log(this.emgList);
@@ -358,6 +295,13 @@ export class SecondNavComponent implements OnInit {
 
     close(): void {
         this.childEvent.emit(false);
+    }
+
+    // 自定义排序
+    zdySort() {
+        return function (a, b) {
+            return a.xh - b.xh;
+        };
     }
 
 }

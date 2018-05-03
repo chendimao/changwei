@@ -106,7 +106,7 @@
                         <span class="">建筑总面积</span>
                     </div>
                     <div class="inputRight fl" style="width:calc(100% - 140px )">
-                        <input [disabled]="true" type="text" [(ngModel)]="jzzmj" name="jzzmj" readonly="readonly">
+                        <input disabled="true" type="text" [(ngModel)]="jzzmj" name="jzzmj" readonly="readonly">
                     </div>
 
                     <div class="fl mianji" (click)="test()">
@@ -331,7 +331,7 @@
                     <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl fl foot_box"
                          [ngClass]="{'group-4':name_active_base?.length==4,'group-3':name_active_base?.length==3,'group-2':name_active_base?.length==2,'group-1':name_active_base?.length==1}">
 
-                        <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
+                        <p-treeTable toggleColumnIndex="1" ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
                                      (onNodeSelect)="TreeTableClick($event,TreeTable,$event.node,i)"
                                      selectionMode="single"
                                      [(selection)]="selectedFile"
@@ -349,9 +349,11 @@
                             </p-column>
                             <p-column field="jzmj" header="面积">
                                 <ng-template let-col let-node="rowData" pTemplate="body">
-                                    <input type="text"  style="width:100%;"
-                                           [(ngModel)]="node.data.jzmj" [disabled]="node.children != null  || is_disabled"
-                                           (ngModelChange)="Tree_update(TreeTable,node,i)" (keydown)="calc($event,node)">
+                                    <input type="text" style="width:100%;" [(ngModel)]="node.data.jzmj"
+                                           (keydown)="calc($event,node)"
+                                           [disabled]="node.children != null || is_disabled"
+                                           (click)="Tree_update(TreeTable,node,i)"
+                                           (keyup)="Tree_update(TreeTable,node,i)">
                                 </ng-template>
                             </p-column>
                             <p-column field="dwmc" header="单位">
@@ -362,8 +364,10 @@
 
                             <p-column field="bz" header="备注">
                                 <ng-template let-col let-node="rowData" pTemplate="body">
-                                    <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                           (ngModelChange)="Tree_update(TreeTable,node,i)">
+                                    <input [disabled]="isDisabled" type="text" style="width:100%;"
+                                           [(ngModel)]="node.data.bz"
+                                           (click)="Tree_update(TreeTable,node,i)"
+                                           (input)="Tree_update(TreeTable,node,i)" [disabled]="is_disabled">
                                 </ng-template>
                             </p-column>
                         </p-treeTable>
@@ -390,7 +394,7 @@
                         </div>
 
                         <div class="clearfix">
-                            <p-dataTable resizableColumns="true" [value]="ggmx" class="table" dataKey="xh"
+                            <p-dataTable  resizableColumns="true" [value]="ggmx" class="table" dataKey="xh"
                                          (onRowClick)="DatatableClick($event)" [emptyMessage]="'查询数据为空'"
                                          responsive="true"
                                          selectionMode="single">
@@ -504,7 +508,7 @@
                                     <span>屋面材料</span>
                                 </div>
                                 <div class="inputRight fl">
-                                    <input [disabled]="isDisabled" type="text" name="ggcc"
+                                    <input [disabled]="isDisabled" type="text" name="wmcl"
                                            [(ngModel)]="ggmx[GgmxIndex]['wmcl']">
                                 </div>
                             </div>

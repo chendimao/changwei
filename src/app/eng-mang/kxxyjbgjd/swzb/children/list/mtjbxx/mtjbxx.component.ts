@@ -209,7 +209,7 @@ export class MtjbxxComponent implements OnInit {
                 }
             }
         }else{
-            delete this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'];
+            delete this.listHcyAdd[this.mtList[0].qsrId]['listMtAdd'];
         }
         this.mtList[0] = (new mt(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
     }
@@ -223,12 +223,12 @@ export class MtjbxxComponent implements OnInit {
         if (this.type != "view") {
             this.isShowDcfw = this.isShowDcfw ? false : true;
             if (!this.dcfwTableList) {
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MTGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_MT&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
                         this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MTGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_MT&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.dcfwTableList = res['returnObject'];
@@ -449,7 +449,7 @@ export class MtjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.mtList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'];
+                    delete this.listHcyAdd[this.mtList[0].qsrId]['listMtAdd'];
                 }
 
             }
@@ -463,13 +463,11 @@ export class MtjbxxComponent implements OnInit {
         console.log(this.mtList[0].id);
 
         if(this.mtList[0].qsrId.toString().length ==32){
-            if(this.mtList[0].id.toString().length == 32){
-                this.update_mtjbxx_data.push(this.mtList[0]);
-            }else{
+
                 this.add_mtjbxx_data.push(this.mtList[0]);
-            }
+
         }else{
-            this.listHcyAdd[this.mtList[0].qsrId]['listmtAdd'] = this.mtList[0];
+            this.listHcyAdd[this.mtList[0].qsrId]['listMtAdd'] = this.mtList[0];
 
 
 

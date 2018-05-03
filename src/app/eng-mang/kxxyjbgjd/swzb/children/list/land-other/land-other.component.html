@@ -93,7 +93,7 @@
                     </div>
                     <div class="fl group group-4 danwei">
                         <span>总数量</span>
-                        <input [disabled]="true" type="number" name="zsj" [(ngModel)]="jzzmj" readonly="readonly">
+                        <input disabled="true" type="number" name="zsj" [(ngModel)]="jzzmj">
                         <div class="fl mianji">
                             ㎡
                         </div>
@@ -170,7 +170,7 @@
                         <div *ngFor="let TreeTable of name_active_base;let i = index;" class="group-4 fl fl foot_box"
                              [ngClass]="{'group-4':name_active_base?.length==4,'group-3':name_active_base?.length==3,'group-2':name_active_base?.length==2,'group-1':name_active_base?.length==1}">
 
-                            <p-treeTable ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
+                            <p-treeTable toggleColumnIndex="1" ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"
                                          (onNodeSelect)="TreeTableClick($event,TreeTable,$event.node,i)"
                                          selectionMode="single" [(selection)]="selectedFile"
                                          [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
@@ -185,11 +185,13 @@
                                       [ngClass]="{'search_bg':node.data?node.data.searchRsut:false}">{{node.data.zdxmc}}</span>
                                     </ng-template>
                                 </p-column>
-                                <p-column field="sl" header="数量">
+                                <p-column field="jzmj" header="数量">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
-                                        <input type="text"  style="width:100%;"
-                                               [(ngModel)]="node.data.sl" [disabled]="node.children != null  || is_disabled"
-                                               (ngModelChange)="Tree_update(TreeTable,node,i)" (keydown)="calc($event,node)">
+                                        <input  type="number" style="width:100%;" [(ngModel)]="node.data.sl"
+
+                                               [disabled]="node.children != null  || is_disabled"
+                                               (click)="Tree_update(TreeTable,node,i)"
+                                               (keyup)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
                                 <p-column field="dwmc" header="单位">
@@ -201,7 +203,8 @@
                                 <p-column field="bz" header="备注">
                                     <ng-template let-col let-node="rowData" pTemplate="body">
                                         <input [disabled]="isDisabled" type="text" style="width:100%;" [(ngModel)]="node.data.bz"
-                                               (ngModelChange)="Tree_update(TreeTable,node,i)">
+                                               (click)="Tree_update(TreeTable,node,i)"
+                                               (input)="Tree_update(TreeTable,node,i)">
                                     </ng-template>
                                 </p-column>
                             </p-treeTable>

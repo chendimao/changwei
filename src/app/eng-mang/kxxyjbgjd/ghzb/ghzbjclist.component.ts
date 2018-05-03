@@ -5,8 +5,6 @@ import {DataProcessingService} from "../../../service/dataProcessing.service";
 import {Subscription} from "rxjs/Subscription";
 import {ShareService} from "../../../systemSetting/service/share.service";
 import {TreeListDataService} from "../../../service/tree-list-data.service";
-import * as _ from 'lodash';
-
 
 @Component({
     selector: 'app-ghzbjclist',
@@ -15,7 +13,7 @@ import * as _ from 'lodash';
 })
 export class GhzbTreelistComponent implements OnInit {
     private componentDm: string;
-    public treelist=[null,null];
+    private treelist: any;
     private qshflId: any;
     public res:any;
     private msgs: any;
@@ -25,11 +23,11 @@ export class GhzbTreelistComponent implements OnInit {
     private currentPage: number;
     public childTreeList;
     private secNav: string;
-    public treelist2;
     private getParem = new getParem;
     subscription = new Subscription;
+    private name_active_tree: any;
 
-    constructor( public TreeListService:TreeListDataService,public ShareService:ShareService, private Router: Router, private route: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
+    constructor(public TreeListService:TreeListDataService,public ShareService:ShareService, private Router: Router, private route: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
 
         this.route.params.subscribe(res => {
             console.log(res);
@@ -37,11 +35,37 @@ export class GhzbTreelistComponent implements OnInit {
             this.qshflId = res['qshflId'];
             this.res = res;
 
+            if(this.name_active_tree){
+
+                this.HttpService.get('zdk/listTree?sjId=CE22671CAA6D49B0BD3071CD63A72B95')
+                    .then((data) => {
+                        console.log(data);
+                        this.returnDm(data['returnObject'], this.qshflId);
+                        console.log(this.componentDm);
+                        console.log(this.componentDm == 'GHXMFL_0101');
+                        console.log(this.componentDm == 'GHXMFL_0102');
+                        console.log(this.componentDm == 'GHXMFL_0105');
+                        if (this.componentDm == 'GHXMFL_0101' || this.componentDm == 'GHXMFL_0102' || this.componentDm == 'GHXMFL_0105') {
+
+
+                            this.TreeListService.treeList = this.childTreeList;
+                            console.log(this.route);
+                            this.Router.navigate([`ghzbArea/${this.name_active_tree['localityCode']}/${this.componentDm}/${this.name_active_tree['localityDesc']}`], {relativeTo: this.route})
+                        } else {
+                            console.log(this.route);
+
+                            this.Router.navigate([`ghzbjbxx/${this.name_active_tree['localityCode']}/${this.componentDm}/${this.name_active_tree['localityDesc']}`],{relativeTo: this.route})
+                        }
+                    });
+
+
+                this.ShareService.sendMessage({
+                    severity: 'success',
+                    item: 'ghzb'
+                });
+            }
 
         });
-
-
-
 
 
         this.subscription = this.ShareService.getMessage()
@@ -62,28 +86,21 @@ export class GhzbTreelistComponent implements OnInit {
 
     }
 
-
-
     ngOnInit() {
         this.HttpService.get(`locality/listTree`)
             .then(res => {
-                this.treelist[0] = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
+                this.treelist = this.DataProcessingService.replaceChildlList(res['returnObject'], 'localityName', 'label', 'childrenLocality', 'children');
                 console.log(this.treelist);
-                this.treelist[1] = _.cloneDeep(this.treelist[0]);
             });
 
 
     }
 
     getEvent(i) {
-        console.log(i);
+        this.name_active_tree = i;
+        this.childTreeList = this.name_active_tree.children;
 
-        if(i.localityLevel>=3){
-            this.childTreeList = _.cloneDeep(i.children);
-            //this.treelist[0] =  _.cloneDeep(this.treelist[1]) ;
-            //delete i.children;
 
-        }
 
         console.log(this.childTreeList);
         console.log(this.res);
@@ -102,11 +119,11 @@ export class GhzbTreelistComponent implements OnInit {
 
                         this.TreeListService.treeList = this.childTreeList;
                         console.log(this.route);
-                    this.Router.navigate([`ghzbArea/${this.res['id']}/${i['localityCode']}/${this.componentDm}/${i['localityDesc']}`], {relativeTo: this.route})
+                    this.Router.navigate([`ghzbArea/${this.name_active_tree['localityCode']}/${this.componentDm}/${this.name_active_tree['localityDesc']}`], {relativeTo: this.route})
                 } else {
                     console.log(this.route);
 
-                    this.Router.navigate([`ghzbjbxx/${this.res['id']}/${i['localityCode']}/${this.componentDm}/${i['localityDesc']}`],{relativeTo: this.route})
+                    this.Router.navigate([`ghzbjbxx/${this.name_active_tree['localityCode']}/${this.componentDm}/${this.name_active_tree['localityDesc']}`],{relativeTo: this.route})
                 }
             });
 

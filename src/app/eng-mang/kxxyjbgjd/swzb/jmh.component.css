@@ -289,7 +289,9 @@ li {
 .table tbody tr.onselect {
     background: #ece8e8;
 }
-
+.table{
+    min-width: 1000px;
+}
 
 
 

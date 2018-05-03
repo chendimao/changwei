@@ -9,20 +9,40 @@
                 </div>
             </p-header>
             <div class="clearfix">
-                <ul>
-                    <li class="fl group group-3"><span class="importent">项目名称</span><input type="text" ngModel name="">
-                    </li>
-                    <li class="fl group group-3"><span>建设地点</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>涉及市、县（区）</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>项目法人或项目主管单位</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>移民安置规划设计单位</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>项目批准部门</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>项目属性</span><input type="text" ngModel name=""></li>
-                    <li class="fl group group-3"><span>项目状态</span>
-                        <p-selectButton [options]="types2" ngModel name="sfxw"
-                                        (click)="selectedTypea()"></p-selectButton>
-                    </li>
-                </ul>
+                <form #ngModel="ngForm">
+                    <ul>
+                        <li class="fl group group-3">
+                            <span class="importent">项目名称</span>
+                            <input type="text" [(ngModel)]="project.xmmc" name="xmmc">
+                        </li>
+                        <li class="fl group group-3">
+                            <span>建设地点</span>
+                            <input type="text" [(ngModel)]="project.jsdd" name="jsdd"></li>
+                        <li class="fl group group-3">
+                            <span>涉及市、县（区）</span>
+                            <input type="text" [(ngModel)]="project.sjqy" name="sjqy"></li>
+                        <li class="fl group group-3">
+                            <span>项目法人或项目主管单位</span>
+                            <input type="text" [(ngModel)]="project.xmfr" name="xmfr"></li>
+                        <li class="fl group group-3">
+                            <span>移民安置规划设计单位</span>
+                            <input type="text" [(ngModel)]="project.ymazghsjdw" name="ymazghsjdw"></li>
+                        <li class="fl group group-3">
+                            <span>项目批准部门</span>
+                            <input type="text" [(ngModel)]="project.xmpzbm" name="xmpzbm"></li>
+                        <li class="fl group group-3">
+                            <span>项目属性</span>
+                            <app-select-list [disabled]="isDisabled" [width]="120" [selectValue]="project.xmsxdm"
+                                             [values]="xmsx_list"
+                                             (SelectModel)="eventXmsx($event)"></app-select-list>
+                        <li class="fl group group-3 importent" >
+                            <span>项目状态</span>
+                            <p-selectButton [options]="types2" [(ngModel)]="project.sfxw" name="sfxw"
+                                            (click)="selectedTypea()"></p-selectButton>
+                        </li>
+                    </ul>
+                </form>
+
             </div>
         </p-panel>
         <div class="areaSelect clearfix">
@@ -37,269 +57,256 @@
             <header class="clearfix">
                 <div class="fl sle">
                     <span>阶段</span>
-                    <app-select-list  [width]="40" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    <app-select-list [width]="40" [values]="gctx_selectList"
+                                     (SelectModel)="getChildEvent($event,'gctx')"></app-select-list>
                 </div>
                 <div class="fl">
-                    <input type="text" class="searchInput" placeholder="名称">
+                    <input type="text" [(ngModel)]="key" (ngModelChange)="searchGctxList(key)" class="searchInput"
+                           placeholder="名称">
                 </div>
                 <div class="btnGrop fr">
                     <ul>
-                        <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                        <li class="fl" (click)="showAll('gctx',1)" *ngIf="isShow1">
                             <span class="img icon fa fa-square-o"></span>
                             显示非空项
                         </li>
-                        <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                        <li class="fl" (click)="showAll('gctx',2)" *ngIf="!isShow1">
                             <span class="img icon fa fa-check-square"></span>
                             显示所有项
                         </li>
-                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
-                                                                                      alt=""></span>清空
+                        <li class="fl" (click)="clearTable('gctx')">
+                            <span class="img"><img src="assets/img/icon/trash.png"
+                                                   alt=""></span>清空
                         </li>
                     </ul>
                 </div>
             </header>
-            <p-treeTable  ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
-                <p-column field="name" header="序号">
+            <p-dataTable [value]="gctxTreeTable" class="table" (onRowClick)="onRowSelect($event)"
+                         [emptyMessage]="'查询数据为空'" scrollable="true" resizableColumns="true"
+                         selectionMode="single" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="xh" header="序号">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="code" header="名称">
+                <p-column field="mc" header="名称">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="jldw" header="单位">
+                <p-column field="dw" header="单位">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
-                        <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
+                    <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="xh" header="数量" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;">
+                <p-column field="sz" header="数量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <input type="text" style="width:100%" [(ngModel)]="car[col.field]">
                     </ng-template>
                 </p-column>
-                <p-column field="bz" header="备注" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;">
+                <p-column field="bz" header="备注">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <input type="text" style="width:100%" [(ngModel)]="car[col.field]">
                     </ng-template>
                 </p-column>
-            </p-treeTable>
-            <div  class="btn-group icon">
-                    <a >保存</a>
-                    <a >清空所有</a>
-                </div>
+            </p-dataTable>
+            <!--<div class="btn-group icon">-->
+            <!--<a>保存</a>-->
+            <!--<a>清空所有</a>-->
+            <!--</div>-->
 
         </div>
         <div *ngIf="showMode==2">
             <header class="clearfix">
                 <div class="fl sle">
                     <span>阶段</span>
-                    <app-select-list [width]="40" [values]="selectList" (SelectModel)="getChildEvent($event)"></app-select-list>
+                    <app-select-list [width]="40" [values]="jszd_selectList"
+                                     (SelectModel)="getChildEvent($event,'jszd')"></app-select-list>
                 </div>
                 <div class="fl">
-                    <input type="text" class="searchInput" placeholder="名称">
+                    <input type="text" [(ngModel)]="key" (ngModelChange)="searchJszdList(key)" class="searchInput"
+                           placeholder="名称">
                 </div>
                 <div class="btnGrop fr">
                     <ul>
-                        <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
+                        <li class="fl" (click)="showAll('jszd',1)" *ngIf="isShow1">
                             <span class="img icon fa fa-square-o"></span>
                             显示非空项
                         </li>
-                        <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
+                        <li class="fl" (click)="showAll('jszd',2)" *ngIf="!isShow1">
                             <span class="img icon fa fa-check-square"></span>
                             显示所有项
                         </li>
-                        <li class="fl" (click)="showModule(3)"><span class="img"><img src="assets/img/icon/trash.png"
-                                                                                      alt=""></span>删除
+                        <li class="fl" (click)="clearTable('jszd')"><span class="img"><img src="assets/img/icon/trash.png"
+                                                                                         alt=""></span>清空
                         </li>
                     </ul>
                 </div>
             </header>
-            <p-treeTable  ui-treetable-tablewrapper [tableStyle]="{'padding':'10px'}" [value]="TreeTable"  [(selection)]="selectedFiles2" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
-                <p-column field="name" header="序号">
+            <p-dataTable [value]="jszdTreeTable" class="table" (onRowClick)="onRowSelect($event)"
+                         [emptyMessage]="'查询数据为空'" scrollable="true" resizableColumns="true"
+                         selectionMode="single" [style]="{'margin-top':'20px','border':'1px solid #cccccc'}">
+                <p-column field="xh" header="序号">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
                     <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="code" header="名称">
+                <p-column field="mc" header="名称">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
                     <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="jldw" header="单位">
+                <p-column field="dw" header="单位">
                     <!--<ng-template let-node="rowData" pTemplate="body">-->
                     <!--<input type="text"  style="width:100%;border-width:0px 0px 1px 0px">-->
                     <!--</ng-template>-->
                 </p-column>
-                <p-column field="xh" header="数量" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;">
+                <p-column field="sl" header="数量">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <input type="text" style="width:100%" [(ngModel)]="car[col.field]">
                     </ng-template>
                 </p-column>
-                <p-column field="bz" header="备注" >
-                    <ng-template let-node="rowData" pTemplate="body">
-                        <input type="text"  style="width:100%;">
+                <p-column field="bz" header="备注">
+                    <ng-template let-col let-car="rowData" pTemplate="body">
+                        <input type="text" style="width:100%" [(ngModel)]="car[col.field]">
                     </ng-template>
                 </p-column>
-            </p-treeTable>
-
-            <div  class="btn-group icon">
-                <a >保存</a>
-                <a >清空所有</a>
-            </div>
+            </p-dataTable>
+            <!--<div class="btn-group icon">-->
+            <!--<a>保存</a>-->
+            <!--<a>清空所有</a>-->
+            <!--</div>-->
 
         </div>
         <div *ngIf="showMode==3">
 
             <div class="clearfix">
                 <div>
-                    <header  class="clearfix">
+                    <header class="clearfix">
 
-                        <div  class="btnGrop fr">
-                            <ul  >
-                                <li class="fl" (click)="showAll(1)" *ngIf="isShow1">
-                                    <span class="img icon fa fa-square-o"></span>
-                                    多选
-                                </li>
-                                <li class="fl" (click)="showAll(2)" *ngIf="!isShow1">
-                                    <span class="img icon fa fa-check-square"></span>
-                                    取消多选
-                                </li>
-                                <li  class="fl"><span  class="img fa fa-minus-square-o"></span>批量删除
+                        <div class="btnGrop fr">
+                            <ul>
+                                <!--<li class="fl" (click)="checkMore(1)" *ngIf="isShow1">-->
+                                <!--<span class="img icon fa fa-square-o"></span>-->
+                                <!--多选-->
+                                <!--</li>-->
+                                <!--<li class="fl" (click)="checkMore(2)" *ngIf="!isShow1">-->
+                                <!--<span class="img icon fa fa-check-square"></span>-->
+                                <!--取消多选-->
+                                <!--</li>-->
+                                <li class="fl" (click)="delCheck()"><span class="img fa fa-minus-square-o"></span>批量删除
                                 </li>
                             </ul>
                         </div>
                     </header>
                     <div class="secd_title">
                         <span>
-                             图片
+                            图片
+                            <!--(<i class="importent">最大为5MB</i>)-->
                         </span>
-
                     </div>
-                    <div class="fl wj_box rl">
+                    <div class="fl wj_box rl" *ngFor="let list of fjList?.img;">
+                        <div class="del" (click)="delImg(list,'img')">
+                            <span><img src="assets/img/icon/x.png" alt=""></span>
+                        </div>
+                        <div class="del check" (click)="check(list)" [ngStyle]="{'display':list.isCheck?'block':''}">
+                            <span *ngIf="!list.isCheck" class="img icon fa fa-square-o"></span>
+                            <span *ngIf="list.isCheck" class="img icon fa fa-check-square"></span>
+                        </div>
+                        <div class="imgShow">
+                            <img [src]="list.url" alt="">
+                        </div>
+
+                        <div class="img_des">
+                            <span *ngIf="list.id">{{list.bt}}</span>
+                            <input *ngIf="!list.id" type="text" [(ngModel)]="list.bt"
+                                   (ngModelChange)="changeImgBt(list.url,list.bt)">
+
+                        </div>
+                        <div class="hover fl" (click)="setHeadimg(list)">设置为引导页</div>
+                    </div>
+
+                    <div class="rl fl wj_box ">
                         <div class="wj_b_h clearfix">
-                            <div class="fl wj_b_Im">
-                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
-                                <span>pdf</span>
-                            </div>
-                            <div class="fl text">
-                                泉州白濑水利枢纽工程建设征地
-                                移民安置监理月报2016年度第1期
-                            </div>
-                        </div>
-                        <div class="wj_b_b">
-                            <div>
-                                <span>上传单位：</span>福建省移民局
-                            </div>
-                            <div>
-                                <span>上传日期：</span>2016-12-10
-                            </div>
-                        </div>
-                        <div class="model">
-                            <ul class="btn_write">
-                                <li>编辑</li>
-                                <li>删除</li>
-                                <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
-                            </ul>
-                        </div>
-                    </div>   <div class="fl wj_box rl">
-                    <div class="wj_b_h clearfix">
-                        <div class="fl wj_b_Im">
-                            <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
-                            <span>pdf</span>
-                        </div>
-                        <div class="fl text">
-                            泉州白濑水利枢纽工程建设征地
-                            移民安置监理月报2016年度第1期
-                        </div>
-                    </div>
-                    <div class="wj_b_b">
-                        <div>
-                            <span>上传单位：</span>福建省移民局
-                        </div>
-                        <div>
-                            <span>上传日期：</span>2016-12-10
-                        </div>
-                    </div>
-                    <div class="model">
-                        <ul class="btn_write">
-                            <li>编辑</li>
-                            <li>删除</li>
-                            <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
-                        </ul>
-                    </div>
-                </div>
-                </div>
-                <div class="clearfix">
 
-                    <div class="secd_title">
+                            <p-fileUpload mode="basic" name="file"
+                                          url="http://115.28.69.231:8090/LARMS_SERVER/gcgkjbxx/uploadFile"
+                                          accept="image/*"
+                                          (onUpload)="onBasicUploadAuto('img',$event)" auto="true"
+                                          chooseLabel="上传">
+
+
+                                <ng-template pTemplate="content">
+                                </ng-template>
+                            </p-fileUpload>
+
+
+                        </div>
+
+                    </div>
+                    <div class="clearfix">
+
+                        <div class="secd_title">
                         <span>
                              视频
+                            <!--(<i class="importent">最大为10MB</i>)-->
                         </span>
 
-                    </div>
-                    <div class="fl wj_box rl">
-                        <div class="wj_b_h clearfix">
-                            <div class="fl wj_b_Im">
-                                <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
-                                <span>pdf</span>
+                        </div>
+                        <div class="fl wj_box rl" *ngFor="let list of fjList?.videos;">
+                            <div class="del" (click)="delImg(list,'videos')">
+                                <span><img src="assets/img/icon/x.png" alt=""></span>
                             </div>
-                            <div class="fl text">
-                                泉州白濑水利枢纽工程建设征地
-                                移民安置监理月报2016年度第1期
+                            <div class="del check" (click)="check(list)" [ngStyle]="{'display':list.isCheck?'block':''}">
+                                <span   *ngIf="!list.isCheck"  class="img icon fa fa-square-o"></span>
+                                <span   *ngIf="list.isCheck"   class="img icon fa fa-check-square"></span>
                             </div>
-                        </div>
-                        <div class="wj_b_b">
-                            <div>
-                                <span>上传单位：</span>福建省移民局
+                            <div class="imgShow">
+
+                                <video style="width: 100%;height: 100%" [src]="list.url" controls="controls">
+                                    您的浏览器不支持 video 标签。
+                                </video>
+
                             </div>
-                            <div>
-                                <span>上传日期：</span>2016-12-10
+
+                            <div class="img_des">
+                                <span  *ngIf="list.id">{{list.bt}}</span>
+                                <input *ngIf="!list.id"   type="text" [(ngModel)]="list.bt" (ngModelChange)="changeImgBt(list.url,list.bt)">
+
                             </div>
+                          </div>
+
+                        <div class="rl fl wj_box ">
+                            <div class="wj_b_h clearfix">
+
+                                <p-fileUpload  mode="basic" name="file" url="http://115.28.69.231:8090/LARMS_SERVER/gcgkjbxx/uploadFile"
+                                               accept=".mp4,.avi,.3gp,.wmv,.rmvb"  (onUpload)="onBasicUploadAuto('videos',$event)" auto="true"
+                                               chooseLabel="上传">
+
+                                </p-fileUpload>
+
+
+                            </div>
+
                         </div>
-                        <div class="model">
-                            <ul class="btn_write">
-                                <li>编辑</li>
-                                <li>删除</li>
-                                <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
-                            </ul>
-                        </div>
-                    </div>   <div class="fl wj_box rl">
-                    <div class="wj_b_h clearfix">
-                        <div class="fl wj_b_Im">
-                            <span class="img"><img src="assets/img/icon/pdf.png" alt=""></span>
-                            <span>pdf</span>
-                        </div>
-                        <div class="fl text">
-                            泉州白濑水利枢纽工程建设征地
-                            移民安置监理月报2016年度第1期
-                        </div>
+
                     </div>
-                    <div class="wj_b_b">
-                        <div>
-                            <span>上传单位：</span>福建省移民局
-                        </div>
-                        <div>
-                            <span>上传日期：</span>2016-12-10
-                        </div>
-                    </div>
-                    <div class="model">
-                        <ul class="btn_write">
-                            <li>编辑</li>
-                            <li>删除</li>
-                            <li class="check"><img src="assets/img/icon/check.png" alt=""></li>
-                        </ul>
-                    </div>
-                </div>
+
                 </div>
 
-            </div>
-            <div  class="btn-group icon">
-                <a >保存</a>
-                <a >清空所有</a>
+
+                <!--<div class="btn-group icon">-->
+                <!--<a (click)="save()">保存</a>-->
+                <!--<a>清空所有</a>-->
+                <!--</div>-->
+
             </div>
 
         </div>
+        <div class="btn-group icon">
+            <a (click)="save()">保存</a>
+            <a (click)="clearAll()">清空所有</a>
+        </div>
+        <p-growl [(value)]="msgs"></p-growl>
     </div>
 </div>

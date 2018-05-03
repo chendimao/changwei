@@ -284,7 +284,7 @@ export class GdgcjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.gdgcList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.gdgcList[0].qsrId]['listgdgcAdd'];
+                    delete this.listHcyAdd[this.gdgcList[0].qsrId]['listGdgcAdd'];
                 }
 
             }
@@ -303,7 +303,7 @@ export class GdgcjbxxComponent implements OnInit {
                 this.add_gdgcjbxx_data.push(this.gdgcList[0]);
 
         }else{
-            this.listHcyAdd[this.gdgcList[0].qsrId]['listgdgcAdd'] = this.gdgcList[0];
+            this.listHcyAdd[this.gdgcList[0].qsrId]['listGdgcAdd'] = this.gdgcList[0];
 
 
 
@@ -379,7 +379,7 @@ export class GdgcjbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.gdgcList[0].qsrId]) {
 
-                delete this.listHcyAdd[this.gdgcList[0].qsrId]['listgdgcAdd'];
+                delete this.listHcyAdd[this.gdgcList[0].qsrId]['listGdgcAdd'];
             }
         }
         this.gdgcList[0] = (new gdgc(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','',''));

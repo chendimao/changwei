@@ -84,7 +84,11 @@ export class GkjbxxComponent implements OnInit {
                 let res = this.InputChange.get_select_change(this.gkList[0],0,this.init_gkjbxx_data,this.update_gkjbxx_data,this.add_gkjbxx_data);
 
                 this.update_gkjbxx_data= res['update_data'];
-
+                for( let i in this.add_gkjbxx_data){
+                    if(i != '0'){
+                        delete this.add_gkjbxx_data[i];
+                    }
+                }
                 console.log(this.update_gkjbxx_data);
             });
 
@@ -566,7 +570,7 @@ export class GkjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.gkList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.gkList[0].qsrId]['listgkAdd'];
+                    delete this.listHcyAdd[this.gkList[0].qsrId]['listGkAdd'];
                 }
 
             }
@@ -585,7 +589,7 @@ export class GkjbxxComponent implements OnInit {
             this.add_gkjbxx_data.push(this.gkList[0]);
 
         }else{
-            this.listHcyAdd[this.gkList[0].qsrId]['listgkAdd'] = this.gkList[0];
+            this.listHcyAdd[this.gkList[0].qsrId]['listGkAdd'] = this.gkList[0];
 
 
 

@@ -48,13 +48,13 @@
     <!--</div>-->
 
 
-        <div class="fl group group-4">
+        <div class="fl group group-4 importent">
             <span>管道名称</span>
             <input [disabled]="isDisabled" name="mc" [(ngModel)]="gdgcList[0].mc" type="text" />
         </div>
 
 
-        <div class="fl group group-4 rl">
+        <div class="fl group group-4 rl importent">
         <span>管道工程类别</span>
         <input [disabled]="isDisabled" name="gdgclb" type="text" [(ngModel)]="gdgcList[0].gdgclbmc" name="zydldm"
                (click)="showgdgcBlock()" readonly="readonly">
@@ -65,7 +65,7 @@
 
 
 
-  <div class="fl group group-4 ">
+  <div class="fl group group-4 importent">
     <span>隶属关系</span>
     <input [disabled]="isDisabled" name="lsgx" [(ngModel)]="gdgcList[0].lsgx" type="text" />
 
@@ -135,10 +135,10 @@
 
 
 
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
+        <div class="fl group group-1 ">
+
       <span >备注 </span>
-    </div>
+
     <textarea [disabled]="isDisabled" class="textarea " cols="30" id="" name="bz" rows="10" [(ngModel)]="gdgcList[0].bz"  model="所在最低高程"></textarea>
   </div>
 

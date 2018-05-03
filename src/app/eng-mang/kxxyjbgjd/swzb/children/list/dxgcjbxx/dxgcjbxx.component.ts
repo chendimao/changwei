@@ -286,7 +286,7 @@ export class DxgcjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.dxgcList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.dxgcList[0].qsrId]['listdxgcAdd'];
+                    delete this.listHcyAdd[this.dxgcList[0].qsrId]['listDxgcAdd'];
                 }
 
             }
@@ -305,7 +305,7 @@ export class DxgcjbxxComponent implements OnInit {
             this.add_dxgcjbxx_data.push(this.dxgcList[0]);
 
         }else{
-            this.listHcyAdd[this.dxgcList[0].qsrId]['listdxgcAdd'] = this.dxgcList[0];
+            this.listHcyAdd[this.dxgcList[0].qsrId]['listDxgcAdd'] = this.dxgcList[0];
 
 
 
@@ -384,7 +384,7 @@ export class DxgcjbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.dxgcList[0].qsrId]) {
 
-                delete this.listHcyAdd[this.dxgcList[0].qsrId]['listdxgcAdd'];
+                delete this.listHcyAdd[this.dxgcList[0].qsrId]['listDxgcAdd'];
             }
         }
         this.dxgcList[0] = (new dxgc(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));

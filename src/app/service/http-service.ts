@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {CustomHttp} from "../common/share/customHttp";
 
 
 @Injectable()
 export class HttpService {
 
-    constructor(public http: Http) {
+    constructor(public http: CustomHttp) {
 
     }
 

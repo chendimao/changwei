@@ -127,13 +127,10 @@ p {
     border-bottom: 30px solid transparent;
 }
 
-.active {
-    color: #3c6b99;
-    background: white;
-}
+
 
 .info {
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 10px;
 
 }
@@ -164,13 +161,8 @@ p {
 }
 
 textarea.textarea {
-    width: calc(100% - 140px);
+    width: calc(100% - 143px);
 }
-
-.btnGrop {
-    margin-top: 15px;
-}
-
 .btnGrop li:hover {
     background: #0099cb;
     color: white;
@@ -184,10 +176,17 @@ textarea.textarea {
     background-image: url("/assets/img/icon/trash-w.png");
 }
 
-.btn-group {
-    margin-top: 15px;
-}
+.btn-group{
+    position: fixed;
+    bottom: 0px;
+    width: calc(100% - 180px);
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    background: white;
+    margin-left: -15px;
+    height: 50px;
 
+}
 .qwe img {
     width: 100%;
 }
@@ -214,7 +213,9 @@ textarea.textarea {
     height: 70px;
     border-radius: 2px;
 }
-
+header.clearfix{
+    padding-left: 2px;
+}
 .file span {
     color: #0086c8;
 }
@@ -222,7 +223,11 @@ textarea.textarea {
 .fileWjj {
     margin-left: 200px;
 }
-
+.tableEng{
+    padding: 18px;
+    background: #f5f6fa;
+    border-bottom: 1px solid #cccccc;
+}
 .shangchuan {
     color: #cccccc;
     border: 1px solid #cccccc;
@@ -230,21 +235,22 @@ textarea.textarea {
     background-size: 100%;
     margin-top: 25px;
 }
+.containerEng{
+    padding-bottom: 50px;
+}
 
 .shangchuan span {
     color: #cccccc;
 }
 
-p-fileUpload {
-    opacity: 0;
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-}
+
 
 .wj_b_b {
     border-top: 1px solid #0099cb;
     padding: 15px;
+}
+.t{
+    display: inherit;
 }
 
 .wj_b_Im {
@@ -253,27 +259,22 @@ p-fileUpload {
     color: #0099cb;
     text-align: center
 }
-
-.wj_box {
-    width: 25%;
-    max-width: 250px;
-    height: 100px;
-    margin-left: 25px;
-    margin-top: 25px;
-    border: 1px solid #0099cd;
-    border-radius: 3px;
-    padding: 10px 15px;
-    color: #666666;
-    overflow: hidden;
+.engBody{
+    margin-top: 50px;
+    padding-left: 1px;
 }
-
 .wj_box .text {
     width: calc(100% - 70px);
     border-left: 1px solid #0099cb;
     padding: 8px;
     box-sizing: border-box;
 }
+.img_des{
+    margin: 10px -15px 0px;
+    border-top: 1px solid #0099cd;
+    text-align: center;
 
+}
 .hover {
     position: absolute;
     right: 0px;
@@ -310,6 +311,50 @@ p-fileUpload {
 }
 .textareaBeizhu{
     width: 125px;
+}
+.active {
+    color: #3c6b99;
+    background: white;
+}
+.del{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: #2399e5;
+    display: none;
+    cursor: pointer;
+    border: 1px solid #0099cb;
+    border-top: none;
+    border-right: none;
+    border-radius: 0 0 0 3px;
+    padding: 2px 4px;
+}
+.del span{
+    color: #0099cb;
+}
+.check{
+    width: 20px;
+    left: 0;
+    border-left: none;
+    border-right: 1px solid #0099cb;
+    border-radius: 0 0 3px 0;
+}
+.wj_box:hover .del{
+    display: block;
+}
+.imgShow{
+    height: 90px;
+    overflow: hidden;
+}
+.hover{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: white;
+    display: none;
+    background: #0099cb;
+    padding: 2px;
+    cursor: pointer;
 }
 
 

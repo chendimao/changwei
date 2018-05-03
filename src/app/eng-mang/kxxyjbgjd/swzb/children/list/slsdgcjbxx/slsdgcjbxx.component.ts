@@ -433,6 +433,9 @@ export class SlsdgcjbxxComponent implements OnInit {
 
         this.slsdList[0].jcrq = e;
 
+        let res = this.InputChange.get_select_change(this.slsdList[0],0,this.init_slsdjbxx_data,this.update_slsdjbxx_data,[]);
+
+        this.update_slsdjbxx_data= res['update_data'];
     }
 
 

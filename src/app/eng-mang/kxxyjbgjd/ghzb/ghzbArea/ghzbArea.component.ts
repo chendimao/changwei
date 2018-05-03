@@ -10,6 +10,7 @@ import {Subscription} from "rxjs/Subscription";
 import {ShareService} from "../../../../systemSetting/service/share.service";
 import {TreeListDataService} from "../../../../service/tree-list-data.service";
 import * as _ from 'lodash';
+import {ProjectInfoService} from "../../../service/projectInfo..service";
 
 @Component({
     selector: 'app-ghzbArea',
@@ -23,9 +24,9 @@ export class GhzbAreaComponent implements OnInit {
     private treelist: any;
     private getParem: any;
     private secNav: string;
-    public dataList :any;
-    public params;
-    public parent_params;
+    public dataList: any;
+    public params = new Object();
+    public parent_params=new Object();
     public msgs: any;
     public getparam = new getParam;
     public treeList;
@@ -45,17 +46,17 @@ export class GhzbAreaComponent implements OnInit {
     public listDlzbflbmxAdd = [];
     public listDlzbflbmxEdit = [];
     public ghzb_data: ghxmdata;
-    public data = {ghxm:null,ghxmjbxx:null,listDlzbflbmxDel:null,listDlzbflbmxAdd:null,listDlzbflbmxEdit:null};
+    public data = {ghxm: null, ghxmjbxx: null, listDlzbflbmxDel: null, listDlzbflbmxAdd: null, listDlzbflbmxEdit: null};
     public isShow: boolean = true;
     private init_ghzb_data: any;
     private ghzb_data_copy: any;
     public event;
 
 
-    constructor(public TreeListService:TreeListDataService,private  ShareService: ShareService,private SearchService: SearchService, private router: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
+    constructor(public projectInfo: ProjectInfoService, public TreeListService: TreeListDataService, private  ShareService: ShareService, private SearchService: SearchService, private router: ActivatedRoute, private HttpService: HttpService, private DataProcessingService: DataProcessingService) {
         this.router.params.subscribe(res => {
             this.dataList = res['res'];
-        })
+        });
     }
 
     ngOnInit() {
@@ -75,8 +76,16 @@ export class GhzbAreaComponent implements OnInit {
             console.log(this.router);
             console.log(this.router.params);
             console.log(this.router.snapshot);
-            this.params = res;
-            this.parent_params = this.router.snapshot.parent.params;
+            // this.params = res;
+            for(let key in res){
+                this.params[key]=res[key]
+            }
+            this.params['ssgcdm']=this.projectInfo.project.code;
+            // this.parent_params = this.router.snapshot.parent.params;
+            for(let key in this.router.snapshot.parent.params){
+                this.parent_params[key]=this.router.snapshot.parent.params[key]
+            }
+            this.parent_params['id']=this.projectInfo.project.code;
 
             console.log(res);
             this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
@@ -116,17 +125,17 @@ export class GhzbAreaComponent implements OnInit {
 
                             this.router.params.subscribe(res => {
                                 console.log(res);
-                                console.log(this.router)
-                                this.getparam.jddm =   this.router.snapshot.parent.params['jddm'] ;
-                                this.getparam.ssgcdm =    this.router.snapshot.parent.params['id'] ;
-                                this.getparam.id =  this.router.snapshot.parent.params['qshflId'] ;
+                                console.log(this.router);
+                                this.getparam.jddm = this.router.snapshot.parent.params['jddm'];
+                                this.getparam.ssgcdm = this.projectInfo.project.code;
+                                this.getparam.id = this.router.snapshot.parent.params['qshflId'];
                             });
 
 
                             console.log(data);
-                            console.log( this.params);
-                            console.log( this.getparam);
-                            console.log( this.parent_params);
+                            console.log(this.params);
+                            console.log(this.getparam);
+                            console.log(this.parent_params);
                             if (data['message']['item'] == 'ghzb') {
                                 if (data['message']['summary']) {
                                     this.msgs = [];
@@ -138,13 +147,13 @@ export class GhzbAreaComponent implements OnInit {
 
                                     //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
 
-                                    console.log(this.params)
+                                    console.log(this.params);
                                     console.log(this.getparam);
-                                    this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.params['ssgcdm']));
-                                    this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-                                    this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+                                    this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
+                                    this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+                                    this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
 
-                                    this.HttpService.get(this.getUrl()).then((data)=>{
+                                    this.HttpService.get(this.getUrl()).then((data) => {
 
                                         console.log(data);
                                         this.dataList = data['returnObject'];
@@ -155,14 +164,10 @@ export class GhzbAreaComponent implements OnInit {
 
                                 }
                             }
-                        })
+                        });
 
 
-
-                })
-
-
-
+                });
 
 
             this.listUrl = 'ghxm/list';
@@ -170,9 +175,9 @@ export class GhzbAreaComponent implements OnInit {
             this.getparam.limit = '10';
             //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
             this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
-            this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-            this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
-            console.log(this.params)
+            this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+            this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+            console.log(this.params);
             console.log(this.getparam);
 
             for (let key in this.getparam) {
@@ -182,8 +187,7 @@ export class GhzbAreaComponent implements OnInit {
             }
 
 
-
-            this.HttpService.get(this.getUrl()).then((data)=>{
+            this.HttpService.get(this.getUrl()).then((data) => {
 
                 console.log(data);
                 this.dataList = data['returnObject'];
@@ -193,28 +197,17 @@ export class GhzbAreaComponent implements OnInit {
             });
 
 
-
-
-
             console.log(this.dataList);
 
 
-
-
-
-
-        })
-
-
-
-
+        });
 
 
         console.log(this.dataList);
 
         console.log(GHZB_TITLE);
-        for(let i in GHZB_TITLE){
-            if(i == this.params.ssghxmfldm){
+        for (let i in GHZB_TITLE) {
+            if (i == this.params['ssghxmfldm']) {
                 this.title = GHZB_TITLE[i];
             }
 
@@ -233,24 +226,21 @@ export class GhzbAreaComponent implements OnInit {
         console.log(this.params);
 
 
-
-
-
-        this.HttpService.get(`ghxm/list?start=1&limit=10&ssgcdm=${this.parent_params.id}&xmszxzqhdm=${event.localityCode}&ssghxmfldm=${this.params.ssghxmfldm}&jddm=${this.parent_params.jddm}`).then( data =>{
+        this.HttpService.get(`ghxm/list?start=1&limit=10&ssgcdm=${this.parent_params['id']}&xmszxzqhdm=${event.localityCode}&ssghxmfldm=${this.params['ssghxmfldm']}&jddm=${this.parent_params['jddm']}`).then(data => {
 
             console.log(data);
 
-            if(data['returnObject'].length>0 && data['returnObject'][0]['id'] != null){
+            if (data['returnObject'].length > 0 && data['returnObject'][0]['id'] != null) {
                 this.type = 'rew';
-                this.HttpService.get(`ghxm/show?id=${data['returnObject'][0]['id']}`).then( data2=>{
+                this.HttpService.get(`ghxm/show?id=${data['returnObject'][0]['id']}`).then(data2 => {
 
                     console.log(data2);
 
-                     data2['returnObject'].flbmxList.forEach((value,index,arr)=>{
+                    data2['returnObject'].flbmxList.forEach((value, index, arr) => {
 
-                              arr[index].zdxmc = new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;&nbsp;")+value.zdxmc;
+                        arr[index].zdxmc = new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;&nbsp;") + value.zdxmc;
 
-                     })
+                    });
 
 
                     this.init_ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
@@ -258,75 +248,69 @@ export class GhzbAreaComponent implements OnInit {
                     this.ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
 
 
-
-
-
                 });
 
                 console.log(this.ghzb_data);
 
 
-            }else{
+            } else {
                 this.type = 'add';
-                this.ghzb_data = new ghxmdata(null,null,null,null,null,
-                    null,null,'X000001',this.params.ssgcdm,this.params.ssghxmfldm,
-                    null,null, event.localityCode,event.localityCode,null,null,
-                    null,event.localityDesc,event.localityDesc,
-                    [new FlbmxList(null,null,null,null,null,null,null,'X000001',null,this.parent_params.jddm,this.params.dlzbfldm,null,null,null,null,null,null,null)],
-                    new Ghxmjbxx(null,null,null,null,null,null,null,'X000001',this.params.ssgcdm,null,this.parent_params.jddm,null,null,null,null,null,null)
-                )
+                this.ghzb_data = new ghxmdata(null, null, null, null, null,
+                    null, null, this.projectInfo.project.ssxtdm, this.params['ssgcdm'], this.params['ssghxmfldm'],
+                    null, null, event.localityCode, event.localityCode, null, null,
+                    null, event.localityDesc, event.localityDesc,
+                    [new FlbmxList(null, null, null, null, null, null, null, this.projectInfo.project.ssxtdm, null, this.parent_params['jddm'], this.params['dlzbfldm'], null, null, null, null, null, null, null)],
+                    new Ghxmjbxx(null, null, null, null, null, null, null, this.projectInfo.project.ssxtdm, this.params['ssgcdm'], null, this.parent_params['jddm'], null, null, null, null, null, null)
+                );
 
-                this.init_ghzb_data = null;
-                this.ghzb_data_copy = null;
+                this.init_ghzb_data = _.cloneDeep(this.ghzb_data);
+                this.ghzb_data_copy = _.cloneDeep(this.ghzb_data);
 
                 console.log(this.ghzb_data);
 
-                this.HttpService.get(`ghxm/showInitDlzbflbmx?ssgcdm=${this.parent_params.id}&ssghxmfldm=${this.params.ssghxmfldm}`).then( res =>{
+                this.HttpService.get(`ghxm/showInitDlzbflbmx?ssgcdm=${this.parent_params['id']}&ssghxmfldm=${this.params['ssghxmfldm']}`).then(res => {
 
                     console.log(res);
                     this.ghzb_data.flbmxList = res['returnObject'];
 
-                })
+                });
 
             }
 
 
-        })
+        });
 
 
     }
 
 
-
     //tableChange
-    tableChange($event){
+    tableChange($event) {
         console.log($event);
 
 
+        if ($event.id && $event.id.toString().length == 32) {
 
-        if($event.id && $event.id.toString().length ==32){
 
-
-            if($event.sl != null && $event.sl  != ""){
+            if ($event.sl != null && $event.sl != "") {
                 console.log($event);
 
-                if(!this.data['listDlzbflbmxEdit'] ){
-                    this.data['listDlzbflbmxEdit']  = [];
+                if (!this.data['listDlzbflbmxEdit']) {
+                    this.data['listDlzbflbmxEdit'] = [];
                 }
 
-                if(!this.data['listDlzbflbmxEdit'][$event.dlzbfldm]){
+                if (!this.data['listDlzbflbmxEdit'][$event.dlzbfldm]) {
                     this.data['listDlzbflbmxEdit'][$event.dlzbfldm] = {};
                 }
-                this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
+                this.ghzb_data_copy.flbmxList.forEach((value, index, arr) => {
 
-                    if(arr[index]['zdxxh'] == $event.zdxxh){
+                    if (arr[index]['zdxxh'] == $event.zdxxh) {
                         arr[index]['sl'] = $event.sl;
-
 
 
                         this.data['listDlzbflbmxEdit'][$event.dlzbfldm].sl = $event.sl;
 
-                        if(this.data['listDlzbflbmxDel'] && this.data['listDlzbflbmxDel'][$event.dlzbfldm]){
+                        if (this.data['listDlzbflbmxDel'] && this.data['listDlzbflbmxDel'][$event.dlzbfldm]) {
                             delete this.data['listDlzbflbmxDel'][$event.dlzbfldm];
                         }
 
@@ -337,27 +321,27 @@ export class GhzbAreaComponent implements OnInit {
                 this.data['listDlzbflbmxEdit'][$event.dlzbfldm].id = $event.id;
 
                 console.log(this.data['listDlzbflbmxEdit']);
-            }else{
+            } else {
 
                 console.log(this.data['listDlzbflbmxDel']);
 
-                if(!this.data['listDlzbflbmxDel'] ){
-                    this.data['listDlzbflbmxDel']  = [];
+                if (!this.data['listDlzbflbmxDel']) {
+                    this.data['listDlzbflbmxDel'] = [];
                 }
 
-                if(!this.data['listDlzbflbmxDel'][$event.dlzbfldm]){
+                if (!this.data['listDlzbflbmxDel'][$event.dlzbfldm]) {
                     this.data['listDlzbflbmxDel'][$event.dlzbfldm] = {};
                 }
-                this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
+                this.ghzb_data_copy.flbmxList.forEach((value, index, arr) => {
 
-                    if(arr[index]['zdxxh'] == $event.zdxxh){
+                    if (arr[index]['zdxxh'] == $event.zdxxh) {
 
-                        if(this.data['listDlzbflbmxEdit'] && this.data['listDlzbflbmxEdit'][$event.dlzbfldm]){
+                        if (this.data['listDlzbflbmxEdit'] && this.data['listDlzbflbmxEdit'][$event.dlzbfldm]) {
                             delete this.data['listDlzbflbmxEdit'][$event.dlzbfldm];
                         }
                     }
 
-                })
+                });
                 this.data['listDlzbflbmxDel'][$event.dlzbfldm].id = $event.id;
 
                 console.log(this.data['listDlzbflbmxEdit']);
@@ -366,35 +350,34 @@ export class GhzbAreaComponent implements OnInit {
 
             }
 
-            if(this.data.ghxm){
+            if (this.data.ghxm) {
                 this.data.ghxm['id'] = $event.id;
             }
 
 
-            if(this.isShow == true){
-                this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
+            if (this.isShow == true) {
+                this.ghzb_data.flbmxList.forEach((value, index, arr) => {
 
-                    this.ghzb_data.flbmxList.forEach((v,i,a)=>{
+                    this.ghzb_data.flbmxList.forEach((v, i, a) => {
 
-                        if(value['zdxxh'] == v['zdxxh']){
+                        if (value['zdxxh'] == v['zdxxh']) {
                             this.ghzb_data_copy.flbmxList[index]['sl'] = this.ghzb_data.flbmxList[index]['sl'];
                             console.log(this.ghzb_data_copy.flbmxList[index]);
                         }
 
-                    })
+                    });
 
-                })
+                });
             }
 
 
-
-        }else{
+        } else {
 
             console.log($event);
-            if(!this.data['listDlzbflbmxAdd'] ){
-                this.data['listDlzbflbmxAdd']  = [];
+            if (!this.data['listDlzbflbmxAdd']) {
+                this.data['listDlzbflbmxAdd'] = [];
             }
-            if(!this.data['listDlzbflbmxAdd'][$event.dlzbfldm]){
+            if (!this.data['listDlzbflbmxAdd'][$event.dlzbfldm]) {
                 this.data['listDlzbflbmxAdd'][$event.dlzbfldm] = {};
             }
 
@@ -403,12 +386,9 @@ export class GhzbAreaComponent implements OnInit {
             this.data['listDlzbflbmxAdd'][$event.dlzbfldm].sl = $event.sl;
 
 
-
-            this.data['listDlzbflbmxAdd'][$event.dlzbfldm].ssxtdm = 'X000001';
-            this.data['listDlzbflbmxAdd'][$event.dlzbfldm].jddm = this.parent_params.jddm;
+            this.data['listDlzbflbmxAdd'][$event.dlzbfldm].ssxtdm =this.projectInfo.project.ssxtdm ;
+            this.data['listDlzbflbmxAdd'][$event.dlzbfldm].jddm = this.parent_params['jddm'];
             this.data['listDlzbflbmxAdd'][$event.dlzbfldm].dlzbfldm = $event.dlzbfldm;
-
-
 
 
         }
@@ -421,27 +401,24 @@ export class GhzbAreaComponent implements OnInit {
         console.log(this.data);
 
 
-        this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
+        this.ghzb_data.flbmxList.forEach((value, index, arr) => {
 
-            this.ghzb_data_copy.flbmxList.forEach((v,i,a)=>{
+            this.ghzb_data_copy.flbmxList.forEach((v, i, a) => {
 
-                if(value['zdxxh'] == v['zdxxh']){
+                if (value['zdxxh'] == v['zdxxh']) {
                     this.ghzb_data_copy.flbmxList[index]['sl'] = this.ghzb_data.flbmxList[index]['sl'];
                     console.log(this.ghzb_data_copy.flbmxList[index]);
                 }
 
-            })
+            });
 
-        })
+        });
 
 
     }
 
 
-
-    save(){
-
-
+    save() {
 
 
         console.log(this.data['listDlzbflbmxDel']);
@@ -449,212 +426,214 @@ export class GhzbAreaComponent implements OnInit {
         console.log(this.data['listDlzbflbmxAdd']);
 
 
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            var arr4 = [];
-            var arr5 = [];
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        var arr4 = [];
+        var arr5 = [];
 
-            if(this.data['ghxm'] !=null){
+        if (this.data['ghxm'] != null) {
 
-                arr1 =Object.keys(this.data['ghxm']);
+            arr1 = Object.keys(this.data['ghxm']);
+        }
+
+        if (this.data['ghxmjbxx'] != null) {
+            console.log(this.data['ghxmjbxx']);
+            arr2 = Object.keys(this.data['ghxmjbxx']);
+        }
+
+        if (this.data['listDlzbflbmxDel'] != null) {
+            let t = 0;
+
+            for (let i in this.data['listDlzbflbmxDel']) {
+                this.data['listDlzbflbmxDel'][t] = this.data['listDlzbflbmxDel'][i];
+                delete this.data['listDlzbflbmxDel'][i];
+
+                t++;
+
             }
 
-            if(this.data['ghxmjbxx'] !=null){
-                console.log(this.data['ghxmjbxx']);
-                arr2 =Object.keys(this.data['ghxmjbxx']);
-            }
+            arr3 = Object.keys(this.data['listDlzbflbmxDel']);
+            console.log(arr3);
+        }
 
-            if(this.data['listDlzbflbmxDel'] !=null){
-                let t = 0;
+        if (this.data['listDlzbflbmxAdd'] != null) {
+            let t = 0;
 
-                for(let i in this.data['listDlzbflbmxDel']){
-                    this.data['listDlzbflbmxDel'][t] = this.data['listDlzbflbmxDel'][i];
-                    delete this.data['listDlzbflbmxDel'][i];
+            for (let i in this.data['listDlzbflbmxAdd']) {
+                if (this.data['listDlzbflbmxAdd'][i] != null) {
 
-                    t++;
-
+                    this.data['listDlzbflbmxAdd'][t] = this.data['listDlzbflbmxAdd'][i];
                 }
+                delete this.data['listDlzbflbmxAdd'][i];
+                t++;
 
-                arr3 =Object.keys(this.data['listDlzbflbmxDel']);
-                console.log(arr3);
             }
-
-            if(this.data['listDlzbflbmxAdd'] !=null){
-                let t = 0;
-
-                for(let i in this.data['listDlzbflbmxAdd']){
-                    if(this.data['listDlzbflbmxAdd'][i] != null) {
-
-                        this.data['listDlzbflbmxAdd'][t] = this.data['listDlzbflbmxAdd'][i];
-                    }
-                    delete this.data['listDlzbflbmxAdd'][i];
-                    t++;
-
-                }
-                arr4 =Object.keys(this.data['listDlzbflbmxAdd']);
-                console.log(this.data['listDlzbflbmxAdd']);
-            }
+            arr4 = Object.keys(this.data['listDlzbflbmxAdd']);
+            console.log(this.data['listDlzbflbmxAdd']);
+        }
 
         console.log(this.data);
-        if(this.data['listDlzbflbmxEdit'] !=null){
-                let t = 0;
-                    for(let i in this.data['listDlzbflbmxEdit']){
+        if (this.data['listDlzbflbmxEdit'] != null) {
+            let t = 0;
+            for (let i in this.data['listDlzbflbmxEdit']) {
 
-                        if(this.data['listDlzbflbmxEdit'][i] != null){
-                            this.data['listDlzbflbmxEdit'][t] = this.data['listDlzbflbmxEdit'][i];
-                        }
-                        delete this.data['listDlzbflbmxEdit'][i];
-                        t++;
-
+                if (this.data['listDlzbflbmxEdit'][i] != null) {
+                    this.data['listDlzbflbmxEdit'][t] = this.data['listDlzbflbmxEdit'][i];
                 }
-                arr5 =Object.keys(this.data['listDlzbflbmxEdit']);
+                delete this.data['listDlzbflbmxEdit'][i];
+                t++;
 
-                console.log(arr5);
             }
+            arr5 = Object.keys(this.data['listDlzbflbmxEdit']);
 
-            if(this.type == 'add'){
-                this.data['ghxm'].ssxtdm = 'X000001';
-                this.data['ghxm'].ssgcdm = this.ghzb_data.ssgcdm;
-                this.data['ghxm'].xmszxzqhdm = this.ghzb_data.xmszxzqhdm;
-                this.data['ghxm'].xmgldwxzqhdm = this.ghzb_data.xmgldwxzqhdm;
-                delete this.data['ghxm'].id;
-                this.data['ghxm'].xmmc = this.ghzb_data.xmszxzqhdm;
-                this.data['ghxm'].ssghxmfldm = this.params.ssghxmfldm;
-            }
+            console.log(arr5);
+        }
 
-
-            if(arr1.length == 0){
-                // delete  this.data['ghxm'];
-            }else{
-            console.log(this.data);
-                this.data['ghxm'].ssxtdm = 'X000001';
-                this.data['ghxm'].ssgcdm = this.ghzb_data.ssgcdm;
-                this.data['ghxm'].xmszxzqhdm = this.ghzb_data.xmszxzqhdm;
-                this.data['ghxm'].xmgldwxzqhdm = this.ghzb_data.xmgldwxzqhdm;
-            }
-            if(arr2.length == 0){
-                delete  this.data['ghxmjbxx'];
-            }
-
-
-            if(arr3.length == 0){
-                delete  this.data['listDlzbflbmxDel'];
-            }
-
-
-            if(arr4.length == 0){
-                delete  this.data['listDlzbflbmxAdd'];
-            }
-
-
-            if(arr5.length == 0){
-                console.log(arr5);
-                delete  this.data['listDlzbflbmxEdit'];
-            }
-
-            if(this.type != 'add'){
-
-                if(this.data.ghxm){
-                    this.data.ghxm['id'] = this.ghzb_data.id;
-                }
-
-           }
-            //如果规划投资为空则改为 -100
-            if(this.data.ghxmjbxx && (this.data.ghxmjbxx.ghtz == null || this.data.ghxmjbxx.ghtz.toString().trim() == "")){
-                this.data.ghxmjbxx.ghtz = -100;
-            }
-
-            console.log(this.data);
-
-            var arr6 =Object.keys(this.data);
-
-            if(arr6.length >0){
-                console.log(this.data);
-                this.HttpService.post(`ghxm/save`,this.data).then(data =>{
-                    console.log(data);
-                    this.data = {ghxm:{id:this.type=='add'?null:this.ghzb_data['id']} ,ghxmjbxx:null,listDlzbflbmxDel:null,listDlzbflbmxAdd:null,listDlzbflbmxEdit:null};
-
-                    this.msgs = [];
-                    this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
-
-
-                    if(this.type == 'rew' && data['returnObject'] != null){
-
-                        this.HttpService.get(`ghxm/show?id=${data['returnObject']}`).then(data2=>{
-                            console.log(data2);
-                            this.init_ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
-                            this.ghzb_data_copy = JSON.parse(JSON.stringify(data2['returnObject']));
-                            this.ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
-
-                            console.log(this.ghzb_data);
-
-                            this.isShow = true;
-                            //规划指标基本信息
-
-                            if(!this.ghzb_data['ghxmjbxx']){
-                                this.ghzb_data['ghxmjbxx'] = {};
-
-                                this.ghzb_data.ghxmjbxx =new Ghxmjbxx(null,null,null,null,null,null,null,'X000001',this.params.ssgcdm,this.ghzb_data.id,this.parent_params.jddm,null,null,null,null,null,null) ;
-
-
-                            }
-
-                            //按序号加空格
-                            this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
-
-                                arr[index].zdxmc = (new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;"))+arr[index].zdxmc;
-
-                            });
-
-
-                            console.log(this.ghzb_data);
-
-
-                        });
-
-                    }
-
-
-                    this.type = 'rew';
-                    console.log(this.data);
-
-                },error=>{
-                    this.msgs = [];
-                    this.msgs.push({severity: 'error', summary: '保存提醒', detail: error});
-                });
-            }
-
-
-
-
+        if (this.type == 'add') {
+            this.data['ghxm'].ssxtdm = this.projectInfo.project.ssxtdm;
+            this.data['ghxm'].ssgcdm = this.ghzb_data.ssgcdm;
+            this.data['ghxm'].xmszxzqhdm = this.ghzb_data.xmszxzqhdm;
+            this.data['ghxm'].xmgldwxzqhdm = this.ghzb_data.xmgldwxzqhdm;
+            delete this.data['ghxm'].id;
+            this.data['ghxm'].xmmc = this.ghzb_data.xmszxzqhdm;
+            this.data['ghxm'].ssghxmfldm = this.params['ssghxmfldm'];
         }
 
 
+        if (arr1.length == 0) {
+            // delete  this.data['ghxm'];
+        } else {
+            console.log(this.data);
+            this.data['ghxm'].ssxtdm = this.projectInfo.project.ssxtdm;
+            this.data['ghxm'].ssgcdm = this.ghzb_data.ssgcdm;
+            this.data['ghxm'].xmszxzqhdm = this.ghzb_data.xmszxzqhdm;
+            this.data['ghxm'].xmgldwxzqhdm = this.ghzb_data.xmgldwxzqhdm;
+        }
+        if (arr2.length == 0) {
+            delete  this.data['ghxmjbxx'];
+        }
+
+
+        if (arr3.length == 0) {
+            delete  this.data['listDlzbflbmxDel'];
+        }
+
+
+        if (arr4.length == 0) {
+            delete  this.data['listDlzbflbmxAdd'];
+        }
+
+
+        if (arr5.length == 0) {
+            console.log(arr5);
+            delete  this.data['listDlzbflbmxEdit'];
+        }
+
+        if (this.type != 'add') {
+
+            if (this.data.ghxm) {
+                this.data.ghxm['id'] = this.ghzb_data.id;
+            }
+
+        }
+        //如果规划投资为空则改为 -100
+        if (this.data.ghxmjbxx && (this.data.ghxmjbxx.ghtz == null || this.data.ghxmjbxx.ghtz.toString().trim() == "")) {
+            this.data.ghxmjbxx.ghtz = -100;
+        }
+
+        console.log(this.data);
+
+        var arr6 = Object.keys(this.data);
+
+        if (arr6.length > 0) {
+            console.log(this.data);
+            this.HttpService.post(`ghxm/save`, this.data).then(data => {
+                console.log(data);
+                this.data = {
+                    ghxm: {id: this.type == 'add' ? null : this.ghzb_data['id']},
+                    ghxmjbxx: null,
+                    listDlzbflbmxDel: null,
+                    listDlzbflbmxAdd: null,
+                    listDlzbflbmxEdit: null
+                };
+
+                this.msgs = [];
+                this.msgs.push({severity: 'success', summary: '保存提醒', detail: '保存成功'});
+
+
+                if (this.type == 'rew' && data['returnObject'] != null) {
+
+                    this.HttpService.get(`ghxm/show?id=${data['returnObject']}`).then(data2 => {
+                        console.log(data2);
+                        this.init_ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
+                        this.ghzb_data_copy = JSON.parse(JSON.stringify(data2['returnObject']));
+                        this.ghzb_data = JSON.parse(JSON.stringify(data2['returnObject']));
+
+                        console.log(this.ghzb_data);
+
+                        this.isShow = true;
+                        //规划指标基本信息
+
+                        if (!this.ghzb_data['ghxmjbxx']) {
+                            this.ghzb_data['ghxmjbxx'] = {};
+
+                            this.ghzb_data.ghxmjbxx = new Ghxmjbxx(null, null, null, null, null, null, null, this.projectInfo.project.ssxtdm, this.params['ssgcdm'], this.ghzb_data.id, this.parent_params['jddm'], null, null, null, null, null, null);
+
+
+                        }
+
+                        //按序号加空格
+                        this.ghzb_data.flbmxList.forEach((value, index, arr) => {
+
+                            arr[index].zdxmc = (new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;")) + arr[index].zdxmc;
+
+                        });
+
+
+                        console.log(this.ghzb_data);
+
+
+                    });
+
+                }
+
+
+                this.type = 'rew';
+                console.log(this.data);
+
+            }, error => {
+                this.msgs = [];
+                this.msgs.push({severity: 'error', summary: '保存提醒', detail: error});
+            });
+        }
+
+
+    }
 
 
     //清除表单数据
-    Clear(){
+    Clear() {
         this.isShow = true;
         console.log(this.ghzb_data.flbmxList);
-        this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
+        this.ghzb_data_copy.flbmxList.forEach((value, index, arr) => {
 
-            if(arr[index].id){
-                if(this.listDlzbflbmxEdit[arr[index].dlzbfldm]){
+            if (arr[index].id) {
+                if (this.listDlzbflbmxEdit[arr[index].dlzbfldm]) {
 
                     delete this.listDlzbflbmxEdit[arr[index].dlzbfldm];
                 }
 
-                if(!this.listDlzbflbmxDel[arr[index].dlzbfldm]){
+                if (!this.listDlzbflbmxDel[arr[index].dlzbfldm]) {
                     this.listDlzbflbmxDel[arr[index].dlzbfldm] = {};
                 }
-                this.listDlzbflbmxDel[arr[index].dlzbfldm].id = arr[index].id ;
+                this.listDlzbflbmxDel[arr[index].dlzbfldm].id = arr[index].id;
             }
 
             arr[index].sl = null;
 
 
-        })
+        });
 
         console.log(this.ghzb_data_copy.flbmxList);
         console.log(this.listDlzbflbmxDel);
@@ -664,24 +643,22 @@ export class GhzbAreaComponent implements OnInit {
         this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
 
 
-
-
     }
 
 
     //  显示所有
-    showAll(i){
+    showAll(i) {
 
         console.log(this.ghzb_data);
         console.log(this.init_ghzb_data);
         console.log(i);
-        if(i){
+        if (i) {
 
-            for(let i = 0,len = this.ghzb_data.flbmxList.length;i<len;i++){
+            for (let i = 0, len = this.ghzb_data.flbmxList.length; i < len; i++) {
                 console.log(i);
-                if(this.ghzb_data.flbmxList[i].sl == null  ){
+                if (this.ghzb_data.flbmxList[i].sl == null) {
                     console.log(this.ghzb_data.flbmxList[i]);
-                    this.ghzb_data.flbmxList.splice(i,1);
+                    this.ghzb_data.flbmxList.splice(i, 1);
                     len--;
                     i--;
                 }
@@ -705,7 +682,7 @@ export class GhzbAreaComponent implements OnInit {
             this.isShow = false;
 
             // this.is_disabled = true;
-        }else{
+        } else {
             this.ghzb_data.flbmxList = JSON.parse(JSON.stringify(this.ghzb_data_copy.flbmxList));
             // this.jzzmj = 0;
             // this.name_active_base =_.cloneDeep( this.decor_name_active_base_copy[0]);
@@ -719,9 +696,7 @@ export class GhzbAreaComponent implements OnInit {
         }
 
 
-
     }
-
 
 
     //分页
@@ -729,8 +704,8 @@ export class GhzbAreaComponent implements OnInit {
     queryList(res) {
 
         console.log(res);
-        console.log(this.parent_params.ssgcdm);
-        this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.parent_params.ssgcdm));
+        console.log(this.parent_params['ssgcdm']);
+        this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.parent_params['ssgcdm']));
         console.log(this.getparam.ssgcdm);
 
         this.dataList = res.data['returnObject'];
@@ -756,7 +731,7 @@ export class GhzbAreaComponent implements OnInit {
 
 //搜索
 
-    search(key){
+    search(key) {
         console.log(key);
 
 
@@ -765,10 +740,10 @@ export class GhzbAreaComponent implements OnInit {
         this.getparam.limit = '10';
         //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
         this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
-        this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-        this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+        this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+        this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
         this.getparam.searchKey = key;
-        console.log(this.params)
+        console.log(this.params);
         console.log(this.getparam);
 
         for (let key in this.getparam) {
@@ -778,8 +753,7 @@ export class GhzbAreaComponent implements OnInit {
         }
 
 
-
-        this.HttpService.get(this.getUrl()).then((data)=>{
+        this.HttpService.get(this.getUrl()).then((data) => {
 
             console.log(data);
             this.dataList = data['returnObject'];
@@ -790,8 +764,6 @@ export class GhzbAreaComponent implements OnInit {
 
 
     }
-
-
 
 
 }
@@ -806,8 +778,8 @@ export class getParam {
     start: string;	 //开始条数	是
     limit: string;	 //取多少条记录	是
     id: string;   //权属户分类ID	是
-    ssghxmfldm:string;
-    xmszxzqhdm:string;
+    ssghxmfldm: string;
+    xmszxzqhdm: string;
 
     jdId: string;   //当前阶段的id
     hzxm: string;   //户主姓名
@@ -823,7 +795,7 @@ export class getParam {
 }
 
 
-export class ghxmdata  {
+export class ghxmdata {
 
     constructor(
         public start,
@@ -847,7 +819,7 @@ export class ghxmdata  {
         public xmgldwxzqhmc,
         public flbmxList: Array<FlbmxList>,
         public ghxmjbxx: any
-    ){
+    ) {
 
     }
 
@@ -855,8 +827,7 @@ export class ghxmdata  {
 }
 
 
-
-export class FlbmxList{
+export class FlbmxList {
     constructor(
         public  start,
         public  limit,
@@ -876,7 +847,7 @@ export class FlbmxList{
         public  zdxmc,
         public  zdxxh,
         public  dwmc
-    ){
+    ) {
 
     }
 }
@@ -901,7 +872,7 @@ export class Ghxmjbxx {
         public ghfazy,
         public bz,
         public clfsmc
-    ){
+    ) {
 
     }
 }

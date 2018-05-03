@@ -122,6 +122,8 @@ export class  GhzbJbxxChildComponent implements OnInit {
                  new Ghxmjbxx(null,null,null,null,null,null,null,'X000001',this.params.ssgcdm,null,this.parent_params.jddm,null,null,null,null,null,null)
                 )
 
+            this.init_ghzb_data = _.cloneDeep(this.ghzb_data);
+            this.ghzb_data_copy = _.cloneDeep(this.ghzb_data);
 
 
             console.log(this.ghzb_data);
@@ -206,59 +208,66 @@ export class  GhzbJbxxChildComponent implements OnInit {
             if(this.init_ghzb_data && this.init_ghzb_data.id){
                 if(this.init_ghzb_data.xmmc != data.xmmc){
 
-                    this.ghxm['id'] = this.init_ghzb_data.id;
-                    this.ghxm['xmmc']  = data.xmmc;
+                    if(!this.data['ghxm']){
+                        this.data['ghxm'] = {};
+                    }
+
+                    this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                    this.data['ghxm']['xmmc']  = data.xmmc;
 
                 }else{
-                    if(this.ghxm && this.ghxm['xmmc']){
-                        delete this.ghxm['xmmc'];
+                    if(this.data['ghxm'] && this.data['ghxm']['xmmc']){
+                        delete this.data['ghxm']['xmmc'];
                     }
                 }
 
                 if(this.init_ghzb_data.xmjc != data.xmjc){
 
-                    this.ghxm['id'] = this.init_ghzb_data.id;
-                    this.ghxm['xmjc']  = data.xmjc;
+                    if(!this.data['ghxm']){
+                        this.data['ghxm'] = {};
+                    }
+
+                    this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                    this.data['ghxm']['xmjc']  = data.xmjc;
 
                 }else{
-                    if(this.ghxm && this.ghxm['xmjc']){
-                        delete this.ghxm['xmjc'];
+                    if(this.data['ghxm'] && this.data['ghxm']['xmjc']){
+                        delete this.data['ghxm']['xmjc'];
                     }
                 }
 
                 if(this.init_ghzb_data.bz != data.bz){
 
-                    this.ghxm['id'] = this.init_ghzb_data.id;
-                    this.ghxm['bz']  = data.bz;
+                    if(!this.data['ghxm']){
+                        this.data['ghxm'] = {};
+                    }
+
+                    this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                    this.data['ghxm']['bz']  = data.bz;
 
                 }else{
-                    if(this.ghxm && this.ghxm['bz']){
-                        delete this.ghxm['bz'];
+                    if(this.data['ghxm'] && this.data['ghxm']['bz']){
+                        delete this.data['ghxm']['bz'];
                     }
                 }
 
 
             }else{
 
-                this.ghxm['xmmc'] = data.xmmc;
-                this.ghxm['xmjc'] = data.xmjc;
-                this.ghxm['bz'] = data.bz;
+                if(!this.data['ghxm']){
+                    this.data['ghxm'] = {};
+                }
+                this.data['ghxm']['xmmc'] = data.xmmc;
+                this.data['ghxm']['xmjc'] = data.xmjc;
+                this.data['ghxm']['bz'] = data.bz;
 
             }
 
-
-
-            this.data.ghxm = this.ghxm;
-            this.data.ghxmjbxx = this.ghxmjbxx;
-            this.data.listDlzbflbmxAdd = this.listDlzbflbmxAdd;
-            this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
-            this.data.listDlzbflbmxEdit = this.listDlzbflbmxEdit;
-
-
+ 
 
 
             console.log(this.init_ghzb_data);
-            console.log(this.ghxm);
+            console.log(this.data['ghxm']);
             console.log(this.data.ghxm);
 
 
@@ -274,28 +283,28 @@ export class  GhzbJbxxChildComponent implements OnInit {
         //         if(this.init_ghzb_data.xmjc != data){
         //
         //
-        //             this.ghxm['id'] = this.init_ghzb_data.id;
-        //             this.ghxm['xmjc']  = data;
+        //             this.data['ghxm']['id'] = this.init_ghzb_data.id;
+        //             this.data['ghxm']['xmjc']  = data;
         //
         //         }else{
-        //             if(this.ghxm && this.ghxm['xmjc']){
-        //                 delete this.ghxm['xmjc'];
+        //             if(this.data['ghxm'] && this.data['ghxm']['xmjc']){
+        //                 delete this.data['ghxm']['xmjc'];
         //             }
         //         }
         //     }else{
         //
-        //         this.ghxm['xmjc'] = data;
+        //         this.data['ghxm']['xmjc'] = data;
         //
         //     }
         //     console.log(this.init_ghzb_data);
-        //     console.log(this.ghxm);
+        //     console.log(this.data['ghxm']);
         //
         //
-        //     this.data.ghxm = this.ghxm;
-        //     this.data.ghxmjbxx = this.ghxmjbxx;
-        //     this.data.listDlzbflbmxAdd = this.listDlzbflbmxAdd;
-        //     this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
-        //     this.data.listDlzbflbmxEdit = this.listDlzbflbmxEdit;
+        //     this.data.ghxm = this.data['ghxm'];
+        //     this.data.ghxmjbxx = this.data['ghxm']jbxx;
+        //     this.data.listDlzbflbmxAdd = this.data['listDlzbflbmxAdd'];
+        //     this.data.listDlzbflbmxDel = this.data['listDlzbflbmxDel'];
+        //     this.data.listDlzbflbmxEdit = this.data['listDlzbflbmxEdit'];
         //
         // })
         // //=================
@@ -309,29 +318,29 @@ export class  GhzbJbxxChildComponent implements OnInit {
         //         if(this.init_ghzb_data.bz != data){
         //
         //
-        //             this.ghxm['id'] = this.init_ghzb_data.id;
-        //             this.ghxm['bz']  = data;
+        //             this.data['ghxm']['id'] = this.init_ghzb_data.id;
+        //             this.data['ghxm']['bz']  = data;
         //
         //         }else{
-        //             if(this.ghxm && this.ghxm['bz']){
-        //                 delete this.ghxm['bz'];
+        //             if(this.data['ghxm'] && this.data['ghxm']['bz']){
+        //                 delete this.data['ghxm']['bz'];
         //             }
         //         }
         //     }else{
         //
-        //         this.ghxm['bz'] = data;
+        //         this.data['ghxm']['bz'] = data;
         //
         //     }
         //
         //     console.log(this.init_ghzb_data);
-        //     console.log(this.ghxm);
+        //     console.log(this.data['ghxm']);
         //
         //
-        //     this.data.ghxm = this.ghxm;
-        //     this.data.ghxmjbxx = this.ghxmjbxx;
-        //     this.data.listDlzbflbmxAdd = this.listDlzbflbmxAdd;
-        //     this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
-        //     this.data.listDlzbflbmxEdit = this.listDlzbflbmxEdit;
+        //     this.data.ghxm = this.data['ghxm'];
+        //     this.data.ghxmjbxx = this.data['ghxm']jbxx;
+        //     this.data.listDlzbflbmxAdd = this.data['listDlzbflbmxAdd'];
+        //     this.data.listDlzbflbmxDel = this.data['listDlzbflbmxDel'];
+        //     this.data.listDlzbflbmxEdit = this.data['listDlzbflbmxEdit'];
         //
         // })
         // //=================
@@ -341,16 +350,19 @@ export class  GhzbJbxxChildComponent implements OnInit {
 
             console.log(data);
 
-            this.data.ghxmjbxx = _.cloneDeep(this.ghzb_data.ghxmjbxx);
+            if(this.selectType == 2){
+                this.data.ghxmjbxx = _.cloneDeep(this.ghzb_data.ghxmjbxx);
 
-            this.data.ghxmjbxx.szwz = data.szwz;
-            this.data.ghxmjbxx.ghtz= data.ghtz;
-            this.data.ghxmjbxx.ghfazy = data.ghfazy;
-            this.data.ghxmjbxx.bz = data.bz;
+                this.data.ghxmjbxx.szwz = data.szwz;
+                this.data.ghxmjbxx.ghtz= data.ghtz;
+                this.data.ghxmjbxx.ghfazy = data.ghfazy;
+                this.data.ghxmjbxx.bz = data.bz;
+
+            }
 
 
             console.log(this.ghzb_data);
-            console.log(this.ghxmjbxx);
+            console.log(this.data['ghxmjbxx']);
             console.log(this.init_ghzb_data);
 
 
@@ -387,10 +399,10 @@ export class  GhzbJbxxChildComponent implements OnInit {
     save(){
         console.log(this.baseInfo);
         console.log(this.data);
+        this.isShow = true;
 
-
-
-
+        console.log(this.data['listDlzbflbmxAdd']);
+        console.log(this.data['listDlzbflbmxDel']);
 
 console.log(this.data['listDlzbflbmxDel']);
 
@@ -415,6 +427,7 @@ console.log(this.data['listDlzbflbmxDel']);
             if(this.data['ghxm'] !=null){
 
                 arr1 =Object.keys(this.data['ghxm']);
+                console.log(arr1);
             }
 
             if(this.data['ghxmjbxx'] !=null){
@@ -422,16 +435,23 @@ console.log(this.data['listDlzbflbmxDel']);
                 arr2 =Object.keys(this.data['ghxmjbxx']);
             }
 
-            if(this.data['listDlzbflbmxDel'] !=null){
+            if(this.data['listDlzbflbmxDel']  ){
+
                 let t = 0;
 
                 for(let i in this.data['listDlzbflbmxDel']){
                     this.data['listDlzbflbmxDel'][t] = this.data['listDlzbflbmxDel'][i];
                     delete this.data['listDlzbflbmxDel'][i];
 
+
+                    if(!this.data['listDlzbflbmxDel'][t]){
+                        delete this.data['listDlzbflbmxDel'][t];
+                    }
+
                     t++;
 
                 }
+
 
                 arr3 =Object.keys(this.data['listDlzbflbmxDel']);
                 console.log(arr3);
@@ -444,10 +464,16 @@ console.log(this.data['listDlzbflbmxDel']);
                     this.data['listDlzbflbmxAdd'][t] = this.data['listDlzbflbmxAdd'][i];
                     delete this.data['listDlzbflbmxAdd'][i];
 
+                    if(!this.data['listDlzbflbmxAdd'][t]){
+                        delete this.data['listDlzbflbmxAdd'][t];
+                    }
                     t++;
 
                 }
                 arr4 =Object.keys(this.data['listDlzbflbmxAdd']);
+
+
+
 
             }
 
@@ -457,6 +483,11 @@ console.log(this.data['listDlzbflbmxDel']);
                 for(let i in this.data['listDlzbflbmxEdit']){
                     this.data['listDlzbflbmxEdit'][t] = this.data['listDlzbflbmxEdit'][i];
                     delete this.data['listDlzbflbmxEdit'][i];
+
+
+                    if(!this.data['listDlzbflbmxEdit'][t]){
+                        delete this.data['listDlzbflbmxEdit'][t];
+                    }
 
                     t++;
 
@@ -481,7 +512,7 @@ console.log(this.data['listDlzbflbmxDel']);
 
 
             if(arr3.length == 0){
-                delete  this.data['listDlzbflbmxDel'];
+                //delete  this.data['listDlzbflbmxDel'];
             }
 
 
@@ -532,7 +563,7 @@ console.log(this.data['listDlzbflbmxDel']);
 
                             //规划指标基本信息
 
-                            if(!this.ghzb_data['ghxmjbxx']){
+                            if(this.ghzb_data && !this.ghzb_data['ghxmjbxx']){
                                 this.ghzb_data['ghxmjbxx'] = {};
 
                                 this.ghzb_data.ghxmjbxx =new Ghxmjbxx(null,null,null,null,null,null,null,'X000001',this.params.ssgcdm,this.ghzb_data.id,this.parent_params.jddm,null,null,null,null,null,null) ;
@@ -541,11 +572,14 @@ console.log(this.data['listDlzbflbmxDel']);
                             }
 
                             //按序号加空格
-                            this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
 
-                                arr[index].zdxmc = (new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;"))+arr[index].zdxmc;
+                            if(this.ghzb_data && this.ghzb_data.flbmxList.length>0){
+                                this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
 
-                            });
+                                    arr[index].zdxmc = (new Array(value.zdxxh.split('.').length).join("&nbsp;&nbsp;"))+arr[index].zdxmc;
+
+                                });
+                            }
 
 
                             console.log(this.ghzb_data);
@@ -612,24 +646,24 @@ console.log(this.data['listDlzbflbmxDel']);
             if(this.init_ghzb_data && this.init_ghzb_data.id){
                 if(this.init_ghzb_data.xmszxzqhdm != e.dm){
 
-                    this.ghxm['id'] = this.init_ghzb_data.id;
-                    this.ghxm['xmszxzqhdm']  = e.dm;
-                    this.ghxm['xmszxzqhmc']  = e.qc;
+                    this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                    this.data['ghxm']['xmszxzqhdm']  = e.dm;
+                    this.data['ghxm']['xmszxzqhmc']  = e.qc;
 
                 }else{
-                    if(this.ghxm && this.ghxm['xmszxzqhdm']){
-                        delete this.ghxm['xmszxzqhdm'];
-                        delete this.ghxm['xmszxzqhmc'];
+                    if(this.data['ghxm'] && this.data['ghxm']['xmszxzqhdm']){
+                        delete this.data['ghxm']['xmszxzqhdm'];
+                        delete this.data['ghxm']['xmszxzqhmc'];
                     }
                 }
             }else{
 
-                this.ghxm['xmszxzqhdm']  = e.dm;
-                this.ghxm['xmszxzqhmc']  = e.qc;
+                this.data['ghxm']['xmszxzqhdm']  = e.dm;
+                this.data['ghxm']['xmszxzqhmc']  = e.qc;
 
             }
 
-            console.log(this.ghxm);
+            console.log(this.data['ghxm']);
         }
     }
 
@@ -658,20 +692,20 @@ console.log(this.data['listDlzbflbmxDel']);
             if(this.init_ghzb_data && this.init_ghzb_data.id){
                 if(this.init_ghzb_data.xmgldwxzqhdm != e.dm){
 
-                    this.ghxm['id'] = this.init_ghzb_data.id;
-                    this.ghxm['xmgldwxzqhdm']  = e.dm;
-                    this.ghxm['xmgldwxzqhmc']  = e.qc;
+                    this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                    this.data['ghxm']['xmgldwxzqhdm']  = e.dm;
+                    this.data['ghxm']['xmgldwxzqhmc']  = e.qc;
 
                 }else{
-                    if(this.ghxm && this.ghxm['xmgldwxzqhdm']){
-                        delete this.ghxm['xmgldwxzqhdm'];
-                        delete this.ghxm['xmgldwxzqhmc'];
+                    if(this.data['ghxm'] && this.data['ghxm']['xmgldwxzqhdm']){
+                        delete this.data['ghxm']['xmgldwxzqhdm'];
+                        delete this.data['ghxm']['xmgldwxzqhmc'];
                     }
                 }
             }else{
 
-                this.ghxm['xmgldwxzqhdm'] = e.dm;
-                this.ghxm['xmgldwxzqhmc']  = e.qc;
+                this.data['ghxm']['xmgldwxzqhdm'] = e.dm;
+                this.data['ghxm']['xmgldwxzqhmc']  = e.qc;
 
 
             }
@@ -758,6 +792,7 @@ console.log(this.data['listDlzbflbmxDel']);
 
                 })
                 this.data['listDlzbflbmxDel'][$event.dlzbfldm].id = $event.id;
+                console.log(this.data['listDlzbflbmxDel']);
 
             }
 
@@ -766,7 +801,8 @@ console.log(this.data['listDlzbflbmxDel']);
             }
 
 
-
+                console.log(this.ghzb_data_copy);
+                console.log(this.ghzb_data);
            // if(this.isShow == true){
                 this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
 
@@ -826,27 +862,8 @@ console.log(this.data['listDlzbflbmxDel']);
 
 
         }
+ 
 
-        console.log(this.ghzb_data);
-        console.log(this.ghzb_data_copy);
-        console.log(this.data['listDlzbflbmxEdit']);
-        console.log(this.listDlzbflbmxAdd);
-        console.log(this.listDlzbflbmxDel);
-        console.log(this.data);
-
-
-        this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
-
-            this.ghzb_data_copy.flbmxList.forEach((v,i,a)=>{
-
-                if(value['zdxxh'] == v['zdxxh']){
-                    this.ghzb_data_copy.flbmxList[index]['sl'] = this.ghzb_data.flbmxList[index]['sl'];
-                    console.log(this.ghzb_data_copy.flbmxList[index]);
-                }
-
-            })
-
-        })
 
 
     }
@@ -859,15 +876,28 @@ console.log(this.data['listDlzbflbmxDel']);
         this.ghzb_data_copy.flbmxList.forEach((value,index,arr)=>{
 
             if(arr[index].id){
-                if(this.listDlzbflbmxEdit[arr[index].dlzbfldm]){
 
-                    delete this.listDlzbflbmxEdit[arr[index].dlzbfldm];
+                if(this.data['listDlzbflbmxEdit'] && this.data['listDlzbflbmxEdit'][arr[index].dlzbfldm]){
+
+                    delete this.data['listDlzbflbmxEdit'][arr[index].dlzbfldm];
                 }
 
-                if(!this.listDlzbflbmxDel[arr[index].dlzbfldm]){
-                    this.listDlzbflbmxDel[arr[index].dlzbfldm] = {};
+                if(!this.data['listDlzbflbmxDel'] ){
+                    this.data['listDlzbflbmxDel']  = [];
                 }
-                this.listDlzbflbmxDel[arr[index].dlzbfldm].id = arr[index].id ;
+
+                if(!this.data['listDlzbflbmxDel'][arr[index].dlzbfldm]){
+                    this.data['listDlzbflbmxDel'][arr[index].dlzbfldm] = {};
+                }
+
+                this.data['listDlzbflbmxDel'][arr[index].dlzbfldm]['id'] = arr[index].id ;
+            }else{
+
+                if(this.data['listDlzbflbmxAdd'] && this.data['listDlzbflbmxAdd'][arr[index].dlzbfldm]){
+
+                    delete this.data['listDlzbflbmxAdd'][arr[index].dlzbfldm];
+                }
+
             }
 
             arr[index].sl = null;
@@ -876,9 +906,9 @@ console.log(this.data['listDlzbflbmxDel']);
         })
 
         console.log(this.ghzb_data_copy.flbmxList);
-        console.log(this.listDlzbflbmxDel);
+        console.log(this.data['listDlzbflbmxDel']);
         this.ghzb_data = JSON.parse(JSON.stringify(this.ghzb_data_copy));
-        this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
+        this.data.listDlzbflbmxDel = this.data['listDlzbflbmxDel'];
 
 
 
@@ -945,22 +975,42 @@ console.log(this.data['listDlzbflbmxDel']);
      if(e != -1){
          this.ghzb_data.ssghxmfldm = e;
          console.log(e);
+         console.log(this.ghzb_data.flbmxList);
 
+         if(this.type == 'rew'){
+
+
+             if(!this.data.listDlzbflbmxDel){
+                 this.data.listDlzbflbmxDel = [];
+
+             }
+
+             this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
+
+                  if(value['id']){
+                      this.data['listDlzbflbmxDel'][value.dlzbfldm] = {id:value.id};
+
+                  }
+
+             })
+
+             console.log(this.data.listDlzbflbmxDel);
+         }
 
          if(this.init_ghzb_data && this.init_ghzb_data.id){
              if(this.init_ghzb_data.ssghxmfldm != e){
 
-                 this.ghxm['id'] = this.init_ghzb_data.id;
-                 this.ghxm['ssghxmfldm']  = e;
+                 this.data['ghxm']['id'] = this.init_ghzb_data.id;
+                 this.data['ghxm']['ssghxmfldm']  = e;
 
              }else{
-                 if(this.ghxm && this.ghxm['ssghxmfldm']){
-                     delete this.ghxm['ssghxmfldm'];
+                 if(this.data['ghxm'] && this.data['ghxm']['ssghxmfldm']){
+                     delete this.data['ghxm']['ssghxmfldm'];
                  }
              }
          }else{
 
-             this.ghxm['ssghxmfldm'] = e;
+             this.data['ghxm']['ssghxmfldm'] = e;
 
          }
 
@@ -968,7 +1018,7 @@ console.log(this.data['listDlzbflbmxDel']);
          this.HttpService.get(`ghxm/showInitDlzbflbmx?ssgcdm=${this.params.ssgcdm}&ssghxmfldm=${e}`).then( res=>{
 
              this.ghzb_data.flbmxList = res['returnObject'];
-
+             this.ghzb_data_copy.flbmxList = res['returnObject'];
              this.ghzb_data.flbmxList.forEach((value,index,arr)=>{
                     console.log( arr[index].zdxxh);
                     console.log(new Array(value.zdxxh.split('.').length));
@@ -988,14 +1038,14 @@ console.log(this.data['listDlzbflbmxDel']);
 
 
 
-         this.data.ghxm = this.ghxm;
-         this.data.ghxmjbxx = this.ghxmjbxx;
-         this.data.listDlzbflbmxAdd = this.listDlzbflbmxAdd;
-         this.data.listDlzbflbmxDel = this.listDlzbflbmxDel;
-         this.data.listDlzbflbmxEdit = this.listDlzbflbmxEdit;
+         this.data.ghxm = this.data['ghxm'];
+         this.data.ghxmjbxx = this.data['ghxmjbxx'];
+         this.data.listDlzbflbmxAdd = this.data['listDlzbflbmxAdd'];
+         this.data.listDlzbflbmxDel = this.data['listDlzbflbmxDel'];
+         this.data.listDlzbflbmxEdit = this.data['listDlzbflbmxEdit'];
 
          console.log(this.ghzb_data);
-         console.log(this.ghxm);
+         console.log(this.data['ghxm']);
      }else{
          this.ghzb_data.ssghxmfldm = null;
      }
@@ -1030,15 +1080,8 @@ console.log(this.data['listDlzbflbmxDel']);
         )
 
 
-
-     this.ghxm = {};
-    this.ghxmjbxx = {};
-    this.listDlzbflbmxDel = [];
-    this.listDlzbflbmxAdd = [];
-    this.listDlzbflbmxEdit = [];
-    this.init_ghzb_data = null;
-    this.ghzb_data_copy = null;
-
+        this.init_ghzb_data = _.cloneDeep(this.ghzb_data);
+        this.ghzb_data_copy = _.cloneDeep(this.ghzb_data);
         console.log(this.ghzb_data);
         this.ghzb_data.xmgldwxzqhdm = this.params.xmszxzqhdm;
 

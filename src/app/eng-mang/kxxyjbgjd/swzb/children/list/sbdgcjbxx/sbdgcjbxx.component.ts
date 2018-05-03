@@ -57,7 +57,7 @@ constructor(public HttpService:HttpService,public DataProcessing:DataProcessingS
 
     ngAfterViewInit(): void {
 
-            //if(this.sbdList[0].length>0){
+            // if(this.sbdList[0].length>0){
                 // 订阅表单值改变事件
                 this.forms.valueChanges.subscribe( data => {
                   console.log('test');
@@ -66,7 +66,13 @@ constructor(public HttpService:HttpService,public DataProcessing:DataProcessingS
                     this.update_sbdgcjbxx_data = res['update_data'];
 
                     console.log(this.update_sbdgcjbxx_data);
+                    for (let i in this.add_sbdgcjbxx_data) {
+                        if (i != '0') {
+                            delete this.add_sbdgcjbxx_data[i];
+                        }
+                    }
                 });
+
 
            // }
 
@@ -208,12 +214,12 @@ showDcfwBlock(index) {
     if (this.type != "view") {
         this.isShowDcfw = this.isShowDcfw ? false : true;
         if (!this.dcfwTableList) {
-            this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SBDGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+            this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_SBDGC&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                 .then((res) => {
                     console.log(res);
                     this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                 });
-            this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_SBDGC&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+            this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_SBDGC&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                 .then((res) => {
                     console.log(res['returnObject']);
                     this.dcfwTableList = res['returnObject'];
@@ -271,7 +277,8 @@ getChildSbdgc(event) {
 
 //权属人切换
 eventQsr(e){
-
+        console.log(this.sbdList[0].qsrId);
+        console.log(e);
     if(this.sbdList[0].qsrId){
         if(this.sbdList[0].qsrId.toString().length == 32){
             if(this.add_sbdgcjbxx_data.length>0){
@@ -285,11 +292,26 @@ eventQsr(e){
 
             if(this.update_sbdgcjbxx_data.length>0){
                 this.update_sbdgcjbxx_data.forEach((value,index,arr)=>{
+                    console.log(value);
                     if(value['id'] == this.sbdList[0].id){
                         delete this.update_sbdgcjbxx_data[index];
                     }
 
                 });
+            }
+
+                let del_tag = 0;
+            this.del_sbdgcjbxx_data.forEach((value,index,arr)=>{
+
+
+                if(this.sbdList[0].id == value['id']){
+                    del_tag = 1;
+                }
+
+            })
+
+            if(del_tag == 0){
+                this.del_sbdgcjbxx_data.push({id:this.sbdList[0].id});
             }
 
 
@@ -310,11 +332,10 @@ eventQsr(e){
     console.log(this.sbdList[0].id);
 
     if(this.sbdList[0].qsrId.toString().length ==32){
-        if(this.sbdList[0].id.toString().length == 32){
-            this.update_sbdgcjbxx_data.push(this.sbdList[0]);
-        }else{
+
+
             this.add_sbdgcjbxx_data.push(this.sbdList[0]);
-        }
+
     }else{
         this.listHcyAdd[this.sbdList[0].qsrId]['listSbdgcAdd'] = this.sbdList[0];
 
@@ -354,6 +375,7 @@ eventQsr(e){
 
     console.log(this.add_sbdgcjbxx_data);
     console.log(this.update_sbdgcjbxx_data);
+    console.log(this.del_sbdgcjbxx_data);
     console.log(this.listHcyAdd);
 
 
@@ -363,7 +385,9 @@ eventQsr(e){
 eventJgrq(e){
 
     this.sbdList[0].jcrq = e;
+    let res = this.InputChange.get_select_change(this.sbdList[0],0,this.init_sbdgcjbxx_data,this.update_sbdgcjbxx_data,this.add_sbdgcjbxx_data,);
 
+    this.update_sbdgcjbxx_data = res['update_data'];
 }
 
 

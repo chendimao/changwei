@@ -72,9 +72,6 @@ export class QtzxjbxxComponent implements OnInit {
         // 订阅表单值改变事件
         this.forms.valueChanges.subscribe( data => {
             console.log('test');
-            if(this.qtzxList && this.qtzxList[0].length>0){
-
-            }
             let res = this.InputChange.get_select_change(this.qtzxList[0],0,this.init_qtzxjbxx_data,this.update_qtzxjbxx_data,[]);
 
             this.update_qtzxjbxx_data= res['update_data'];
@@ -367,7 +364,7 @@ export class QtzxjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.qtzxList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.qtzxList[0].qsrId]['listqtzxAdd'];
+                    delete this.listHcyAdd[this.qtzxList[0].qsrId]['listQtzxAdd'];
                 }
 
             }
@@ -386,7 +383,7 @@ export class QtzxjbxxComponent implements OnInit {
             this.add_qtzxjbxx_data.push(this.qtzxList[0]);
 
         }else{
-            this.listHcyAdd[this.qtzxList[0].qsrId]['listqtzxAdd'] = this.qtzxList[0];
+            this.listHcyAdd[this.qtzxList[0].qsrId]['listQtzxAdd'] = this.qtzxList[0];
 
 
 
@@ -433,6 +430,9 @@ export class QtzxjbxxComponent implements OnInit {
     eventJgrq(e){
 
         this.qtzxList[0].jcrq = e;
+        let res = this.InputChange.get_select_change(this.qtzxList[0],0,this.init_qtzxjbxx_data,this.update_qtzxjbxx_data,[]);
+
+        this.update_qtzxjbxx_data= res['update_data'];
 
     }
 
@@ -459,7 +459,7 @@ export class QtzxjbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.qtzxList[0].qsrId]) {
 
-                delete this.listHcyAdd[this.qtzxList[0].qsrId]['listqtzxAdd'];
+                delete this.listHcyAdd[this.qtzxList[0].qsrId]['listQtzxAdd'];
             }
         }
         this.qtzxList[0] = (new qtzx(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));

@@ -40,7 +40,7 @@
     <input [disabled]="isDisabled" name="frdb" [(ngModel)]="dwList[0].frdb" type="text">
   </div>
 
-    <div class="fl group group-4">
+    <div class="fl group group-4 time">
 
           <span>是否镇外</span>
 
@@ -58,7 +58,7 @@
       <app-sec-type-list (SelectModel)="getChilddw($event)" [isShow]="isShowdw"
                          [treeList]="dwTreeList" [tableList]="dwTableList"></app-sec-type-list>
     </div>
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>隶属关系</span>
     <input [disabled]="isDisabled" name="lsgx" [(ngModel)]="dwList[0].lsgx" type="text">
   </div>
@@ -103,7 +103,7 @@
       万元
     </div>
   </div>
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>注册日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="dwList[0].zcrq"
@@ -112,7 +112,7 @@
       </div>
 
     </div>
-    <div class="fl group group-4 ">
+    <div class="fl group group-4 time">
       <span>投产日期</span>
       <div class="inputRight fl">
         <app-p-calendar [disabled]="isDisabled" [disabled]="isDisabled" [value]="dwList[0].tcrq"

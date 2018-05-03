@@ -84,7 +84,7 @@ export class DwqbqkComponent implements OnInit {
             let res = this.InputChange.get_select_change(this.dwList[0],0,this.init_dwjbxx_data,this.update_dwjbxx_data,this.add_dwjbxx_data );
 
             this.update_dwjbxx_data = res['update_data'];
-
+             console.log(res);
 
             console.log(this.update_dwjbxx_data);
             console.log(this.add_dwjbxx_data);
@@ -124,7 +124,7 @@ export class DwqbqkComponent implements OnInit {
         console.log(this.dwjbxx2_data['returnObject']);
         this.dwList = this.dwjbxx2_data['returnObject'];
         console.log(this.childInfo);
-        if(this.dwList.length<=0){
+        if(this.dwList.length<=0 ){
             this.dwList[0] = (new dw(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
 
         }
@@ -203,6 +203,7 @@ export class DwqbqkComponent implements OnInit {
 
 
             this.dwList[0] = (new dw(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','' ));
+
         }
 
 

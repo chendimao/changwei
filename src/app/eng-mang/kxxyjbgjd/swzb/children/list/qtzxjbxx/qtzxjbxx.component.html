@@ -45,7 +45,7 @@
 
   <!--</div>-->
 
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>专项类别</span>
       <input [disabled]="isDisabled"  type="text" [(ngModel)]="qtzxList[0].zxlbmc" name="zxlbmc"
              (click)="showqtzxBlock()" readonly="readonly">
@@ -54,7 +54,7 @@
                          [treeList]="qtzxTreeList" [tableList]="qtzxTableList"></app-sec-type-list>
     </div>
 
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>名称</span>
       <input [disabled]="isDisabled" name="qtzxmc" type="text" [(ngModel)]="qtzxList[0].mc"/>
 

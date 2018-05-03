@@ -43,7 +43,7 @@
       <span>航道编号</span>
       <input [disabled]="isDisabled" name="hdbh" [(ngModel)]="hdList[0].hdbh" type="text">
     </div>
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>航道类别</span>
       <input [disabled]="isDisabled" type="text" [(ngModel)]="hdList[0].hdlbmc" name="hdlbmc"
              (click)="showhdBlock()" readonly="readonly">
@@ -51,7 +51,7 @@
       <app-sec-type-list (SelectModel)="getChildhd($event)" [isShow]="isShowhd"
                          [treeList]="hdTreeList" [tableList]="hdTableList"></app-sec-type-list>
     </div>
-    <div class="fl group group-4">
+    <div class="fl group group-4 importent">
       <span>航道名称</span>
       <input [disabled]="isDisabled" name="mc" [(ngModel)]="hdList[0].mc" type="text">
     </div>
@@ -124,10 +124,10 @@
 
 
 
-  <div  class="clearfix beizhu ">
-    <div  class="textareaBeizhu">
+    <div class="fl group group-1">
+
       <span >备注 </span>
-    </div>
+
     <textarea  class="textarea " cols="30" id="" name="bz" [(ngModel)]="hdList[0].bz" rows="10"  model="所在最低高程"></textarea>
   </div>
   </form>

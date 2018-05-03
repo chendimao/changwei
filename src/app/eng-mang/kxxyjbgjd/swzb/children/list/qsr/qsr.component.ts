@@ -421,8 +421,8 @@ export class QsrComponent implements OnInit {
                 console.log(this.update_person_data);
                 console.log(this.del_person_data);
             } else {
+                delete this.add_person_data[this.hcy['id']];
 
-                this.add_person_data.splice(this.name_active_key, 1);
                 console.log(this.add_person_data);
 
 

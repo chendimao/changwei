@@ -1,6 +1,5 @@
 import {Component, ViewChild, ElementRef, ViewChildren, OnInit, QueryList} from '@angular/core';
 import {SelectItem, DataTableModule, SharedModule, LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
-import {TreesData} from "../trees/trees.component";
 import * as $ from "jquery";
 import {DataProcessingService} from "../../../../../../service/dataProcessing.service";
 import {HttpService} from "../../../../../../service/http-service";
@@ -94,6 +93,7 @@ export class GraveComponent implements OnInit {
     area: string;
     @ViewChild('person') person: NgForm;
     @ViewChildren('defaultgrave') defaultgrave: QueryList<ElementRef>;
+    @ViewChildren('tablePerson') tablePerson;
 
 
     constructor(public InputChange: InputChangeService, public selectList: SelectListHttpService, public DataProcessing: DataProcessingService, public  ValuChangeService: ValuChangeService, public  HttpService: HttpService, public  route: ActivatedRoute) {
@@ -637,14 +637,22 @@ export class GraveComponent implements OnInit {
 
 
         let that = this.defaultgrave;
+        let tablePerson = this.tablePerson;
 
         setTimeout(function () {
-            console.log(that);
-            console.log(that.last);
-            console.log(that.last.nativeElement);
-            that.last.nativeElement.click();
-        }, 0);
 
+            if (that.last) {
+                console.log(that.last.nativeElement);
+                that.last.nativeElement.click();
+            }
+            if (tablePerson.last) {
+                tablePerson.last.nativeElement.click();
+            }
+
+
+
+        }, 0);
+        this.tableList=this.tableList.slice();
         this.hcy_count = this.tableList.length;
         this.hcy = this.tableList[this.tableList.length-1];
         console.log(this.hcy);
@@ -728,6 +736,7 @@ export class GraveComponent implements OnInit {
         if (this.tableList.length == 0) {
 
         }
+        this.tableList=this.tableList.slice();
 
 
     }

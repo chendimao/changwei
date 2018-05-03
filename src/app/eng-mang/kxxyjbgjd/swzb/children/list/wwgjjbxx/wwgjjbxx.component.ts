@@ -75,13 +75,11 @@ export class WwgjjbxxComponent implements OnInit {
         // 订阅表单值改变事件
         this.forms.valueChanges.subscribe( data => {
             console.log('test');
-            console.log(this.wwgjList[0]);
             if(this.wwgjList[0] && this.wwgjList[0].length>0){
                 let res = this.InputChange.get_select_change(this.wwgjList[0],0,this.init_wwgjjbxx_data,this.update_wwgjjbxx_data,[]);
 
                 this.update_wwgjjbxx_data= res['update_data'];
             }
-
 
             console.log(this.update_wwgjjbxx_data);
         });

@@ -31,20 +31,13 @@ import {GhzbJbxxChildComponent} from "./zyxmcl/children/ghzbJbxxChild.component"
 import {DelWaringComponent} from "../../../common/del-waring/del-waring.component";
 import {TreeListDataService} from "../../../service/tree-list-data.service";
 
-import {BrowserModule} from "@angular/platform-browser";
-import {LoadingBarComponent} from "../../../common/share/loading-bar/loading-bar.component";
-import {LoadingBarService} from "../../../common/share/loading-bar/loading-bar.service";
-
 
 @NgModule({
     declarations: [
         GhzbJbxxComponent,
         GhzbAreaComponent,
         GhzbJbxxChildComponent,
-        GhzbTreelistComponent,
-
-
-
+        GhzbTreelistComponent
     ],
     imports: [
         GrowlModule,
@@ -69,8 +62,7 @@ import {LoadingBarService} from "../../../common/share/loading-bar/loading-bar.s
         RouterModule.forChild(GhzbRoutingModule)
 
     ],
-
-    providers: [DataProcessingService, SearchService,TreeListDataService,LoadingBarService,LoadingBarComponent],
+    providers: [DataProcessingService, SearchService,TreeListDataService],
     entryComponents:[GhzbJbxxChildComponent, DelWaringComponent]
 })
 export class GhzbModule {

@@ -174,7 +174,7 @@ export class HdjbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.hdList[0].qsrId] != undefined) {
 
-                delete this.listHcyAdd[this.hdList[0].qsrId]['listhdAdd'];
+                delete this.listHcyAdd[this.hdList[0].qsrId]['listHdAdd'];
             }
         }
         this.hdList[0] = (new hd(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
@@ -189,12 +189,12 @@ export class HdjbxxComponent implements OnInit {
         if (this.type != "view") {
             this.isShowDcfw = this.isShowDcfw ? false : true;
             if (!this.dcfwTableList) {
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HD&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_HD&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
                         this.dcfwTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HD&column=ZYDLDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_HD&column=DCFWDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.dcfwTableList = res['returnObject'];
@@ -311,7 +311,7 @@ export class HdjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.hdList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.hdList[0].qsrId]['listhdAdd'];
+                    delete this.listHcyAdd[this.hdList[0].qsrId]['listHdAdd'];
                 }
 
             }
@@ -331,7 +331,7 @@ export class HdjbxxComponent implements OnInit {
                 this.add_hdjbxx_data[0] = this.hdList[0];
             }
         }else{
-            this.listHcyAdd[this.hdList[0].qsrId]['listhdAdd'] = this.hdList[0];
+            this.listHcyAdd[this.hdList[0].qsrId]['listHdAdd'] = this.hdList[0];
 
 
 

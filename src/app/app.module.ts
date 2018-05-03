@@ -39,8 +39,6 @@ import {UserCommonModule} from './common/UserCommon.module';
         UserComponent,
         EngMangHomeComponent,
         LoginComponent,
-        LoadingBarComponent,
-        PopupComponent,
 
 
     ],
@@ -60,6 +58,8 @@ import {UserCommonModule} from './common/UserCommon.module';
         [
             LoadingBarService,
             PopupService,
+            CustomHttp,
+
             {
                 provide: Http,
                 useFactory: ProviderHttp,

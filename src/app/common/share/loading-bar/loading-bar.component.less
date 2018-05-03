@@ -4,7 +4,37 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url(imgs/loading.gif) center center no-repeat rgba(255,255,255,.5);
-  background-size: 1.5rem;
+  background: rgba(255,255,255,0.5);
   z-index: 999;
+}
+
+.spinner {
+  text-align: center;
+}
+
+.spinner>div{
+  margin-top: 20%;
+}
+.spinner>div > div {
+  width: 30px;
+  height: 30px;
+  background-color: #67CF22;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
 }

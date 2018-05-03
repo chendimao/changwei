@@ -5,7 +5,6 @@ import {
     RequestOptionsArgs,
     Response,
     RequestOptions,
-    ConnectionBackend,
     Headers,
     XHRBackend
 } from '@angular/http';
@@ -19,7 +18,7 @@ export class CustomHttp extends Http {
     count = 0;
     sum = 0;
 
-    constructor(backend: ConnectionBackend,
+    constructor(backend: XHRBackend,
                 defaultOptions: RequestOptions,
                 private loading: LoadingBarService,
                 private popup: PopupService) {
@@ -78,7 +77,7 @@ export class CustomHttp extends Http {
 
                 // 每完成一个请求sum+1,直到所有的请求完成后才清除loading-bar定时器并关闭
                 this.sum++;
-
+                console.log(this.sum);
                 if (this.sum === this.count) {
                     this.closeLoading()
                 }
@@ -107,6 +106,11 @@ export class CustomHttp extends Http {
             });
             this.loading.close();
         }, 300)
+
+        setTimeout(() => {
+
+            this.closeLoading();
+        },30000);
     }
 
     // 报错状态码

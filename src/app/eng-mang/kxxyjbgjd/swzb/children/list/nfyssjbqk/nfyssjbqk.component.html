@@ -11,11 +11,11 @@
   </header>
   <form #forms="ngForm">
 
-  <div class="fl group group-4">
+  <div class="fl group group-4 importent">
     <span>名称</span>
     <input [disabled]="isDisabled" name="mc" [(ngModel)]="nfyList[0].mc" type="text">
   </div>
-    <div class="fl group group-4 rl">
+    <div class="fl group group-4 rl importent">
       <span>性质</span>
       <input [disabled]="isDisabled" type="text" [(ngModel)]="nfyList[0].xzmc" name="xzmc"
              (click)="showxzBlock()" readonly="readonly">

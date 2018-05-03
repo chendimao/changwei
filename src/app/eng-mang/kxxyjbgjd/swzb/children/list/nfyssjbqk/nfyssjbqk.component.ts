@@ -328,7 +328,7 @@ export class NfyssjbqkComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.nfyList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.nfyList[0].qsrId]['listnfyAdd'];
+                    delete this.listHcyAdd[this.nfyList[0].qsrId]['listNfyhAdd'];
                 }
 
             }
@@ -348,7 +348,7 @@ export class NfyssjbqkComponent implements OnInit {
                 this.add_nfyjbxx_data[0] = this.nfyList[0];
             }
         }else{
-            this.listHcyAdd[this.nfyList[0].qsrId]['listnfyAdd'] = this.nfyList[0];
+            this.listHcyAdd[this.nfyList[0].qsrId]['listNfyhAdd'] = this.nfyList[0];
 
 
 
@@ -421,12 +421,12 @@ export class NfyssjbqkComponent implements OnInit {
         if (this.type != "view") {
             this.isShowgkxz= this.isShowgkxz? false : true;
             if (!this.xzTreeList) {
-                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_GTGSH&column=XZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn?tableName=B_NFYH&column=XZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res);
                         this.xzTreeList = this.DataProcessing.replaceChildlValue(res['returnObject'], 'listZdk', 'children', 'mc', 'label');
                     });
-                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_GTGSH&column=XZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
+                this.HttpService.get(`zdk/getZdkByTableAndColumn2?tableName=B_NFYH&column=XZDM&gcdm=${this.ssgcdm}&xzqhdm=${this.ssxzqhdm}`)
                     .then((res) => {
                         console.log(res['returnObject']);
                         this.xzTableList = res['returnObject'];

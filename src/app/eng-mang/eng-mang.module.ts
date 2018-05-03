@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {CalcPipe} from "../pipe/calc.pipe";
+
 import {
     TreeTableModule,
     TabViewModule,
@@ -18,8 +18,8 @@ import {
     SharedModule,
     PanelModule
 } from 'primeng/primeng';
-
-
+import { ShareService } from "../systemSetting/service/share.service";
+import { EngMangHomeComponent } from "./EngMangHome/eng-mang.component";
 import {EngMangComponent} from "./eng-mang.component";
 import {UserCommonModule} from "../common/UserCommon.module";
 import {RouterModule} from '@angular/router';
@@ -28,12 +28,17 @@ import {EngMangNavComponent} from './eng-mang-nav/eng-mang-nav.component';
 import {ProjectProposalComponent} from './project-proposal/project-proposal.component';
 import {EngBaseComponent} from './eng-base/eng-base.component';
 import {YsqkComponent} from "./ymazysjd/ysqk/ysqk.component";
+import {SearchService} from "../service/search.service";
+import {HttpService} from "../service/http-service";
+import {ProjectInfoService} from "./service/projectInfo..service";
+import {DataProcessingService} from "../service/dataProcessing.service";
+import {GrowlModule} from "../../assets/_primeng@4.2.1@primeng/components/growl/growl";
 
 
 @NgModule({
     declarations: [
+        EngMangHomeComponent,
         EngMangComponent,
-
         EngMangNavComponent,
         EngBaseComponent,
         ProjectProposalComponent,
@@ -42,6 +47,7 @@ import {YsqkComponent} from "./ymazysjd/ysqk/ysqk.component";
     ],
 
     imports: [
+        GrowlModule,
         TreeTableModule,
         PanelModule,
         CommonModule,
@@ -61,7 +67,7 @@ import {YsqkComponent} from "./ymazysjd/ysqk/ysqk.component";
         CalendarModule,
         RouterModule.forChild(EngMangRoutingModule)
     ],
-
+    providers: [DataProcessingService,ProjectInfoService,SearchService,HttpService,ShareService],
 })
 export class EngMangModule {
 }

@@ -188,7 +188,7 @@ export class QhjbxxComponent implements OnInit {
         }else{
             if(this.listHcyAdd[this.qhList[0].qsrId] != undefined) {
 
-                delete this.listHcyAdd[this.qhList[0].qsrId]['listqhAdd'];
+                delete this.listHcyAdd[this.qhList[0].qsrId]['listQhAdd'];
             }
         }
         this.qhList[0] = (new qh(new Date().getTime(),'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''));
@@ -325,7 +325,7 @@ export class QhjbxxComponent implements OnInit {
             }else{
                 if(this.listHcyAdd[this.qhList[0].qsrId] != undefined){
 
-                    delete this.listHcyAdd[this.qhList[0].qsrId]['listqhAdd'];
+                    delete this.listHcyAdd[this.qhList[0].qsrId]['listQhAdd'];
                 }
 
             }
@@ -345,7 +345,7 @@ export class QhjbxxComponent implements OnInit {
                 this.add_qhjbxx_data[0] = this.qhList[0];
             }
         }else{
-            this.listHcyAdd[this.qhList[0].qsrId]['listqhAdd'] = this.qhList[0];
+            this.listHcyAdd[this.qhList[0].qsrId]['listQhAdd'] = this.qhList[0];
 
 
 

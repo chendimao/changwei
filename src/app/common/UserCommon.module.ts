@@ -38,6 +38,8 @@ import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {DelWaringComponent} from './del-waring/del-waring.component';
 import {PcalendarComponent} from "./p-calendar/Pcalendar.component";
 import {Sec_Type_listComponent} from "./sec_Type_select/sec_Type_list.component";
+import {LoadingBarComponent} from "./share/loading-bar/loading-bar.component";
+import {PopupComponent} from "./share/popup/popup.component";
 
 
 @NgModule({
@@ -56,7 +58,9 @@ import {Sec_Type_listComponent} from "./sec_Type_select/sec_Type_list.component"
         BreadcrumbComponent,
         DelWaringComponent,
         PcalendarComponent,
-        Sec_Type_listComponent
+        Sec_Type_listComponent,
+        LoadingBarComponent,
+        PopupComponent,
 
     ],
     imports: [
@@ -82,7 +86,7 @@ import {Sec_Type_listComponent} from "./sec_Type_select/sec_Type_list.component"
         AccordionModule,
         CalendarModule,
     ],
-    exports: [Sec_Type_listComponent,PcalendarComponent, DelWaringComponent, HeaderNavComponent, WaringComponent, PaginatorUserComponent, TreeListComponent, BreadcrumbComponent, SecondNavComponent, AreaSelectComponent, SelectListComponent, SurverAreaComponent, SafePipe, SimTableComponent],
+    exports: [PopupComponent,LoadingBarComponent,Sec_Type_listComponent,PcalendarComponent, DelWaringComponent, HeaderNavComponent, WaringComponent, PaginatorUserComponent, TreeListComponent, BreadcrumbComponent, SecondNavComponent, AreaSelectComponent, SelectListComponent, SurverAreaComponent, SafePipe, SimTableComponent],
     providers: [],
 })
 export class UserCommonModule {

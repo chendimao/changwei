@@ -42,6 +42,7 @@ import {KczyjbxxComponent} from './list/kczyjbxx/kczyjbxx.component';
 import {WwgjjbxxComponent} from './list/wwgjjbxx/wwgjjbxx.component';
 import {SwqxzjbxxComponent} from './list/swqxzjbxx/swqxzjbxx.component';
 import {QtzxjbxxComponent} from './list/qtzxjbxx/qtzxjbxx.component';
+
 import {DataProcessingService} from "../../../../service/dataProcessing.service";
 import {SearchService} from "../../../../service/search.service";
 
@@ -548,7 +549,6 @@ export class SwzbPersonComponent implements OnInit {
                         this.jmhList = data['returnObject'];
                     });
 
-                break;
             case 'add':
                 //  循环出来导航栏,
                 this.HttpService.get(`qsrsjswzb/listQsrsjzb?ssgcdm=${this.ssgcdm}&ssxzqhdm=${this.ssxzqhdm}&qsrlxzdxId=${this.qshflId.id}`)
@@ -670,14 +670,25 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.update_fyssjbxx_ggmx_data);
         console.log(this.del_fyssjbxx_ggmx_data);
 
-        console.log(this.listHcyAdd);
-
-        console.log(this.del_sheshi_data);
-        console.log(this.update_sheshi_data);
-
         console.log(this.add_shebei_data);
-        console.log(this.update_shebei_data);
-        console.log(this.del_shebei_data);
+        console.log(this.update_hdjbxx_data);
+        console.log(this.add_gtgsjbxx_data);
+        console.log(this.update_gtgsjbxx_data);
+        console.log(this.del_gtgsjbxx_data);
+
+        console.log(this.add_tljbxx_data);
+        console.log(this.update_tljbxx_data);
+        console.log(this.del_tljbxx_data);
+
+        console.log(this.add_fwjbxx_data);
+        console.log(this.update_fwjbxx_data);
+        console.log(this.del_fwjbxx_data);
+
+        console.log(this.add_dwjbxx_data);
+        console.log(this.update_dwjbxx_data);
+        console.log(this.del_dwjbxx_data);
+
+
 
         if (this.moreInput) {
             this.moreInput = false;
@@ -819,6 +830,8 @@ export class SwzbPersonComponent implements OnInit {
 
         if (this.add_gkjbxx_data.length != 0) {
             let lsObj = JSON.parse(JSON.stringify(this.allComTj));
+            console.log(this.add_gkjbxx_data);
+            console.log(lsObj);
             lsObj['gklbdm'] = "港口类别";
             if (!this.Btpd(this.changeTable(this.add_gkjbxx_data), lsObj, "港口工程")) {
                 return false;
@@ -1308,17 +1321,27 @@ export class SwzbPersonComponent implements OnInit {
         // 如果房屋分类信息有修改
         if (this.flxx_fwjbxx_update) {
             this.postObject['listFwflmxEdit'] = this.updata_flxx_data(this.flxx_fwjbxx_update);
+            console.log(this.postObject['listFwflmxEdit']);
+            if(!this.flxxPd(this.postObject['listFwflmxEdit'],'jzmj','房屋分类信息')){
+                console.log(22222222222);
+                return ;
+            }
+
         }
         // 如果房屋分类信息有新增
         if (this.flxx_fwjbxx_add) {
-            console.log(this.flxx_fwjbxx_add)
             this.postObject['listFwflmxAdd'] = this.add_flxx_data(this.flxx_fwjbxx_add);
+            if(!this.flxxPd(this.postObject['listFwflmxAdd'],'jzmj','房屋分类信息')){
+                console.log(22222222222);
+                return ;
+            }
+
         }
+
         // 如果房屋分类信息删除
         if (this.flxx_fwjbxx_del) {
             this.postObject['listFwflmxDel'] = this.del_flxx_data(this.flxx_fwjbxx_del);
-
-        }
+         }
         // 如果房屋规格信息有修改
         if (this.update_fwjbxx_ggmx_data) {
             this.postObject['listFwggmxEdit'] = this.updata_ggxx_data(this.update_fwjbxx_ggmx_data);
@@ -1374,10 +1397,17 @@ export class SwzbPersonComponent implements OnInit {
         // 如果房屋装修分类信息有修改
         if (this.flxx_fwzxjbxx_update) {
             this.postObject['listFwzxflmxEdit'] = this.updata_flxx_data(this.flxx_fwzxjbxx_update);
+            if(!this.flxxPd(this.postObject['listFwzxflmxEdit'],'sl','房屋装修分类信息')){
+                return;
+            }
+
         }
         // 如果房屋装修分类信息有新增
         if (this.flxx_fwzxjbxx_add) {
             this.postObject['listFwzxflmxAdd'] = this.add_flxx_data(this.flxx_fwzxjbxx_add);
+            if(!this.flxxPd(this.postObject['listFwzxflmxAdd'],'sl','房屋装修分类信息')){
+                return;
+            }
         }
 
         // 如果房屋装修分类信息删除
@@ -1438,11 +1468,19 @@ export class SwzbPersonComponent implements OnInit {
         }
         // 附属设施分类信息有修改
         if (this.flxx_fsssjbxx_update) {
+            console.log(this.flxx_fsssjbxx_update);
             this.postObject['listFsssflmxEdit'] = this.updata_flxx_data(this.flxx_fsssjbxx_update);
+           if(!this.flxxPd(this.postObject['listFsssflmxEdit'],'sl','附属设施分类信息')){
+               return ;
+           }
         }
         // 附属设施分类信息有新增
         if (this.flxx_fsssjbxx_add) {
             this.postObject['listFsssflmxAdd'] = this.add_flxx_data(this.flxx_fsssjbxx_add);
+            if(!this.flxxPd(this.postObject['listFsssflmxAdd'],'sl','附属设施分类信息')){
+                return ;
+            }
+
         }
 
         // 如果附属设施分类信息删除
@@ -1505,10 +1543,17 @@ export class SwzbPersonComponent implements OnInit {
         // 小型专项分类信息有修改
         if (this.flxx_xxzx_update) {
             this.postObject['listXxzxflmxEdit'] = this.updata_flxx_data(this.flxx_xxzx_update);
+            if(!this.flxxPd(this.postObject['listXxzxflmxEdit'],'sl','小型专项分类信息')){
+                return ;
+            }
         }
         // 小型专项分类信息有新增
         if (this.flxx_xxzx_add) {
             this.postObject['listXxzxflmxAdd'] = this.add_flxx_data(this.flxx_xxzx_add);
+            if(!this.flxxPd(this.postObject['listXxzxflmxAdd'],'sl','小型专项分类信息')){
+                return ;
+            }
+
         }
 
         // 小型专项分类信息删除
@@ -1569,10 +1614,18 @@ export class SwzbPersonComponent implements OnInit {
         // 土地分类信息有修改
         if (this.flxx_tdjbxx_update) {
             this.postObject['listTdflmxEdit'] = this.updata_flxx_data(this.flxx_tdjbxx_update);
+            if(!this.flxxPd(this.postObject['listTdflmxEdit'],'jzmj','土地分类信息')){
+
+                return ;
+            }
         }
         // 土地分类信息有新增
         if (this.flxx_tdjbxx_add) {
             this.postObject['listTdflmxAdd'] = this.add_flxx_data(this.flxx_tdjbxx_add);
+            if(!this.flxxPd(this.postObject['listTdflmxAdd'],'jzmj','土地分类信息')){
+
+                return ;
+            }
         }
         // 土地分类信息删除
         if (this.flxx_tdjbxx_del) {
@@ -1632,10 +1685,17 @@ export class SwzbPersonComponent implements OnInit {
         // 土地附着物分类信息有修改
         if (this.flxx_tdfzwjbxx_other_update) {
             this.postObject['listTdfzwflmxEdit'] = this.updata_flxx_data(this.flxx_tdfzwjbxx_other_update);
+            if(!this.flxxPd(this.postObject['listTdflmxAdd'],'sl','土地附着物分类信息')){
+                return ;
+
+            }
         }
         // 土地附着物分类信息有新增
         if (this.flxx_tdfzwjbxx_other_add) {
             this.postObject['listTdfzwflmxAdd'] = this.add_flxx_data(this.flxx_tdfzwjbxx_other_add);
+            if(!this.flxxPd(this.postObject['listTdfzwflmxAdd'],'sl','土地附着物分类信息')){
+                return ;
+            }
         }
 
         // 土地附着物分类信息删除
@@ -1692,13 +1752,20 @@ export class SwzbPersonComponent implements OnInit {
                 })
             }
         }
+        console.log("副业设施");
         // 副业设施分类信息有修改
         if (this.flxx_fyssjbxx_update) {
             this.postObject['listFyssflmxEdit'] = this.updata_flxx_data(this.flxx_fyssjbxx_update);
+            if(!this.flxxPd(this.postObject['listFyssflmxEdit'],'sl','副业设施分类信息')){
+                return ;
+            }
         }
         // 副业设施分类信息有新增
         if (this.flxx_fyssjbxx_add) {
             this.postObject['listFyssflmxAdd'] = this.add_flxx_data(this.flxx_fyssjbxx_add);
+            if(!this.flxxPd(this.postObject['listFyssflmxAdd'],'sl','副业设施分类信息')){
+                return ;
+            }
         }
 
         // 副业设施分类信息删除
@@ -1719,7 +1786,7 @@ export class SwzbPersonComponent implements OnInit {
             this.postObject['listFyssggmxDel'] = this.del_ggxx_data(this.del_fyssjbxx_ggmx_data);
         }
 
-
+        console.log("零星果木");
         //  零星果木有增长
         if (this.add_lxgm_data) {
             if (Object.keys(this.add_lxgm_data).length !== 0) {
@@ -1759,10 +1826,18 @@ export class SwzbPersonComponent implements OnInit {
         // 零星果木分类信息有修改
         if (this.flxx_lxgm_update) {
             this.postObject['listLxgmflmxEdit'] = this.updata_flxx_data(this.flxx_lxgm_update);
+            if(!this.flxxPd(this.postObject['listLxgmflmxEdit'],'sl','零星果木分类信息')){
+                return ;
+
+            }
         }
         // 零星果木分类信息有新增
         if (this.flxx_lxgm_add) {
             this.postObject['listLxgmflmxAdd'] = this.add_flxx_data(this.flxx_lxgm_add);
+
+            if(!this.flxxPd(this.postObject['listLxgmflmxAdd'],'sl','零星果木分类信息')){
+                return ;
+            }
         }
         // 零星果木分类信息删除
         if (this.flxx_lxgm_del) {
@@ -2146,16 +2221,17 @@ export class SwzbPersonComponent implements OnInit {
             // console.log(this.Btpd(this.postObject['listHcyAdd'], hcyBtpd, "户成员信息"));
             if (this.BtpdValue) {
                 console.log("必填值全部都有了");
-
+                // this.def_hcylb_info=JSON.parse(JSON.stringify(this.hcylb));
+                // console.log(this.def_hcylb_info);
                 this.HttpService.post('/jmh/save', this.postObject)
                     .then((data) => {
-
+                        this.getNewHuList = true;
                         if (data['success'] === true) {
                             this.ModelRoom.clear();
                             console.log("保存成功");
                             // 保存并新增的时候
                             if (this.type == 'add') {
-                                this.getNewHuList = true;
+                                // this.getNewHuList = true;
                                 // 新增的时候点击保存并新增
                                 if (i == 'add') {
                                     this.activeTabName = this.navList[0].url;
@@ -2444,6 +2520,7 @@ export class SwzbPersonComponent implements OnInit {
 
                         } else {
                             this.hcylb = this.def_hcylb_info;
+                            console.log(this.def_hcylb_info);
                             this.person2.instance.childInfo2 = this.hcylb;
                             this.person2.instance.tableList = this.hcylb;
                             console.log(this.person2.instance.childInfo2);
@@ -4212,7 +4289,7 @@ export class SwzbPersonComponent implements OnInit {
                             }
 
                             break;
-                        case'gdgc':
+                        case 'gdgc':
                             if (this.gdgcjbxx2_data == null) {
 
 
@@ -4443,7 +4520,7 @@ export class SwzbPersonComponent implements OnInit {
 
                             } else {
 
-                                console.log(this.wwgj_data);
+
                                 const wwgjjbxx = this.AlertModel.resolveComponentFactory(WwgjjbxxComponent);
                                 this.wwgj = this.ModelRoom.createComponent(wwgjjbxx);
 
@@ -4456,8 +4533,6 @@ export class SwzbPersonComponent implements OnInit {
                                 this.wwgj.instance.add_wwgjjbxx_data = this.add_wwgj_data;
                                 this.wwgj.instance.del_wwgjjbxx_data = this.del_wwgj_data;
                                 this.wwgj.instance.init_wwgjjbxx_data = this.init_wwgj_data;
-
-
                                 this.wwgj.instance.szxzqugldm = this.qshflId.ssxzqhSearchDm;
                                 if (this.type == 'add') {
                                     this.wwgj.instance.qshflId = this.qshflId;
@@ -4530,7 +4605,7 @@ export class SwzbPersonComponent implements OnInit {
 
                             }
                             break;
-                        case'qtzx':
+                        case 'qtzx':
                             if (this.qtzxjbxx2_data != null) {
 
 
@@ -4755,6 +4830,7 @@ export class SwzbPersonComponent implements OnInit {
         let listFwAdd = this.changeTable(tab_add);
         listHcyAdd[item][zdmc] = listFwAdd;
         console.log(listFwAdd);
+
         for (let key2 in listFwAdd) {
             listFwAdd[key2].jddm = this.qshflId.jddm;
             console.log(listFwAdd[key2])
@@ -4765,9 +4841,11 @@ export class SwzbPersonComponent implements OnInit {
                 let flbmxListArr = listFwAdd[key2]['flbmxList'];
                 flbmxListArr = this.changeTable(flbmxListArr);
                 console.log(flbmxListArr);
+                listFwAdd[key2]['flbmxList'] = [];
                 flbmxListArr.forEach((item1, key, array) => {
                     delete array[key].zbflId;
                     delete array[key].id;
+                    delete array[key].qsrId;
                     delete array[key].ssfwjbxxId;
                     delete array[key].ssfwzxjbxxId;
                     delete array[key].ssfsssjbxxId;
@@ -4786,7 +4864,7 @@ export class SwzbPersonComponent implements OnInit {
                     console.log(array[key].ggmxxxList);
                     console.log(listFwAdd[key2]['flbmxList']);
                     console.log(item1);
-                    listFwAdd[key2]['flbmxList'] = [];
+
                     listFwAdd[key2]['flbmxList'].push(item1)
 
                 });
@@ -4795,6 +4873,7 @@ export class SwzbPersonComponent implements OnInit {
                 let ggmxxxListArr = listFwAdd[key2]['ggmxxxList'];
                 ggmxxxListArr = this.changeTable(ggmxxxListArr);
                 console.log(ggmxxxListArr);
+                listFwAdd[key2]['ggmxxxList'] = [];
                 ggmxxxListArr.forEach((item1, key, array) => {
                     delete item1.zdxmc;
                     delete item1.qsrId;
@@ -4812,7 +4891,7 @@ export class SwzbPersonComponent implements OnInit {
                             delete item1[item2];
                         }
                     }
-                    listFwAdd[key2]['ggmxxxList'] = [];
+
                     listFwAdd[key2]['ggmxxxList'].push(item1)
                 });
             }
@@ -4864,6 +4943,7 @@ export class SwzbPersonComponent implements OnInit {
                 let flbmxListArr = listFwAdd[key2]['flbmxList'];
                 flbmxListArr = this.changeTable(flbmxListArr);
                 console.log(flbmxListArr);
+                listFwAdd[key2]['flbmxAddList'] = [];
                 flbmxListArr.forEach((item1, key, array) => {
                     delete array[key].zbflId;
                     delete array[key].id;
@@ -4883,7 +4963,7 @@ export class SwzbPersonComponent implements OnInit {
                     console.log(array[key].ggmxxxList);
                     console.log(listFwAdd[key2]['flbmxList']);
                     console.log(item1);
-                    listFwAdd[key2]['flbmxAddList'] = [];
+
                     listFwAdd[key2]['flbmxAddList'].push(item1)
 
                 });
@@ -5604,6 +5684,24 @@ export class SwzbPersonComponent implements OnInit {
             }
         }
         return true;
+    }
+
+    // 分类信息新增判断
+    flxxPd(string,zd,msg){
+        console.log(string);
+        if(string){
+            for(let item of string){
+                if(isNaN(item[zd])){
+                    this.msgs = [];
+                    this.msgs.push({severity: 'error', summary: '填入提醒', detail: msg+item[zd]+'不是数字'});
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }else{
+            return true;
+        }
     }
 
     beforeJmh() {

@@ -2,8 +2,8 @@ import {Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver
 import {HttpService} from "../../../../service/http-service";
 import {DataProcessingService} from "../../../../service/dataProcessing.service";
 import {SearchService} from "../../../../service/search.service";
-import {ActivatedRoute} from "@angular/router"
-import { GhzbJbxxChildComponent } from "./children/ghzbJbxxChild.component";
+import {ActivatedRoute} from "@angular/router";
+import {GhzbJbxxChildComponent} from "./children/ghzbJbxxChild.component";
 import {GHZB_TITLE} from "../../../../service/ghzb-title.service";
 import {ShareService} from "../../../../systemSetting/service/share.service";
 import {Subscription} from "rxjs/Subscription";
@@ -13,14 +13,14 @@ import {alertModelInfo} from "../../swzb/alertModelInfo";
 import {FormControl} from "@angular/forms";
 
 import "rxjs/Rx";
-import {LoadingBarComponent} from "../../../../common/share/loading-bar/loading-bar.component";
+import {ProjectInfoService} from "../../../service/projectInfo..service";
 
 
 @Component({
     selector: 'app-ghzbJbxx',
     templateUrl: './ghzbJbxx.component.html',
     styleUrls: ['./ghzbJbxx.component.css'],
-    providers:[ShareService]
+    providers: [ShareService]
 })
 export class GhzbJbxxComponent implements OnInit {
     display1: boolean = false;
@@ -29,11 +29,11 @@ export class GhzbJbxxComponent implements OnInit {
     public getparam = new getParam;
     public secNav: any;
     public dataList;
-    public title ;
+    public title;
     public selectInfo;
     public msgs: any;
-    public dm :any;
-    public params;
+    public dm: any;
+    public params=new Object();
     public parent_params;
     public key;
     public dj;
@@ -55,18 +55,13 @@ export class GhzbJbxxComponent implements OnInit {
     public listDlzbflbmxEdit = [];
 
 
-
     //======= 数据保存 end =====
-
 
 
     @ViewChild('modelRoom', {read: ViewContainerRef}) ModelRoom: ViewContainerRef;
     public subscription: Subscription;
-    constructor(public Loading:LoadingBarComponent,public ShareService:ShareService, public AlertModel: ComponentFactoryResolver,public SearchService: SearchService, public router: ActivatedRoute, public HttpService: HttpService, public DataProcessingService: DataProcessingService) {
 
-
-
-
+    constructor(public projectInfo: ProjectInfoService, public ShareService: ShareService, public AlertModel: ComponentFactoryResolver, public SearchService: SearchService, public router: ActivatedRoute, public HttpService: HttpService, public DataProcessingService: DataProcessingService) {
 
 
     }
@@ -76,37 +71,36 @@ export class GhzbJbxxComponent implements OnInit {
         console.log(name);
         console.log(this.getparam);
         console.log(this.parent_params);
-        if(name === 'add'){
+        if (name === 'add') {
 
             const person = this.AlertModel.resolveComponentFactory(GhzbJbxxChildComponent);
             const perModel = this.ModelRoom.createComponent(person);
 
-                  perModel.instance.dm = this.params.ssghxmfldm;
-                  perModel.instance.type = name;
-                  perModel.instance.dj = JSON.parse(JSON.stringify(this.dj));
-                  perModel.instance.parent_params = this.parent_params;
-                  perModel.instance.params = this.params;
-                  perModel.instance.dataList = this.dataList;
-                  perModel.instance.currentPage = this.currentPage;
-                  perModel.instance.totalPage = this.totalPage;
-                  perModel.instance.count = this.count;
+            perModel.instance.dm = this.params['ssghxmfldm'];
+            perModel.instance.type = name;
+            perModel.instance.dj = JSON.parse(JSON.stringify(this.dj));
+            perModel.instance.parent_params = this.parent_params;
+            perModel.instance.params = this.params;
+            perModel.instance.dataList = this.dataList;
+            perModel.instance.currentPage = this.currentPage;
+            perModel.instance.totalPage = this.totalPage;
+            perModel.instance.count = this.count;
 
 
+        } else {
 
-        }else{
-
-            if(this.selectInfo ){
+            if (this.selectInfo) {
                 console.log(this.selectInfo);
                 const person = this.AlertModel.resolveComponentFactory(GhzbJbxxChildComponent);
                 const perModel = this.ModelRoom.createComponent(person);
                 perModel.instance.baseInfo = this.selectInfo;
-                perModel.instance.dm = this.params.ssghxmfldm;
+                perModel.instance.dm = this.params['ssghxmfldm'];
                 perModel.instance.type = name;
                 perModel.instance.dj = JSON.parse(JSON.stringify(this.dj));
                 perModel.instance.parent_params = this.parent_params;
                 perModel.instance.params = this.params;
 
-            }else {
+            } else {
                 if (name === 'view') {
                     this.msgs = [];
                     this.msgs.push({severity: 'warn', summary: '点击提醒', detail: '请选择查看项'});
@@ -122,90 +116,76 @@ export class GhzbJbxxComponent implements OnInit {
     }
 
 
-
     ngOnInit() {
         //搜索
-            this.Loading.open();
-           this.nameFilter.valueChanges
-               .debounceTime(500)
-               .subscribe( value => {
 
-                   this.getparam.searchKey = this.key;
-                   console.log(this.getparam.searchKey);
-                   if(this.key != undefined){
-                       this.key = value ; console.log(value);
+        this.nameFilter.valueChanges
+            .debounceTime(500)
+            .subscribe(value => {
 
-                       this.listUrl = 'ghxm/list';
-                       this.getparam.start = '1';
-                       this.getparam.limit = '10';
-                       //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
-                       this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
-                       this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-                       this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
-                       console.log(this.params)
-                       console.log(this.getparam);
+                this.getparam.searchKey = this.key;
+                console.log(this.getparam.searchKey);
+                if (this.key != undefined) {
+                    this.key = value;
+                    console.log(value);
 
-                       for (let key in this.getparam) {
-                           if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm' && key != 'ssghxmfldm' && key != 'xmszxzqhdm') {
-                               delete  this.getparam[key];
-                           }else if(key == 'searchKey'){
-                               if(!this.getparam[key]){
-                                   delete  this.getparam[key];
-                               }
-                           }
-                       }
+                    this.listUrl = 'ghxm/list';
+                    this.getparam.start = '1';
+                    this.getparam.limit = '10';
+                    //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
+                    this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
+                    this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+                    this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+                    console.log(this.params);
+                    console.log(this.getparam);
 
-
-
-                       this.HttpService.get(this.getUrl()).then((data)=>{
-
-                           console.log(data);
-                           this.dataList = data['returnObject'];
-                           this.currentPage = data['currentPage'];
-                           this.totalPage = data['totalPage'];
-                           this.count = data['count'];
+                    for (let key in this.getparam) {
+                        if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm' && key != 'ssghxmfldm' && key != 'xmszxzqhdm') {
+                            delete  this.getparam[key];
+                        } else if (key == 'searchKey') {
+                            if (!this.getparam[key]) {
+                                delete  this.getparam[key];
+                            }
+                        }
+                    }
 
 
-                           if(this.dj  && this.dj.length>0){
+                    this.HttpService.get(this.getUrl()).then((data) => {
 
-                               this.dataList.forEach((value, index, arr)=>{
-
-                                   this.dj.forEach((v, i, a)=>{
-
-                                       if(value.ssghxmfldm == v.dm){
-
-                                           arr[index].djmc = v.mc;
-                                       }
-
-                                   })
-
-                               })
-                           }
+                        console.log(data);
+                        this.dataList = data['returnObject'];
+                        this.currentPage = data['currentPage'];
+                        this.totalPage = data['totalPage'];
+                        this.count = data['count'];
 
 
-                       });
+                        if (this.dj && this.dj.length > 0) {
+
+                            this.dataList.forEach((value, index, arr) => {
+
+                                this.dj.forEach((v, i, a) => {
+
+                                    if (value.ssghxmfldm == v.dm) {
+
+                                        arr[index].djmc = v.mc;
+                                    }
+
+                                });
+
+                            });
+                        }
 
 
+                    });
 
 
-                   }else{
+                } else {
 
 
+                }
 
 
-
-
-                   }
-
-
-
-
-
-
-
-
-               });
-
+            });
 
 
         this.router.params.subscribe(res => {
@@ -213,21 +193,26 @@ export class GhzbJbxxComponent implements OnInit {
             console.log(this.router);
             console.log(this.router.params);
             console.log(this.router.snapshot);
-            this.params = res;
+            // this.params = res;
+            console.log(this.params);
+
+            for(let key in res){
+                this.params[key]=res[key]
+            }
+            this.params['ssgcdm'] = this.projectInfo.project.code;
+
             this.parent_params = this.router.snapshot.parent.params;
 
             console.log(res);
 
             //请求 下拉列表
 
-            this.HttpService.get(`ghxm/getSubSsghxmfl?ssgcdm=${this.parent_params.ssgcdm}&ssghxmfldm=${this.params.ssghxmfldm}`).then( res=>{
+            this.HttpService.get(`ghxm/getSubSsghxmfl?ssgcdm=${this.parent_params.ssgcdm}&ssghxmfldm=${this.params['ssghxmfldm']}`).then(res => {
                 this.dj = res['returnObject'];
 
             });
 
             //============
-
-
 
 
             this.HttpService.get(`zdk/list?sjId=443C3162A4554323AFB04EE7AEF7F164`)
@@ -239,7 +224,7 @@ export class GhzbJbxxComponent implements OnInit {
                     this.getparam.jdId = lsArr[0].id;
 
                     //this.getparam.jddm =  JSON.parse(JSON.stringify(this.parent_params['jddm']));
-                   // this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.parent_params['id']));
+                    // this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.parent_params['id']));
                     //this.getparam.id =  JSON.parse(JSON.stringify(this.parent_params['qshflId']));
 
                     console.log(this.getparam.id);
@@ -267,17 +252,17 @@ export class GhzbJbxxComponent implements OnInit {
 
                             this.router.params.subscribe(res => {
                                 console.log(res);
-                                console.log(this.router)
-                                this.getparam.jddm =   this.router.snapshot.parent.params['jddm'] ;
-                                this.getparam.ssgcdm =    this.router.snapshot.parent.params['id'] ;
-                                this.getparam.id =  this.router.snapshot.parent.params['qshflId'] ;
+                                console.log(this.router);
+                                this.getparam.jddm = this.router.snapshot.parent.params['jddm'];
+                                this.getparam.ssgcdm = this.router.snapshot.parent.params['id'];
+                                this.getparam.id = this.router.snapshot.parent.params['qshflId'];
                             });
 
 
                             console.log(data);
-                            console.log( this.params);
-                            console.log( this.getparam);
-                            console.log( this.parent_params);
+                            console.log(this.params);
+                            console.log(this.getparam);
+                            console.log(this.parent_params);
                             if (data['message']['item'] == 'ghzb') {
                                 if (data['message']['summary']) {
                                     this.msgs = [];
@@ -289,24 +274,42 @@ export class GhzbJbxxComponent implements OnInit {
 
                                     //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
 
-                                    console.log(this.params)
+                                    console.log(this.params);
                                     console.log(this.getparam);
-                                    this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.params['ssgcdm']));
-                                    this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-                                    this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+                                    this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
+                                    this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+                                    this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
 
-                                    if(!this.getparam.searchKey){
+                                    if (!this.getparam.searchKey) {
                                         delete this.getparam.searchKey;
                                     }
 
 
-                                    this.HttpService.get(this.getUrl()).then((data)=>{
+                                    this.HttpService.get(this.getUrl()).then((data) => {
 
                                         console.log(data);
                                         this.dataList = data['returnObject'];
                                         this.currentPage = data['currentPage'];
                                         this.totalPage = data['totalPage'];
                                         this.count = data['count'];
+
+
+                                        if (this.dj && this.dj.length > 0) {
+
+                                            this.dataList.forEach((value, index, arr) => {
+
+                                                this.dj.forEach((v, i, a) => {
+
+                                                    if (value.ssghxmfldm == v.dm) {
+
+                                                        arr[index].djmc = v.mc;
+                                                    }
+
+                                                });
+
+                                            });
+                                        }
+
                                     });
 
                                 }
@@ -321,18 +324,18 @@ export class GhzbJbxxComponent implements OnInit {
 
                                     //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
 
-                                    console.log(this.params)
+                                    console.log(this.params);
                                     console.log(this.getparam);
-                                    this.getparam.ssgcdm =  JSON.parse(JSON.stringify(this.params['ssgcdm']));
-                                    this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-                                    this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+                                    this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
+                                    this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+                                    this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
 
 
-                                    if(!this.getparam.searchKey){
+                                    if (!this.getparam.searchKey) {
                                         delete this.getparam.searchKey;
                                     }
 
-                                    this.HttpService.get(this.getUrl()).then((data)=>{
+                                    this.HttpService.get(this.getUrl()).then((data) => {
 
                                         console.log(data);
                                         this.dataList = data['returnObject'];
@@ -341,22 +344,24 @@ export class GhzbJbxxComponent implements OnInit {
                                         this.count = data['count'];
 
 
+                                        if (this.dj && this.dj.length > 0) {
 
-                                        if(this.dj  && this.dj.length>0){
+                                            this.dataList.forEach((value, index, arr) => {
 
-                                            this.dataList.forEach((value, index, arr)=>{
+                                                this.dj.forEach((v, i, a) => {
 
-                                                this.dj.forEach((v, i, a)=>{
-
-                                                    if(value.ssghxmfldm == v.dm){
+                                                    if (value.ssghxmfldm == v.dm) {
                                                         console.log(v);
                                                         arr[index].djmc = v.mc;
                                                     }
 
-                                                })
+                                                });
 
-                                            })
+                                            });
                                         }
+
+
+
 
 
 
@@ -366,17 +371,10 @@ export class GhzbJbxxComponent implements OnInit {
                             }
 
 
+                        });
 
 
-
-                        })
-
-
-
-                })
-
-
-
+                });
 
 
             this.listUrl = 'ghxm/list';
@@ -384,9 +382,9 @@ export class GhzbJbxxComponent implements OnInit {
             this.getparam.limit = '10';
             //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
             this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
-            this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-            this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
-            console.log(this.params)
+            this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+            this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+            console.log(this.params);
             console.log(this.getparam);
 
             for (let key in this.getparam) {
@@ -396,8 +394,7 @@ export class GhzbJbxxComponent implements OnInit {
             }
 
 
-
-            this.HttpService.get(this.getUrl()).then((data)=>{
+            this.HttpService.get(this.getUrl()).then((data) => {
 
                 console.log(data);
                 this.dataList = data['returnObject'];
@@ -405,53 +402,36 @@ export class GhzbJbxxComponent implements OnInit {
                 this.totalPage = data['totalPage'];
                 this.count = data['count'];
 
-                if(this.dj  && this.dj.length>0){
+                if (this.dj && this.dj.length > 0) {
 
-                    this.dataList.forEach((value, index, arr)=>{
+                    this.dataList.forEach((value, index, arr) => {
 
-                        this.dj.forEach((v, i, a)=>{
+                        this.dj.forEach((v, i, a) => {
 
-                            if(value.ssghxmfldm == v.dm){
+                            if (value.ssghxmfldm == v.dm) {
                                 console.log(v);
                                 arr[index].djmc = v.mc;
                             }
 
-                        })
+                        });
 
-                    })
+                    });
                 }
 
                 console.log(this.dataList);
 
 
-
-
-
             });
 
 
-
-
-
-
-
-
-
-
-
-
-        })
-
-
-
-
+        });
 
 
         console.log(this.dataList);
 
         console.log(GHZB_TITLE);
-        for(let i in GHZB_TITLE){
-            if(i == this.params.ssghxmfldm){
+        for (let i in GHZB_TITLE) {
+            if (i == this.params['ssghxmfldm']) {
                 this.title = GHZB_TITLE[i];
             }
 
@@ -460,22 +440,17 @@ export class GhzbJbxxComponent implements OnInit {
         console.log(this.title);
 
 
-
-
-
-
     }
 
 
-
-    DatatableClick(e){
+    DatatableClick(e) {
         console.log(e);
-        this.selectInfo = e;
+        this.selectInfo = e.data;
     }
 
 
     delSelect() {
-        console.log(this.selectInfo)
+        console.log(this.selectInfo);
         console.log("删除所选项");
         this.ModelRoom.clear();
         if (!this.selectInfo) {
@@ -493,22 +468,16 @@ export class GhzbJbxxComponent implements OnInit {
             this.selectInfo = null;
 
 
-
-
-
-
         }
     }
-
-
 
 
     //分页
 
     queryList(res) {
 
-            console.log(res);
-            console.log(this.parent_params.ssgcdm);
+        console.log(res);
+        console.log(this.parent_params.ssgcdm);
 //        this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.parent_params.ssgcdm));
         console.log(this.getparam.ssgcdm);
 
@@ -523,7 +492,7 @@ export class GhzbJbxxComponent implements OnInit {
         //this.persionList = this.dataList;
         console.log(this.getparam);
         console.log(this.parent_params);
-       // this.listUrl = this.getUrl();
+        // this.listUrl = this.getUrl();
         console.log(this.listUrl);
 
     }
@@ -531,11 +500,11 @@ export class GhzbJbxxComponent implements OnInit {
     getUrl() {
         return this.listUrl + '?' + this.DataProcessingService.transString(this.getparam);
     }
-    
-    
+
+
 //搜索
 
-    search(key){
+    search(key) {
         console.log(key);
 
 
@@ -544,25 +513,24 @@ export class GhzbJbxxComponent implements OnInit {
         this.getparam.limit = '10';
         //let params = `?start=1&limit=10&ssgcdm=${this.router.queryParams['value']['ssgcdm']}&xmszxzqhdm=${this.router.queryParams['value']['xmszxzqhdm']}&ssghxmfldm=${this.router.queryParams['value']['ssghxmfldm']}`;
         this.getparam.ssgcdm = JSON.parse(JSON.stringify(this.params['ssgcdm']));
-        this.getparam.xmszxzqhdm =  JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
-        this.getparam.ssghxmfldm =  JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
+        this.getparam.xmszxzqhdm = JSON.parse(JSON.stringify(this.params['xmszxzqhdm']));
+        this.getparam.ssghxmfldm = JSON.parse(JSON.stringify(this.params['ssghxmfldm']));
         this.getparam.searchKey = key;
-        console.log(this.params)
+        console.log(this.params);
         console.log(this.getparam);
 
         for (let key in this.getparam) {
             if (key != 'searchKey' && key != 'limit' && key != 'start' && key != 'id' && key != 'ssxzqhdm' && key != 'ssxzqhdmMin' && key != 'ssxzqhmc' && key != 'ssgcdm' && key != 'jddm' && key != 'ssghxmfldm' && key != 'xmszxzqhdm') {
                 delete  this.getparam[key];
-            }else if(key == 'searchKey'){
-                    if(!this.getparam[key]){
-                        delete  this.getparam[key];
-                    }
+            } else if (key == 'searchKey') {
+                if (!this.getparam[key]) {
+                    delete  this.getparam[key];
+                }
             }
         }
 
 
-
-        this.HttpService.get(this.getUrl()).then((data)=>{
+        this.HttpService.get(this.getUrl()).then((data) => {
 
             console.log(data);
             this.dataList = data['returnObject'];
@@ -571,20 +539,20 @@ export class GhzbJbxxComponent implements OnInit {
             this.count = data['count'];
 
             console.log(this.dj);
-            if(this.dj  && this.dj.length>0){
+            if (this.dj && this.dj.length > 0) {
 
-                this.dataList.forEach((value, index, arr)=>{
+                this.dataList.forEach((value, index, arr) => {
 
-                    this.dj.forEach((v, i, a)=>{
+                    this.dj.forEach((v, i, a) => {
 
-                        if(value.ssghxmfldm == v.dm){
+                        if (value.ssghxmfldm == v.dm) {
                             console.log(v);
                             arr[index].djmc = v.mc;
                         }
 
-                    })
+                    });
 
-                })
+                });
             }
 
 
@@ -594,14 +562,12 @@ export class GhzbJbxxComponent implements OnInit {
     }
 
 
-
 }
 
 
-export class ghzbList{
+export class ghzbList {
 
     constructor(
-
         public id,
         public orderType,
         public orderCol,
@@ -621,14 +587,11 @@ export class ghzbList{
         public ssghxmflmc,
         public xmszxzqhmc,
         public xmgldwxzqhmc,
-
-    ){
+    ) {
 
     }
 
 }
-
-
 
 
 export class getParam {
@@ -641,8 +604,8 @@ export class getParam {
     start: string;	 //开始条数	是
     limit: string;	 //取多少条记录	是
     id: string;   //权属户分类ID	是
-    ssghxmfldm:string;
-    xmszxzqhdm:string;
+    ssghxmfldm: string;
+    xmszxzqhdm: string;
 
     jdId: string;   //当前阶段的id
     hzxm: string;   //户主姓名
