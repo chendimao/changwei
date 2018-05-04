@@ -83,7 +83,7 @@
                         与户主关系
                 </span>
                     <div class="input_right fl">
-                        <app-select-list [disabled]="isDisabled"  [width]="0" [selectValue]="hcy.yhzgxdm" [values]="yhzgx_list"
+                        <app-select-list [search]="'true'" [disabled]="isDisabled"  [width]="0" [selectValue]="hcy.yhzgxdm" [values]="yhzgx_list"
                                          (SelectModel)="eventYhzgx($event)"></app-select-list>
                     </div>
 
@@ -132,7 +132,7 @@
                         民族
                     </div>
                     <div class="input_right fl">
-                        <app-select-list [disabled]="isDisabled"  [width]="0" [values]="mz_list"
+                        <app-select-list [search]="'true'" [disabled]="isDisabled"  [width]="0" [values]="mz_list"
                                          (SelectModel)="eventMz($event)" [selectValue]="hcy.mzdm"></app-select-list>
                     </div>
 

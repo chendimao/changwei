@@ -241,6 +241,8 @@ export class ShebeiComponent implements OnInit {
     selectshebei(shebei, i) {
         this.hcy = shebei;
         this.name_active_key = i;
+        console.log(this.hcy);
+        console.log(this.name_active_key);
     }
 
 
@@ -419,6 +421,9 @@ export class ShebeiComponent implements OnInit {
 
     }
 
+
+
+
     nodeSelect(e) {
         console.log(e);
 
@@ -441,7 +446,7 @@ export class ShebeiComponent implements OnInit {
             "jddm": "",
             "qsrId": "",
             "mc": "",
-            "sblbdm": null,
+            "sslbdm": null,
             "sl": null,
             "sldwdm": null,
             "sfkbq": null,
@@ -453,7 +458,7 @@ export class ShebeiComponent implements OnInit {
             "cjsj": null,
             "zhgxsj": null,
             "qsrmc": null,
-            "sblbmc": null,
+            "sslbmc": null,
             "sldwmc": null,
             'id': new Date().getTime()
 
@@ -469,15 +474,16 @@ export class ShebeiComponent implements OnInit {
         let that = this.defaultshebei;
 
         setTimeout(function () {
-            console.log(that);
-            console.log(that.last);
-            console.log(that.last.nativeElement);
-            that.last.nativeElement.click();
+             if(that.last){
+
+                 that.last.nativeElement.click();
+             }
         }, 0);
 
         this.hcy_count = this.tableList.length;
         this.hcy = this.tableList[this.tableList.length-1];
         console.log(this.hcy);
+        this.selectshebei(this.hcy,this.tableList.length-1);
 
         // if(this.childInfo2 && this.childInfo2.length>0 && this.childInfo2[0]['id'].toString().length == 32) {
         //
@@ -891,7 +897,13 @@ export class ShebeiComponent implements OnInit {
             if(event!= -1 && this.hcy.qsrId.toString().length == 32 && this.hcy.id.toString().length == 32){
                 //如果上一个权属人ID长度为32且 当前墓主的ID长度为32
                 //在del_shebei_data中添加上一个坟墓的ID
-                this.del_shebei_data[this.hcy.id] = {id:this.hcy.id};
+                //this.del_shebei_data.push({id:this.hcy.id});
+
+                if(event.toString().length != 32){
+
+                    this.del_shebei_data.push({id:this.hcy.id});
+                }
+
 
                 //删除update_shebei_data中 上一个坟墓的数据
                 if(this.update_shebei_data.length>0){
@@ -947,6 +959,8 @@ export class ShebeiComponent implements OnInit {
             console.log(this.update_shebei_data);
 
         }else{
+
+
             console.log(this.hcy.qsrId);
             this.add_shebei_data.forEach((value,index,arr)=>{
 

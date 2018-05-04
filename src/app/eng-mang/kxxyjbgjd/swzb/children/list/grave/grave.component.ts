@@ -613,12 +613,12 @@ export class GraveComponent implements OnInit {
         this.tableList.push({
             "mz": "",
             'sfzh': '',
-            'swszxzqhdm':  "",
-            'localitydesc':  "",
-            'zydldm':  "",
-            'zydlmc':  "",
-            'dcfwdm':  "",
-            'dcfwmc':  "",
+            'swszxzqhdm': this.childInfo4?this.childInfo4.ssxzqhdm:"",
+            'localitydesc': this.childInfo4?this.childInfo4.xzqhmc:"",
+            'zydldm': this.childInfo4?this.childInfo4.zydldm:"",
+            'zydlmc': this.childInfo4?this.childInfo4.zydlmc:"",
+            'dcfwdm': this.childInfo4?this.childInfo4.dcfwdm:"",
+            'dcfwmc': this.childInfo4?this.childInfo4.dcfwmc:"",
             'fmlbdm': "",
             'sl': "",
             'ymzgx': "",
@@ -656,6 +656,7 @@ export class GraveComponent implements OnInit {
         this.hcy_count = this.tableList.length;
         this.hcy = this.tableList[this.tableList.length-1];
         console.log(this.hcy);
+        this.selectgrave(this.hcy,this.tableList.length-1);
 
         // if(this.childInfo2 && this.childInfo2.length>0 && this.childInfo2[0]['id'].toString().length == 32) {
         //
@@ -1077,8 +1078,11 @@ export class GraveComponent implements OnInit {
             if(event!= -1 && this.hcy.qsrId.toString().length == 32 && this.hcy.id.toString().length == 32){
                 //如果上一个权属人ID长度为32且 当前墓主的ID长度为32
                 //在del_grave_data中添加上一个坟墓的ID
-                this.del_grave_data[this.hcy.id] = {id:this.hcy.id};
 
+                if(event.toString().length != 32) {
+
+                    this.del_grave_data[this.hcy.id] = {id: this.hcy.id};
+                }
                 //删除update_grave_data中 上一个坟墓的数据
                 if(this.update_grave_data.length>0){
                     this.update_grave_data.forEach((value,index,arr)=>{

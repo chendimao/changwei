@@ -1469,6 +1469,30 @@ export class HousesComponent implements OnInit {
 
     }
 
+
+    //汇总规格明细
+    HzGgmx(){
+
+        console.log(this.ggmx);
+        let hz_arr = [];
+        this.ggmx.forEach((value,index,arr)=>{
+
+            if(!hz_arr[value['fwjgdm']]){
+
+                hz_arr[value['fwjgdm']] = [];
+
+            }
+
+            hz_arr[value['fwjgdm']].push(value['jzmj']);
+
+
+        });
+
+        console.log(hz_arr);
+    }
+
+
+
     //计算器模式
 
     calc(e, now_data) {

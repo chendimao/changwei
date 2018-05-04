@@ -16,7 +16,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectshebei(personSign)" #defaultPerson
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectshebei(personSign,i)" #defaultPerson
                 [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
@@ -173,7 +173,7 @@
                         是否可搬迁
                     </div>
                     <div class="input_right fl">
-                        <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkgr" name="sfkgr"
+                        <p-selectButton [options]="types4" [(ngModel)]="hcy.sfkbq" name="sfkbq"
                         ></p-selectButton>
                     </div>
 

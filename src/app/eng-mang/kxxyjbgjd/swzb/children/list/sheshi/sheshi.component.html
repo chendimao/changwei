@@ -17,7 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
+            <tr *ngFor="let personSign of tableList;let i=index" (click)="selectsheshi(personSign,i)" #defaultPerson [ngClass]="{'active':personSign==hcy}">
                 <td>{{i+1}}</td>
                 <td>{{personSign.mc}}</td>
             </tr>
@@ -146,12 +146,12 @@
                         设施类别
                     </div>
                     <div class="input_right fl">
-                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.sslbmc" name="sblbmc"
-                               (click)="showsblbBlock()" readonly="readonly">
-                        <i class="xiala" (click)="showsblbBlock()"></i>
-                        <app-sec-type-list (SelectModel)="getChildsblb($event)" [treeList]="sblbTreeList"
-                                           [isShow]="isShowSblb"
-                                           [tableList]="sblbTableList"></app-sec-type-list>
+                        <input [disabled]="isDisabled" type="text" class="inputH" [(ngModel)]="hcy.sslbmc" name="sslbmc"
+                               (click)="showsslbBlock()" readonly="readonly">
+                        <i class="xiala" (click)="showsslbBlock()"></i>
+                        <app-sec-type-list (SelectModel)="getChildsslb($event)" [treeList]="sslbTreeList"
+                                           [isShow]="isShowsslb"
+                                           [tableList]="sslbTableList"></app-sec-type-list>
 
                     </div>
 
@@ -345,7 +345,7 @@
             </p-column>
             <p-column field="sslbmc" header="设施类别" [style]="{'width':'150px','height':'30px','overflow':'hidden'}">
                 <ng-template let-col let-node="rowData" pTemplate="body" let-i="rowIndex">
-                    <div (click)="showsblbBlock(i)" class="tableClass"
+                    <div (click)="showsslbBlock(i)" class="tableClass"
                          id="sslb" title="{{node.sslbmc}}">{{node.sslbmc}}
                     </div>
                 </ng-template>
@@ -513,9 +513,9 @@
                            [tableList]="dcfwTableList" [treeList]="dcfwTreeList">
         </app-sec-type-list>
 
-        <app-sec-type-list (SelectModel)="getChildsblb($event)" [isShow]="isShowSblb"
+        <app-sec-type-list (SelectModel)="getChildsslb($event)" [isShow]="isShowsslb"
                            [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"
-                           [tableList]="sblbTableList" [treeList]="sblbTreeList">
+                           [tableList]="sslbTableList" [treeList]="sslbTreeList">
         </app-sec-type-list>
         <app-area-select [localityCode]="ssxzqhSearchDm" class="areaCommpont"
                          [ngStyle]="{'position':'absolute','left':zydlLeft,'top':zydlTop}"

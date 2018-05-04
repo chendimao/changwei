@@ -688,6 +688,11 @@ export class SwzbPersonComponent implements OnInit {
         console.log(this.update_dwjbxx_data);
         console.log(this.del_dwjbxx_data);
 
+        console.log(this.add_sheshi_data);
+        console.log(this.update_sheshi_data);
+        console.log(this.del_sheshi_data);
+        console.log(this.listHcyAdd);
+
 
 
         if (this.moreInput) {
@@ -1892,10 +1897,10 @@ export class SwzbPersonComponent implements OnInit {
         if (this.del_sheshi_data) {
             console.log(this.del_sheshi_data);
             this.postObject['listSsxxDel'] = [];
-            this.del_grave_data.forEach((item, key, arr) => {
+            this.del_sheshi_data.forEach((item, key, arr) => {
                 this.postObject['listSsxxDel'].push(item);
             })
-
+            console.log(this.postObject['listSsxxDel']);
         }
 
 
