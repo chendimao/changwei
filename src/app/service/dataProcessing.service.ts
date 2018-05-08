@@ -220,7 +220,14 @@ export class DataProcessingService {
                 delete arr[i].parent;
                 delete arr[i].children;
 
+
                 arr[i].childList = children;
+
+
+                if(arr[i].childList){
+                    arr[i].selectable = false;
+                }
+
                 this.returnTreeGgmx(arr[i].childList, zd);
             } else {
                 console.log(arr[i]);

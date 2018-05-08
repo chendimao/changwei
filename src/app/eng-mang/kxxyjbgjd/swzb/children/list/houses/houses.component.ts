@@ -1477,6 +1477,8 @@ export class HousesComponent implements OnInit {
         let hz_arr = [];
         this.ggmx.forEach((value,index,arr)=>{
 
+
+
             if(!hz_arr[value['fwjgdm']]){
 
                 hz_arr[value['fwjgdm']] = [];
@@ -1489,6 +1491,44 @@ export class HousesComponent implements OnInit {
         });
 
         console.log(hz_arr);
+        let hz_arr2 = [];
+        for(let i in hz_arr){
+            let temp = 0;
+            for(let j in hz_arr[i]){
+
+                temp = hz_arr[i][j]+temp;
+
+            }
+
+
+            hz_arr2[i] =temp;
+
+        }
+
+        console.log(hz_arr2);
+        console.log(this.name_active_data);
+
+        let res = null;
+
+        for(let i in hz_arr2){
+
+            this.name_active_base.forEach((value,index,arr)=>{
+
+                 res = this.InputChange.Hzggmx(this.name_active_base[index],'fwjgdm','jzmj',i,hz_arr2[i])
+                console.log(res);
+
+            })
+
+        }
+
+        console.log(res);
+
+
+        this.msgs = [];
+        this.msgs.push({severity: 'success', summary: '汇总提醒', detail: '汇总成功'});
+
+
+
     }
 
 
@@ -1522,10 +1562,12 @@ export class HousesComponent implements OnInit {
             value = _.cloneDeep(value);
             value = this.DataProcessing.returnTreeGgmx(value, 'fwjgdm');
             value.forEach((v, i, a) => {
+
                 ytjjgTreeList.push(v);
             });
         });
         this.tableList = this.DataProcessing.changeTable(ytjjgTreeList);
+
         console.log(this.tableList);
 
         this.showTable = this.selectedType3;
@@ -2164,6 +2206,9 @@ export class HousesComponent implements OnInit {
 
     getChildytjjg(event) {
         console.log(event);
+        // if(event.node.children){
+        //     event.node.selectable = false;
+        // }
         this.isShowytjjg = false;
         this.ggmx[this.GgmxIndex]['fwjgdm'] = event.node.fwjgdm;
         this.ggmx[this.GgmxIndex]['zdxmc'] = event.node.label;

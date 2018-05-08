@@ -553,6 +553,31 @@ console.log(list);
     }
 
 
+    Hzggmx(arr, zd,zd2, key,value) {
+
+        console.log(zd,zd2,key,value);
+
+        for (let item of arr) {
+            console.log(item);
+            if (item.children) {
+
+                if (item.data[zd] == key) {
+
+                    item.data[zd2] = value;
+                    console.log(item.data[zd][zd2] );
+                }
+                this.Hzggmx(item.children, zd,zd2, key,value);
+            } else {
+                if (item.data[zd] == key) {
+                    item.data[zd2] = value;
+                }
+            }
+        }
+        return arr;
+    }
+
+
+
     delete_name_active_attr(name_active_base,type,id){
         console.log(name_active_base);
         name_active_base.forEach((value,index,arr)=>{

@@ -486,7 +486,9 @@
                                     <p-tree *ngIf="isShowytjjg" [value]="ytjjgTreeList" name='label'
                                             [(ngModel)]="ggmx[GgmxIndex].fwjgdm" expanded selectionMode="single"
                                             [(selection)]="selectedFile"
-                                            (onNodeSelect)="getChildytjjg($event)" ngDefaultControl>
+                                            (onNodeSelect)="getChildytjjg($event)"
+
+                                            ngDefaultControl>
                                     </p-tree>
                                 </div>
                             </div>
